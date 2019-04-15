@@ -57,7 +57,7 @@
       <span class="m-icon-service" @click.stop="changeRoute('/personal/serviceCenter')"></span>
       <div class="m-product-detail-btn">
         <span class="active" @click="addCart">加入购物车</span>
-        <span @click="buy" v-if="can_buy != true">立即购买</span>
+        <span @click="buy" v-if="can_buy == true">立即购买</span>
         <span class="cancel" v-else>立即购买</span>
 
       </div>
@@ -242,7 +242,6 @@
               this.product.tcdesc = res.data.data.prdesc;
               this.product.tcid = res.data.data.prid;
               this.product.tcattribute = res.data.data.prattribute;
-
               this.can_buy = this.nowInDateBetwen(this.product.tlastarttime,this.product.tlaendtime);
             }
           });
@@ -275,7 +274,9 @@
       postCart(){
         axios.post(api.cart_create + '?token=' + localStorage.getItem('token'),{
           skuid:this.select_value.skuid,
-          canums:this.canums
+          canums:this.canums,
+          cafrom:4,
+          contentid:this.$route.query.tlpid
         }).
         then(res => {
           if(res.data.status == 200){
@@ -291,7 +292,7 @@
           let product = {};
           product.pb = this.product.brand;
           product.cart = [];
-          product.cart.push({ product: { prtitle: this.product.tctitle }, sku: this.select_value, canums: "1", prid: this.product.tcid});
+          product.cart.push({ product: { prtitle: this.product.tctitle }, sku: this.select_value, canums: "1", prid: this.product.tcid,cafrom:4,contentid:this.$route.query.tlpid});
           let arr = [];
           arr.push(product);
           if(localStorage.getItem('token')) {

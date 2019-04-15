@@ -1,6 +1,6 @@
 <template>
-  <div class="m-limitedTime"  @touchmove="touchMove">
-    <div class="m-brand-info">
+  <div class="m-limitedTime" v-if="brand_info" @touchmove="touchMove">
+    <div class="m-brand-info" >
       <img :src="brand_info.tlatoppic" class="m-brand-img" alt="">
       <span class="m-icon-bg"></span>
     </div>
@@ -16,7 +16,7 @@
       </template>
     </ul>
 
-    <p class="m-no-data" v-if="product_list.length == 0">暂无数据</p>
+    <p class="m-no-data" v-if="product_list && product_list.length == 0">暂无数据</p>
     <product :list="product_list" :limited="true" v-else></product>
 
     <bottom-line v-if="bottom_show"></bottom-line>
@@ -31,7 +31,8 @@
   import api from '../../../api/api'
   import {Toast} from 'mint-ui';
   import bottomLine from '../../../components/common/bottomLine';
-
+  import wx from 'weixin-js-sdk';
+  import wxapi from '../../../common/js/mixins';
   export default {
     data() {
       return{
@@ -50,8 +51,91 @@
       common.changeTitle('限时特惠');
       this.getNav();
       // this.getProduct();
+      wxapi.wxRegister(location.href.split('#')[0]);
+      localStorage.removeItem('share');
+      localStorage.removeItem('url');
+      localStorage.removeItem('login_to');
+      if(common.isWeixin()) {
+        if(localStorage.getItem('token')) {
+          // 倒计时
+          const TIME_COUNT = 1;
+          let count = TIME_COUNT;
+          let time = setInterval(() => {
+            if(count > 0 && count <= TIME_COUNT) {
+              count --;
+            }else {
+              this.shareList(1);
+              clearInterval(time);
+            }
+          }, 300);
+        }
+      }
     },
     methods: {
+      // 分享商品
+      shareList(val) {
+        if(common.isWeixin()) {
+          if(localStorage.getItem('token')) {
+            let options = {};
+            let title = '',id = '';
+            for(let i in this.nav_list){
+              if(this.nav_list[i].active){
+                title = this.nav_list[i].tlaname,
+                  id = this.nav_list[i].tlaid;
+              }
+            }
+            options = {
+              title: title,
+              desc: `活动时间：${this.brand_info.tlastarttime} - ${this.brand_info.tlaendtime}`,
+              imgUrl: this.brand_info.tlatoppic,
+              link: window.location.href.split('#')[0] + '?tlaid=' + id
+            };
+            axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
+              if(res.data.status == 200) {
+                options.link += '&secret_usid=' + res.data.data.secret_usid
+                console.log(options.link)
+                if(val !== 1) {
+                  // 点击分享
+                  this.show_invite = true;
+                }
+              }
+            });
+
+            // 倒计时
+            const TIME_COUNT = 3;
+            let count = TIME_COUNT;
+            let time = setInterval(() => {
+              if (count > 0 && count <= TIME_COUNT) {
+                count --;
+              } else {
+                this.show_invite = false;
+                clearInterval(time);
+              }
+            }, 1000);
+
+            // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+            if(wx.updateAppMessageShareData) {
+              wx.updateAppMessageShareData(options);
+            }
+            // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+            if(wx.updateTimelineShareData) {
+              wx.updateTimelineShareData(options);
+            }
+            // 获取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）
+            if(wx.onMenuShareAppMessage) {
+              wx.onMenuShareAppMessage(options);
+            }
+            // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）
+            if(wx.onMenuShareTimeline) {
+              wx.onMenuShareTimeline(options);
+            }
+          }else {
+            Toast('请登录后再试');
+          }
+        }else {
+          Toast('请在微信公众号分享');
+        }
+      },
       //滚动加载更多
       touchMove(e){
         let scrollTop = common.getScrollTop();
@@ -88,6 +172,8 @@
         arr[index].active = true;
 
           this.getProduct(arr[index].tlaid);
+
+
           this.brand_info = arr[index];
         this.nav_list = [].concat(arr);
 
@@ -110,6 +196,10 @@
             }else{
               this.page_info.page_num = 1;
               this.total_count= 0;
+              console.log(start)
+              if(start == 1){
+                this.product_list = res.data.data;
+              }
               return false;
             }
             if(start >1){
@@ -132,9 +222,20 @@
             for(let i in this.nav_list){
               this.nav_list[i].active = false;
             }
-            this.nav_list[0].active = true;
-            this.brand_info = this.nav_list[0];
-            this.getProduct(this.nav_list[0].tlaid);
+
+            let _index  =0;
+            if(this.$route.query.tlaid){
+              for(let i in this.nav_list){
+                if(this.nav_list[i].tlaid == this.$route.query.tlaid){
+                  _index = i;
+                  break;
+                }
+              }
+            }
+            this.nav_list[_index].active = true;
+
+            this.brand_info = this.nav_list[_index];
+            this.getProduct(this.nav_list[_index].tlaid);
           }
         })
       }

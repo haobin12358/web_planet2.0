@@ -249,6 +249,9 @@
               }else if(localStorage.getItem('share') == 'neid') {
                 let params = url.split('?neid=')[1].split('&secret_usid')[0];
                 this.$router.push({ path: '/circle/detail', query: { neid: params }})
+              }else if(localStorage.getItem('share') == 'tlaid') {
+                let params = url.split('?tlaid=')[1].split('&secret_usid')[0];
+                this.$router.push({ path: '/limitedTime', query: { tlaid: params }})
               }else if(localStorage.getItem('share') == 'prid') {
                 let params;
                 if(url.indexOf('&secret_usid') > 0){

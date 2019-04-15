@@ -110,7 +110,7 @@
           <div class="m-activity-subtitle">可提现余额</div>
           <div class="m-activity-money">
             <div class="m-money m-ft-28 m-red">￥ <span class="m-ft-58">{{moneyNumTemp | money}}</span></div>
-            <div class="m-money-btn m-ft-24" @click="outPopup = true">提现</div>
+            <div class="m-money-btn m-ft-24" @click="makeMoney">提现</div>
           </div>
           <ul class="m-part-icon-ul m-use m-double">
             <li @click="changeRoute('/activityOrder')">
@@ -127,7 +127,13 @@
             </li>
           </ul>
         </div>
-
+        <!--商家大礼包支付成功的popup-->
+        <mt-popup class="m-gift-popup" v-model="giftPopup" pop-transition="popup-fade">
+          <!--            <img class="m-gift-popup-img" src="/static/images/icon-out-know.png" alt="">-->
+          <div class=" m-gift-popup-title m-ft-30 m-ft-b">请先进行身份认证</div>
+          <div class="m-gift-popup-text m-ft-24">认证成功，提交申请并完成审批即可成为提现。</div>
+          <div class="m-gift-popup-btn m-ft-30 m-ft-b" @click="changeRoute('/storekeeper/IDCardApprove')">填写申请</div>
+        </mt-popup>
         <!--提现-->
         <div class="m-out-popup-box">
           <mt-popup class="m-out-popup" v-model="outPopup">
@@ -188,6 +194,8 @@
           <mt-popup class="m-toast-popup" popup-transition="popup-fade" v-model="toast">
             {{text}}
           </mt-popup>
+
+
         </div>
       </div>
     </div>
@@ -224,7 +232,9 @@
         bankNo: "",
         store: '成为店主',
         text: '',
-        toast: false
+        toast: false,
+        giftPopup:false,
+        usidentification:''
       }
     },
     watch: {
@@ -263,13 +273,15 @@
               this.$router.push("/giftBox");
             }else if(res.data.data.uslevel == "2") {      // 2 - 卖家 - 去卖家版首页
               // this.$router.push("material/circle");
-              this.$router.push("storekeeper");
-            }else if(res.data.data.uslevel == "3") {      // 3 - 申请成为卖家中
-              this.$router.push("storekeeper/applyOwner");
-            }else if(res.data.data.uslevel == "4") {      // 4 - 已购买大礼包，但是未认证 - 去认证
-              Toast('请完成店主身份认证');
-              this.$router.push("storekeeper/IDCardApprove");
+              this.$router.push({path:"/storekeeper"});
+            }else if(res.data.data.uslevel == "3" || res.data.data.uslevel == "4" ) {      // 3 - 申请成为卖家中
+              // this.$router.push("storekeeper/applyOwner");
+              this.$router.push({path:"/storekeeper"});
             }
+            // else if(res.data.data.uslevel == "4") {      // 4 - 已购买大礼包，但是未认证 - 去认证
+            //   Toast('请完成店主身份认证');
+            //   this.$router.push("storekeeper/IDCardApprove");
+            // }
           }
         });
       },
@@ -489,6 +501,7 @@
             this.moneyNum = this.user.uscash;
             this.moneyNumTemp = JSON.parse(JSON.stringify(this.moneyNum));
             this.getOrderCount();       // 获取订单数量
+            this.usidentification = res.data.data.usidentification;
             if(res.data.data.uslevel == 2) {
               this.store = '转换店主'
             }else {
@@ -518,6 +531,14 @@
             }
           }
         })
+      },
+      makeMoney(){
+        if(this.usidentification == ""){
+         this.giftPopup = true;
+        }else{
+          this.outPopup = true
+        }
+
       }
     }
   }
@@ -537,4 +558,32 @@
     color: #ffffff;
     background-color: #333333;
   }
+ .m-gift-popup {
+   width: 700px;
+   height: 600px;
+   margin: -300px 0 0 25px;
+   border-radius: 30px;
+   .m-gift-popup-img {
+     width: 85px;
+     height: 85px;
+     margin: 100px 0 36px 0;
+   }
+   .m-gift-popup-title{
+     text-align: center;
+     margin: 100px 0 36px 0;
+   }
+   .m-gift-popup-text {
+     margin: 45px 0 120px 0;
+     text-align: center;
+   }
+   .m-gift-popup-btn {
+     width: 120px;
+     color: #ffffff;
+     background-color: @mainColor;
+     padding: 15px 70px;
+     margin-left: 220px;
+     border-radius: 10px;
+     box-shadow: 2px 8px 8px rgba(0,0,0,0.16);
+   }
+ }
 </style>

@@ -284,7 +284,7 @@
             this.$router.push({ path: '/submitOrder', query: { product: JSON.stringify(arr), from: this.which }});
           }else {
             let which = this.$route.query.which;
-            let url
+            let url;
             if(which == "new") {
               url = window.location.href.split('#')[0] + '?fmfpid=' + this.$route.query.fmfpid + '&which=new'
 

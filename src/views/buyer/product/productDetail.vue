@@ -304,7 +304,8 @@
         postCart(){
           axios.post(api.cart_create + '?token=' + localStorage.getItem('token'),{
             skuid:this.select_value.skuid,
-            canums:this.canums
+            canums:this.canums,
+            cafrom:10
           }).
           then(res => {
             if(res.data.status == 200){

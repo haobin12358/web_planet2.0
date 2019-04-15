@@ -134,11 +134,17 @@
 
       methods: {
         changeRoute(v, item){
+          console.log(item)
           if(item) {
             if(v == "brandDetail") {
               this.$router.push({ path: '/brandDetail', query: { pbid: item.pb.pbid, pbname: item.pb.pbname }});
             }else if(v == "product") {
-              this.$router.push({ path: '/productDetail', query: { prid: item.prid }});
+              if(item.cafrom == 4){
+                this.$router.push({ path: '/limitedProductDetail', query: { tlpid: item.contentid }});
+              }else{
+                this.$router.push({ path: '/productDetail', query: { prid: item.prid }});
+              }
+
             }
           }else {
             this.$router.push(v);

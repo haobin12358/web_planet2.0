@@ -124,12 +124,12 @@
         </mt-popup>
       </div>
       <!--商家大礼包支付成功的popup-->
-      <mt-popup class="m-gift-popup" v-model="giftPopup" pop-transition="popup-fade">
-        <img class="m-gift-popup-img" src="/static/images/icon-out-know.png" alt="">
-        <div class="m-ft-30 m-ft-b">支付成功</div>
-        <div class="m-gift-popup-text m-ft-24">支付成功，提交申请并完成审批即可成为卖家。</div>
-        <div class="m-gift-popup-btn m-ft-30 m-ft-b" @click="changeRoute('/storekeeper/IDCardApprove')">填写申请</div>
-      </mt-popup>
+<!--      <mt-popup class="m-gift-popup" v-model="giftPopup" pop-transition="popup-fade">-->
+<!--        <img class="m-gift-popup-img" src="/static/images/icon-out-know.png" alt="">-->
+<!--        <div class="m-ft-30 m-ft-b">支付成功</div>-->
+<!--&lt;!&ndash;        <div class="m-gift-popup-text m-ft-24">支付成功，提交申请并完成审批即可成为卖家。</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="m-gift-popup-btn m-ft-30 m-ft-b" @click="changeRoute('/storekeeper/IDCardApprove')">填写申请</div>&ndash;&gt;-->
+<!--      </mt-popup>-->
 
       <div class="m-order-btn">
         <!--试用商品、新人商品-->
@@ -206,6 +206,7 @@
         }else {           // 从购物车来
           this.product_info = JSON.parse(localStorage.getItem('product'));
         }
+
         let total = 0;
         for(let i = 0; i < this.product_info.length; i ++) {
           this.product_info[i].total = 0;
@@ -215,6 +216,8 @@
           this.product_info[i].couponList = [];
           this.product_info[i].coupon_info = { caid: [] };
           for(let j = 0; j < this.product_info[i].cart.length; j ++) {
+            this.product_info[i].cafrom = this.product_info[i].cart[j].cafrom;
+            this.product_info[i].contentid = this.product_info[i].cart[j].contentid;
             this.product_info[i].prfreight += this.product_info[i].cart[j].product.prfreight;
             this.product_info[i].total = this.product_info[i].total + Number(this.product_info[i].cart[j].sku.skuprice) * this.product_info[i].cart[j].canums;
           }
@@ -401,12 +404,22 @@
               }
             });
           }else if(this.from == 'new') {
+            let _usid = '';
+            if(localStorage.getItem('secret_usid')){
+              _usid =  localStorage.getItem('secret_usid').split('&from')[0];
+              if(_usid.endsWith('#/')) {
+                _usid = _usid.substr(0, _usid.length - 2);
+              }else if(_usid.endsWith('#/selected')){
+                _usid = _usid.substr(0, _usid.length - 10);
+              }
+            }
             let params = {
               skuid: this.product_info[0].cart[0].sku.skuid,
               omclient: 0,
               uaid: this.uaid,
               opaytype: 0,
-              ommessage: this.product_info[0].ommessage || ""
+              ommessage: this.product_info[0].ommessage || "",
+              secret_usid:_usid
             };
             axios.post(api.add_order + "?token=" + localStorage.getItem('token'), params).then(res => {
               if(res.data.status == 200){
@@ -465,6 +478,7 @@
         },
         // 购物车或直接购买时创建订单并调起支付
         submitOrder() {
+
           if(!this.uaid) {
             Toast("请先选择收货地址");
             return false;
@@ -497,7 +511,7 @@
             params.info[i] = {
               pbid: this.product_info[i].pb.pbid,
               ommessage: this.product_info[i].ommessage || "",
-              skus: []
+              skus: [],
             };
             params.info[i].coupons = [];
             if(this.product_info[i].coupon_info.coid) {
@@ -506,16 +520,19 @@
             for(let j = 0; j < this.product_info[i].cart.length; j ++) {
               let sku = {
                 skuid: this.product_info[i].cart[j].sku.skuid,
-                nums: this.product_info[i].cart[j].canums
+                nums: this.product_info[i].cart[j].canums,
+                cafrom:this.product_info[i].cart[j].cafrom,
+                contentid:this.product_info[i].cart[j].contentid
               };
               params.info[i].skus.push(sku);
             }
           }
+          console.log(params)
           axios.post(api.order_create + "?token=" + localStorage.getItem('token'), params).then(res => {
             if(res.data.status == 200) {
               if(this.payType.opaytype ==20) {
-                Toast(res.data.message);
-                this.giftPopup = true;
+                // Toast(res.data.message);
+                // this.giftPopup = true;
                 // this.$router.push("/orderList?which=1");
                 // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
                 sessionStorage.setItem('use', 'used');
@@ -545,9 +562,10 @@
                 sessionStorage.setItem('use', 'used');
                 if(res.err_msg == "get_brand_wcpay_request:ok" ){             // 支付成功
                   // 是从商家大礼包来结算的则弹出popup
-                  if(that.fromGift) {
-                    that.giftPopup = true;
-                  }else if(that.from == 'new' || that.from == 'try' || that.isGuess) {
+                  // if(that.fromGift) {
+                  //   that.giftPopup = true;
+                  // }else
+                    if(that.from == 'new' || that.from == 'try' || that.isGuess) {
                     that.$router.push('/activityOrder');
                   }else {     // 去待发货页
                     that.$router.push("/orderList?which=2");

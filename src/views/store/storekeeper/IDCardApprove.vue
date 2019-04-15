@@ -24,13 +24,13 @@
           <div class="m-IDCard-row">
             <div class="m-row-title">真实姓名</div>
             <input type="text" class="m-row-input m-width-220" v-model="user.usrealname" placeholder="请填写真实姓名"
-                   :readonly="user.uslevel == '2' || user.uslevel == '3'">
+                   :readonly="!isCan">
           </div>
-          <div class="m-IDCard-row" @click="genderPopup = true" v-if="user.uslevel == '1' || user.uslevel == '4'">
+          <div class="m-IDCard-row" @click="genderPopup = true" v-if="isCan">
             <div class="m-row-title">性别</div>
             <div class="m-row-input m-width-450">{{user.usGender}}</div>
           </div>
-          <div class="m-IDCard-row" v-if="user.uslevel == '2' || user.uslevel == '3'">
+          <div class="m-IDCard-row" v-else>
             <div class="m-row-title">性别</div>
             <div class="m-row-input m-width-450">{{user.usGender}}</div>
           </div>
@@ -49,7 +49,7 @@
           <div class="m-IDCard-row">
             <div class="m-row-title">身份证号</div>
             <input type="text" class="m-row-input m-width-450" v-model="user.usidentification" maxlength="18"
-                   placeholder="请填写身份证号" :readonly="user.uslevel == '2' || user.uslevel == '3'">
+                   placeholder="请填写身份证号" :readonly="!isCan">
           </div>
           <div class="m-IDCard-row">
             <div class="m-row-title">身份证照片</div>
@@ -59,16 +59,16 @@
           <img class="m-IDCard-img" v-if="umfrontTemp" :src="umfrontTemp" alt="">
           <input type="file" name="file" class="m-upload-input" value=""
                  accept="image/*" multiple=""
-                 @change="uploadFrontImg" :disabled="user.uslevel == '2' || user.uslevel == '3'">
+                 @change="uploadFrontImg" :disabled="!isCan">
         </div>
         <div class="m-IDCard-img">
           <img class="m-IDCard-img" v-if="umbackTemp" :src="umbackTemp" alt="">
           <input type="file" name="file" class="m-upload-input" value=""
                  accept="image/*" multiple=""
-                 @change="uploadBackImg" :disabled="user.uslevel == '2' || user.uslevel == '3'">
+                 @change="uploadBackImg" :disabled="!isCan">
         </div>
         <!--按钮-->
-        <div class="m-foot-btn" v-if="user.uslevel == '1' || user.uslevel == '4'">
+        <div class="m-foot-btn" v-if="isCan">
           <span @click="submitUser">提交认证</span>
         </div>
         <!--弹窗-->
@@ -115,7 +115,8 @@
         slots: [{values: ['男', '女']}],
         gender: "",                           // 暂存性别
         umfrontTemp: "",                      // 暂存正面
-        umbackTemp: "",                       // 暂存反面
+        umbackTemp: "",                       // 暂存反面]
+        isCan:false
       }
     },
     methods: {
@@ -190,6 +191,11 @@
           if (res.data.status == 200) {
             // console.log(res.data.data);
             this.user = res.data.data;
+            if(res.data.data.usidentification != ''){
+              this.isCan = false
+            }else{
+              this.isCan = true
+            }
             this.umfrontTemp = this.user.umfront;
             this.umbackTemp = this.user.umback;
             // 性别判断
@@ -244,16 +250,16 @@
         };
 
         //  买家和购买大礼包 身份api 区分
-        if(this.user.uslevel == 4){
-          axios.post(api.upgrade_agent + "?token=" + localStorage.getItem('token'), params).then(res => {
-            if (res.data.status == 200) {
-              Toast(res.data.message);
-              // 申请提交成功则返回上一页
-              this.$router.go(-1);
-              this.submitPopup = true;
-            }
-          });
-        }else{
+        // if(this.isCan){
+        //   axios.post(api.upgrade_agent + "?token=" + localStorage.getItem('token'), params).then(res => {
+        //     if (res.data.status == 200) {
+        //       Toast(res.data.message);
+        //       // 申请提交成功则返回上一页
+        //       this.$router.go(-1);
+        //       this.submitPopup = true;
+        //     }
+        //   });
+        // }else{
           axios.get(api.check_idcode, {
             params: {
               token: localStorage.getItem('token'),
@@ -269,7 +275,7 @@
               }
             }
           )
-        }
+        // }
       }
     },
     mounted() {

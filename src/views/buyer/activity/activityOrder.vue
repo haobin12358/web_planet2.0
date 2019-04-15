@@ -49,6 +49,7 @@
                 </div>
                 <div>
                   <!--<li v-if="items.omstatus==10" @click.stop="changeRoute('/selectBack',items)">退款</li>-->
+                  <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund" @click.stop="changeRoute('/selectBack',items)">退款</li>
                   <li @click.stop="changeRoute('/logisticsInformation',items)" v-if="items.omstatus==20
                 || items.omstatus == 30 || items.omstatus == 25">查看物流</li>
                   <!--<li v-if=" items.omstatus == -40">删除订单</li>-->

@@ -11,7 +11,7 @@
         <img class="m-jump-img" src="/static/images/icon-more.png">
       </div>
     </div>
-    <div class="m-detail-box">
+    <div class="m-detail-box" v-if="num_box">
       <ul>
         <li>
           <p class="m-num">¥{{num_box.usexpect}}</p>
@@ -57,7 +57,7 @@
     </div>
 
     <div class="m-store-btn-box">
-      <span class="m-btn" @click="outPopup = true">提现</span>
+      <span class="m-btn" @click="makeMoney">提现</span>
       <span class="m-btn-a"  @click="changeRoute('/personal/history')">提现历史</span>
     </div>
     <!--<div class="m-total-jump-box m-earnings-detail">-->
@@ -67,7 +67,13 @@
         <!--<img class="m-jump-img" src="/static/images/icon-more-black.png">-->
       <!--</div>-->
     <!--</div>-->
-
+    <!--商家大礼包支付成功的popup-->
+    <mt-popup class="m-gift-popup" v-model="giftPopup" pop-transition="popup-fade">
+      <!--            <img class="m-gift-popup-img" src="/static/images/icon-out-know.png" alt="">-->
+      <div class=" m-gift-popup-title m-ft-30 m-ft-b">请先进行身份认证</div>
+      <div class="m-gift-popup-text m-ft-24">认证成功，提交申请并完成审批即可成为提现。</div>
+      <div class="m-gift-popup-btn m-ft-30 m-ft-b" @click="changeRoute('/storekeeper/IDCardApprove')">填写申请</div>
+    </mt-popup>
     <!--提现-->
     <div class="m-out-popup-box">
       <mt-popup class="m-out-popup" v-model="outPopup">
@@ -160,7 +166,9 @@
         msg: '',
         validated: true,         // 银行卡是否已失效
         text: '',
-        toast: false
+        toast: false,
+        giftPopup:false,
+        usidentification:''
       }
     },
     components: {},
@@ -214,20 +222,20 @@
             return false;
           }
           if(!this.realName) {
-            // Toast({ message: '请先输入姓名', position: 'bottom' });
-            this.text = '提现金额应不大于可用余额';
-            this.toast = true;
-            // 倒计时
-            const TIME_COUNT = 1;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.toast = false;
-                clearInterval(time);
-              }
-            }, 1000);
+            Toast({ message: '请先输入姓名', position: 'bottom' });
+            // this.text = '提现金额应不大于可用余额';
+            // this.toast = true;
+            // // 倒计时
+            // const TIME_COUNT = 1;
+            // let count = TIME_COUNT;
+            // let time = setInterval(() => {
+            //   if (count > 0 && count <= TIME_COUNT) {
+            //     count --;
+            //   } else {
+            //     this.toast = false;
+            //     clearInterval(time);
+            //   }
+            // }, 1000);
             return false;
           }
           if(this.bankNo.length < 10) {
@@ -389,13 +397,24 @@
         axios.get(api.get_home + "?token=" + localStorage.getItem('token')).then(res => {
           if(res.data.status == 200){
             this.num_box = res.data.data;
+            this.usidentification = res.data.data.usidentification;
           }
         })
       },
+      makeMoney(){
+
+        if(this.usidentification == ""){
+          this.giftPopup = true;
+        }else{
+          this.outPopup = true
+        }
+
+      }
     },
     mounted() {
       common.changeTitle('店主');
       this.getUser();               // 获取个人信息
+      // this.usidentification = this.$route.query.usidentification;
     }
   }
 </script>
@@ -518,7 +537,34 @@
       }
     }
 
-
+    .m-gift-popup {
+      width: 700px;
+      height: 600px;
+      margin: -300px 0 0 25px;
+      border-radius: 30px;
+      .m-gift-popup-img {
+        width: 85px;
+        height: 85px;
+        margin: 100px 0 36px 0;
+      }
+      .m-gift-popup-title{
+        text-align: center;
+        margin: 100px 0 36px 0;
+      }
+      .m-gift-popup-text {
+        margin: 45px 0 120px 0;
+        text-align: center;
+      }
+      .m-gift-popup-btn {
+        width: 120px;
+        color: #ffffff;
+        background-color: @mainColor;
+        padding: 15px 70px;
+        margin-left: 220px;
+        border-radius: 10px;
+        box-shadow: 2px 8px 8px rgba(0,0,0,0.16);
+      }
+    }
     .m-out-popup-box {
       .m-out-popup {
         width: 700px;
