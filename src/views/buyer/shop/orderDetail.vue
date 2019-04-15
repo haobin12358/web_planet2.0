@@ -3,23 +3,23 @@
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 0">
         <span >买家待付款</span>
         <span class="duration-time" v-if="order_info.duration">{{order_info.min}}:{{order_info.sec}}</span>
-        <span class="m-icon-order-status m-pay" ></span>
+        <!-- <span class="m-icon-order-status m-pay" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == -40">
         <span >买家已取消</span>
-        <span class="m-icon-order-status m-pay" ></span>
+        <!-- <span class="m-icon-order-status m-pay" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 10">
         <span >买家已付款</span>
-        <span class="m-icon-order-status m-pay" ></span>
+        <!-- <span class="m-icon-order-status m-pay" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 20">
         <span >卖家已发货</span>
-        <span class="m-icon-order-status m-send" ></span>
+        <!-- <span class="m-icon-order-status m-send" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 30 || order_info.omstatus == 25 || order_info.omstatus == 26">
         <span>买家已签收</span>
-        <span class="m-icon-order-status m-send"></span>
+        <!-- <span class="m-icon-order-status m-send"></span> -->
       </div>
       <div class="m-order-one-part">
         <div class="m-user-text" v-if="logistic_info && order_info.omlogistictype != 10" @click="changeRoute('/logisticsInformation')">
@@ -416,221 +416,6 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
-  @import "../../../common/css/index";
+  @import "../../../common/css/order";
 
-  .m-orderDetail{
-    min-height: 100vh;
-    background-color: #eee;
-    padding-bottom: 120px;
-    .m-orderDetail-status{
-      .flex-row(flex-end);
-      width: 100%;
-      height: 220px;
-      background-color: @mainColor;
-      span {
-        color: #ffffff;
-      }
-      .duration-time {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 0 -80px 0 10px;
-      }
-      .m-icon-order-status{
-        display: block;
-        width: 288px;
-        height: 147px;
-        background: url("/static/images/icon-order-status-wait.png") no-repeat;
-        background-size: 100% 100%;
-        margin-left: 136px;
-        margin-right: 65px;
-        &.m-send{
-          background: url("/static/images/icon-order-status-send.png") no-repeat;
-          background-size: 100% 100%;
-        }
-        &.m-pay{
-          background: url("/static/images/icon-order-status-pay.png") no-repeat;
-          background-size: 100% 100%;
-        }
-        &.m-done{
-          background: url("/static/images/icon-order-status-done.png") no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-    }
-    .m-order-one-part{
-      padding: 24px 24px 30px 50px;
-      background-color: #fff;
-      color: #666;
-      margin-bottom: 20px;
-      text-align: left;
-      &.m-box-shadow{
-        box-shadow: 0 5px 5px rgba(0,0,0,0.16);
-      }
-      .m-icon-loc{
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: url("/static/images/icon-order-loc.png") no-repeat;
-        background-size: 100% 100%;
-        margin-right: 30px;
-      }
-      .m-icon-wuliu{
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: url("/static/images/icon-order-wuliu.png") no-repeat;
-        background-size: 100% 100%;
-        margin-right: 30px;
-        &.m-done{
-          background: url("/static/images/icon-wuliu-done.png") no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-      .m-wuliu-text{
-        width: 540px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .m-icon-more{
-        display: inline-block;
-        width: 22px;
-        height: 22px;
-        background: url("/static/images/icon-more.png") no-repeat;
-        background-size: 100% 100%;
-      }
-      .m-user-text{
-        text-align: left;
-        padding: 25px 0;
-        border-bottom: 1px solid @borderColor;
-        &:last-child{
-          border-bottom: none;
-        }
-        .flex-row(flex-start);
-        .m-user-tel{
-          display: inline-block;
-          color: #999;
-          margin-left: 56px;
-        }
-        .m-bottom-text{
-          width: 580px;
-          margin-top: 20px;
-        }
-      }
-      .m-order-store-tile{
-        .flex-row(space-between);
-        .m-icon-store{
-          display: inline-block;
-          width: 31px;
-          height: 29px;
-          background: url("/static/images/icon-store.png") no-repeat;
-          background-size: 100% 100%;
-          vertical-align: text-bottom;
-        }
-        .m-store-name{
-          display: inline-block;
-          margin: 0 25px;
-        }
-      }
-      .m-product-box {
-        padding-bottom: 30px;
-        border-bottom: 1px #EEEEEE solid;
-        &:last-child {
-          border-bottom: none;
-        }
-        .m-order-product-ul {
-          margin: 50px 0 20px 0;
-          .m-product-info{
-            display: flex;
-            flex-flow: row;
-            justify-content: flex-start;
-            margin: 15px 0;
-            .m-product-img{
-              display: block;
-              width: 100px;
-              height: 100px;
-              background-color: #9fd0bf;
-              margin-right: 30px;
-            }
-            .m-product-info-text {
-              width: 540px;
-              .m-sku-text{
-                margin-top: 40px;
-              }
-              .m-product-name{
-                display: block;
-                width: 460px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                text-align: left;
-              }
-            }
-          }
-        }
-      }
-      .m-total-money {
-        text-align: right;
-        margin-top: 20px;
-      }
-      .m-back-btn{
-        text-align: right;
-        margin-top: 30px;
-        span{
-          display: inline-block;
-          width: 129px;
-          height: 41px;
-          border-radius: 30px;
-          border: 1px solid #999;
-          color: #999;
-          text-align: center;
-          line-height: 41px;
-          font-weight: 400;
-        }
-      }
-      .m-border{
-        display: inline-block;
-        width: 5px;
-        height: 50px;
-        background:linear-gradient(180deg, @subColor 0%, @mainColor 100%);
-        vertical-align: middle;
-        margin-right: 10px;
-      }
-      .m-time-text{
-        padding-left: 20px;
-        p{
-          line-height: 34px;
-        }
-      }
-    }
-
-    .m-align-right{
-      text-align: right;
-      background-color: #fff;
-      width: 100%;
-      padding: 30px 0;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      span{
-        display: inline-block;
-        width: 129px;
-        height: 41px;
-        line-height: 43px;
-        border-radius: 30px;
-        border: 1px solid #999;
-        color: #999;
-        text-align: center;
-        margin-left: 40px;
-        &.active{
-          background-color: @mainColor;
-          color: #ffffff;
-          border: 1px solid @mainColor;
-        }
-        &:last-child{
-          margin-right: 25px;
-        }
-      }
-    }
-  }
 </style>
