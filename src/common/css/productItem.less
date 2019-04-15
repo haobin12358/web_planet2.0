@@ -1,0 +1,99 @@
+@import "../../common/css/index";
+.m-activity-product-text-box {
+  text-align: left;
+  margin: 10px 0 0 55px;
+  .m-activity-product-text {
+    margin-top: 20px;
+  }
+}
+.m-product-part {
+  display: flex;
+  padding-bottom: 50px;
+  .m-part-left {
+    .m-product-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 10px;
+    }
+  }
+  .m-part-right {
+    width: 413px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 0 0 0 20px;
+    .m-right-row {
+      display: flex;
+      justify-content: space-between;
+      .m-product-name {
+        width: 400px;
+        font-size: 28px;
+        font-weight: bold;
+        overflow: hidden; // 超出的文本隐藏
+        text-overflow: ellipsis;    // 溢出用省略号显示
+        display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+        -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+        -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
+        .m-product-tag {
+          color: @mainColor;
+          margin: 0 -10px 0 -15px;
+        }
+      }
+      .m-product-btn-box {
+        display: flex;
+        .m-product-btn {
+          color: #999999;
+          font-size: 25px;
+          margin-right: 15px;
+        }
+      }
+    }
+    .m-product-description {
+      flex: 1;
+      font-size: 24px;
+      width: 400px;
+      margin-bottom: 15px;
+      overflow: hidden; // 超出的文本隐藏
+      text-overflow: ellipsis;    // 溢出用省略号显示
+      display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+      -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+      -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
+    }
+    .m-return-time {
+      color: #999999;
+      font-size: 24px;
+      .m-yellow-text {
+        color: @mainColor;
+      }
+    }
+    .m-price-share {
+      display: flex;
+      margin-bottom: 5px;
+      .m-product-price {
+        flex: 1;
+        color: #999999;
+        font-size: 25px;
+        .m-price-time {
+          color: #C70000;
+        }
+      }
+      .m-share-img {
+        width: 25px;
+        height: 30px;
+      }
+      .m-share-text {
+        color: #999999;
+        font-size: 25px;
+        margin: -2px 0 0 10px;
+      }
+    }
+    .m-invite-course {
+      position: fixed;
+      top:0;
+      left:0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+    }
+  }
+}

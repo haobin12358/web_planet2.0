@@ -1,0 +1,154 @@
+@import "../../common/css/index";
+.m-scroll{
+  margin: 15px 0;
+  //margin: 15px 0 15px 30px;
+  //width: 720px;
+  overflow-y: hidden;
+  &.m-center-scroll{
+    margin: 0 0 0 33px ;
+  }
+  ul{
+    width: 100%;
+    /*height: 150px;*/
+    padding: 2px 0;
+    text-align: left;
+    display: flex;
+    flex-flow:row;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    li{
+      //display: inline-block;
+      margin: 20px 0 5px 25px;
+      //margin: 20px 25px 0 0;
+      border-radius: 10px;
+      box-shadow: 2px 3px 6px 0 rgba(0, 0, 0, 0.16);
+      img{
+        display: block;
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
+        //background-color: #edb3b1;
+      }
+    }
+  }
+  .m-selected-scene-ul{
+    li{
+      position: relative;
+      .m-selected-scene-img{
+        width: 150px;
+        height: 150px;
+        &.active{
+          width: 190px;
+          height: 190px;
+        }
+      }
+      .m-hot{
+        position: absolute;
+        top:-34px;
+        left: -10px;
+        width: 68px;
+        height: 68px;
+      }
+      .m-time-box{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+        width: 100%;
+        height: 33px;
+        line-height: 33px;
+        background-color: #F15A24;
+        color: #fff;
+        font-size: 24px;
+        .m-time{
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          vertical-align: text-top;
+        }
+      }
+    }
+  }
+  .m-selected-brand-ul{
+    height: 180px;
+    margin-top: -20px;
+    li{
+      .m-selected-brand-img{
+        width: 130px;
+        height: 130px;
+        &.active {
+          width: 150px;
+          height: 150px;
+          background-color: @subColor;
+        }
+      }
+    }
+  }
+  .m-selected-brand-product-ul{
+    width: 101%;
+    //display: inline;
+    height: auto ;
+    padding: 2px 0;
+    overflow-x: scroll;
+    white-space: nowrap;
+    text-align: left;
+    overflow-y: hidden;
+    margin-top: -20px;
+    li{
+      display: inline-block;
+      width: 210px;
+      height: auto;
+      position: relative;
+      .m-cancel-icon {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: -20px;
+        right: -20px;
+      }
+      .m-selected-brand-product-img{
+        width: 210px;
+        height: 210px;
+      }
+      h3{
+        width: 210px;
+        height: 60px;
+        //overflow: hidden;
+        //text-overflow: ellipsis;
+        //white-space: nowrap;
+        white-space: normal;
+        margin-top: 18px;
+        font-size: 21px;
+        overflow: hidden; // 超出的文本隐藏
+        word-break: break-word;  // 英文换行
+        text-overflow: ellipsis;    // 溢出用省略号显示
+        display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+        -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+        -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
+        .m-brand-name {
+          color: @mainColor;
+        }
+      }
+    }
+  }
+}
+/*滚动条样式*/
+.m-scroll::-webkit-scrollbar { /*滚动条整体样式*/
+  width: 0; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 0;
+  border-radius: 10px;
+}
+
+.m-scroll::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 5px @mainColor;
+  background: @mainColor;
+}
+
+.m-scroll::-webkit-scrollbar-track { /*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px #fbea7d;
+  border-radius: 10px;
+  background: #fbea7d;
+}
