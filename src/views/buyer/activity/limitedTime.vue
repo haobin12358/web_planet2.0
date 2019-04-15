@@ -8,13 +8,16 @@
       <p>限时特惠</p>
       <p class="m-time">活动时间：{{brand_info.tlastarttime}} - {{brand_info.tlaendtime}}</p>
     </div>
-<!--    <nav-list class="m-width" :navlist="nav_list" @navClick="navClick"></nav-list>-->
-    <ul class="m-nav-list m-width" >
-      <template v-for="(item,index) in nav_list">
-        <li :class="item.active?'active':''" @click="navClick(index)">{{item.tlaname}}
-        </li>
-      </template>
-    </ul>
+    <!--    <nav-list class="m-width" :navlist="nav_list" @navClick="navClick"></nav-list>-->
+    <div class="m-scroll">
+      <ul class="m-nav-list m-width" >
+        <template v-for="(item,index) in nav_list">
+          <li :class="item.active?'active':''" @click="navClick(index)">{{item.tlaname}}
+          </li>
+        </template>
+      </ul>
+    </div>
+
 
     <p class="m-no-data" v-if="product_list && product_list.length == 0">暂无数据</p>
     <product :list="product_list" :limited="true" v-else></product>
@@ -171,10 +174,10 @@
         }
         arr[index].active = true;
 
-          this.getProduct(arr[index].tlaid);
+        this.getProduct(arr[index].tlaid);
 
 
-          this.brand_info = arr[index];
+        this.brand_info = arr[index];
         this.nav_list = [].concat(arr);
 
       },
@@ -327,11 +330,22 @@
         }
       }
     }
-    .m-nav-list{
-      .flex-row(space-around);
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-      padding: 6px 0;
+    .m-scroll{
+      overflow-y: hidden;
 
+    }
+    .m-nav-list{
+      .flex-row(flex-start);
+      flex-wrap: nowrap;
+      height: auto ;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+      /*padding: 6px 10px;*/
+      overflow-x: scroll;
+      overflow-y: hidden;
+      width: 140%;
+      li{
+        margin-right: 20px;
+      }
     }
   }
 </style>
