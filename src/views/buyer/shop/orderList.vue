@@ -32,7 +32,7 @@
                     <div>
                       <p class="m-flex-between">
                         <span class="m-product-name">{{item.prtitle}}</span>
-                        <span class="m-price">￥{{item.skuprice | money}}</span>
+                        <span class="w-price">￥{{item.skuprice | money}}</span>
                       </p>
                       <p class="m-flex-between">
                         <span class="m-product-label">
@@ -46,7 +46,7 @@
                     </div>
                   </div>
                 </template>
-                <div class="m-total-money">合计：<span class="m-price">￥{{items.omtruemount | money}}</span></div>
+                <div class="m-total-money">共{{items.order_part.length}}件商品 合计：<span class="w-price">￥{{items.omtruemount | money}}</span></div>
                 <ul class="m-order-btn-ul" v-if="!items.ominrefund">
                   <div class="duration-box">
                     <div v-if="items.duration">支付倒计时<span class="duration-text">{{items.min}}:{{items.sec}}</span></div>
@@ -418,141 +418,6 @@
       }
     }
   }
-</script>
-
-<style lang="less" rel="stylesheet/less" scoped>
-  @import "../../../common/css/index";
-  .m-orderList{
-    /*background-color: #eee;*/
-    min-height: 100vh;
-    padding: 30px 0;
-    .m-icon-back{
-      display: block;
-      width: 24px;
-      height: 41px;
-      background: url("/static/images/icon-back.png") no-repeat;
-      background-size: 100% 100%;
-      margin: 0 0 0 20px;
-    }
-    .m-nav{
-      background-color: #fff;
-    }
-    .m-nav-list{
-      padding: 0 26px ;
-    }
-    .m-no-coupon{
-      margin-top: 200px;
-      margin-left: 50px;
-    }
-    .m-orderList-content{
-      padding: 0 26px;
-      .m-icon-more{
-        display: inline-block;
-        width: 22px;
-        height: 22px;
-        background: url("/static/images/icon-more.png") no-repeat;
-        background-size: 100% 100%;
-      }
-      .m-one-part{
-        background-color: #fff;
-        padding: 30px 37px;
-        border-radius: 10px;
-        box-shadow:0 5px 6px rgba(0,0,0,0.16);
-        margin-bottom: 20px;
-        .m-order-store-tile{
-          .flex-row(space-between);
-          .m-icon-store{
-            display: inline-block;
-            width: 31px;
-            height: 29px;
-            background: url("/static/images/icon-store.png") no-repeat;
-            background-size: 100% 100%;
-            vertical-align: text-bottom;
-          }
-          .m-store-name{
-            display: inline-block;
-            margin: 0 25px;
-          }
-        }
-        .m-order-product-ul{
-          margin-top: 16px;
-          .m-product-info {
-            display: flex;
-            flex-flow: row;
-            justify-content: flex-start;
-            margin-top: 30px;
-            .m-product-img{
-              display: block;
-              width: 153px;
-              height: 153px;
-              background-color: #9fd0bf;
-              margin-right: 30px;
-            }
-            p{
-              line-height: 36px;
-            }
-            .m-product-name{
-              display: block;
-              width: 350px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              text-align: left;
-            }
-            .m-product-label{
-              color: #999999;
-              font-size: 21px;
-            }
-          }
-          .m-total-money {
-            text-align: right;
-          }
-        });
-      },
-      // 调起微信支付
-      wxPay(data, omid) {
-        let that = this;
-
-        function onBridgeReady() { // 微信支付接口
-          WeixinJSBridge.invoke(
-            'getBrandWCPayRequest', {
-              "appId": data.appId, // 公众号名称，由商户传入
-              "timeStamp": data.timeStamp, // 时间戳，自1970年以来的秒数
-              "nonceStr": data.nonceStr, // 随机串
-              "package": data.package, // 统一下单接口返回的prepay_id参数值
-              "signType": data.signType, // 微信签名方式
-              "paySign": data.sign // 微信签名
-            },
-            function (res) {
-              // console.log(res);
-              if (res.err_msg == "get_brand_wcpay_request:ok") { // 支付成功
-                that.$router.push({
-                  path: '/orderDetail',
-                  query: {
-                    omid: omid
-                  }
-                });
-              } else if (res.err_msg == "get_brand_wcpay_request:cancel") { // 支付过程中用户取消
-                Toast('支付已取消');
-              } else if (res.err_msg == "get_brand_wcpay_request:fail") { // 支付失败
-                Toast('支付失败');
-              }
-            });
-        }
-        if (typeof WeixinJSBridge == "undefined") {
-          if (document.addEventListener) {
-            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-          } else if (document.attachEvent) {
-            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-          }
-        } else {
-          onBridgeReady();
-        }
-      }
-    }
-  }
-
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
