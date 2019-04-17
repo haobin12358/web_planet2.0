@@ -421,6 +421,6 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
-  @import "../../../common/css/order";
+  @import "../../../common/css/orderList";
 
 </style>

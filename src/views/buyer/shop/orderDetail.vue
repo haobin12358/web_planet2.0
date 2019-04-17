@@ -45,7 +45,7 @@
           </div>
         </div>
       </div>
-      <div class="m-order-one-part m-box-shadow">
+      <div class="m-order-one-part">
         <div class="m-order-store-tile">
           <div @click.stop="changeRoute('/brandDetail')">
             <span class="m-icon-store"></span>
@@ -82,23 +82,23 @@
               </div>
             </div>
           </div>
-          <p class="m-flex-between m-ft-22">
+          <!-- <p class="m-flex-between m-ft-22">
             <span>运费</span>
             <span>￥{{order_info.omfreight | money}}</span>
-          </p>
-          <!--<p class="m-flex-between m-ft-22">
+          </p> -->
+          <!-- <p class="m-flex-between m-ft-22">
             <span>实付款（含运费）</span>
-            <span class="m-price">￥{{item.opsubtotal | money}}</span>
-          </p>-->
+            <span class="w-price">￥{{item.opsubtotal | money}}</span>
+          </p> -->
           <p class="m-back-btn" v-if="from !== 'afterSales'  && !order_info.ominrefund">
-            <span @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && !item.order_refund_apply">退款</span>
+            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && !item.order_refund_apply">发起退款</span>
             <span @click="changeRoute('/backDetail', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && item.order_refund_apply">查看退款</span>
             <span @click="changeRoute('/storekeeper/IDCardApprove')" v-if="order_info.omlogistictype == 10 && order_info.omstatus == 30 && from !== 'activityProduct'">身份认证</span>
           </p>
         </div>
-        <div class="m-total-money">优惠后合计：<span class="m-price">￥{{order_info.omtruemount | money}}</span></div>
+        <div class="m-total-money">共{{totalProductNum}}件商品 合计：<span class="w-price">￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）</div>
       </div>
-      <div class="m-order-one-part m-box-shadow">
+      <div class="m-order-one-part">
         <p>
           <span class="m-border"></span>
           <span>订单信息</span>
@@ -179,6 +179,20 @@
       common.changeTitle('订单详情');
       this.getOrderInfo();
       this.from = this.$route.query.from;
+    },
+    computed:{
+      totalProductNum: function(){
+        let num_product = 0;
+        this.order_info.order_part.forEach(item => {
+          // console.log(item.prtitle);
+          num_product=num_product+item.opnum;
+        });
+        // for(let item of this.order_info.order_part){
+        //   console.log(item.prtitle);
+        //   num_product=num_product+item.opnum;
+        // }
+        return num_product;
+      }
     },
     methods: {
       changeRoute(v, item) {
@@ -416,6 +430,6 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
-  @import "../../../common/css/order";
+  @import "../../../common/css/orderDetail";
 
 </style>
