@@ -55,18 +55,21 @@
             <div class="m-row-title">身份证照片</div>
           </div>
         </div>
-        <div class="m-IDCard-img">
-          <img class="m-IDCard-img" v-if="umfrontTemp" :src="umfrontTemp" alt="">
-          <input type="file" name="file" class="m-upload-input" value=""
-                 accept="image/*" multiple=""
-                 @change="uploadFrontImg" :disabled="!isCan">
+        <div class="m-img-box">
+          <div class="m-IDCard-img">
+            <img class="m-IDCard-img" v-if="umfrontTemp" :src="umfrontTemp" alt="">
+            <input type="file" name="file" class="m-upload-input" value=""
+                   accept="image/*" multiple=""
+                   @change="uploadFrontImg" :disabled="!isCan">
+          </div>
+          <div class="m-IDCard-img">
+            <img class="m-IDCard-img" v-if="umbackTemp" :src="umbackTemp" alt="">
+            <input type="file" name="file" class="m-upload-input" value=""
+                   accept="image/*" multiple=""
+                   @change="uploadBackImg" :disabled="!isCan">
+          </div>
         </div>
-        <div class="m-IDCard-img">
-          <img class="m-IDCard-img" v-if="umbackTemp" :src="umbackTemp" alt="">
-          <input type="file" name="file" class="m-upload-input" value=""
-                 accept="image/*" multiple=""
-                 @change="uploadBackImg" :disabled="!isCan">
-        </div>
+
         <!--按钮-->
         <div class="m-foot-btn" v-if="isCan">
           <span @click="submitUser">提交认证</span>
@@ -290,22 +293,17 @@
 
   .m-IDCard-box {
     min-height: 105vh;
-    background-color: #EEEEEE;
-    .m-IDCard-bg {
-      width: 750px;
-      height: 371px;
-      background: linear-gradient(180deg, @mainColor 0%, @subColor 100%);
-    }
+    background-color: #fff;
     .m-content {
-      position: absolute;
-      top: 25px;
+      /*position: absolute;*/
+      /*top: 25px;*/
       .m-IDCard-top {
-        width: 600px;
-        padding: 60px 50px 30px 50px;
-        margin: 25px;
-        border-radius: 10px;
+        width: 750px;
+        padding: 60px 0 30px 0;
+        /*margin: 25px;*/
+        /*border-radius: 10px;*/
         background-color: #ffffff;
-        box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);
+        /*box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);*/
         .m-IDCard-rows {
           display: flex;
           justify-content: space-between;
@@ -339,19 +337,19 @@
         }
       }
       .m-IDCard {
-        width: 600px;
-        height: 950px;
-        padding: 60px 50px;
-        margin: 0 0 260px 25px;
-        border-radius: 10px;
+        /*width: 600px;*/
+        /*height: 950px;*/
+        padding: 60px 0;
+        /*margin: 0 0 260px 25px;*/
+        /*border-radius: 10px;*/
         background-color: #ffffff;
-        box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);
+        /*box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);*/
         .m-IDCard-row {
           display: flex;
           justify-content: space-between;
           margin-bottom: 25px;
-          padding-bottom: 20px;
-          border-bottom: 1px #CCCCCC solid;
+          padding: 0 20px 20px 40px;
+          border-bottom: 1px #F2F2F2 solid;
           &:last-child {
             border-bottom: 0;
           }
@@ -382,16 +380,18 @@
             padding: 20px 40px 0 40px;
           }
         }
+        .m-img-box{
+          padding-left: 40px;
+        }
         .m-IDCard-img {
           float: left;
           width: 377px;
           height: 247px;
-          margin-bottom: 30px;
           border-radius: 30px;
           background: url('/static/images/icon-upload-IDCard-img.png') no-repeat;
           background-size: 100% 100%;
           display: inline-block;
-          margin-right: 20px;
+          margin: 0 20px 30px 0;
           position: relative;
         }
         .m-upload-input {
@@ -405,25 +405,25 @@
         .m-foot-btn {
           position: absolute;
           bottom: 50px;
-          left: 25px;
+          left: 0;
           span {
             color: #ffffff;
             display: inline-block;
-            width: 700px;
+            width: 750px;
             height: 106px;
             line-height: 106px;
-            background-color: @mainColor;
+            background:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
             font-size: 38px;
             font-weight: bold;
-            border-radius: 10px;
-            box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);
+            /*border-radius: 10px;*/
+            /*box-shadow: 0 5px 6px rgba(0, 0, 0, 0.16);*/
           }
         }
         .m-submit-popup {
           width: 700px;
           height: 440px;
           margin: -300px 0 0 25px;
-          border-radius: 30px;
+          /*border-radius: 30px;*/
           .m-submit-loading {
             width: 85px;
             height: 85px;

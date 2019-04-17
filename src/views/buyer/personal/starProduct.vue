@@ -1,15 +1,23 @@
 <template>
     <div class="m-starProduct">
       <div class="m-starProduct-head">
-        <p class="m-right">规则</p>
+        <p class="m-right" @click="rulePopup = true">规则</p>
         <div class="m-flex-center">
           <img src="/static/images/newpersonal/icon-star-total.png" class="m-icon" alt="">
           <span class="m-star-num">1200</span>
           <span class="m-ft-20">星币</span>
         </div>
+        <!--星币规则popup-->
+        <mt-popup class="m-rule-popup" v-model="rulePopup" pop-transition="popup-fade">
+          <div class="m-rule-title">
+<!--            <div @click="rulePopup = false">取消</div>-->
+            规则
+          </div>
+          <div class="m-rule-text">是放松的方式</div>
+        </mt-popup>
         <div class="m-head-part">
-          <span>获取记录</span>
-          <span>消耗明细</span>
+          <span @click="changeRoute('/personal/starDetail')">获取记录</span>
+          <span @click="changeRoute('/personal/starDetail')">消耗明细</span>
         </div>
       </div>
       <div class="m-mainIndex-edit m-flex-between">
@@ -86,8 +94,14 @@
         name: "starProduct",
       data(){
           return{
-            labelShow:false
+            labelShow:false,
+            rulePopup:true
           }
+      },
+      methods:{
+        changeRoute(v){
+          this.$router.push(v);
+        }
       }
     }
 </script>
@@ -127,6 +141,25 @@
             border-right: 1px solid #fff;
           }
         }
+      }
+    }
+    .m-rule-popup {
+      width: 600px;
+      height: 800px;
+      margin: -300px 0 0 75px;
+      /*border-radius: 30px;*/
+      color: #000;
+      .m-rule-title{
+        font-size: 28px;
+        text-align: center;
+        margin: 50px 0 30px;
+      }
+      .m-rule-text {
+        font-size: 28px;
+        /*text-indent: 2em;*/
+        padding: 20px 50px;
+        line-height: 40px;
+        text-align: left;
       }
     }
     .m-icon{

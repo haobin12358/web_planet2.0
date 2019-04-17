@@ -554,3 +554,37 @@
     margin-right: 15px;
   }
 }
+
+
+.m-new-personal{
+  .m-one-part{
+    .m-edit-ul{
+      li{
+        .flex-row(space-between);
+        padding: 30px 24px 30px 40px;
+        border-bottom: 1px solid #F2F2F2;
+        .flex-row(space-between);
+        color: #333;
+        text-align: left;
+        .m-icon-more{
+          display: inline-block;
+          width: 17px;
+          height: 30px;
+          background: url("/static/images/newpersonal/icon-more.png") no-repeat;
+          background-size: 100% 100%;
+          margin-left: 20px;
+        }
+        .m-label{
+          display: inline-block;
+          width: 200px;
+          margin-right: 20px;
+        }
+      }
+      &.m-li-flex-start{
+        li{
+          .flex-row(flex-start);
+        }
+      }
+    }
+  }
+}
