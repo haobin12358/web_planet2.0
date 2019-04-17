@@ -61,7 +61,7 @@
             </div>
             <span class="m-info">¥{{user.usbalance}}</span>
           </li>
-          <li class="m-flex-between" @click="changeRoute('/personal/integral')">
+          <li class="m-flex-between" @click="changeRoute('/personal/starProduct')">
             <div class="m-flex-start">
               <img src="/static/images/newpersonal/icon-star.png" class="m-icon" alt="">
               <span>星币商城</span>
