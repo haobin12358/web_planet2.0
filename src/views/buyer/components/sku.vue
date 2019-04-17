@@ -10,7 +10,8 @@
         </div>
         <div class="m-center">
           <p v-if="select_value">
-            <span class="m-red">￥{{select_value.skuprice}}</span>
+            <span v-if="isAct &&  select_value.tlsprice" class="m-red">¥{{select_value.tlsprice}}</span>
+            <span class="m-red" v-else>￥{{select_value.skuprice}}</span>
             <!--<span class="m-red" v-if="select_value.skustock">￥{{select_value.skuprice}}</span>-->
             <!--<span class="m-ft-26 m-red" v-if="select_value.skustock == 0">库存不足</span>-->
           </p>
@@ -108,6 +109,10 @@
           default:false
         },
         guess:{
+          type:Boolean,
+          default:false
+        },
+        isAct:{
           type:Boolean,
           default:false
         }

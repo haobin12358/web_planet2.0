@@ -23,7 +23,7 @@
               <span class="m-icon-more"></span>
             </div>
             <template v-for="(item,i) in items.cart" >
-              <div class="m-shop-product">
+              <div class="m-shop-product" v-if="item.product.tlastatus != -10">
                 <div class="m-product-info">
                   <span class="m-icon-radio m-radio-margin" :class="item.active?'active':''" @click.stop="radioClick('product',index,i)"></span>
                   <img :src="item.sku.skupic" class="m-product-img" alt="" @click="changeRoute('product',item)">
@@ -39,7 +39,8 @@
                       </span>
                     </p>
                     <div class="m-sku-num">
-                      <span class="m-red" @click="changeRoute('product',item)">￥{{item.sku.skuprice | money}}</span>
+                      <span class="m-red" @click="changeRoute('product',item)" v-if="item.sku.tlsprice">￥{{item.sku.tlsprice | money}}</span>
+                      <span class="m-red" @click="changeRoute('product',item)" v-else>￥{{item.sku.skuprice | money}}</span>
                       <div class="m-num">
                         <span class="m-icon-cut" @click.stop="changeNum(-1,index,i)"></span>
                         <input type="number" v-model="item.canums" class="m-num-input" >
@@ -288,7 +289,12 @@
           for(let a =0;a<arr.length;a++){
             for(let b =0;b<arr[a].cart.length;b++){
               if(arr[a].cart[b].active ){
-                _total = _total + Number(arr[a].cart[b].sku.skuprice) * arr[a].cart[b].canums
+                if(arr[a].cart[b].sku.tlsprice){
+                  _total = _total + Number(arr[a].cart[b].sku.tlsprice) * arr[a].cart[b].canums
+                }else{
+                  _total = _total + Number(arr[a].cart[b].sku.skuprice) * arr[a].cart[b].canums
+                }
+
               }
             }
           }
@@ -297,6 +303,7 @@
         /*选择框点击*/
         radioClick(name,index,i){
           let arr = [].concat(this.cart_list);
+
           switch (name){
             case 'all':
               this.allRadio = !this.allRadio;

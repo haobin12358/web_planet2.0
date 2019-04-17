@@ -1,17 +1,17 @@
 <template>
   <div class="m-bottomService-foot">
     <div class="m-foot-btn">
+      <span class="m-icon-tell"></span>
+      <div class="m-inline">
+        <p>客服电话</p>
+        <p>15079564151</p>
+      </div>
+    </div>
+    <div class="m-foot-btn">
       <span class="m-icon-service"></span>
       <div class="m-inline">
         <p>客服QQ</p>
         <p>3441362480</p>
-      </div>
-    </div>
-    <div class="m-foot-btn">
-      <span class="m-icon-tell"></span>
-      <div class="m-inline">
-        <p>客服邮箱</p>
-        <p>kuahu123@163.com</p>
       </div>
     </div>
   </div>

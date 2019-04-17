@@ -9,7 +9,8 @@
           <span>{{item.prtitle}}</span>
         </h3>
         <p class="m-flex-between">
-          <span class="money-text">￥{{item.prprice | money}}</span>
+          <span class="money-text" v-if="isAct && item.tlpprice">￥{{item.tlpprice | money}}</span>
+          <span class="money-text" v-else>￥{{item.prprice | money}}</span>
           <s class="money-text m-grey" v-if="item.prlineprice">￥{{item.prlineprice | money}}</s>
           <s class="money-text m-grey" v-else>￥{{item.prprice | money}}</s>
         </p>
@@ -36,6 +37,10 @@
             default:false
           },
           limited:{
+            type:Boolean,
+            default:false
+          },
+          isAct:{
             type:Boolean,
             default:false
           }
@@ -103,7 +108,9 @@
         margin-top: 38px;
         font-size: 21px;
         text-align: left;
-        height: 60px;
+        /*height: auto;*/
+        height: 66px;
+        line-height: 33px;
         //overflow: hidden;
         //text-overflow: ellipsis;
         //white-space: nowrap;

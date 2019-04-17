@@ -366,10 +366,10 @@
     }
     .m-couponCenter-content{
       .m-nav{
-        width: 700px;
+        width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
-        margin: 20px 0 46px 30px;
+        margin: 20px 0 46px 0;
       }
       .m-couponCenter-content-ul{
         /*padding: 20px 72px;*/

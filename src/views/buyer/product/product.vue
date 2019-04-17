@@ -20,7 +20,7 @@
         <!--<div></div>-->
       <!--</div>-->
       <!--style="width: 350px; margin: 0 30px"-->
-      <nav-list style="margin: 0 30px" :navlist="nav_list" @navClick="navClick"></nav-list>
+      <nav-list  :navlist="nav_list" @navClick="navClick"></nav-list>
       <product :list="product_list"></product>
       <bottom-line v-if="bottom_show"></bottom-line>
       <!--<div class="m-modal-select" v-if="show_modal" @click="changeModal('show_modal',false)">-->

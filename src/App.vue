@@ -133,6 +133,10 @@ export default {
       localStorage.setItem('share', 'uaid');
       location.href = location.origin;
       this.shareRecord(params);
+    }else if(location.href.indexOf('tlaid') > 0) {     // 限时活动列表
+      localStorage.setItem('share', 'tlaid');
+      location.href = location.origin;
+      this.shareRecord(params);
     }else if(location.href.indexOf('page') > 0) {     // 跳转到首页
       localStorage.setItem('share', 'index');
       location.href = location.origin;
@@ -200,6 +204,8 @@ export default {
                       localStorage.setItem('share', 'neid');
                     }else if(localStorage.getItem('wx_url').indexOf('prid') > 0) {               // 商品详情
                       localStorage.setItem('share', 'prid');
+                    }else if(localStorage.getItem('wx_url').indexOf('tlpid') > 0) {               // 商品详情
+                      localStorage.setItem('share', 'tlpid');
                     }
                     this.$router.push('/selected');
                   }else{
@@ -228,6 +234,8 @@ export default {
                     localStorage.setItem('share', 'neid');
                   }else if(localStorage.getItem('wx_url').indexOf('prid') > 0) {               // 商品详情
                     localStorage.setItem('share', 'prid');
+                  }else if(localStorage.getItem('wx_url').indexOf('tlpid') > 0) {               // 商品详情限时
+                    localStorage.setItem('share', 'tlpid');
                   }
                   this.$router.push('/selected');
                 }
