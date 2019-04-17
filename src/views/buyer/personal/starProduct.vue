@@ -8,8 +8,8 @@
           <span class="m-ft-20">星币</span>
         </div>
         <div class="m-head-part">
-          <span>获取记录</span>
-          <span>消耗明细</span>
+          <span @click="changeRoute('/personal/starDetail')">获取记录</span>
+          <span @click="changeRoute('/personal/starDetail')">消耗明细</span>
         </div>
       </div>
       <div class="m-mainIndex-edit m-flex-between">
@@ -88,6 +88,11 @@
           return{
             labelShow:false
           }
+      },
+      methods:{
+        changeRoute(v){
+          this.$router.push(v);
+        }
       }
     }
 </script>

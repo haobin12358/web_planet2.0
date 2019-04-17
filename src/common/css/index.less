@@ -429,3 +429,73 @@ body{
   width: 220px;
   height: 220px;
 }
+//个人中心中月份选择样式
+.m-date-select{
+  .flex-row(space-between);
+  padding: 20px 40px;
+  border-bottom: 10px solid #F4F4F4;
+  background-color: #fff;
+  font-size: 24px;
+  margin-top: 10px;
+  .m-date-time{
+    padding: 4px 20px;
+    background-color: #EBEBEB;
+    border-radius: 50px;
+    color: #000;
+    .flex-row(center);
+    .m-date-more{
+      display: inline-block;
+      width: 19px;
+      height: 19px;
+      margin-left: 10px;
+    }
+  }
+}
+//明细列表样式
+.m-detail-list{
+  width: 100%;
+  li{
+    padding: 20px 40px;
+    border-bottom: 1px solid #F2F2F2;
+    width: 100%;
+    box-sizing: border-box;
+    p{
+      width: 100%;
+      text-align: left;
+    }
+    .m-detail-list-text{
+      width: 100%;
+    }
+    .m-detail-list-title{
+      font-size: 28px;
+      color: #000;
+      width: 460px;
+      white-space: normal;
+      margin-top: 18px;
+      overflow: hidden; // 超出的文本隐藏
+      text-overflow: ellipsis;    // 溢出用省略号显示
+      display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+    }
+    .m-time{
+      font-size: 24px;
+      color: #999999;
+    }
+    .m-detail-list-img{
+      display: block;
+      width: 97px;
+      height: 97px;
+      margin-right: 20px;
+    }
+  }
+}
+.m-date-popup-box {
+  .m-date-popup {
+    width: 750px;
+    .m-popup-btn {
+      display: flex;
+      justify-content: space-between;
+      font-size: 28px;
+      padding: 20px 40px 0 40px;
+    }
+  }
+}
