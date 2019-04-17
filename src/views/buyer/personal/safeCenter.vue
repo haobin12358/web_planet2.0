@@ -1,63 +1,42 @@
 <template>
-  <div class="m-personal m-safeCenter" >
-    <div class="m-personal-bg">
-      <span class="m-icon-bg"></span>
-    </div>
-    <div class="m-personal-content m-setUp">
-      <div class="m-personal-info">
-        <img class="m-personal-head-portrait" :src="user.usheader">
-        <div class="m-personal-info-box">
-          <div class="m-personal-info-text">
-            <div>
-              <p>{{user.usname}}</p>
-              <p>
-                <span class="m-personal-identity animated rubberBand" v-if="user.usidname == '登录 / 注册'" @click="changeRoute('/login')">{{user.usidname}}</span>
-                <span class="m-personal-identity active" v-else>{{user.usidname}}</span>
-              </p>
-            </div>
+  <div class="m-safeCenter" >
+    <div class="m-safeCenter-content">
+      <ul class="m-edit-ul">
+        <li>
+          <div>
+            <span>真实姓名</span>
           </div>
-        </div>
-      </div>
-      <div class="m-personal-body">
-        <div class="m-one-part">
-          <ul class="m-edit-ul">
-            <li>
-              <div>
-                <span>真实姓名</span>
-              </div>
-              <div class="m-grey">{{user.usrealname}}</div>
-            </li>
-            <li @click="changeRoute('/storekeeper/IDCardApprove')">
-              <div>
-                <span>身份认证</span>
-              </div>
-              <div>
-                <span class="m-grey" v-if="!user.usidentification">未认证</span>
-                <span class="m-grey" v-if="user.usidentification">{{user.usidentification}}</span>
-                <span class="m-icon-more"></span>
-              </div>
-            </li>
-            <li @click="changeRoute('/personal/editInput', 'phone')">
-              <div>
-                <span>手机号</span>
-              </div>
-              <div>
-                <span class="m-grey">{{user.ustelphone}}</span>
-                <span class="m-icon-more"></span>
-              </div>
-            </li>
-            <!--<li @click="changeRoute('/personal/editInput', 'passwd')">
-              <div>
-                <span>支付密码</span>
-              </div>
-              <div>
-               <span class="m-grey">去修改</span>
-                <span class="m-icon-more"></span>
-              </div>
-            </li>-->
-          </ul>
-        </div>
-      </div>
+          <div class="m-grey">{{user.usrealname}}</div>
+        </li>
+        <li @click="changeRoute('/storekeeper/IDCardApprove')">
+          <div>
+            <span>身份认证</span>
+          </div>
+          <div class="m-flex-end">
+            <span class="m-grey" v-if="!user.usidentification">未认证</span>
+            <span class="m-grey" v-if="user.usidentification">{{user.usidentification}}</span>
+            <span class="m-icon-more"></span>
+          </div>
+        </li>
+        <li @click="changeRoute('/personal/editInput', 'phone')">
+          <div>
+            <span>手机号</span>
+          </div>
+          <div class="m-flex-end">
+            <span class="m-grey">{{user.ustelphone}}</span>
+            <span class="m-icon-more"></span>
+          </div>
+        </li>
+        <li @click="changeRoute('/personal/setPwd')">
+          <div>
+            <span>支付密码</span>
+          </div>
+          <div class="m-flex-end">
+           <span class="m-grey">更换密码</span>
+            <span class="m-icon-more"></span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -100,14 +79,25 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less" scoped>
-  @import "../../../common/css/personal";
+@import "../../../common/css/index";
   .m-safeCenter{
-    .m-edit-input{
-      display: inline-block;
-      width: 380px;
-      height: 40px;
-      line-height: 40px;
-      font-size: 30px;
+    .m-safeCenter-content{
+      .m-edit-ul{
+        li{
+          padding: 30px 24px 30px 40px;
+          border-bottom: 1px solid #F2F2F2;
+          .flex-row(space-between);
+          color: #333;
+          .m-icon-more{
+            display: inline-block;
+            width: 17px;
+            height: 30px;
+            background: url("/static/images/newpersonal/icon-more.png") no-repeat;
+            background-size: 100% 100%;
+            margin-left: 20px;
+          }
+        }
+      }
     }
   }
 </style>

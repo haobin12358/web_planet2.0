@@ -1,51 +1,48 @@
 <template>
-  <div class="m-personal m-editInput" >
+  <div class="m-new-personal m-editInput" >
     <div class="m-personal-content">
       <div class="m-personal-body">
         <div class="m-one-part">
-          <ul class="m-edit-ul">
+          <ul class="m-edit-ul m-li-flex-start">
             <li v-if="from == 'new' || from == 'phone'">
-              <div>
-                <span>手机号</span>
-              </div>
-              <div>
-                <input type="text" class="m-edit-input m-input-border m-width-220 m-right-190" v-model="ustelphone">
-              </div>
-            </li>
-            <li v-if="from == 'new' || from == 'phone'">
-              <div>
-                <span>验证码</span>
-              </div>
-              <div>
-                <input type="text" class="m-edit-input-s m-input-border m-right-62" v-model="identifyingcode" maxlength="6">
+              <span class="m-label">手机号</span>
+              <div class="m-flex-between">
+                <input type="text" class="m-edit-input   " placeholder="请输入手机号码" v-model="ustelphone">
                 <span class="m-get-code active" v-if="!getCode" @click="getInforcode">获取验证码</span>
                 <span class="m-get-code" v-if="getCode">{{ count }} 秒后重发</span>
               </div>
             </li>
-            <li v-if="from == 'passwd'">
+            <li v-if="from == 'new' || from == 'phone'">
+
+              <span class="m-label">验证码</span>
               <div>
-                <span>新支付密码</span>
-              </div>
-              <div>
-                <input type="password" class="m-edit-input m-input-border" v-model="uspaycode">
-              </div>
-            </li>
-            <li v-if="from == 'passwd'">
-              <div>
-                <span>确认支付密码</span>
-              </div>
-              <div>
-                <input type="password" class="m-edit-input m-input-border" v-model="uspaycodeAgain">
+                <input type="text" class="m-edit-input  " placeholder="请输入验证码" v-model="identifyingcode" maxlength="6">
               </div>
             </li>
+<!--            <li v-if="from == 'passwd'">-->
+<!--              <div>-->
+<!--                <span>新支付密码</span>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <input type="password" class="m-edit-input m-input-border" v-model="uspaycode">-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            <li v-if="from == 'passwd'">-->
+<!--              <div>-->
+<!--                <span>确认支付密码</span>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <input type="password" class="m-edit-input m-input-border" v-model="uspaycodeAgain">-->
+<!--              </div>-->
+<!--            </li>-->
           </ul>
         </div>
-        <div class="m-editInput-alert" v-if="from == 'passwd'">
-          <p class="m-ft-28">提示：</p>
-          <p class="m-ft-24">支付密码用于装币/星币等支付验证</p>
-          <p class="m-ft-24">让您的资金账户更加安全</p>
-        </div>
-        <div class="m-editInput-alert" v-if="from == 'new'">
+<!--        <div class="m-editInput-alert" v-if="from == 'passwd'">-->
+<!--          <p class="m-ft-28">提示：</p>-->
+<!--          <p class="m-ft-24">支付密码用于装币/星币等支付验证</p>-->
+<!--          <p class="m-ft-24">让您的资金账户更加安全</p>-->
+<!--        </div>-->
+        <div class="m-editInput-alert" >
           <p class="m-ft-28">提示：</p>
           <p class="m-ft-24">微信登录用户请绑定手机号后使用</p>
         </div>
@@ -226,53 +223,49 @@
 <style lang="less" rel="stylesheet/less" scoped>
   @import "../../../common/css/personal";
   .m-editInput{
-    .m-edit-input-s {
-      display: inline-block;
-      width: 220px;
-      height: 42px;
-      line-height: 42px;
-      font-size: 28px;
-    }
+    font-size: 24px;
     .m-edit-input {
       display: inline-block;
       width: 290px;
       height: 42px;
       line-height: 42px;
     }
-    .m-width-220 {
-      width: 220px;
-    }
-    .m-input-border {
-      text-align: left !important;
-      border: 2px #EEEEEE solid !important;
-      border-radius: 10px;
-      padding: 0 30px;
-    }
-    .m-right-62 {
-      margin-right: 62px;
-    }
-    .m-right-190 {
-      margin-right: 190px;
-    }
     .m-editInput-alert{
       padding: 33px 55px;
       color: #999999;
     }
     .m-get-code{
-      margin-right: -20px;
+      /*margin-right: -20px;*/
       width: 110px;
       white-space: nowrap;
       display: inline-block;
       padding: 4px 15px;
-      border-radius: 10px;
-      background-color: #CCCCCC;
+      /*border-radius: 10px;*/
+      background-color: #C1C1C1;
       color: #fff;
-      box-shadow:0 3px 6px rgba(0,0,0,0.16);
-      font-size: 21px;
+      /*box-shadow:0 3px 6px rgba(0,0,0,0.16);*/
+      font-size: 24px;
       line-height: 40px;
       &.active{
-        background-color: @mainColor;
+        background:linear-gradient(270deg,@mainColor  0%,@subColor 100%);
       }
     }
+
+    .m-editInput-alert{
+      color: #C1C1C1;
+      margin: 30px 0;
+    }
+    .m-foot-btn-save{
+      position: fixed;
+      bottom: 68px;
+      left: 0;
+      width: 100%;
+      height: 98px;
+      line-height: 98px;
+      color: #fff;
+      font-size: 30px;
+      background:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
+    }
   }
+
 </style>
