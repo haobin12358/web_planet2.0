@@ -1,37 +1,29 @@
 <template>
     <div class="m-orderDetail">
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 0">
-        <span >买家待付款</span>
-        <span class="duration-time" v-if="order_info.duration">{{order_info.min}}:{{order_info.sec}}</span>
-        <!-- <span class="m-icon-order-status m-pay" ></span> -->
+        <div>
+          <span>买家待付款</span>
+          <span class="duration-time" v-if="order_info.duration">{{order_info.min}}:{{order_info.sec}}</span>
+          <!-- <span class="m-icon-order-status m-pay" ></span> -->
+        </div>
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == -40">
         <span >买家已取消</span>
         <!-- <span class="m-icon-order-status m-pay" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 10">
-        <span >买家已付款</span>
+        <span>卖家待发货</span>
         <!-- <span class="m-icon-order-status m-pay" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 20">
-        <span >卖家已发货</span>
+        <span >买家待收货</span>
         <!-- <span class="m-icon-order-status m-send" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 30 || order_info.omstatus == 25 || order_info.omstatus == 26">
-        <span>买家已签收</span>
+        <span>买家待评价</span>
         <!-- <span class="m-icon-order-status m-send"></span> -->
       </div>
       <div class="m-order-one-part">
-        <div class="m-user-text" v-if="logistic_info && order_info.omlogistictype != 10" @click="changeRoute('/logisticsInformation')">
-          <span class="m-icon-wuliu m-done"></span>
-          <div class="m-flex-between">
-            <div>
-              <p class="m-wuliu-text">{{logistic_info.ollastresult.status}}</p>
-              <p>{{logistic_info.ollastresult.time}}</p>
-            </div>
-            <span class="m-icon-more"></span>
-          </div>
-        </div>
         <div class="m-user-text">
           <span class="m-icon-loc"></span>
           <div>
@@ -42,6 +34,18 @@
             <p class="m-bottom-text">
               收货地址：{{order_info.omrecvaddress}}
             </p>
+          </div>
+        </div>
+      </div>
+      <div class="m-order-one-part">
+        <div class="m-user-text" v-if="logistic_info && order_info.omlogistictype != 10" @click="changeRoute('/logisticsInformation')">
+          <span class="m-icon-wuliu m-done"></span>
+          <div class="m-flex-between">
+            <div>
+              <p class="m-wuliu-text">{{logistic_info.ollastresult.status}}</p>
+              <p class="w-wuliu-time">{{logistic_info.ollastresult.time}}</p>
+            </div>
+            <span class="m-icon-more"></span>
           </div>
         </div>
       </div>
@@ -87,10 +91,10 @@
             <span>运费</span>
             <span>￥{{order_info.omfreight | money}}</span>
           </p> -->
-          <!-- <p class="m-flex-between m-ft-22">
-            <span>实付款（含运费）</span>
+          <p class="m-flex-between m-ft-22">
+            <span>实付款</span>
             <span class="w-price">￥{{item.opsubtotal | money}}</span>
-          </p> -->
+          </p>
           <p class="m-back-btn" v-if="from !== 'afterSales'  && !order_info.ominrefund">
             <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && !item.order_refund_apply">发起退款</span>
             <span @click="changeRoute('/backDetail', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && item.order_refund_apply">查看退款</span>
@@ -144,19 +148,19 @@
       </div>
 
       <div class="m-align-right" v-if="from !== 'activityProduct' && from !== 'afterSales' && !order_info.ominrefund">
-        <span v-if="order_info.omstatus == -40" @click="deleteOrder">删除订单</span>
-        <span v-if="order_info.omstatus == 0 " @click="cancelOrder">取消订单</span>
-        <span v-if="(order_info.omstatus == 10 || order_info.omstatus == 20) && !part_refund" @click="changeRoute('/selectBack', 'order')">退款</span>
-        <span @click="changeRoute('/logisticsInformation')" v-if="order_info.omstatus==20">查看物流</span>
-        <span class="active" v-if="order_info.omstatus == 0" @click="payBtn">立即付款</span>
-        <span class="active" v-if="order_info.omstatus == 20" @click="orderConfirm">确认收货</span>
-        <span class="active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">评价</span>
+        <span class="" v-if="order_info.omstatus == -40" @click="deleteOrder">删除订单</span>
+        <span class="w-footer-2" v-if="order_info.omstatus == 0 " @click="cancelOrder">取消订单</span>
+        <span class="w-footer-1" v-if="(order_info.omstatus == 10) && !part_refund" @click="changeRoute('/selectBack', 'order')">联系卖家</span>
+        <!-- <span class="" @click="changeRoute('/logisticsInformation')" v-if="order_info.omstatus==20">查看物流</span> -->
+        <span class="w-footer-2 active" v-if="order_info.omstatus == 0" @click="payBtn">立即付款</span>
+        <span class="w-footer-1 active" v-if="order_info.omstatus == 20" @click="orderConfirm">确认收货</span>
+        <span class="w-footer-1 active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">立即评价</span>
       </div>
       <!--活动订单评价-->
       <div class="m-align-right" v-if="from == 'activityProduct'">
         <span class="active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">评价</span>
       </div>
-      <bottom></bottom>
+      <!-- <bottom></bottom> -->
     </div>
 </template>
 
