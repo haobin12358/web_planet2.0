@@ -18,20 +18,25 @@
 
         <div class="m-serviceCenter-foot">
           <div class="m-serviceCenter-btn">
+            <span class="m-icon-tell"></span>
+            <div>
+              <p>客服电话</p>
+              <p>15079564151</p>
+            </div>
+          </div>
+          <div class="m-serviceCenter-btn">
             <span class="m-icon-service"></span>
             <div>
               <p>客服QQ</p>
               <p>3441362480</p>
             </div>
-          </div>
-          <div class="m-serviceCenter-btn">
-            <span class="m-icon-tell"></span>
-            <div>
-              <p>客服邮箱</p>
-              <p>kuahu123@163.com</p>
-            </div>
+            <!--            <div>-->
+            <!--              <p>客服邮箱</p>-->
+            <!--              <p>kuahu123@163.com</p>-->
+            <!--            </div>-->
           </div>
         </div>
+
       </div>
     </div>
   </div>

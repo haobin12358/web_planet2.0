@@ -3,15 +3,28 @@
     <!--顶部左上角买家、店主身份切换-->
     <span class="m-icon-home" @click="buyerStore" v-if="buyer_store"></span>
 
-    <mt-tabbar v-model="selected" :fixed="true" v-if="is_weixin">
-      <template v-for="(item,index) in tabbar" >
-        <mt-tab-item :id="item.name" >
-          <img slot="icon" :src="item.active_icon" v-if="item.name == selected">
-          <img slot="icon" :src="item.icon" v-else>
-          {{item.name}}
-        </mt-tab-item>
-      </template>
-    </mt-tabbar>
+<!--    <mt-tabbar v-model="selected" :fixed="true" v-if="is_weixin">-->
+<!--      <template v-for="(item,index) in tabbar" >-->
+<!--        <mt-tab-item :id="item.name" >-->
+<!--          <img slot="icon" :src="item.active_icon" v-if="item.name == selected">-->
+<!--          <img slot="icon" :src="item.icon" v-else>-->
+<!--          {{item.name}}-->
+<!--        </mt-tab-item>-->
+<!--      </template>-->
+<!--    </mt-tabbar>-->
+    <div class="m-footer-box">
+      <ul>
+        <li v-for="(item,index) in tabbar" @click.stop="footerClick(item)">
+          <img :src="item.icon" v-if="index != 2 && item.name != selected" class="m-footer-icon" alt="">
+          <img :src="item.active_icon" v-else-if="index != 2 && item.name == selected" class="m-footer-icon" alt="">
+          <span class="m-footer-icon-bc" v-else>
+            <img :src="item.icon" v-if="index == 2 && item.name != selected" class="m-footer-icon" alt="">
+             <img :src="item.active_icon" v-else-if="index == 2 && item.name == selected" class="m-footer-icon" alt="">
+          </span>
+          <span :class="selected == item.name?'active':''">{{item.name}}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -46,12 +59,13 @@
                 this.selected = this.tabbar[0].name;
                 this.$router.push("storekeeper");
                 // this.$router.push("material/circle");
-              }else if(res.data.data.uslevel == "3") {      // 3 - 申请成为卖家中
+              }else if(res.data.data.uslevel == "3" || res.data.data.uslevel == "4") {      // 3 - 申请成为卖家中
                 this.$router.push("storekeeper/applyOwner");
-              }else if(res.data.data.uslevel == "4") {      // 4 - 已购买大礼包，但是未认证 - 去认证
-                Toast('请完成店主身份认证');
-                this.$router.push("storekeeper/IDCardApprove");
               }
+              // else if(res.data.data.uslevel == "4") {      // 4 - 已购买大礼包，但是未认证 - 去认证
+              //   Toast('请完成店主身份认证');
+              //   this.$router.push("storekeeper/IDCardApprove");
+              // }
             }
           });
         }else if(this.selected == this.$store.state.tabbar_store[0].name) {     // 目前在卖家版首页
@@ -59,6 +73,9 @@
           this.selected = this.tabbar[0].name;
           this.$router.push("/selected");
         }
+      },
+      footerClick(item){
+        this.selected = item.name;
       }
     },
     mounted() {
@@ -95,7 +112,7 @@
     },
     watch: {
       selected: function (val, oldVal) {
-        if(val == "精选" || val == "店主") {
+        if(val == "首页" || val == "店主") {
         // if(val == "精选" || val == "素材") {
           this.buyer_store = true;
         }else {
@@ -117,23 +134,20 @@
           case '店主':
             this.$router.push('/storekeeper');
             break;
-          case '精选':
+          case '首页':
             this.$router.push('/selected');
             break;
-          case '圈子':
+          case '发现':
             this.$router.push('/circle');
             break;
-          case '装备':
-            this.$router.push('/equipment');
-            break;
-          case '活动':
+          case '发布':
             this.$router.push('/activity');
             break;
-          case '购物车':
-            this.$router.push('/shop');
+          case '商城':
+            this.$router.push('/newProduct');
             break;
           case '我的':
-            this.$router.push('/personal');
+            this.$router.push('/newPersonal');
             break;
         }
       },
@@ -150,7 +164,7 @@
           }
           switch (val.path) {
             case '/selected':
-              this.selected = '精选';
+              this.selected = '首页';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;
             case '/circle':
@@ -158,22 +172,22 @@
                 this.$router.go(0);
                 localStorage.removeItem('fresh');
               }
-              this.selected = '圈子';
+              this.selected = '发现';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;
             case '/activity':
-              this.selected = '活动';
+              this.selected = '发布';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;
-            case '/shop':
-              if(sessionStorage.getItem('shop')){
-                this.$router.go(0)
-                sessionStorage.removeItem('shop')
-              }
-              this.selected = '购物车';
+            case '/newProduct':
+              // if(sessionStorage.getItem('shop')){
+              //   this.$router.go(0)
+              //   sessionStorage.removeItem('shop')
+              // }
+              this.selected = '商城';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;
-            case '/personal':
+            case '/newPersonal':
               this.selected = '我的';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;
@@ -192,8 +206,9 @@
       },
       tabbars:function () {
         this.tabbar =this.$store.state.tabbar;
-      }
-    }
+      },
+
+    },
   }
 </script>
 <style lang="less" rel="stylesheet/less" scoped>
@@ -209,5 +224,52 @@
     position: absolute;
     top: 22px;
     left: 33px;
+  }
+  .m-footer-box{
+    position: fixed;
+    left:0;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #FAFAFA;
+    z-index: 100001;
+    ul{
+      position: fixed;
+      left:0;
+      bottom:0;
+      width: 100%;
+      display: flex;
+      flex-flow: row;
+      align-items: flex-end;
+      justify-content: space-around;
+      color: #C1C1C1;
+      li{
+        font-size: 20px;
+        .m-footer-icon{
+          display: block;
+          width: 60px;
+          height: 60px;
+        }
+        .m-footer-icon-bc{
+          width: 90px;
+          height: 90px;
+          background-color: #fff;
+          border-radius: 50%;
+          box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+          display: flex;
+          flex-flow: row;
+          align-items: center;
+          justify-content: center;
+          .m-footer-icon{
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+          }
+        }
+        .active{
+          color: @mainColor;
+        }
+      }
+    }
   }
 </style>

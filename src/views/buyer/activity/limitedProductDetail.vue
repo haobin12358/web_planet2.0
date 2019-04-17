@@ -33,7 +33,7 @@
       </div>
     </div>
     <!--选择sku-->
-    <sku v-if="show_sku" :now_select="select_value" :now_num="canums" :product="product" @changeModal="changeModal" @sureClick="sureClick" :activity="true"></sku>
+    <sku v-if="show_sku" :now_select="select_value" :isAct="true" :now_num="canums" :product="product" @changeModal="changeModal" @sureClick="sureClick" :activity="true"></sku>
 
     <div class="m-text-row m-sku-row" @click="changeModal('show_sku', true)">
       <div class="m-text-courier">规格</div>
@@ -56,7 +56,8 @@
       <span class="m-icon-car" @click.stop="changeRoute('/shop')"></span>
       <span class="m-icon-service" @click.stop="changeRoute('/personal/serviceCenter')"></span>
       <div class="m-product-detail-btn">
-        <span class="active" @click="addCart">加入购物车</span>
+        <span class="active" @click="addCart" v-if="can_buy == true">加入购物车</span>
+        <span class="cancel" v-else>加入购物车</span>
         <span @click="buy" v-if="can_buy == true">立即购买</span>
         <span class="cancel" v-else>立即购买</span>
 
@@ -193,6 +194,10 @@
             }
           }else {
             Toast('请登录后再试');
+            localStorage.setItem('login_to',window.location.href.split('#')[0] + '?tlpid=' + this.$route.query.tlpid);
+            // this.$router.push('/login');
+            // this.$router.push('/login');
+            this.$store.state.show_login = true;
           }
         }else {
           Toast('请在微信公众号分享');
@@ -272,19 +277,26 @@
       },
       // 加入购物请求
       postCart(){
-        axios.post(api.cart_create + '?token=' + localStorage.getItem('token'),{
-          skuid:this.select_value.skuid,
-          canums:this.canums,
-          cafrom:4,
-          contentid:this.$route.query.tlpid
-        }).
-        then(res => {
-          if(res.data.status == 200){
-            Toast({ message: res.data.message,duration:1000, className: 'm-toast-success' });
-          }
-        },error => {
-          Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
-        })
+        if(localStorage.getItem('token')) {
+          axios.post(api.cart_create + '?token=' + localStorage.getItem('token'), {
+            skuid: this.select_value.skuid,
+            canums: this.canums,
+            cafrom: 4,
+            contentid: this.$route.query.tlpid
+          }).then(res => {
+            if (res.data.status == 200) {
+              Toast({message: res.data.message, duration: 1000, className: 'm-toast-success'});
+            }
+          }, error => {
+            Toast({message: error.data.message, duration: 1000, className: 'm-toast-fail'});
+          })
+        }else{
+          let url
+          url = window.location.href.split('#')[0] + '?tlpid=' + this.$route.query.tlpid
+          localStorage.setItem('login_to',url)
+          // this.$router.push('/login');
+          this.$store.state.show_login = true;
+        }
       },
       // 立即下单
       buy() {

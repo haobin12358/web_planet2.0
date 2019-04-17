@@ -184,16 +184,19 @@ router.beforeEach((to,from,next) => {
   if(localStorage.getItem('version') && localStorage.getItem('version') != store.state.version){
     MessageBox.confirm('检测到系统更新，为了更好的体验，请点击确定清除缓存').then(() => {
       localStorage.clear();
-
+      localStorage.setItem('wx_url',window.location.href);
       // this.$store.state.show_login = true;
       // this.$router.go(0);
+      next('/');
     }).catch(() => {
-
+      next();
     });
+
   }else{
-    localStorage.setItem('version',store.state.version)
+    localStorage.setItem('version',store.state.version);
+    next();
   }
-  next();
+
 })
 
 /* eslint-disable no-new */

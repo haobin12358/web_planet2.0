@@ -258,8 +258,8 @@
       }
     }
     .m-nav {
-      width: 500px;
-      margin: -10px 125px 50px 125px;
+      /*width: 500px;*/
+      margin: 0 0 50px 0;
     }
     .m-person {
       .m-person-info {

@@ -68,7 +68,8 @@
               <div class="m-product-info-text">
                 <p class="m-flex-between">
                 <span class="m-product-name">{{item.prtitle}}</span>
-                  <span>￥{{item.skuprice}}</span>
+                  <span v-if="item.tlsprice">￥{{item.tlsprice}}</span>
+                  <span v-else>￥{{item.skuprice}}</span>
                 </p>
                 <p class="m-flex-between m-sku-text m-ft-22">
                   <span class="m-product-label">

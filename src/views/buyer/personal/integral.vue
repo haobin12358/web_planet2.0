@@ -104,8 +104,9 @@
     }
   }
   .m-integral-content{
-    padding: 30px 80px 0;
+    /*padding: 30px 80px 0;*/
     .m-integral-detail-ul{
+      padding: 30px 80px 0;
       li{
         padding: 25px 0;
         text-align: left;

@@ -49,6 +49,9 @@
                   <li>
                     <span class="m-icon-transmit" @click.stop="shareCircle(items)"></span>
                   </li>
+<!--                  <li class="m-border">-->
+<!--                    <span class="m-icon-collect" @click.stop="collectCircle(items)"></span>-->
+<!--                  </li>-->
                 </ul>
                 <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
                 <div class="m-refuse-reason" v-if="select_nav.itid == 'mynews' && items.nestatus == 'refuse'">
@@ -115,7 +118,7 @@
     inject: ['reload'],
     components: { navList, bottomLine },
     mounted() {
-      common.changeTitle('圈子');
+      common.changeTitle('发现');
       if(!localStorage.getItem('circleIndex')) {
         localStorage.setItem('circleIndex', 0);
       }
@@ -399,6 +402,10 @@
           }
         }
         this.$refs.loadmore.onTopLoaded();
+      },
+      //收藏
+      collectCircle(item){
+
       }
     }
   }
@@ -554,6 +561,9 @@
             .m-border{
               border-left: 1px solid #999999;
               border-right: 1px solid #999999;
+              &:last-child{
+                border-right: none;
+              }
             }
             .m-icon-like{
               display: inline-block;
@@ -581,6 +591,17 @@
               height: 20px;
               background: url("/static/images/icon-transmit.png") no-repeat;
               background-size: 100% 100%;
+            }
+            .m-icon-collect{
+              display: inline-block;
+              width: 23px;
+              height: 20px;
+              background: url("/static/images/icon-circle-collect-active.png") no-repeat;
+              background-size: 100% 100%;
+              &.active{
+                background: url("/static/images/icon-circle-collect-active.png") no-repeat;
+                background-size: 100% 100%;
+              }
             }
           }
           .m-invite-course {

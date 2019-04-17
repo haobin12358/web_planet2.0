@@ -48,7 +48,9 @@
           <span>删 除</span>
         </span>
       </div>
+<!--      <span class="m-circle-collect float-right"> </span>-->
       <span class="m-circle-comment float-right" @click="changeModal('show_modal',true)">评论 {{news_info.commentnumber}}</span>
+
     </div>
     <div class="m-box">
       <div class="m-item" v-if="news_info.coupon">
@@ -862,6 +864,19 @@
     background: url("/static/images/icon-circle-comment.png") no-repeat;
     background-size: 100% 100%;
     color: #fff;
+  }
+  .m-circle-collect{
+    display: block;
+    width: 45px;
+    height: 45px;
+    margin-left: 20px;
+    line-height: 45px;
+    background: url("/static/images/icon-circle-collect-active.png") no-repeat;
+    background-size: 100% 100%;
+    &.active{
+      background: url("/static/images/icon-circle-collect-active.png") no-repeat;
+      background-size: 100% 100%;
+    }
   }
   .m-icon-btn{
     display: inline-block;

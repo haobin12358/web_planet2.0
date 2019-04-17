@@ -10,7 +10,7 @@ let store= new Vuex.Store({
     now: null,
     token: '',
     show_login:false,
-    version:'1.2.1',
+    version:'1.2.6',
     tabbar_store: [
       /*{
         name:'素材',
@@ -31,19 +31,19 @@ let store= new Vuex.Store({
 
 
       tabbar_buyer:[{
-        name:'精选',
-        icon:'/static/images/footer/icon-material.png',
-        active_icon:'/static/images/footer/icon-material-active.png',
+        name:'首页',
+        icon:'/static/images/newFooter/icon-index.png',
+        active_icon:'/static/images/newFooter/icon-index-active.png',
         url:'selected'
       },{
-        name:'圈子',
-        icon:'/static/images/footer/icon-circle.png',
-        active_icon:'/static/images/footer/icon-circle-active.png',
+        name:'发现',
+        icon:'/static/images/newFooter/icon-circle.png',
+        active_icon:'/static/images/newFooter/icon-circle-active.png',
         url:'circle'
       },{
-        name:'活动',
-        icon:'/static/images/footer/icon-activity.png',
-        active_icon:'/static/images/footer/icon-activity-active.png',
+        name:'发布',
+        icon:'/static/images/newFooter/icon-edit.png',
+        active_icon:'/static/images/newFooter/icon-edit-active.png',
         url:'activity'
       },/*{
         name:'装备',
@@ -51,19 +51,19 @@ let store= new Vuex.Store({
         active_icon:'/static/images/footer/icon-equipment-active.png',
         url:'equipment'
       },*/{
-        name:'购物车',
-        icon:'/static/images/footer/icon-member.png',
-        active_icon:'/static/images/footer/icon-member-active.png',
-        url:'shop'
+        name:'商城',
+        icon:'/static/images/newFooter/icon-shop.png',
+        active_icon:'/static/images/newFooter/icon-shop-active.png',
+        url:'newProduct'
       },{
         name:'我的',
-        icon:'/static/images/footer/icon-storekeeper.png',
-        active_icon:'/static/images/footer/icon-storekeeper-active.png',
-        url:'personal'
+        icon:'/static/images/newFooter/icon-personal.png',
+        active_icon:'/static/images/newFooter/icon-personal-active.png',
+        url:'newPersonal'
       }
     ],
     // tabbar_select:'素材'
-    tabbar_select:'精选'
+    tabbar_select:'首页'
   },
   mutations: {
     add(state,route) {

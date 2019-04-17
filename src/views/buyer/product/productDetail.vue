@@ -10,15 +10,18 @@
         <span class="m-icon-gray-share" @click="shareProduct"></span>
       </div>
       <div class="m-product-detail-info">
-        <h3 v-if="user.uslevel == 2">
-          <span class="m-profict-title">预计赚：</span>
-          <span class="m-red">￥{{product_info.profict}}</span>
-        </h3>
-        <h3>
-          <span class="m-product-title">{{product_info.prtitle}}</span>
+        <div class="m-flex-between">
           <span class="m-red" v-if="product_info.price_range">￥{{product_info.price_range}}</span>
           <span class="m-red" v-else>￥{{product_info.prprice | money}}</span>
-        </h3>
+          <h3 v-if="user.uslevel == 2">
+            <span class="m-profict-title">预计赚：</span>
+            <span class="m-red">￥{{product_info.profict}}</span>
+          </h3>
+        </div>
+        <div class="m-flex-between m-product-title-box">
+          <span class="m-product-title">{{product_info.prtitle}}</span>
+<!--          <img src="/static/images/icon-product-collect.png" class="m-icon-collect" alt="">-->
+        </div>
         <div class="m-info-list">
           <span>快递：{{product_info.prfreight | money}} 元</span>
           <span>月销：{{product_info.month_sale_value}}</span>
@@ -397,6 +400,29 @@
   .m-product-detail-info{
     padding: 30px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    .m-red{
+      color: #EF9B2D;
+      font-size: 32px;
+    }
+    .m-product-title-box{
+      padding: 20px 0;
+      .m-product-title{
+        font-size: 28px;
+        color: #000000;
+        margin-right: 20px;
+        text-align: left;
+        overflow: hidden; // 超出的文本隐藏
+        text-overflow: ellipsis;    // 溢出用省略号显示
+        display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+        -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+        -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
+      }
+      .m-icon-collect{
+        display: inline-block;
+        width: 75px;
+        height: 40px;
+      }
+    }
     h3{
       display: flex;
       flex-flow: row;
@@ -404,18 +430,8 @@
       font-size: 30px;
       font-weight: bold;
       color: #666666;
-      margin-bottom: 40px;
-      .m-product-title{
-        color: #000000;
-        margin-right: 20px;
-        text-align: left;
-        /*!*text-indent: 2em;*!
-        overflow: hidden; // 超出的文本隐藏
-        text-overflow: ellipsis;    // 溢出用省略号显示
-        display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
-        -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
-        -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。*/
-      }
+      /*margin-bottom: 40px;*/
+
       .money-text {
         width: 240px;
         overflow: hidden; // 超出的文本隐藏
@@ -424,9 +440,6 @@
       .m-profict-title {
         white-space: nowrap;
         margin-left: auto;
-      }
-      .m-red{
-        color: #EF9B2D;
       }
     }
     .m-info-list{

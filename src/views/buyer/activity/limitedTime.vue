@@ -8,7 +8,7 @@
       <p>限时特惠</p>
       <p class="m-time">活动时间：{{brand_info.tlastarttime}} - {{brand_info.tlaendtime}}</p>
     </div>
-    <!--    <nav-list class="m-width" :navlist="nav_list" @navClick="navClick"></nav-list>-->
+<!--    <nav-list class="m-width" :navlist="nav_list" @navClick="navClick"></nav-list>-->
     <div class="m-scroll">
       <ul class="m-nav-list m-width" >
         <template v-for="(item,index) in nav_list">
@@ -20,7 +20,7 @@
 
 
     <p class="m-no-data" v-if="product_list && product_list.length == 0">暂无数据</p>
-    <product :list="product_list" :limited="true" v-else></product>
+    <product :list="product_list" :isAct="true" :limited="true" v-else></product>
 
     <bottom-line v-if="bottom_show"></bottom-line>
   </div>
@@ -133,10 +133,8 @@
               wx.onMenuShareTimeline(options);
             }
           }else {
-            Toast('请登录后再试');
+            // Toast('请登录后再试');
           }
-        }else {
-          Toast('请在微信公众号分享');
         }
       },
       //滚动加载更多
@@ -174,11 +172,12 @@
         }
         arr[index].active = true;
 
-        this.getProduct(arr[index].tlaid);
+          this.getProduct(arr[index].tlaid);
 
 
-        this.brand_info = arr[index];
+          this.brand_info = arr[index];
         this.nav_list = [].concat(arr);
+        this.shareList(1);
 
       },
       /*获取商品*/
