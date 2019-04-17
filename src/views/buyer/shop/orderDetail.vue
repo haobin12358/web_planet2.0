@@ -1,37 +1,29 @@
 <template>
     <div class="m-orderDetail">
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 0">
-        <span >买家待付款</span>
-        <span class="duration-time" v-if="order_info.duration">{{order_info.min}}:{{order_info.sec}}</span>
-        <span class="m-icon-order-status m-pay" ></span>
+        <div>
+          <span>买家待付款</span>
+          <span class="duration-time" v-if="order_info.duration">{{order_info.min}}:{{order_info.sec}}</span>
+          <!-- <span class="m-icon-order-status m-pay" ></span> -->
+        </div>
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == -40">
         <span >买家已取消</span>
-        <span class="m-icon-order-status m-pay" ></span>
+        <!-- <span class="m-icon-order-status m-pay" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 10">
-        <span >买家已付款</span>
-        <span class="m-icon-order-status m-pay" ></span>
+        <span>卖家待发货</span>
+        <!-- <span class="m-icon-order-status m-pay" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 20">
-        <span >卖家已发货</span>
-        <span class="m-icon-order-status m-send" ></span>
+        <span >买家待收货</span>
+        <!-- <span class="m-icon-order-status m-send" ></span> -->
       </div>
       <div class="m-orderDetail-status" v-if="order_info.omstatus == 30 || order_info.omstatus == 25 || order_info.omstatus == 26">
-        <span>买家已签收</span>
-        <span class="m-icon-order-status m-send"></span>
+        <span>买家待评价</span>
+        <!-- <span class="m-icon-order-status m-send"></span> -->
       </div>
       <div class="m-order-one-part">
-        <div class="m-user-text" v-if="logistic_info && order_info.omlogistictype != 10" @click="changeRoute('/logisticsInformation')">
-          <span class="m-icon-wuliu m-done"></span>
-          <div class="m-flex-between">
-            <div>
-              <p class="m-wuliu-text">{{logistic_info.ollastresult.status}}</p>
-              <p>{{logistic_info.ollastresult.time}}</p>
-            </div>
-            <span class="m-icon-more"></span>
-          </div>
-        </div>
         <div class="m-user-text">
           <span class="m-icon-loc"></span>
           <div>
@@ -45,7 +37,19 @@
           </div>
         </div>
       </div>
-      <div class="m-order-one-part m-box-shadow">
+      <div class="m-order-one-part" v-if="logistic_info && order_info.omlogistictype != 10">
+        <div class="m-user-text" @click="changeRoute('/logisticsInformation')">
+          <span class="m-icon-wuliu m-done"></span>
+          <div class="m-flex-between">
+            <div>
+              <p class="m-wuliu-text">{{logistic_info.ollastresult.status}}</p>
+              <p class="w-wuliu-time">{{logistic_info.ollastresult.time}}</p>
+            </div>
+            <span class="m-icon-more"></span>
+          </div>
+        </div>
+      </div>
+      <div class="m-order-one-part">
         <div class="m-order-store-tile">
           <div @click.stop="changeRoute('/brandDetail')">
             <span class="m-icon-store"></span>
@@ -83,32 +87,37 @@
               </div>
             </div>
           </div>
-          <p class="m-flex-between m-ft-22">
+          <!-- <p class="m-flex-between m-ft-22">
             <span>运费</span>
             <span>￥{{order_info.omfreight | money}}</span>
+          </p> -->
+          <p class="m-flex-between m-ft-22">
+            <span>实付款</span>
+            <span class="w-price">￥{{item.opsubtotal | money}}</span>
           </p>
-          <!--<p class="m-flex-between m-ft-22">
-            <span>实付款（含运费）</span>
-            <span class="m-price">￥{{item.opsubtotal | money}}</span>
-          </p>-->
           <p class="m-back-btn" v-if="from !== 'afterSales'  && !order_info.ominrefund">
-            <span @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && !item.order_refund_apply">退款</span>
+            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && !item.order_refund_apply">发起退款</span>
             <span @click="changeRoute('/backDetail', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && item.order_refund_apply">查看退款</span>
             <span @click="changeRoute('/storekeeper/IDCardApprove')" v-if="order_info.omlogistictype == 10 && order_info.omstatus == 30 && from !== 'activityProduct'">身份认证</span>
           </p>
         </div>
-        <div class="m-total-money">优惠后合计：<span class="m-price">￥{{order_info.omtruemount | money}}</span></div>
+        <div class="m-total-money">
+          共{{totalProductNum}}件商品 合计：<span class="w-price">￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）
+          <p class="m-back-btn">
+            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26)">全部退款</span>
+          </p>
+        </div>
       </div>
-      <div class="m-order-one-part m-box-shadow">
+      <div class="m-order-one-part">
         <p>
-          <span class="m-border"></span>
+          <!-- <span class="m-border"></span> -->
           <span>订单信息</span>
         </p>
         <div class="m-ft-22 m-time-text">
-          <p>订单编号：{{order_info.omno}}</p>
-          <p>创建时间：{{order_info.createtime}}</p>
-          <p v-if="order_info.pay_time">付款时间：{{order_info.pay_time}}</p>
-          <p v-if="order_info.send_time">发货时间：{{order_info.send_time}}</p>
+          <p><span class="w-ft-text">订单编号：</span> {{order_info.omno}}</p>
+          <p><span class="w-ft-text">创建时间：</span> {{order_info.createtime}}</p>
+          <p v-if="order_info.pay_time"><span class="w-ft-text">付款时间：</span> {{order_info.pay_time}}</p>
+          <p v-if="order_info.send_time"><span class="w-ft-text">发货时间：</span> {{order_info.send_time}}</p>
         </div>
       </div>
       <div class="m-order-one-part m-box-shadow" v-if="refund">
@@ -139,19 +148,19 @@
       </div>
 
       <div class="m-align-right" v-if="from !== 'activityProduct' && from !== 'afterSales' && !order_info.ominrefund">
-        <span v-if="order_info.omstatus == -40" @click="deleteOrder">删除订单</span>
-        <span v-if="order_info.omstatus == 0 " @click="cancelOrder">取消订单</span>
-        <span v-if="(order_info.omstatus == 10 || order_info.omstatus == 20) && !part_refund" @click="changeRoute('/selectBack', 'order')">退款</span>
-        <span @click="changeRoute('/logisticsInformation')" v-if="order_info.omstatus==20">查看物流</span>
-        <span class="active" v-if="order_info.omstatus == 0" @click="payBtn">立即付款</span>
-        <span class="active" v-if="order_info.omstatus == 20" @click="orderConfirm">确认收货</span>
-        <span class="active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">评价</span>
+        <span class="w-footer-1" v-if="order_info.omstatus == -40" @click="deleteOrder">删除订单</span>
+        <span class="w-footer-2" v-if="order_info.omstatus == 0" @click="cancelOrder">取消订单</span>
+        <span class="w-footer-1" v-if="(order_info.omstatus == 10) && !part_refund" @click="changeRoute('/selectBack', 'order')">联系卖家</span>
+        <!-- <span class="" @click="changeRoute('/logisticsInformation')" v-if="order_info.omstatus==20">查看物流</span> -->
+        <span class="w-footer-2 active" v-if="order_info.omstatus == 0" @click="payBtn">立即付款</span>
+        <span class="w-footer-1 active" v-if="order_info.omstatus == 20" @click="orderConfirm">确认收货</span>
+        <span class="w-footer-1 active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">立即评价</span>
       </div>
       <!--活动订单评价-->
       <div class="m-align-right" v-if="from == 'activityProduct'">
         <span class="active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">评价</span>
       </div>
-      <bottom></bottom>
+      <!-- <bottom></bottom> -->
     </div>
 </template>
 
@@ -180,6 +189,20 @@
       common.changeTitle('订单详情');
       this.getOrderInfo();
       this.from = this.$route.query.from;
+    },
+    computed:{
+      totalProductNum: function(){
+        let num_product = 0;
+        this.order_info.order_part.forEach(item => {
+          // console.log(item.prtitle);
+          num_product=num_product+item.opnum;
+        });
+        // for(let item of this.order_info.order_part){
+        //   console.log(item.prtitle);
+        //   num_product=num_product+item.opnum;
+        // }
+        return num_product;
+      }
     },
     methods: {
       changeRoute(v, item) {
@@ -417,221 +440,6 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
-  @import "../../../common/css/index";
+  @import "../../../common/css/orderDetail";
 
-  .m-orderDetail{
-    min-height: 100vh;
-    background-color: #eee;
-    padding-bottom: 120px;
-    .m-orderDetail-status{
-      .flex-row(flex-end);
-      width: 100%;
-      height: 220px;
-      background-color: @mainColor;
-      span {
-        color: #ffffff;
-      }
-      .duration-time {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 0 -80px 0 10px;
-      }
-      .m-icon-order-status{
-        display: block;
-        width: 288px;
-        height: 147px;
-        background: url("/static/images/icon-order-status-wait.png") no-repeat;
-        background-size: 100% 100%;
-        margin-left: 136px;
-        margin-right: 65px;
-        &.m-send{
-          background: url("/static/images/icon-order-status-send.png") no-repeat;
-          background-size: 100% 100%;
-        }
-        &.m-pay{
-          background: url("/static/images/icon-order-status-pay.png") no-repeat;
-          background-size: 100% 100%;
-        }
-        &.m-done{
-          background: url("/static/images/icon-order-status-done.png") no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-    }
-    .m-order-one-part{
-      padding: 24px 24px 30px 50px;
-      background-color: #fff;
-      color: #666;
-      margin-bottom: 20px;
-      text-align: left;
-      &.m-box-shadow{
-        box-shadow: 0 5px 5px rgba(0,0,0,0.16);
-      }
-      .m-icon-loc{
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: url("/static/images/icon-order-loc.png") no-repeat;
-        background-size: 100% 100%;
-        margin-right: 30px;
-      }
-      .m-icon-wuliu{
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: url("/static/images/icon-order-wuliu.png") no-repeat;
-        background-size: 100% 100%;
-        margin-right: 30px;
-        &.m-done{
-          background: url("/static/images/icon-wuliu-done.png") no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-      .m-wuliu-text{
-        width: 540px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .m-icon-more{
-        display: inline-block;
-        width: 22px;
-        height: 22px;
-        background: url("/static/images/icon-more.png") no-repeat;
-        background-size: 100% 100%;
-      }
-      .m-user-text{
-        text-align: left;
-        padding: 25px 0;
-        border-bottom: 1px solid @borderColor;
-        &:last-child{
-          border-bottom: none;
-        }
-        .flex-row(flex-start);
-        .m-user-tel{
-          display: inline-block;
-          color: #999;
-          margin-left: 56px;
-        }
-        .m-bottom-text{
-          width: 580px;
-          margin-top: 20px;
-        }
-      }
-      .m-order-store-tile{
-        .flex-row(space-between);
-        .m-icon-store{
-          display: inline-block;
-          width: 31px;
-          height: 29px;
-          background: url("/static/images/icon-store.png") no-repeat;
-          background-size: 100% 100%;
-          vertical-align: text-bottom;
-        }
-        .m-store-name{
-          display: inline-block;
-          margin: 0 25px;
-        }
-      }
-      .m-product-box {
-        padding-bottom: 30px;
-        border-bottom: 1px #EEEEEE solid;
-        &:last-child {
-          border-bottom: none;
-        }
-        .m-order-product-ul {
-          margin: 50px 0 20px 0;
-          .m-product-info{
-            display: flex;
-            flex-flow: row;
-            justify-content: flex-start;
-            margin: 15px 0;
-            .m-product-img{
-              display: block;
-              width: 100px;
-              height: 100px;
-              background-color: #9fd0bf;
-              margin-right: 30px;
-            }
-            .m-product-info-text {
-              width: 540px;
-              .m-sku-text{
-                margin-top: 40px;
-              }
-              .m-product-name{
-                display: block;
-                width: 460px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                text-align: left;
-              }
-            }
-          }
-        }
-      }
-      .m-total-money {
-        text-align: right;
-        margin-top: 20px;
-      }
-      .m-back-btn{
-        text-align: right;
-        margin-top: 30px;
-        span{
-          display: inline-block;
-          width: 129px;
-          height: 41px;
-          border-radius: 30px;
-          border: 1px solid #999;
-          color: #999;
-          text-align: center;
-          line-height: 41px;
-          font-weight: 400;
-        }
-      }
-      .m-border{
-        display: inline-block;
-        width: 5px;
-        height: 50px;
-        background:linear-gradient(180deg, @subColor 0%, @mainColor 100%);
-        vertical-align: middle;
-        margin-right: 10px;
-      }
-      .m-time-text{
-        padding-left: 20px;
-        p{
-          line-height: 34px;
-        }
-      }
-    }
-
-    .m-align-right{
-      text-align: right;
-      background-color: #fff;
-      width: 100%;
-      padding: 30px 0;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      span{
-        display: inline-block;
-        width: 129px;
-        height: 41px;
-        line-height: 43px;
-        border-radius: 30px;
-        border: 1px solid #999;
-        color: #999;
-        text-align: center;
-        margin-left: 40px;
-        &.active{
-          background-color: @mainColor;
-          color: #ffffff;
-          border: 1px solid @mainColor;
-        }
-        &:last-child{
-          margin-right: 25px;
-        }
-      }
-    }
-  }
 </style>

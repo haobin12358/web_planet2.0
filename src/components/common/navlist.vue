@@ -13,7 +13,7 @@
             <span class="m-icon-asc" v-if="item.desc_asc"></span>
             <span class="m-icon-desc" v-if="!item.desc_asc"></span>
           </span>
-          <span v-if="item.count == 0 || item.count">({{item.count}})</span>
+          <span v-if="item.count" class="w-icon-green"></span>
         </li>
       </template>
     </ul>

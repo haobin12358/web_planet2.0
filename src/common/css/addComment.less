@@ -1,0 +1,157 @@
+@import "./index";
+
+.m-addComment{
+    width: 100%;
+    overflow-x: hidden;
+    min-height: 1334px;
+    background-color: #eee;
+    .m-orderDetail-status{
+        .flex-row(flex-end);
+        width: 100%;
+        height: 90px;
+        background: linear-gradient(304deg,@mainColor,@subColor);
+        justify-content: center;
+        span {
+          color: #ffffff;
+        }
+        .duration-time {
+          font-size: 24px;
+          font-weight: bold;
+          // margin: 0 -80px 0 10px;
+        }
+    }
+    .m-addComment-top{
+     .flex-row(space-between);
+      padding: 15px 36px;
+      background-color: #fff;
+      .m-product-img{
+        display: inline-block;
+        width: 84px;
+        height: 84px;
+        background-color: #9fd0bf;
+        vertical-align: middle;
+      }
+      .m-label{
+        display: inline-block;
+        padding: 0 53px 0 36px;
+        vertical-align: middle;
+      }
+      .m-start{
+        width: 35px;
+        height: 35px;
+        vertical-align: middle;
+      }
+    }
+    .m-addComment-content{
+      padding: 25px 0;
+      .m-addComment-content-edit{
+        width: 670px;
+        padding: 20px 41px;
+        background-color: #fff;
+        box-shadow:0 5px 6px rgba(0,0,0,0.16);
+        text-align: left;
+        color: #999;
+        textarea{
+          width: 610px;
+          display: block;
+          min-height: 100px;
+          padding: 20px;
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+        .m-addComment-img-box{
+          .flex-row(flex-start);
+          flex-wrap: wrap;
+          .m-addComment-upload{
+            display: inline-block;
+            width:220px;
+            height:220px;
+            text-align: center;
+            color: #ccc;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            background: url("/static/images/icon-upload-img.png") no-repeat;
+            background-size: 100% 100%;
+          }
+          .m-upload-box{
+            display: flex;
+            flex-flow: row;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 20px;
+            .m-selectBack-img-box{
+              margin-bottom: 30px;
+              width: 100%;
+              display: flex;
+              flex-wrap: wrap;
+              .img-box {
+                position: relative;
+                .circle-img {
+                  display: inline-block;
+                  width: 186px;
+                  height: 186px;
+                  margin-bottom: 20px;
+                  margin-right: 15px;
+                }
+                .del-img {
+                  width: 40px;
+                  height: 40px;
+                  position: absolute;
+                  top: -17px;
+                  right: -15px;
+                }
+              }
+              .m-selectBack-camera{
+                width: 186px;
+                height: 186px;
+                background: url('/static/images/icon-upload-img.png') no-repeat;
+                background-size: 100% 100%;
+                display: inline-block;
+                margin: 0 15px 15px 0;
+                position: relative;
+              }
+              .m-selectBack-video{
+                width: 186px;
+                height: 186px;
+                background: url('/static/images/icon-upload-video.png') no-repeat;
+                background-size: 100% 100%;
+                display: inline-block;
+                margin: 0 15px 15px 0;
+                position: relative;
+              }
+              .m-upload-input{
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+                width: 186px;
+                height: 186px;
+              }
+              img{
+                display: inline-block;
+                width: 186px;
+                height: 186px;
+                margin-bottom: 20px;
+                margin-right: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .m-foot-btn{
+      span{
+        color: #ffffff;
+        display: inline-block;
+        width: 700px;
+        height: 106px;
+        line-height: 106px;
+        background-color: @mainColor;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 38px;
+        box-shadow: 0 5px 6px rgba(0,0,0,0.16);
+        margin: 93px 0 140px;
+      }
+    }
+  }

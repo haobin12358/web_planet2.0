@@ -71,6 +71,13 @@ body{
   justify-content: @x;
 }
 
+.flex-row(@x,@y){
+  display: flex;
+  flex-direction: row;
+  align-items: @y;
+  justify-content: @x;
+}
+
 .float-left{
   float: left;
 }
@@ -314,6 +321,7 @@ body{
   box-shadow:0 3px 6px rgba(0,0,0,0.16);
   //background-color: #fff;
   li{
+    .flex-row(flex-strat,flex-start);
     //display: inline-block;
     list-style: none;
     //margin-right: 124px;
@@ -344,6 +352,12 @@ body{
         background-size: 100% 100%;
         margin-top: -5px;
       }
+    }
+    .w-icon-green{
+      width:10px;
+      height:10px;
+      background:rgba(39,174,96,1);
+      border-radius:50%;
     }
   }
 }

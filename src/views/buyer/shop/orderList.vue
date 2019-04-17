@@ -1,7 +1,7 @@
 <template>
   <!--<div class="m-orderList">-->
   <div class="m-orderList" @touchmove="touchMove">
-    <span class="m-icon-back" @click="changeBack"></span>
+    <!-- <span class="m-icon-back" @click="changeBack"></span> -->
     <div class="m-nav">
       <nav-list :navlist="nav_list" @navClick="navClick"></nav-list>
     </div>
@@ -13,53 +13,57 @@
       </div>
       <div class="m-orderList-content" v-else>
         <template v-for="(items,index) in order_list">
-          <div class="m-one-part"  @click.stop="changeRoute('/orderDetail',items)">
-            <div class="m-order-store-tile" >
-              <div @click.stop="changeRoute('/brandDetail',items)">
-                <span class="m-icon-store"></span>
-                <span class="m-store-name">{{items.pbname}}</span>
-                <span class="m-icon-more"></span>
+          <div class="w-one">
+            <div class="m-one-part" @click.stop="changeRoute('/orderDetail',items)">
+              <div class="m-order-store-tile">
+                <div @click.stop="changeRoute('/brandDetail',items)">
+                  <span class="m-icon-store"></span>
+                  <span class="m-store-name">{{items.pbname}}</span>
+                  <span class="m-icon-more"></span>
+                </div>
+                <span class="m-red">{{items.omstatus_zh}}</span>
               </div>
-              <span class="m-red">{{items.omstatus_zh}}</span>
-            </div>
-            <div class="m-order-product-ul">
-              <template v-for="(item, i) in items.order_part">
-                <div class="m-product-info">
-                  <div>
-                    <img class="m-product-img" :src="item.prmainpic" alt="">
+              <div class="m-order-product-ul">
+                <template v-for="(item, i) in items.order_part">
+                  <div class="m-product-info">
+                    <div>
+                      <img class="m-product-img" :src="item.prmainpic" alt="">
+                    </div>
+                    <div>
+                      <p class="m-flex-between">
+                        <span class="m-product-name">{{item.prtitle}}</span>
+                        <span class="w-price">￥{{item.skuprice | money}}</span>
+                      </p>
+                      <p class="m-flex-between">
+                        <span class="m-product-label">
+                          <template v-for="(key,k) in item.skuattritedetail">
+                            <span>{{key}}</span>
+                            <span v-if="k < item.skuattritedetail.length-1">；</span>
+                          </template>
+                        </span>
+                        <span>x{{item.opnum}}</span>
+                      </p>
+                    </div>
+                  </div>
+                </template>
+                <div class="m-total-money">共{{items.order_part.length}}件商品 合计：<span class="w-price">￥{{items.omtruemount | money}}</span></div>
+                <ul class="m-order-btn-ul" v-if="!items.ominrefund">
+                  <div class="duration-box">
+                    <div v-if="items.duration">支付倒计时<span class="duration-text">{{items.min}}:{{items.sec}}</span></div>
                   </div>
                   <div>
-                    <p class="m-flex-between">
-                      <span class="m-product-name">{{item.prtitle}}</span>
-                      <span class="m-price">￥{{item.skuprice | money}}</span>
-                    </p>
-                    <p class="m-flex-between">
-                      <span class="m-product-label">
-                        <template v-for="(key,k) in item.skuattritedetail" >
-                        <span >{{key}}</span>
-                        <span v-if="k < item.skuattritedetail.length-1">；</span>
-                      </template>
-                      </span>
-                      <span >x{{item.opnum}}</span>
-                    </p>
+                    <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund"
+                      @click.stop="changeRoute('/selectBack',items)">退款</li>
+                    <li v-if="items.omstatus==20 || items.omstatus==25"
+                      @click.stop="changeRoute('/logisticsInformation',items)">查看物流</li>
+                    <li v-if="items.omstatus==-40" @click.stop="deleteOrder(items)">删除订单</li>
+                    <li v-if="items.omstatus==0" @click.stop="cancelOrder(items)">取消订单</li>
+                    <li class="active" v-if="items.omstatus==20" @click.stop="orderConfirm(items)">确认收货</li>
+                    <li class="active" v-if="items.omstatus==0" @click.stop="payBtn(items)">立即付款</li>
+                    <li class="active" v-if="items.omstatus==25" @click.stop="changeRoute('/addComment', items)">评价</li>
                   </div>
-                </div>
-              </template>
-              <div class="m-total-money">合计：<span class="m-price">￥{{items.omtruemount | money}}</span></div>
-              <ul class="m-order-btn-ul" v-if="!items.ominrefund">
-                <div class="duration-box">
-                  <div v-if="items.duration">支付倒计时<span class="duration-text">{{items.min}}:{{items.sec}}</span></div>
-                </div>
-                <div>
-                  <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund" @click.stop="changeRoute('/selectBack',items)">退款</li>
-                  <li v-if="items.omstatus==20 || items.omstatus==25" @click.stop="changeRoute('/logisticsInformation',items)">查看物流</li>
-                  <li v-if="items.omstatus==-40" @click.stop="deleteOrder(items)">删除订单</li>
-                  <li v-if="items.omstatus==0" @click.stop="cancelOrder(items)">取消订单</li>
-                  <li class="active" v-if="items.omstatus==20" @click.stop="orderConfirm(items)">确认收货</li>
-                  <li class="active" v-if="items.omstatus==0" @click.stop="payBtn(items)">立即付款</li>
-                  <li class="active" v-if="items.omstatus==25" @click.stop="changeRoute('/addComment', items)">评价</li>
-                </div>
-              </ul>
+                </ul>
+              </div>
             </div>
           </div>
         </template>
@@ -74,7 +78,10 @@
   import navList from '../../../components/common/navlist';
   import axios from 'axios';
   import api from '../../../api/api';
-  import { Toast, MessageBox } from 'mint-ui';
+  import {
+    Toast,
+    MessageBox
+  } from 'mint-ui';
   import bottomLine from '../../../components/common/bottomLine';
 
     export default {
@@ -87,6 +94,12 @@
           bottom_show: false,
           order_list: [],
         }
+        for (let i = 0; i < arr.length; i++) {
+          arr[i].active = false;
+        }
+        arr[index].active = true;
+        this.nav_list = [].concat(arr);
+        this.getOrderList(arr[index].status);
       },
       inject: ['reload'],
       components: { navList, bottomLine },
@@ -408,126 +421,6 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
-@import "../../../common/css/index";
-  .m-orderList{
-    /*background-color: #eee;*/
-    min-height: 100vh;
-    padding: 30px 0;
-    .m-icon-back{
-      display: block;
-      width: 24px;
-      height: 41px;
-      background: url("/static/images/icon-back.png") no-repeat;
-      background-size: 100% 100%;
-      margin: 0 0 0 20px;
-    }
-    .m-nav{
-      background-color: #fff;
-      margin-bottom: 30px;
-    }
-    .m-nav-list{
-      padding: 0 26px ;
-    }
-    .m-no-coupon{
-      margin-top: 200px;
-      margin-left: 50px;
-    }
-    .m-orderList-content{
-      padding: 0 26px;
-      .m-icon-more{
-        display: inline-block;
-        width: 22px;
-        height: 22px;
-        background: url("/static/images/icon-more.png") no-repeat;
-        background-size: 100% 100%;
-      }
-      .m-one-part{
-        background-color: #fff;
-        padding: 30px 37px;
-        border-radius: 10px;
-        box-shadow:0 5px 6px rgba(0,0,0,0.16);
-        margin-bottom: 20px;
-        .m-order-store-tile{
-          .flex-row(space-between);
-          .m-icon-store{
-            display: inline-block;
-            width: 31px;
-            height: 29px;
-            background: url("/static/images/icon-store.png") no-repeat;
-            background-size: 100% 100%;
-            vertical-align: text-bottom;
-          }
-          .m-store-name{
-            display: inline-block;
-            margin: 0 25px;
-          }
-        }
-        .m-order-product-ul{
-          margin-top: 16px;
-          .m-product-info {
-            display: flex;
-            flex-flow: row;
-            justify-content: flex-start;
-            margin-top: 30px;
-            .m-product-img{
-              display: block;
-              width: 153px;
-              height: 153px;
-              background-color: #9fd0bf;
-              margin-right: 30px;
-            }
-            p{
-              line-height: 36px;
-            }
-            .m-product-name{
-              display: block;
-              width: 350px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              text-align: left;
-            }
-            .m-product-label{
-              color: #999999;
-              font-size: 21px;
-            }
-          }
-          .m-total-money {
-            text-align: right;
-          }
-          .m-order-btn-ul{
-            display: flex;
-            justify-content: space-between;
-            text-align: right;
-            color: #999;
-            margin-top: 20px;
-            .duration-box {
-              margin-top: 10px;
-              .duration-text {
-                font-size: 24px;
-                font-weight: bold;
-                color: @mainColor;
-                margin-left: 10px;
-              }
-            }
-            li{
-              display: inline-block;
-              width: 129px;
-              height: 41px;
-              line-height: 43px;
-              text-align: center;
-              border: 1px solid #999;
-              border-radius: 30px;
-              margin-left: 15px;
-              &.active{
-                background-color: @mainColor;
-                color: #ffffff;
-                border: 1px solid @mainColor;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  @import "../../../common/css/orderList";
+
 </style>
