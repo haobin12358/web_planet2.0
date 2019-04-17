@@ -43,6 +43,7 @@
             </div>
           </li>
         </ul>
+        <p class="m-no-data">暂无获取记录</p>
       </div>
 
     </div>

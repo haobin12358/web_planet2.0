@@ -6,7 +6,10 @@
           <div class="m-flex-end">
             <img src="/static/images/newpersonal/icon-code-small.png" class="m-person-code" alt="" @click="changeRoute('/personal/code')">
           </div>
-          <div >
+          <div v-if="user.usname == '登录 / 注册'">
+            <span class="m-login-btn" @click="showLogin">{{user.usname}}</span>
+          </div>
+          <div v-else>
             <p class="m-flex-start">
               <span class="m-user-name">{{user.usname}}</span>
               <img src="/static/images/newpersonal/sex-woman.png" v-if="user.usgender == 1" class="m-person-sex" alt="">
@@ -123,7 +126,7 @@
         name: "newIndex",
       data(){
           return{
-            user: { usheader: '', usidname: '登录 / 注册'},               // 个人信息
+            user: { usheader: '', usname: '登录 / 注册'},               // 个人信息
             signIn:false
           }
       },
@@ -154,6 +157,10 @@
           }else {
             this.$router.push(v);
           }
+        },
+        showLogin(){
+          this.$store.state.show_login = true;
+          return false;
         },
         goStore() {
           axios.get(api.get_home + "?token=" + localStorage.getItem('token')).then(res => {
@@ -190,7 +197,7 @@
               //   this.store = '成为店主'
               // }
             }else{
-              this.user = { usheader: '', usidname: '登录 / 注册'}
+              this.user = { usheader: '', usname: '登录 / 注册'}
             }
           })
         },
@@ -236,6 +243,13 @@
           height: 30px;
 
         }
+        .m-login-btn{
+          display: inline-block;
+          color: #fff;
+          background-color: @mainColor;
+          border-radius: 25px;
+          padding: 4px 20px;
+        }
         .m-person-sex{
           display: inline-block;
           width: 30px;
@@ -251,8 +265,8 @@
           font-size: 16px;
           display: inline-block;
           /*width: 80px;*/
-          padding: 0 16px;
-          height: 22px;
+          padding: 3px 16px;
+          /*height: 22px;*/
           border: 1px solid @mainColor;
           margin-top: 10px;
         }
