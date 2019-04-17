@@ -37,8 +37,8 @@
           </div>
         </div>
       </div>
-      <div class="m-order-one-part">
-        <div class="m-user-text" v-if="logistic_info && order_info.omlogistictype != 10" @click="changeRoute('/logisticsInformation')">
+      <div class="m-order-one-part" v-if="logistic_info && order_info.omlogistictype != 10">
+        <div class="m-user-text" @click="changeRoute('/logisticsInformation')">
           <span class="m-icon-wuliu m-done"></span>
           <div class="m-flex-between">
             <div>
@@ -148,8 +148,8 @@
       </div>
 
       <div class="m-align-right" v-if="from !== 'activityProduct' && from !== 'afterSales' && !order_info.ominrefund">
-        <span class="" v-if="order_info.omstatus == -40" @click="deleteOrder">删除订单</span>
-        <span class="w-footer-2" v-if="order_info.omstatus == 0 " @click="cancelOrder">取消订单</span>
+        <span class="w-footer-1" v-if="order_info.omstatus == -40" @click="deleteOrder">删除订单</span>
+        <span class="w-footer-2" v-if="order_info.omstatus == 0" @click="cancelOrder">取消订单</span>
         <span class="w-footer-1" v-if="(order_info.omstatus == 10) && !part_refund" @click="changeRoute('/selectBack', 'order')">联系卖家</span>
         <!-- <span class="" @click="changeRoute('/logisticsInformation')" v-if="order_info.omstatus==20">查看物流</span> -->
         <span class="w-footer-2 active" v-if="order_info.omstatus == 0" @click="payBtn">立即付款</span>
