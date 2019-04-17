@@ -8,8 +8,8 @@
 
     <mt-loadmore :top-method="loadTop" ref="loadmore">
       <div class="m-no-coupon" v-if="order_list.length == 0">
-        <span class="m-no-img m-order-no-img"></span>
-        <p>暂无订单哦,<span class="m-red">去下单</span>吧~</p>
+        <!-- <span class="m-no-img m-order-no-img"></span> -->
+        <p>暂无订单,<span class="m-red">去选购</span></p>
       </div>
       <div class="m-orderList-content" v-else>
         <template v-for="(items,index) in order_list">

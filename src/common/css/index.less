@@ -26,6 +26,12 @@ body{
   align-items: center;
   justify-content: space-between;
 }
+.m-flex-between-col{
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
 .m-flex-start{
   display: flex;
   flex-flow: row;
@@ -57,11 +63,23 @@ body{
   align-items: center;
   justify-content: center;
 }
+.m-flex-start-col{
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
 
 .flex-col(@x){
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: @x;
+}
+.flex-col(@x,@y){
+  display: flex;
+  flex-direction: column;
+  align-items: @y;
   justify-content: @x;
 }
 .flex-row(@x){

@@ -7,7 +7,7 @@
               <img :src="items.prmainpic" alt="">
               <div>
                 <p>{{items.prtitle}}</p>
-                <p class="m-ft-22">规格：
+                <p class="m-ft-22 w-product-prop">规格：
                   <template v-for="(key,k) in items.skuattritedetail" >
                     <span >{{key}}</span>
                     <span v-if="k < items.skuattritedetail.length-1">；</span>
@@ -20,7 +20,7 @@
       <ul class="m-selectBack-ul">
         <li @click="changeRoute('/editBack',10)">
           <div class="m-flex-between">
-            <span class="m-border"></span>
+            <!-- <span class="m-border"></span> -->
             <div>
               <p>仅退款</p>
               <p class="m-ft-18">未收到货（包含未签收），或卖家协商同意前提下</p>
@@ -30,7 +30,7 @@
         </li>
         <li  @click="changeRoute('/editBack',0)">
           <div class="m-flex-between">
-            <span class="m-border"></span>
+            <!-- <span class="m-border"></span> -->
             <div>
               <p>退货退款</p>
               <p class="m-ft-18">已收到货，需要退换已收到货物</p>
@@ -69,11 +69,12 @@
   @import "../../../common/css/index";
 .m-selectBack{
   min-height: 100vh;
-  background-color: #eee;
+  background-color: #fff;
   .m-product-info{
     /*padding: 34px 25px;*/
-    box-shadow:0 5px 5px rgba(0,0,0,0.16);
-    margin-bottom: 20px;
+    // box-shadow:0 5px 5px rgba(0,0,0,0.16);
+    // margin-bottom: 20px;
+    border-bottom: 10px solid #F4F4F4;
     .m-one-product{
       display: flex;
       flex-flow: row;
@@ -92,20 +93,21 @@
     }
     .m-ft-22{
       margin-top: 10px;
+      color: #C1C1C1;
     }
   }
   .m-selectBack-ul{
-    padding: 15px 40px 15px 45px;
+    padding: 0 0 15px 0;
     background-color: #fff;
-    box-shadow:0 5px 5px rgba(0,0,0,0.16);
+    // box-shadow:0 5px 5px rgba(0,0,0,0.16);
     text-align: left;
     li{
       .flex-row(space-between);
-      padding: 24px 0;
+      padding: 30px 38px 30px 34px;
       border-bottom: 1px solid @borderColor;
-      &:last-child{
-        border-bottom: none;
-      }
+      // &:last-child{
+      //   border-bottom: none;
+      // }
       .m-border{
         display: block;
         width: 5px;
@@ -114,14 +116,15 @@
         margin-right: 15px;
       }
       .m-ft-18{
+        margin-top: 20px;
         font-size: 18px;
         color: #999;
       }
       .m-icon-more{
         display: inline-block;
-        width: 22px;
-        height: 22px;
-        background: url("/static/images/icon-more.png") no-repeat;
+        width: 17px;
+        height: 30px;
+        background: url("/static/images/order/order-more.png") no-repeat;
         background-size: 100% 100%;
       }
     }

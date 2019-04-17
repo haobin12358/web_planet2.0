@@ -92,7 +92,7 @@
             <span>￥{{order_info.omfreight | money}}</span>
           </p> -->
           <p class="m-flex-between m-ft-22">
-            <span>实付款</span>
+            <span>实付款（含运费）</span>
             <span class="w-price">￥{{item.opsubtotal | money}}</span>
           </p>
           <p class="m-back-btn" v-if="from !== 'afterSales'  && !order_info.ominrefund">

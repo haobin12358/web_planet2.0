@@ -1,22 +1,22 @@
 <template>
     <div class="m-backDetail">
       <div class="m-orderDetail-status">
-        <div>
+        <!-- <div> -->
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '-20'">售后申请{{refund.orastatus_zh}}</p>
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '-10'">商家{{refund.orastatus_zh}}，请稍后处理</p>
-          <p class="m-alert m-ft-28" v-if="refund.orastatus == '0'">商家{{refund.orastatus_zh}}，请等待商家处理</p>
+          <p class="m-alert m-ft-28" v-if="refund.orastatus == '0'">等待商家处理</p>
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '10'">商家{{refund.orastatus_zh}}
             <span v-if="order_refund.orstatus_zh && refund.orastate != 10">，{{order_refund.orstatus_zh}}</span>
           </p>
-        </div>
-        <span class="m-icon-order-status "></span>
+        <!-- </div> -->
+        <!-- <span class="m-icon-order-status "></span> -->
       </div>
       <div class="m-back-info-box">
         <p class="m-back-info" v-if="refund.orastatus == '-20'">您已取消售后申请。</p>
         <p class="m-back-info" v-if="refund.orastatus == '-10'">您的售后申请被拒绝，请稍后处理。</p>
         <p class="m-back-info" v-if="refund.orastatus == '0'">您的退款申请在审核中，请耐心等待商家处理。</p>
-        <p class="m-back-info" v-if="refund.orastatus == '10'">商家已经同意您的退款申请
-          <span v-if="order_refund.orstatus_zh && refund.orastate != 10">，{{order_refund.orstatus_zh}}。</span>
+        <p class="m-back-info" v-if="refund.orastatus == '10'">退款申请已通过
+          <!-- <span v-if="order_refund.orstatus_zh && refund.orastate != 10">，{{order_refund.orstatus_zh}}。</span> -->
         </p>
         <div class="m-product-text" v-if="refund.orastatus == '10' && refund.orastate != 10">
           <p>收货人：{{order_refund.orrecvname}}</p>
@@ -49,7 +49,7 @@
           <div>
             <img :src="item.prmainpic">
           </div>
-          <div>
+          <div class="w-back-product-prop">
             <p>{{item.prtitle}}</p>
             <p class="m-product-select">规格：<span v-for="sku in item.skuattritedetail">{{sku}} </span></p>
           </div>
@@ -62,8 +62,17 @@
           <p>申请时间：{{refund.createtime}}</p>
           <p>退款编号：{{refund.orasn}}</p>
         </div>
+        <div class="m-align-right" v-if="order_info.ominrefund">
+          <!-- <span class="w-footer-1" v-if="order_info.omstatus == -40" @click="deleteOrder">删除订单</span>
+          <span class="w-footer-2" v-if="order_info.omstatus == 0" @click="cancelOrder">取消订单</span> -->
+          <span class="w-footer-1" v-if="(order_info.omstatus == 25) && !part_refund" @click="changeRoute('/selectBack', 'order')">联系卖家</span>
+          <!-- <span class="" @click="changeRoute('/logisticsInformation')" v-if="order_info.omstatus==20">查看物流</span> -->
+          <!-- <span class="w-footer-2 active" v-if="order_info.omstatus == 0" @click="payBtn">立即付款</span>
+          <span class="w-footer-1 active" v-if="order_info.omstatus == 20" @click="orderConfirm">确认收货</span>
+          <span class="w-footer-1 active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">立即评价</span> -->
+        </div>
       </div>
-      <bottom></bottom>
+      <!-- <bottom></bottom> -->
     </div>
 </template>
 
@@ -201,12 +210,12 @@
   @import "../../../common/css/index";
 .m-backDetail{
   min-height: 100vh;
-  background-color: #eee;
+  background-color: #fff;
   .m-orderDetail-status{
-    .flex-row(flex-end);
+    .flex-row(center);
     width: 100%;
-    height: 220px;
-    background-color: @mainColor;
+    height: 90px;
+    background:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
     line-height: 36px;
     .m-icon-order-status{
       display: block;
@@ -221,13 +230,14 @@
     }
   }
   .m-back-info-box{
-    padding: 0 50px 0;
+    padding: 0 34px 0;
     background-color: #fff;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     text-align: left;
+    border-bottom: 10px solid #F4F4F4;
     .m-back-info{
       padding: 28px 0;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #F2F2F2;
       text-align: left;
     }
     .m-product-text{
@@ -245,31 +255,31 @@
       }
     }
     .m-back-info-btn{
-      padding: 34px 0 55px 30px;
+      padding: 20px 0 27px 30px;
       text-align: right;
       span{
         display: inline-block;
         padding: 5px 41px;
         line-height: 41px;
         text-align: center;
-        border-radius: 30px;
-        border: 2px solid #ccc;
-        color: #999;
+        // border-radius: 30px;
+        border: 2px solid @mainColor;
+        color: @mainColor;
       }
     }
   }
   .m-back-product{
     background-color: #fff;
-    box-shadow:0 5px 5px rgba(0,0,0,0.16);
+    // box-shadow:0 5px 5px rgba(0,0,0,0.16);
     text-align: left;
-    padding: 20px 0;
+    padding: 20px 34px;
     color: #666;
     h3{
-      padding: 0 0 20px 50px;
+      padding-bottom: 20px;
     }
     .m-back-product-info{
-      .flex-row(flex-start);
-      padding: 0 50px 30px 50px;
+      .flex-row(flex-start,flex-start);
+      padding: 0 0 24px 0;
       /*background-color: #eee;*/
       img{
         display: block;
@@ -279,13 +289,25 @@
         margin-right: 20px;
       }
       .m-product-select{
-        font-size: 21px;
-        margin-top: 59px;
+        font-size: 24px;
+        color: #C1C1C1;
+        // margin-top: 59px;
+      }
+      &:last-child{
+        border-bottom: 1px solid #F2F2F2;
+      }
+      .w-back-product-prop{
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
       }
     }
+    
   }
   .m-product-text{
-    padding-left: 50px;
+    padding: 20px 0 0 0;
     font-size: 21px;
     line-height: 40px;
     text-align: left;
@@ -299,5 +321,52 @@
     margin: 10px 0;
     padding: 0 20px;
   }
+
+    .m-align-right{
+      // text-align: right;
+      background-color: #fff;
+      width: 100%;
+      margin: 68px 0 68px;
+      // position: fixed;
+      // bottom: 68px;
+      // left: 0;
+     .flex-row(space-between);
+     .w-footer-1{
+      display: inline-block;
+      width: 100%;
+      height: 98px;
+      line-height: 98px;
+      font-size: 30px;
+      // border-radius: 30px;
+      border: 1px solid @mainColor;
+      color: @mainColor;
+      text-align: center;
+      &.active{
+        background:linear-gradient(304deg,@mainColor,@subColor);
+        color: #ffffff;
+        border: 1px solid @mainColor;
+      }
+     }
+      .w-footer-2{
+        display: inline-block;
+        width: 50%;
+        height: 98px;
+        line-height: 98px;
+        font-size: 30px;
+        // border-radius: 30px;
+        border: 1px solid @mainColor;
+        color: @mainColor;
+        text-align: center;
+        // margin-left: 40px;
+        &.active{
+          background:linear-gradient(304deg,@mainColor,@subColor);
+          color: #ffffff;
+          border: 1px solid @mainColor;
+        }
+        &:last-child{
+          // margin-right: 25px;
+        }
+      }
+    }
 }
 </style>
