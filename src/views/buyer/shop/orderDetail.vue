@@ -96,18 +96,23 @@
             <span @click="changeRoute('/storekeeper/IDCardApprove')" v-if="order_info.omlogistictype == 10 && order_info.omstatus == 30 && from !== 'activityProduct'">身份认证</span>
           </p>
         </div>
-        <div class="m-total-money">共{{totalProductNum}}件商品 合计：<span class="w-price">￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）</div>
+        <div class="m-total-money">
+          共{{totalProductNum}}件商品 合计：<span class="w-price">￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）
+          <p class="m-back-btn">
+            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26)">全部退款</span>
+          </p>
+        </div>
       </div>
       <div class="m-order-one-part">
         <p>
-          <span class="m-border"></span>
+          <!-- <span class="m-border"></span> -->
           <span>订单信息</span>
         </p>
         <div class="m-ft-22 m-time-text">
-          <p>订单编号：{{order_info.omno}}</p>
-          <p>创建时间：{{order_info.createtime}}</p>
-          <p v-if="order_info.pay_time">付款时间：{{order_info.pay_time}}</p>
-          <p v-if="order_info.send_time">发货时间：{{order_info.send_time}}</p>
+          <p><span class="w-ft-text">订单编号：</span> {{order_info.omno}}</p>
+          <p><span class="w-ft-text">创建时间：</span> {{order_info.createtime}}</p>
+          <p v-if="order_info.pay_time"><span class="w-ft-text">付款时间：</span> {{order_info.pay_time}}</p>
+          <p v-if="order_info.send_time"><span class="w-ft-text">发货时间：</span> {{order_info.send_time}}</p>
         </div>
       </div>
       <div class="m-order-one-part m-box-shadow" v-if="refund">
