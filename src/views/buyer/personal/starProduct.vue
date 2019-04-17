@@ -95,7 +95,7 @@
       data(){
           return{
             labelShow:false,
-            rulePopup:true
+            rulePopup:false
           }
       },
       methods:{

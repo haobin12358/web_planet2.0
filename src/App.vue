@@ -308,9 +308,19 @@ export default {
           }else if(url.indexOf('code') != -1){
             url = window.location.origin + '/#/selected';
           }
+          axios.get('https://test.bigxingxing.com/api/v1/user/wx_auth',{
+            params:{
+              url:encodeURIComponent(url),
+              scope:'snsapi_userinfo'
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              window.location.href = res.data.data.url;
+            }
+          })
           // snsapi_userinfo
-          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
-            + id + '&redirect_uri='+ encodeURIComponent(url) + '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+          // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
+          //   + id + '&redirect_uri='+ encodeURIComponent(url) + '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
         }
       }).catch((error) => {
         console.log(error ,'1111');
@@ -334,8 +344,18 @@ export default {
             // url = window.location.origin + '/#/selected';
           }
           // snsapi_userinfo
-          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
-            + id + '&redirect_uri='+ encodeURIComponent(url) + '&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
+          axios.get('https://test.bigxingxing.com/api/v1/user/wx_auth',{
+            params:{
+              url:encodeURIComponent(url),
+              scope:'snsapi_base'
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              window.location.href = res.data.data.url;
+            }
+          })
+          // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
+          //   + id + '&redirect_uri='+ encodeURIComponent(url) + '&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
         }
       }).catch((error) => {
         console.log(error ,'1111');
