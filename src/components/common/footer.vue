@@ -232,7 +232,7 @@
     width: 100%;
     height: 100px;
     background-color: #FAFAFA;
-    z-index: 100001;
+    z-index: 1;
     ul{
       position: fixed;
       left:0;
