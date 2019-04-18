@@ -49,9 +49,9 @@
                   <li>
                     <span class="m-icon-transmit" @click.stop="shareCircle(items)"></span>
                   </li>
-<!--                  <li class="m-border">-->
-<!--                    <span class="m-icon-collect" @click.stop="collectCircle(items)"></span>-->
-<!--                  </li>-->
+                  <li class="m-border">
+                    <span class="m-icon-collect" :class="items.collected ? 'active':''" @click.stop="clickCollect(items)"></span>
+                  </li>
                 </ul>
                 <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
                 <div class="m-refuse-reason" v-if="select_nav.itid == 'mynews' && items.nestatus == 'refuse'">
@@ -403,9 +403,21 @@
         }
         this.$refs.loadmore.onTopLoaded();
       },
-      //收藏
-      collectCircle(item){
-
+      //  收藏
+      clickCollect(item){
+        axios.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+          uclcollection:item.neid,
+          uclcotype:1
+        }).then(res => {
+          if(res.data.status == 200){
+            Toast(
+              {
+                message: res.data.message,
+                duration: 500
+              });
+            item.collected = !item.collected;
+          }
+        })
       }
     }
   }
@@ -596,7 +608,7 @@
               display: inline-block;
               width: 23px;
               height: 20px;
-              background: url("/static/images/icon-circle-collect-active.png") no-repeat;
+              background: url("/static/images/circle/icon-collect.png") no-repeat;
               background-size: 100% 100%;
               &.active{
                 background: url("/static/images/icon-circle-collect-active.png") no-repeat;
