@@ -1,7 +1,7 @@
 // const title = 'https://planet.daaiti.cn/api/v1/';
 // const title = 'https://www.bigxingxing.com/api/v1/'; //正式
 let title = '';
-if(location.origin.indexOf('localhost') != -1){
+if(location.origin.indexOf('localhost') != -1 || location.origin.indexOf('pre') != -1){
    title = 'https://test.bigxingxing.com/api/v2/'; //测试
 }else{
    title = `${location.origin}/api/v2/`

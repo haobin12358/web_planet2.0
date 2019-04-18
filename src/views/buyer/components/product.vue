@@ -69,27 +69,27 @@
     flex-flow: row;
     align-items: center;
     flex-wrap: wrap;
-    padding: 30px 33px ;
+    padding: 30px 24px ;
     li{
       list-style: none;
-      width: 325px;
+      width: 330px;
       height: auto;
-      border-radius: 10px;
-      box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.16);
+      /*border-radius: 10px;*/
+      /*box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.16);*/
       background-color: #ffffff;
       margin-bottom: 30px;
       &:nth-child(odd){
-        margin-right: 30px;
+        margin-right: 20px;
       }
       .m-one-product-img{
         display: block;
-        width: 325px;
-        height: 325px;
+        width: 330px;
+        height: 440px;
         /*background-color: #edb3b1;*/
-        border-radius: 10px;
+        /*border-radius: 10px;*/
       }
       .m-one-product-text{
-        padding: 15px;
+        /*padding: 15px;*/
         .m-flex-between {
           font-size: 21px;
           text-align: left;
