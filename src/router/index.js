@@ -154,6 +154,7 @@ export const constantRouterMap = [
   { path: '/personal/starDetail', component: () => import('../views/buyer/personal/starDetail'), hidden: true },  ///星币商城记录
   { path: '/personal/setPwd', component: () => import('../views/buyer/personal/setPwd'), hidden: true },  ///设置密码
   { path: '/personal/myWallet', component: () => import('../views/buyer/personal/myWallet'), hidden: true },  ///设置密码
+  { path: '/personal/followUser', component: () => import('../views/buyer/personal/followUser'), hidden: true },  ///关注
   // 活动模块
   {
     path: '/activity',
