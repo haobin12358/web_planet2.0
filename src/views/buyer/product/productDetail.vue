@@ -6,13 +6,17 @@
             <img class="product-img" :src="item.pipic" @click="previewImage(index, product_info.images)" v-lazy="item.pipic" :key="item.pipic">
           </mt-swipe-item>
         </mt-swipe>
-        <span class="m-icon-back" @click="changeBack"></span>
-        <span class="m-icon-gray-share" @click="shareProduct"></span>
+<!--        <span class="m-icon-back" @click="changeBack"></span>-->
+<!--        <span class="m-icon-gray-share" @click="shareProduct"></span>-->
       </div>
       <div class="m-product-detail-info">
         <div class="m-flex-between">
-          <span class="m-red" v-if="product_info.price_range">￥{{product_info.price_range}}</span>
-          <span class="m-red" v-else>￥{{product_info.prprice | money}}</span>
+          <div>
+            <span class="m-red" v-if="product_info.price_range">￥{{product_info.price_range}}</span>
+            <span class="m-red" v-else>￥{{product_info.prprice | money}}</span>
+            <p class="m-marking-price">划线价格：<s>{{product_info.prlineprice}}</s></p>
+          </div>
+
           <h3 v-if="user.uslevel == 2">
             <span class="m-profict-title">预计赚：</span>
             <span class="m-red">￥{{product_info.profict}}</span>
@@ -20,7 +24,9 @@
         </div>
         <div class="m-flex-between m-product-title-box">
           <span class="m-product-title">{{product_info.prtitle}}</span>
-<!--          <img src="/static/images/icon-product-collect.png" class="m-icon-collect" alt="">-->
+
+          <img src="/static/images/product/icon-collect-active.png" v-if="product_info.collected" @click="clickCollect" class="m-icon-collect" alt="">
+          <img src="/static/images/product/icon-product-collect.png" v-else @click="clickCollect" class="m-icon-collect" alt="">
         </div>
         <div class="m-info-list">
           <span>快递：{{product_info.prfreight | money}} 元</span>
@@ -65,15 +71,23 @@
         <img v-for="item in product_info.prdesc" :src="item" v-lazy="item" :key="item">
       </div>
       <div class="m-product-detail-foot">
-        <span class="m-icon-car" @click.stop="changeRoute('/shop')"></span>
-        <span class="m-icon-service" @click.stop="changeRoute('/personal/serviceCenter')"></span>
-        <div class="m-product-detail-btn">
-          <span class="m-border" @click="sendShare">推广</span>
-          <span class="active" @click="addCart">加入购物车</span>
-          <span @click="buyNow">立即购买</span>
-
+        <div class="m-icon-box">
+          <img src="/static/images/product/icon-service.png" class="m-icon" @click.stop="changeRoute('/personal/serviceCenter')" />
+          <p>客服</p>
         </div>
-        <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
+        <div class="m-icon-box">
+          <img src="/static/images/product/icon-bottom-car.png" class="m-icon" @click.stop="changeRoute('/shop')" />
+          <p>购物车</p>
+        </div>
+        <div class="m-icon-box">
+          <img src="/static/images/product/icon-share.png" class="m-icon" @click="sendShare" />
+          <p>推广</p>
+        </div>
+        <div class="m-product-detail-btn">
+          <span  @click="addCart">加入购物车</span>
+          <span @click="buyNow">立即购买</span>
+        </div>
+<!--        <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">-->
       </div>
       <div class="m-modal-img" v-if="show_img">
         <div class="m-modal-state">
@@ -269,7 +283,8 @@
         getInfo(){
            axios.get(api.product_get,{
              params:{
-               prid:this.$route.query.prid
+               prid:this.$route.query.prid,
+               token:localStorage.getItem('token')
              }
            }).then(res => {
              if(res.data.status == 200){
@@ -345,7 +360,6 @@
         },
         //推广
         sendShare(){
-
           if(this.share_img== ''){
             axios.get(api.get_promotion,{
               params:{
@@ -364,6 +378,22 @@
           }else{
             this.show_img = true;
           }
+        },
+      //  收藏
+        clickCollect(){
+          axios.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+            uclcollection:this.$route.query.prid,
+            uclcotype:0
+          }).then(res => {
+            if(res.data.status == 200){
+              Toast(
+              {
+                message: res.data.message,
+                duration: 500
+              });
+              this.product_info.collected = !this.product_info.collected;
+            }
+          })
         }
       }
     }
@@ -400,9 +430,14 @@
   .m-product-detail-info{
     padding: 30px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    text-align: left;
     .m-red{
       color: #EF9B2D;
       font-size: 32px;
+    }
+    .m-marking-price{
+      color: #C1C1C1;
+      font-size: 24px;
     }
     .m-product-title-box{
       padding: 20px 0;
@@ -506,50 +541,34 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 26px 0;
+    padding: 0 0 0 26px;
     /*padding: 26px 0 98px;*/
     background-color: #fff;
-    text-align: left;
-    .m-icon-car{
-      display: inline-block;
-      width: 53px;
-      height: 53px;
-      background: url("/static/images/icon-car.png") no-repeat;
-      background-size: 100% 100%;
-      margin: 0 29px 0 15px;
-      vertical-align: middle;
-    }
-    .m-icon-service{
-      display: inline-block;
-      width: 53px;
-      height: 53px;
-      background: url("/static/images/icon-service.png") no-repeat;
-      background-size: 100% 100%;
-      margin-right: 20px;
-      vertical-align: middle;
+    .flex-row(space-between);
+    .m-icon-box{
+      .flex-col(center);
+      width: 80px;
+      font-size: 18px;
+      .m-icon{
+        display: block;
+        width: 40px;
+        height: 40px;
+      }
     }
     .m-product-detail-btn{
       display: inline-block;
-      height: 62px;
-      line-height: 62px;
+      height: 98px;
+      line-height: 98px;
       span{
         color: #ffffff;
         display: inline-block;
-        width: 166px;
+        width: 210px;
         text-align: center;
-        background-color: @mainColor;
+        font-size: 30px;
+        background:linear-gradient(313deg,@mainColor 0%,@subColor 100%);
         margin: 0;
-        border-radius: 0 10px 10px 0;
-        &.active{
-          background-color: @mainColor;
-          margin-right: -3px;
-          border-radius: 10px 0 0 10px;
-        }
-        &.m-border{
-          background-color: #fff;
-          border: 3px solid  @mainColor;
-          color: @mainColor;
-          border-radius: 10px;
+        &:first-child{
+          margin-right: -6px;
         }
       }
     }

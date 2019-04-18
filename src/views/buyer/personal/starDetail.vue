@@ -7,16 +7,17 @@
           <img src="/static/images/newpersonal/icon-date-more.png" class="m-date-more" alt="">
         </div>
         <span>总计+100</span>
+        <div class="m-date-popup-box">
+          <mt-popup class="m-date-popup" v-model="popupVisible" position="bottom">
+            <div class="m-popup-btn">
+              <div @click="popupVisible = false">取消</div>
+              <div @click="timeDone">确认</div>
+            </div>
+            <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+          </mt-popup>
+        </div>
       </div>
-      <div class="m-date-popup-box">
-        <mt-popup class="m-date-popup" v-model="popupVisible" position="bottom">
-          <div class="m-popup-btn">
-            <div @click="popupVisible = false">取消</div>
-            <div @click="timeDone">确认</div>
-          </div>
-          <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
-        </mt-popup>
-      </div>
+
       <div class="m-starDetail-content">
 <!--        获取记录-->
         <ul class="m-detail-list">

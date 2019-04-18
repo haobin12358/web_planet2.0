@@ -2,63 +2,68 @@
   <div class="m-circle" @touchmove="touchMove">
     <!--<div class="m-circle" @touchmove.stop="touchMove">-->
     <!--搜索-->
-      <div class="m-selected-search">
+      <div class="m-selected-search left">
         <div class="m-search-input-box" @click="changeRoute('/search','shtype','news' )">
           <span class="m-icon-search"></span>
-          <span class="m-search-text">圈子搜索</span>
+          <span class="m-search-text">搜索内容/用户</span>
         </div>
-        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>
+<!--        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>-->
       </div>
       <div class="m-circle-content">
-        <nav-list :navlist="nav_list" :isScroll="true" :is-get="true" @navClick="navClick"></nav-list>
+        <div class="m-flex-between m-circle-nav">
+          <nav-list :navlist="nav_list" :isScroll="true" :is-get="true" @navClick="navClick"></nav-list>
+          <span class="m-add-nav-label">+</span>
+        </div>
+
         <!--<mt-loadmore :top-method="loadTop" ref="loadmore">-->
           <div class="m-circle-body">
-            <template v-for="(items,index) in news_list">
-              <div class="m-video-one" @click="changeRoute('/circle/detail',items)">
-                <template v-if="select_nav.itid == 'mynews'">
-                  <span class="m-mark-label active" v-if="items.nestatus == 'refuse'">未通过</span>
-                  <span class="m-mark-label" v-else-if="items.nestatus == 'usual'">审核通过</span>
-                  <span class="m-mark-label" v-else>审核中</span>
-                </template>
+<!--            <template v-for="(items,index) in news_list">-->
+<!--              <div class="m-video-one" @click="changeRoute('/circle/detail',items)">-->
+<!--                <template v-if="select_nav.itid == 'mynews'">-->
+<!--                  <span class="m-mark-label active" v-if="items.nestatus == 'refuse'">未通过</span>-->
+<!--                  <span class="m-mark-label" v-else-if="items.nestatus == 'usual'">审核通过</span>-->
+<!--                  <span class="m-mark-label" v-else>审核中</span>-->
+<!--                </template>-->
 
-                <h3>{{items.netitle}}</h3>
-                <div class="m-video-box" v-if="items.showtype == 'video'">
-                  <video src="" class="m-video"></video>
-                  <!--<video :src="items.video" class="m-video"></video>-->
-                  <div class="m-img-box">
-                    <img :src="items.videothumbnail" class="m-img">
-                  </div>
-                  <span class="m-video-time">{{items.videoduration}}</span>
-                  <span class="m-icon-video"></span>
-                </div>
-                <div class="m-img-box" v-else-if="items.showtype == 'picture'">
-                  <img :src="items.mainpic" class="m-img">
-                </div>
-                <p class="m-text" v-else v-html="items.netext">
+<!--                <h3>{{items.netitle}}</h3>-->
+<!--                <div class="m-video-box" v-if="items.showtype == 'video'">-->
+<!--                  <video src="" class="m-video"></video>-->
+<!--                  &lt;!&ndash;<video :src="items.video" class="m-video"></video>&ndash;&gt;-->
+<!--                  <div class="m-img-box">-->
+<!--                    <img :src="items.videothumbnail" class="m-img">-->
+<!--                  </div>-->
+<!--                  <span class="m-video-time">{{items.videoduration}}</span>-->
+<!--                  <span class="m-icon-video"></span>-->
+<!--                </div>-->
+<!--                <div class="m-img-box" v-else-if="items.showtype == 'picture'">-->
+<!--                  <img :src="items.mainpic" class="m-img">-->
+<!--                </div>-->
+<!--                <p class="m-text" v-else v-html="items.netext">-->
 
-                </p>
-                <ul class="m-video-icon-ul">
-                  <li @click.stop="likeClick(index)">
-                    <span class="m-icon-like " :class="items.is_favorite?'active':''"></span>
-                    <span>{{items.favoritnumber}}</span>
-                  </li>
-                  <li class="m-border" @click.stop="changeRoute('/circle/detail', items, 'comments')">
-                    <span class="m-icon-comment"></span>
-                    <span>{{items.commentnumber}}</span>
-                  </li>
-                  <li>
-                    <span class="m-icon-transmit" @click.stop="shareCircle(items)"></span>
-                  </li>
-<!--                  <li class="m-border">-->
-<!--                    <span class="m-icon-collect" @click.stop="collectCircle(items)"></span>-->
+<!--                </p>-->
+<!--                <ul class="m-video-icon-ul">-->
+<!--                  <li @click.stop="likeClick(index)">-->
+<!--                    <span class="m-icon-like " :class="items.is_favorite?'active':''"></span>-->
+<!--                    <span>{{items.favoritnumber}}</span>-->
 <!--                  </li>-->
-                </ul>
-                <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
-                <div class="m-refuse-reason" v-if="select_nav.itid == 'mynews' && items.nestatus == 'refuse'">
-                  {{items.refuse_info}}
-                </div>
-              </div>
-            </template>
+<!--                  <li class="m-border" @click.stop="changeRoute('/circle/detail', items, 'comments')">-->
+<!--                    <span class="m-icon-comment"></span>-->
+<!--                    <span>{{items.commentnumber}}</span>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <span class="m-icon-transmit" @click.stop="shareCircle(items)"></span>-->
+<!--                  </li>-->
+<!--                  <li class="m-border">-->
+<!--                    <span class="m-icon-collect" :class="items.collected ? 'active':''" @click.stop="clickCollect(items)"></span>-->
+<!--                  </li>-->
+<!--                </ul>-->
+<!--                <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">-->
+<!--                <div class="m-refuse-reason" v-if="select_nav.itid == 'mynews' && items.nestatus == 'refuse'">-->
+<!--                  {{items.refuse_info}}-->
+<!--                </div>-->
+<!--              </div>-->
+              <m-circle :index="index" v-for="(item,index) in news_list" v-if="nav_list[0].active" :key="index" :circle="item" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
+<!--            </template>-->
             <bottom-line v-if="bottom_show"></bottom-line>
           </div>
           <!--</mt-loadmore>-->
@@ -75,7 +80,7 @@
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
   import bottomLine from '../../../components/common/bottomLine';
-
+  import mCircle from '../../../components/common/circle';
   export default {
     name: 'circleIndex',
     data() {
@@ -116,7 +121,7 @@
     },
     mixins: [wxapi],
     inject: ['reload'],
-    components: { navList, bottomLine },
+    components: { navList, bottomLine,mCircle },
     mounted() {
       common.changeTitle('发现');
       if(!localStorage.getItem('circleIndex')) {
@@ -403,9 +408,24 @@
         }
         this.$refs.loadmore.onTopLoaded();
       },
-      //收藏
-      collectCircle(item){
-
+      //  收藏
+      clickCollect(index){
+        this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+          uclcollection:this.news_list[index].neid,
+          uclcotype:1
+        }).then(res => {
+          if(res.data.status == 200){
+            Toast(
+              {
+                message: res.data.message,
+                duration: 500
+              });
+            let arr = [].concat(this.news_list)
+            arr[index].collected = !arr[index].collected;
+            // arr.splice(index,1);
+            this.news_list = [].concat(arr)
+          }
+        })
       }
     }
   }
@@ -416,6 +436,17 @@
     min-height: 100vh;
     overflow-x: hidden;
     .m-circle-content{
+      .m-circle-nav{
+        box-shadow:0 3px 6px rgba(0,0,0,0.16);
+        margin-bottom: 10px;
+        .m-add-nav-label{
+          display: block;
+          padding: 0 30px;
+          border-left: 1px solid #EFEFEF;
+          font-size: 30px;
+          color: #C1C1C1;
+        }
+      }
       .m-scroll-l{
         width: 700px;
         overflow-x: auto;
@@ -442,13 +473,14 @@
         }
       }
       .m-circle-body{
-        padding: 20px 28px;
-        background-color: #eee;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        background-color: #fff;
         .m-video-one{
           position: relative;
-          width: 700px;
-          border-radius: 10px;
-          box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.16);
+          /*width: 700px;*/
+          /*border-radius: 10px;*/
+          /*box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.16);*/
           margin-bottom: 30px;
           background-color: #fff;
           padding-bottom: 26px;
@@ -596,7 +628,7 @@
               display: inline-block;
               width: 23px;
               height: 20px;
-              background: url("/static/images/icon-circle-collect-active.png") no-repeat;
+              background: url("/static/images/circle/icon-collect.png") no-repeat;
               background-size: 100% 100%;
               &.active{
                 background: url("/static/images/icon-circle-collect-active.png") no-repeat;

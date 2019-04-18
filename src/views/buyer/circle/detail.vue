@@ -48,7 +48,7 @@
           <span>删 除</span>
         </span>
       </div>
-<!--      <span class="m-circle-collect float-right"> </span>-->
+      <span class="m-circle-collect float-right" :class="news_info.collected ? 'active':''" @click.stop="clickCollect"></span>
       <span class="m-circle-comment float-right" @click="changeModal('show_modal',true)">评论 {{news_info.commentnumber}}</span>
 
     </div>
@@ -491,6 +491,22 @@
           }
         })
       },
+      //  收藏
+      clickCollect(){
+        axios.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+          uclcollection:this.$route.query.neid,
+          uclcotype:1
+        }).then(res => {
+          if(res.data.status == 200){
+            Toast(
+              {
+                message: res.data.message,
+                duration: 500
+              });
+            this.news_info.collected = !this.news_info.collected;
+          }
+        })
+      },
       //滚动加载更多
       touchMove(e){
         // let scrollTop = common.getScrollTop();
@@ -871,7 +887,7 @@
     height: 45px;
     margin-left: 20px;
     line-height: 45px;
-    background: url("/static/images/icon-circle-collect-active.png") no-repeat;
+    background: url("/static/images/circle/icon-collect.png") no-repeat;
     background-size: 100% 100%;
     &.active{
       background: url("/static/images/icon-circle-collect-active.png") no-repeat;

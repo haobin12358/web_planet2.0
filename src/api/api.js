@@ -1,10 +1,10 @@
 // const title = 'https://planet.daaiti.cn/api/v1/';
 // const title = 'https://www.bigxingxing.com/api/v1/'; //正式
 let title = '';
-if(location.origin.indexOf('localhost') != -1){
-   title = 'https://test.bigxingxing.com/api/v1/'; //测试
+if(location.origin.indexOf('localhost') != -1 || location.origin.indexOf('pre') != -1){
+   title = 'https://test.bigxingxing.com/api/v2/'; //测试
 }else{
-   title = `${location.origin}/api/v1/`
+   title = `${location.origin}/api/v2/`
 }
 
 const api={
@@ -129,6 +129,9 @@ const api={
   timelimited_list_product:title + 'timelimited/list_product',//获取限时活动列表
   timelimited_get:title +'timelimited/get',                      //获取限时活动详情
   timelimited_list_activity:title +'timelimited/list_activity',//获取所有限时活动
+
+
+  collection_collect: title +'collection/collect',         ///收藏
 };
 
 
