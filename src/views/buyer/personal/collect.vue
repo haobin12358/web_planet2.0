@@ -10,7 +10,7 @@
             <product v-if="nav_list[1].active" v-for="(item,index) in product_list" :key="index" :product="item"></product>
 
         </div>
-
+        <bottom-line v-if="bottom_show"></bottom-line>
 
       </div>
     </div>

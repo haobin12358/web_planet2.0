@@ -69,7 +69,7 @@
               <img src="/static/images/newpersonal/icon-star.png" class="m-icon" alt="">
               <span>星币商城</span>
             </div>
-            <span class="m-info" v-if="signIn">{{user.usintegral}}星币</span>
+            <span class="m-info" v-if="user.signin">{{user.usintegral}}星币</span>
             <span class="m-btn" v-else @click.stop="userSignIn">签  到</span>
           </li>
           <li class="m-flex-between" @click="changeRoute('/personal/couponCenter')">
@@ -206,9 +206,8 @@
           axios.post(api.user_sign_in + '?token=' + localStorage.getItem('token')).then(res => {
             if(res.data.status == 200){
               Toast(res.data.message);
-              this.signIn = true;
-
-              // this.getDiscount();         // 获取优惠券中心顶部数据
+              this.user.signin = true;
+              this. getUser();         //
             }
           });
         },

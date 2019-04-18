@@ -1,24 +1,24 @@
 <template>
     <div class="m-mainIndex">
-      <div class="m-mainIndex-head m-flex-around">
+      <div class="m-mainIndex-head m-flex-around" v-if="person_info">
         <div class="m-left">
-          <img src=""  class="m-avator" alt="">
-          <p class="m-user-name">居剧女孩</p>
-          <p class="m-user-level">星会员</p>
+          <img :src="person_info.usheader"  class="m-avator" alt="">
+          <p class="m-user-name">{{person_info.usname}}</p>
+          <p class="m-user-level">{{person_info.uslevel_zh}}</p>
         </div>
         <ul class="m-head-num-ul">
-          <li>
-            <p class="m-num">22</p>
+          <li @click="changeRoute('/personal/followUser')">
+            <p class="m-num">{{person_info.follow}}</p>
             <p>关注</p>
           </li>
           <li class="m-num-line"></li>
-          <li>
-            <p class="m-num">22</p>
+          <li @click="changeRoute('/personal/followUser')">
+            <p class="m-num">{{person_info.fens_count}}</p>
             <p>粉丝</p>
           </li>
           <li class="m-num-line"></li>
-          <li>
-            <p class="m-num">22</p>
+          <li @click="changeRoute('/collect')">
+            <p class="m-num">{{person_info.collected}}</p>
             <p>喜欢</p>
           </li>
         </ul>
@@ -56,22 +56,169 @@
         </div>
       </div>
       <div class="m-mainIndex-content">
-       <m-circle></m-circle>
+        <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
+        <bottom-line v-if="bottom_show"></bottom-line>
       </div>
     </div>
 </template>
 
 <script>
-  import mCircle from '../../../components/common/circle'
+  import mCircle from '../../../components/common/circle';
+  import bottomLine from '../../../components/common/bottomLine';
+  import api from '../../../api/api';
+  import { Toast } from 'mint-ui';
     export default {
         name: "mainIndex",
       data(){
           return{
-            labelShow:false
+            labelShow:false,
+            news_list: null,
+            page_info: {
+              page_num: 1,
+              page_size: 10
+            },
+            isScroll: true,
+            total_count: 0,
+            bottom_show: false,
+            person_info:null,
           }
       },
       components:{
         mCircle
+      },
+      mounted(){
+          this.getInfo();
+          this.getNews();
+      },
+      methods:{
+        changeRoute(v){
+          this.$router.push({path:v})
+        },
+        getInfo(){
+          this.$http.get(api.get_home_top,{
+            params:{
+              token: localStorage.getItem('token')
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              this.person_info = res.data.data;
+            }
+          })
+        },
+        /*获取资讯列表*/
+        getNews() {
+          this.$http.get(api.get_all_news,{
+            params:{
+              token:localStorage.getItem('token'),
+              page_num:this.page_info.page_num,
+              page_size: this.page_info.page_size,
+              itid:'mynews',
+              nestatus:'usual',
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              this.isScroll =true;
+              if(res.data.data.length >0){
+                for(let i in res.data.data){
+                  if(res.data.data[i].netext)
+                    res.data.data[i].netext = res.data.data[i].netext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
+                }
+                if(this.page_info.page_num >1){
+                  this.news_list =  this.news_list.concat(res.data.data);
+                }else{
+                  this.news_list = res.data.data;
+                }
+                this.page_info.page_num = this.page_info.page_num + 1;
+                this.total_count = res.data.total_count;
+              }else{
+                this.news_list = null;
+                this.page_info.page_num = 1;
+                this.total_count = 0;
+              }
+            }
+          })
+        },
+        //滚动加载更多
+        touchMove(e){
+          let scrollTop = common.getScrollTop();
+          let scrollHeight = common.getScrollHeight();
+          let ClientHeight = common.getClientHeight();
+          if (scrollTop + ClientHeight  >= scrollHeight -10) {
+            if(this.isScroll){
+              this.isScroll = false;
+              if(this.news_list.length == this.total_count){
+                this.bottom_show = true;
+              }else{
+
+                    this.getNews();
+
+
+              }
+            }
+          }
+        },
+        /*点赞*/
+        likeClick(i){
+          // if(!localStorage.getItem('token')){
+          //   Toast('请登录后再试');
+          //   let url = location.href.split('#')[0] + '?neid=' + this.news_list[i].neid
+          //   localStorage.setItem('login_to',url);
+          //   this.$router.push('/login');
+          //   return false;
+          // }
+          this.$http.post(api.favorite_news + '?token='+localStorage.getItem('token'),{
+            neid:this.news_list[i].neid,
+            tftype:1
+          }).then(res => {
+            if(res.data.status == 200){
+              let arr = [].concat(this.news_list);
+              if(arr[i].is_favorite){
+                arr[i].favoritnumber = arr[i].favoritnumber-1;
+              }else{
+                arr[i].favoritnumber = arr[i].favoritnumber+1;
+              }
+              arr[i].is_favorite = !arr[i].is_favorite;
+              this.news_list = [].concat(arr);
+            }
+          })
+        },
+        //  收藏
+        clickCollect(index){
+          this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+            uclcollection:this.news_list[index].neid,
+            uclcotype:1
+          }).then(res => {
+            if(res.data.status == 200){
+              Toast(
+                {
+                  message: res.data.message,
+                  duration: 500
+                });
+              let arr = [].concat(this.news_list)
+              arr[index].collected = !arr[index].collected;
+              // arr.splice(index,1);
+              this.news_list = [].concat(arr)
+            }
+          })
+        },
+        //  关注
+        followClick(index){
+          this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+            uclcollection:this.news_list[index].neid,
+            uclcotype:2
+          }).then(res => {
+            if(res.data.status == 200){
+              Toast(
+                {
+                  message: res.data.message,
+                  duration: 500
+                });
+              let arr = [].concat(this.news_list)
+              arr[index].follow = !arr[index].follow;
+              this.news_list = [].concat(arr)
+            }
+          })
+        }
       }
     }
 </script>

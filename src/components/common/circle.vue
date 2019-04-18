@@ -6,8 +6,8 @@
         <span class="m-circle-user-name">{{circle.authername}}</span>
         <span class="m-circle-user-level">{{circle.authergrade}}</span>
       </div>
-      <span class="m-circle-collect" v-if="!circle.follow" @click.stop="followClick">关注</span>
-      <span class="m-circle-collect cancel" v-if="circle.follow" @click.stop="followClick">取消关注</span>
+      <span class="m-circle-collect" v-if="!circle.is_own && !circle.follow" @click.stop="followClick">关注</span>
+      <span class="m-circle-collect cancel" v-if="!circle.is_own && circle.follow" @click.stop="followClick">取消关注</span>
     </div>
 <!--    <div class="m-circle-img-box">-->
 <!--      <img src="" class="m-circle-img" alt="">-->
