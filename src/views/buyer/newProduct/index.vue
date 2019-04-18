@@ -20,6 +20,13 @@
     <!--<div></div>-->
     <!--</div>-->
     <!--style="width: 350px; margin: 0 30px"-->
+    <div class="m-selected-search left">
+      <div class="m-search-input-box" >
+        <span class="m-icon-search"></span>
+        <span class="m-search-text"></span>
+      </div>
+      <!--        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>-->
+    </div>
     <nav-list  :navlist="nav_list" @navClick="navClick"></nav-list>
     <product :list="product_list"></product>
     <bottom-line v-if="bottom_show"></bottom-line>

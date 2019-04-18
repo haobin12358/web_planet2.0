@@ -4,10 +4,10 @@
         <nav-list :navlist="nav_list"  @navClick="navClick"></nav-list>
       </div>
       <div class="m-collect-content">
-          <m-circle :index="index" v-for="(item,index) in news_list" v-if="nav_list[0].active" :circle="item" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
+          <m-circle :index="index" v-for="(item,index) in news_list" v-if="nav_list[0].active" :key="index" :circle="item" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
         <div class="m-product-list" >
 
-            <product v-if="nav_list[1].active" v-for="(item,index) in product_list"  :product="item"></product>
+            <product v-if="nav_list[1].active" v-for="(item,index) in product_list" :key="index" :product="item"></product>
 
         </div>
 
