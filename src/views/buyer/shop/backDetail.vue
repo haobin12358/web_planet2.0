@@ -4,9 +4,12 @@
         <!-- <div> -->
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '-20'">售后申请{{refund.orastatus_zh}}</p>
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '-10'">商家{{refund.orastatus_zh}}，请稍后处理</p>
+          <p class="m-alert m-ft-28" v-if="refund.orastatus == '25'">退款关闭</p>
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '0'">等待商家处理</p>
-          <p class="m-alert m-ft-28" v-if="refund.orastatus == '10'">商家{{refund.orastatus_zh}}
-            <span v-if="order_refund.orstatus_zh && refund.orastate != 10">，{{order_refund.orstatus_zh}}</span>
+          <p class="m-alert m-ft-28" v-if="refund.orastatus == '10'">
+            退款申请通过
+            <!-- 商家{{refund.orastatus_zh}} -->
+            <!-- <span v-if="order_refund.orstatus_zh && refund.orastate != 10">，{{order_refund.orstatus_zh}}</span> -->
           </p>
         <!-- </div> -->
         <!-- <span class="m-icon-order-status "></span> -->
@@ -15,7 +18,9 @@
         <p class="m-back-info" v-if="refund.orastatus == '-20'">您已取消售后申请。</p>
         <p class="m-back-info" v-if="refund.orastatus == '-10'">您的售后申请被拒绝，请稍后处理。</p>
         <p class="m-back-info" v-if="refund.orastatus == '0'">您的退款申请在审核中，请耐心等待商家处理。</p>
-        <p class="m-back-info" v-if="refund.orastatus == '10'">退款申请已通过
+        <p class="m-back-info" v-if="refund.orastatus == '10'">
+          <span>您的退款申请已通过，</span>
+          <span>请发送快递至下列地址并填写快递单号。</span>
           <!-- <span v-if="order_refund.orstatus_zh && refund.orastate != 10">，{{order_refund.orstatus_zh}}。</span> -->
         </p>
         <div class="m-product-text" v-if="refund.orastatus == '10' && refund.orastate != 10">
@@ -38,8 +43,8 @@
           </mt-popup>
         </div>
         <p class="m-back-info-btn">
-          <span @click="cancelRefund" v-if="refund.orastatus == '0'">撤销申请</span>
-          <span @click="refundSend" v-if="order_refund.orstatus == '0'">发 货</span>
+          <span @click="cancelRefund" v-if="refund.orastatus == '0'" class="w-back-cancel">撤销申请</span>
+          <span @click="refundSend" v-if="order_refund.orstatus == '0'" class="w-back-send">提交</span>
         </p>
       </div>
       <div class="m-back-product">
@@ -56,21 +61,21 @@
         </div>
         <div class="m-product-text">
           <p v-if="refund.oracheckreason">审核回复：{{refund.oracheckreason}}</p>
-          <p>退款原因：{{refund.orareason}}</p>
-          <p>退款金额：￥{{refund.oramount | money}}</p>
-          <p v-if="refund.oraaddtion">申请留言：{{refund.oraaddtion}}</p>
-          <p>申请时间：{{refund.createtime}}</p>
-          <p>退款编号：{{refund.orasn}}</p>
+          <p><span class="w-back-text">退款原因：</span>{{refund.orareason}}</p>
+          <p><span class="w-back-text">退款金额：</span>￥{{refund.oramount | money}}</p>
+          <p v-if="refund.oraaddtion"><span class="w-back-text">申请留言：</span>{{refund.oraaddtion}}</p>
+          <p><span class="w-back-text">申请时间：</span>{{refund.createtime}}</p>
+          <p><span class="w-back-text">退款编号：</span>{{refund.orasn}}</p>
         </div>
-        <div class="m-align-right" v-if="order_info.ominrefund">
+      </div>
+      <div class="m-align-right" v-if="order_info.ominrefund">
           <!-- <span class="w-footer-1" v-if="order_info.omstatus == -40" @click="deleteOrder">删除订单</span>
           <span class="w-footer-2" v-if="order_info.omstatus == 0" @click="cancelOrder">取消订单</span> -->
-          <span class="w-footer-1" v-if="(order_info.omstatus == 25) && !part_refund" @click="changeRoute('/selectBack', 'order')">联系卖家</span>
+          <span class="w-footer-1" v-if="(order_info.omstatus == 25) && (order_info.order_refund_apply.orastatus != 10) && !part_refund" @click="changeRoute('/selectBack', 'order')">联系卖家</span>
           <!-- <span class="" @click="changeRoute('/logisticsInformation')" v-if="order_info.omstatus==20">查看物流</span> -->
           <!-- <span class="w-footer-2 active" v-if="order_info.omstatus == 0" @click="payBtn">立即付款</span>
           <span class="w-footer-1 active" v-if="order_info.omstatus == 20" @click="orderConfirm">确认收货</span>
           <span class="w-footer-1 active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">立即评价</span> -->
-        </div>
       </div>
       <!-- <bottom></bottom> -->
     </div>
@@ -146,10 +151,11 @@
         MessageBox.confirm('是否确认撤销该售后申请?').then(() => {
           axios.post(api.refund_cancel + '?token='+ localStorage.getItem('token'), { oraid: this.refund.oraid }).then(res => {
             if(res.data.status == 200) {
-              Toast(res.data.message);
+              // Toast(res.data.message);
+              document.getElementsByClassName("m-alert")[0].innerHTML="退款关闭"
               // this.getOrderInfo();            // 获取订单详情
               // this.$router.push('/personal/afterSales');
-              this.$router.go(-2);
+              // this.$router.go(-2);
             }
           });
         }).catch(() => {
@@ -239,11 +245,13 @@
       padding: 28px 0;
       border-bottom: 1px solid #F2F2F2;
       text-align: left;
+      color: #000000;
+      .flex-col(space-between,flex-start);
     }
     .m-product-text{
       padding-left: 0;
       padding-top: 28px;
-      color: #666;
+      color: #000000;
     }
     .m-company-popup {
       width: 750px;
@@ -257,14 +265,23 @@
     .m-back-info-btn{
       padding: 20px 0 27px 30px;
       text-align: right;
-      span{
+      .w-back-cancel{
         display: inline-block;
-        padding: 5px 41px;
-        line-height: 41px;
+        padding: 0px 41px;
+        line-height: 40px;
         text-align: center;
         // border-radius: 30px;
         border: 2px solid @mainColor;
         color: @mainColor;
+      }
+      .w-back-send{
+        display: inline-block;
+        padding: 0px 41px;
+        line-height: 40px;
+        text-align: center;
+        background-color: @mainColor;
+        border: 2px solid @mainColor;
+        color: #fff;
       }
     }
   }
@@ -275,11 +292,12 @@
     padding: 20px 34px;
     color: #666;
     h3{
-      padding-bottom: 20px;
+      padding-bottom: 10px;
     }
     .m-back-product-info{
       .flex-row(flex-start,flex-start);
-      padding: 0 0 24px 0;
+      padding: 24px 0 24px 0;
+      border-bottom: 1px solid #F2F2F2;
       /*background-color: #eee;*/
       img{
         display: block;
@@ -292,9 +310,6 @@
         font-size: 24px;
         color: #C1C1C1;
         // margin-top: 59px;
-      }
-      &:last-child{
-        border-bottom: 1px solid #F2F2F2;
       }
       .w-back-product-prop{
         height: 120px;
@@ -311,13 +326,16 @@
     font-size: 21px;
     line-height: 40px;
     text-align: left;
+    .w-back-text{
+      color: #C1C1C1;
+    }
   }
   .m-input{
     display: inline-block;
     width: 440px;
     height: 50px;
-    border: 1px solid #ccc;
-    border-radius: 30px;
+    border: 1px solid @mainColor;
+    // border-radius: 30px;
     margin: 10px 0;
     padding: 0 20px;
   }

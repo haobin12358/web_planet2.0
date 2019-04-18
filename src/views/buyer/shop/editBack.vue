@@ -74,7 +74,7 @@
         </div>
       </div>
       <div class="m-foot-btn">
-        <span @click="submitRefund">提 交</span>
+        <span @click="submitRefund">确认提交</span>
       </div>
     </div>
     <picker :show_picker="show_picker" :slots="slots" @pickerSave="pickerSave" ></picker>
