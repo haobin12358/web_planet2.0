@@ -152,10 +152,10 @@
           axios.post(api.refund_cancel + '?token='+ localStorage.getItem('token'), { oraid: this.refund.oraid }).then(res => {
             if(res.data.status == 200) {
               // Toast(res.data.message);
-              document.getElementsByClassName("m-alert")[0].innerHTML="退款关闭"
+              // document.getElementsByClassName("m-alert")[0].innerHTML="退款关闭"
               // this.getOrderInfo();            // 获取订单详情
               // this.$router.push('/personal/afterSales');
-              // this.$router.go(-2);
+              this.$router.go(-2);
             }
           });
         }).catch(() => {
