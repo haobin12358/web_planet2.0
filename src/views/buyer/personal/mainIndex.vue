@@ -28,32 +28,32 @@
           <img src="/static/images/circle/icon-edit.png" class="m-edit-icon" alt="">
           <span>我发布的</span>
         </div>
-        <div class="m-position-relative" @click="labelShow = !labelShow">
-          <span class="m-label">全部</span>
-          <img src="/static/images/circle/icon-up-more.png" class="m-up-more" alt="">
-          <div class="m-scroll" v-show="labelShow">
-            <ul class="m-label-ul">
-              <li>
-                全部
-              </li>
-              <li>
-                游记
-              </li>
-              <li>
-                自由主题
-              </li>
-              <li>
-                全部
-              </li>
-              <li>
-                游记
-              </li>
-              <li>
-                自由主题
-              </li>
-            </ul>
-          </div>
-        </div>
+<!--        <div class="m-position-relative" @click="labelShow = !labelShow">-->
+<!--          <span class="m-label">全部</span>-->
+<!--          <img src="/static/images/circle/icon-up-more.png" class="m-up-more" alt="">-->
+<!--          <div class="m-scroll" v-show="labelShow">-->
+<!--            <ul class="m-label-ul">-->
+<!--              <li>-->
+<!--                全部-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                游记-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                自由主题-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                全部-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                游记-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                自由主题-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
       <div class="m-mainIndex-content">
         <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
