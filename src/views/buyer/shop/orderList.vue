@@ -8,13 +8,14 @@
 
     <mt-loadmore :top-method="loadTop" ref="loadmore">
       <div class="m-no-coupon" v-if="order_list.length == 0">
-        <span class="m-no-img m-order-no-img"></span>
-        <p>暂无订单哦,<span class="m-red">去下单</span>吧~</p>
+        <!-- <span class="m-no-img m-order-no-img"></span> -->
+        <p>暂无订单,<span class="m-red">去选购</span></p>
       </div>
       <div class="m-orderList-content" v-else>
         <template v-for="(items,index) in order_list">
           <div class="w-one">
-            <div class="m-one-part" @click.stop="changeRoute('/orderDetail',items)">
+            <!-- <div class="m-one-part" @click.stop="changeRoute('/orderDetail',items)"> -->
+            <div class="m-one-part" @click.stop="judgeOrder(items)">
               <div class="m-order-store-tile">
                 <div @click.stop="changeRoute('/brandDetail',items)">
                   <span class="m-icon-store"></span>
@@ -22,6 +23,8 @@
                   <span class="m-icon-more"></span>
                 </div>
                 <span class="m-red">{{items.omstatus_zh}}</span>
+                <!-- <span v-if="items.order_refund_apply==null" class="m-red">{{items.omstatus_zh}}</span>
+                <span v-else class="m-red">{{items.order_refund_apply.orastatus_zh}}</span> -->
               </div>
               <div class="m-order-product-ul">
                 <template v-for="(item, i) in items.order_part">
@@ -142,8 +145,19 @@
               this.$router.push(v);
               // this.$router.push({path:v,query:{product:JSON.stringify(item)}});
               break;
+            case '/backDetail':
+              this.$router.push({path:v,query:{omid:item.omid}});
+              break;
             default:
               this.$router.push(v)
+          }
+        },
+        // 判断订单状态进行跳转
+        judgeOrder(items){
+          if(!items.ominrefund){
+            this.changeRoute('/orderDetail',items);
+          }else{
+            this.changeRoute('/backDetail',items);
           }
         },
         // 导航点击

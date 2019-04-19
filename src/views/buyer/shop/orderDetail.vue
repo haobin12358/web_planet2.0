@@ -92,7 +92,7 @@
             <span>￥{{order_info.omfreight | money}}</span>
           </p> -->
           <p class="m-flex-between m-ft-22">
-            <span>实付款</span>
+            <span>实付款（含运费）</span>
             <span class="w-price">￥{{item.opsubtotal | money}}</span>
           </p>
           <p class="m-back-btn" v-if="from !== 'afterSales'  && !order_info.ominrefund">
@@ -120,26 +120,26 @@
           <p v-if="order_info.send_time"><span class="w-ft-text">发货时间：</span> {{order_info.send_time}}</p>
         </div>
       </div>
-      <div class="m-order-one-part m-box-shadow" v-if="refund">
+      <div class="m-order-one-part" v-if="refund">
         <p>
-          <span class="m-border"></span>
+          <!-- <span class="m-border"></span> -->
           <span>售后信息</span>
         </p>
         <div class="m-ft-22 m-time-text">
-          <p>订单状态：{{refund.orastate_zh}} {{refund.orastatus_zh}}</p>
-          <p>退款金额：￥{{refund.oramount | money}}</p>
-          <p>申请理由：{{refund.orareason}}</p>
-          <p>货物状态：{{refund.oraproductstatus_zh}}</p>
-          <p v-if="refund.oraaddtion">附加留言：{{refund.oraaddtion}}</p>
-          <p v-if="refund.orachecktime">处理时间：{{refund.orachecktime}}</p>
+          <p><span class="w-ft-text">订单状态：</span>{{refund.orastate_zh}} {{refund.orastatus_zh}}</p>
+          <p><span class="w-ft-text">退款金额：</span>￥{{refund.oramount | money}}</p>
+          <p><span class="w-ft-text">申请理由：</span>{{refund.orareason}}</p>
+          <p><span class="w-ft-text">货物状态：</span>{{refund.oraproductstatus_zh}}</p>
+          <p v-if="refund.oraaddtion"><span class="w-ft-text">附加留言：</span>{{refund.oraaddtion}}</p>
+          <p v-if="refund.orachecktime"><span class="w-ft-text">处理时间：</span>{{refund.orachecktime}}</p>
           <!--<p v-if="refund.oracheckreason">审核回复：{{refund.oracheckreason}}</p>-->
-          <p>申请时间：{{refund.createtime}}</p>
-          <p>售后单号：{{refund.orasn}}</p>
+          <p><span class="w-ft-text">申请时间：</span>{{refund.createtime}}</p>
+          <p><span class="w-ft-text">售后单号：</span>{{refund.orasn}}</p>
         </div>
       </div>
-      <div class="m-order-one-part m-box-shadow" v-if="refund_notes">
+      <div class="m-order-one-part" v-if="refund_notes">
         <p>
-          <span class="m-border"></span>
+          <!-- <span class="m-border"></span> -->
           <span>售后审核信息</span>
         </p>
         <div class="m-ft-22 m-time-text">

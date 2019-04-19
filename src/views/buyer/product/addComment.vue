@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="m-foot-btn">
-      <span @click="createEvaluation">发 布</span>
+      <span @click="createEvaluation">发布评价</span>
     </div>
   </div>
 </template>

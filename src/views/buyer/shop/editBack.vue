@@ -21,34 +21,41 @@
         <ul class="m-selectBack-ul">
           <li  @click="showPicker('status_slot','status_select')" v-if="showProduct">
             <div class="m-flex-between">
-              <span class="m-border"></span>
+              <!-- <span class="m-border"></span> -->
               <span>货物状态</span>
             </div>
-            <span >
+            <div class="w-select">
               <span class="m-grey" v-if="status_select">{{status_select.name}}</span>
               <span class="m-grey" v-else>请选择</span>
               <span class="m-icon-more"></span>
-            </span>
-          </li>
-          <li @click="showPicker('refund_slot','refund_select')" >
-            <div class="m-flex-between">
-              <span class="m-border"></span>
-              <span>退款原因</span>
             </div>
-            <span>
-              <span class="m-grey" v-if="refund_select">{{refund_select}}</span>
-              <span class="m-grey" v-else>请选择</span>
-              <span class="m-icon-more"></span>
-            </span>
+          </li>
+          <li @click="showPicker('refund_slot','refund_select')">
+            
+              <div class="m-flex-start-col">
+                <!-- <span class="m-border"></span> -->
+                <p>退款原因</p>
+                <p class="m-selectBack-num">退款金额：￥
+                  <input class="w-price m-ft-22" type="text" v-model="refund_money" v-if="total_money" :placeholder="total_money | money">
+                  <input class="w-price m-ft-22" type="text" v-model="refund_money" v-else :placeholder="total_money">
+                </p>
+              </div>
+              <div class="w-select">
+                  <span class="m-grey" v-if="refund_select">{{refund_select}}</span>
+                  <span class="m-grey" v-else>请选择</span>
+                  <span class="m-icon-more"></span>
+              </div> 
+            
+            
           </li>
         </ul>
-        <p class="m-selectBack-num">退款金额：￥
-          <input class="m-price m-ft-22" type="text" v-model="refund_money" v-if="total_money" :placeholder="total_money | money">
-          <input class="m-price m-ft-22" type="text" v-model="refund_money" v-else :placeholder="total_money">
-        </p>
+        <!-- <p class="m-selectBack-num">退款金额：￥
+          <input class="w-price m-ft-22" type="text" v-model="refund_money" v-if="total_money" :placeholder="total_money | money">
+          <input class="w-price m-ft-22" type="text" v-model="refund_money" v-else :placeholder="total_money">
+        </p> -->
         <!--<p class="m-selectBack-num">退款金额：<span class="m-price">￥{{total_money | money}}</span></p>-->
       </div>
-      <div class="m-one-select">
+      <div class="w-one-part">
         <div>
           <span>退款原因：</span>
           <textarea name="" id="" v-model="oraaddtion" placeholder="选填"></textarea>
@@ -67,7 +74,7 @@
         </div>
       </div>
       <div class="m-foot-btn">
-        <span @click="submitRefund">提 交</span>
+        <span @click="submitRefund">确认提交</span>
       </div>
     </div>
     <picker :show_picker="show_picker" :slots="slots" @pickerSave="pickerSave" ></picker>
@@ -282,17 +289,18 @@
   @import "../../../common/css/index";
   .m-selectBack{
     min-height: 100vh;
-    background-color: #eee;
+    background-color: #fff;
     .m-product-info{
       /*padding: 34px 25px;*/
-      box-shadow:0 5px 5px rgba(0,0,0,0.16);
-      margin-bottom: 20px;
+      // box-shadow:0 5px 5px rgba(0,0,0,0.16);
+      // margin-bottom: 20px;
+      border-bottom: 10px solid #F4F4F4;
       .m-one-product{
         display: flex;
         flex-flow: row;
         width: 100%;
         background-color: #fff;
-        padding: 34px 25px 20px;
+        padding: 30px 34px;
         box-sizing: border-box;
         text-align: left;
       }
@@ -305,26 +313,31 @@
       }
       .m-ft-22{
         margin-top: 10px;
+        color: #C1C1C1;
       }
     }
     .m-selectBack-content{
       .m-one-select{
-        padding: 15px 40px 15px 45px;
+        // padding: 15px 0;
         background-color: #fff;
-        box-shadow:0 5px 5px rgba(0,0,0,0.16);
+        // box-shadow:0 5px 5px rgba(0,0,0,0.16);
         text-align: left;
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
+        border-bottom: 10px solid #F4F4F4;
         &.m-pl{
           padding-left: 65px;
         }
         .m-selectBack-ul{
           li{
-            .flex-row(space-between);
-            padding: 24px 0;
+            .flex-row(space-between,center);
+            padding: 24px 34px;
             border-bottom: 1px solid @borderColor;
             &:last-child{
               border-bottom: none;
             }
+            .w-select{
+              .flex-row(flex-start,center);
+            
             .m-border{
               display: block;
               width: 5px;
@@ -338,15 +351,24 @@
             }
             .m-icon-more{
               display: inline-block;
-              width: 22px;
-              height: 22px;
-              background: url("/static/images/icon-more.png") no-repeat;
+              width: 17px;
+              height: 30px;
+              margin-left: 21px;
+              background: url("/static/images/order/order-more.png") no-repeat;
               background-size: 100% 100%;
             }
+            }
+            
           }
         }
         .m-selectBack-num{
-          padding: 20px;
+          margin-top: 25px;
+          display: inline-block;
+          color: #999999;
+          width: 100%;
+          .w-price{
+            color: #999999;
+          }
         }
         textarea{
           display: inline-block;
@@ -397,6 +419,105 @@
         }
 
       }
+      .w-one-part{
+        padding: 25px 34px;
+        background-color: #fff;
+        text-align: left;
+        // border-bottom: 10px solid #F4F4F4;
+        &.m-pl{
+          padding-left: 65px;
+        }
+        .m-selectBack-ul{
+          li{
+            .flex-row(space-between,center);
+            padding: 24px 34px;
+            border-bottom: 1px solid @borderColor;
+            &:last-child{
+              border-bottom: none;
+            }
+            .w-select{
+              .flex-row(flex-start,center);
+            
+            .m-border{
+              display: block;
+              width: 5px;
+              height: 50px;
+              background:linear-gradient(180deg, @subColor 0%, @mainColor 100%);
+              margin-right: 15px;
+            }
+            .m-ft-18{
+              font-size: 18px;
+              color: #999;
+            }
+            .m-icon-more{
+              display: inline-block;
+              width: 17px;
+              height: 30px;
+              margin-left: 21px;
+              background: url("/static/images/order/order-more.png") no-repeat;
+              background-size: 100% 100%;
+            }
+            }
+            
+          }
+        }
+        .m-selectBack-num{
+          margin-top: 25px;
+          display: inline-block;
+          color: #999999;
+          width: 100%;
+          .w-price{
+            color: #999999;
+          }
+        }
+        textarea{
+          display: inline-block;
+          width: 500px;
+          margin-left: 20px;
+          min-height: 100px;
+          vertical-align: top;
+          font-size: 24px;
+        }
+        .m-selectBack-img-box{
+          margin-bottom: 30px;
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          .img-box {
+            position: relative;
+            .circle-img {
+              display: inline-block;
+              width: 186px;
+              height: 186px;
+              margin-top: 25px;
+              margin-right: 15px;
+            }
+            .del-img {
+              width: 40px;
+              height: 40px;
+              position: absolute;
+              top: 5px;
+              right: -15px;
+            }
+          }
+          .m-selectBack-camera{
+            width: 220px;
+            height: 220px;
+            background: url('/static/images/order/refund-upload.png') no-repeat;
+            background-size: 100% 100%;
+            display: inline-block;
+            position: relative;
+            margin: 20px 15px 20px 0;
+          }
+          img{
+            display: inline-block;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+            margin-right: 15px;
+          }
+        }
+      }
 
     }
     .m-foot-btn{
@@ -405,13 +526,13 @@
       span{
         color: #ffffff;
         display: inline-block;
-        width: 700px;
-        height: 106px;
-        border-radius: 10px;
-        background-color: @mainColor;
-        line-height: 106px;
-        font-size: 38px;
-        font-weight: bold;
+        width: 100%;
+        height: 98px;
+        // border-radius: 10px;
+        background:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
+        line-height: 98px;
+        font-size: 30px;
+        font-weight: 500;
       }
     }
   }
@@ -420,7 +541,7 @@
     top: 0;
     left: 0;
     opacity: 0;
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
   }
 </style>
