@@ -4,9 +4,10 @@
       <div class="m-flex-start">
         <img :src="circle.usheader" class="m-circle-user-avator" alt="">
         <span class="m-circle-user-name">{{circle.authername}}</span>
-<!--        <span class="m-circle-user-level">{{circle.}}</span>-->
+        <span class="m-circle-user-level">{{circle.authergrade}}</span>
       </div>
-      <span class="m-circle-collect">关注</span>
+      <span class="m-circle-collect" v-if="!circle.is_own && !circle.follow" @click.stop="followClick">关注</span>
+      <span class="m-circle-collect cancel" v-if="!circle.is_own && circle.follow" @click.stop="followClick">取消关注</span>
     </div>
 <!--    <div class="m-circle-img-box">-->
 <!--      <img src="" class="m-circle-img" alt="">-->
@@ -161,6 +162,9 @@
         },
         clickCollect(circle){
           this.$emit('clickCollect',this.index)
+        },
+        followClick(){
+          this.$emit('followClick',this.index)
         }
       }
     }
@@ -196,6 +200,10 @@
         border: 1px solid @mainColor;
         padding: 0 20px;
         font-size: 24px;
+        &.cancel{
+          color: #c1c1c1;
+          border: 1px solid #c1c1c1;
+        }
       }
     }
     .m-one-circle-content{
