@@ -145,7 +145,7 @@
 
 
         this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
-          uclcollection:this.user_list[index].uclcollection,
+          uclcollection:this.select_nav.value == 'follow' ?this.user_list[index].uclcollection :this.user_list[index].uclcollector,
           uclcotype:2
         }).then(res => {
           if(res.data.status == 200){
@@ -156,11 +156,9 @@
               });
             let arr = [].concat(this.user_list);
             if(this.select_nav.value == 'follow'){
-              if(arr[index].mutual_concern){
-                arr[index].mutual_concern = !arr[index].mutual_concern
-              }else{
+
                 arr.splice(index,1);
-              }
+
               this.show_modal = false;
             }else{
               arr[index].mutual_concern = !arr[index].mutual_concern
