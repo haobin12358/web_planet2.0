@@ -226,6 +226,8 @@
       bottom: 0;
       left: 0;
       width: 100%;
+      -webkit-transition: height 0.88s;
+      transition: height 0.88s;
       ul{
         border-bottom: 10px solid #F4F4F4;
         li{

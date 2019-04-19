@@ -53,7 +53,7 @@
 <!--        </div>-->
       </div>
       <div class="m-product-list">
-        <div class="m-one-product">
+        <div class="m-one-product" @click="changeRoute('/personal/starProductDetail')">
           <img src="" class="m-product-img" alt="">
           <h3 class="m-product-title">【TAWA】TAWA防水帐篷户外野营必备TAWA防水帐篷户外野营必备</h3>
           <div class="m-flex-end ">
@@ -100,7 +100,7 @@
       },
       methods:{
         changeRoute(v){
-          this.$router.push(v);
+          this.$router.push({path:v,query:{prid:'e65069a0-56b4-11e9-a6f6-00163e08d30f'}});
         }
       }
     }

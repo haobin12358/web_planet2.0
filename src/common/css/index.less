@@ -266,40 +266,48 @@ body{
   align-items: center;
   justify-content: space-between;
   width: 100%;
+
+  .m-num{
+    .flex-row(flex-end);
+    height: 42px;
+    color: #fff;
+  }
   .m-red{
     color: #FF6600;
   }
   .m-icon-add{
     display: inline-block;
-    width: 42px;
+    width: 60px;
     height: 42px;
-    background: url("/static/images/icon-add.png") no-repeat;
-    background-size: 100% 100%;
-    vertical-align: middle;
+    line-height: 42px;
+    background-color: @mainColor;
   }
   .m-icon-cut{
     display: inline-block;
-    width: 42px;
+    width: 60px;
     height: 42px;
-    background: url("/static/images/icon-cut.png") no-repeat;
-    background-size: 100% 100%;
-    vertical-align: middle;
+    line-height: 42px;
+    background-color: @mainColor;
+    font-size: 30px;
   }
   .m-icon-cut-sku{
     display: inline-block;
-    width: 42px;
+    width: 60px;
     height: 42px;
-    background: url("/static/images/icon-cut-sku.png") no-repeat;
-    background-size: 100% 100%;
-    vertical-align: middle;
+    line-height: 42px;
+    font-size: 30px;
+    background-color: @subColor;
   }
   .m-num-input{
     font-size: 26px;
     display: inline-block;
-    width: 87px;
-    padding: 5px  0;
-    border: none;
+    width: 90px;
+    height: 40px;
+    line-height: 40px;
+    //padding: 5px  0;
+    border: 1px solid @mainColor;
     text-align: center;
+    margin: 2px -2px 0 -2px;
   }
 }
 .m-guess-num-box {

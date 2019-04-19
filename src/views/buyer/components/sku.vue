@@ -3,22 +3,22 @@
     <div class="m-sku-state">
       <span class="m-icon-close" @click="changeModal('show_sku',false)"></span>
       <div class="m-sku-content">
-        <div class="m-sku-img-box m-center">
+        <div class="m-sku-img-box ">
           <img :src="select_value.skupic"  v-if="select_value" alt="">
           <img :src="change_info.skupic"  v-else-if="change_info" alt="">
           <img :src="product.prmainpic"  v-else alt="">
-        </div>
-        <div class="m-center">
-          <p v-if="select_value">
-            <span v-if="isAct &&  select_value.tlsprice" class="m-red">¥{{select_value.tlsprice}}</span>
-            <span class="m-red" v-else>￥{{select_value.skuprice}}</span>
+          <div v-if="select_value">
+            <p v-if="isAct &&  select_value.tlsprice" class="m-price">¥{{select_value.tlsprice | money}}</p>
+            <p class="m-price" v-else>￥{{select_value.skuprice | money}}</p>
+            <p class="m-underline">价格：<s>¥{{product.prlineprice | money}}</s></p>
             <!--<span class="m-red" v-if="select_value.skustock">￥{{select_value.skuprice}}</span>-->
             <!--<span class="m-ft-26 m-red" v-if="select_value.skustock == 0">库存不足</span>-->
-          </p>
-          <p v-else>
-            <span class="m-red" v-if="product.price_range">￥{{product.price_range}}</span>
-            <span class="m-red" v-else>￥{{product.prprice}}</span>
-          </p>
+          </div>
+          <div v-else>
+            <p class="m-price" v-if="product.price_range">￥{{product.price_range | money }}</p>
+            <p class="m-price" v-else>￥{{product.prprice | money}}</p>
+            <p class="m-underline">价格：<s>¥{{product.prlineprice | money}}</s></p>
+          </div>
         </div>
         <div class="m-scroll">
           <ul class="m-sku-box">
@@ -36,10 +36,10 @@
           <div class="m-sku-num" v-if="!activity">
             <span>购买数量</span>
             <div class="m-num">
-              <span class="m-icon-cut" v-if="num > 1" @click.stop="changeNum(-1)"></span>
-              <span class="m-icon-cut-sku" v-else></span>
+              <span class="m-icon-cut" v-if="num > 1" @click.stop="changeNum(-1)"> - </span>
+              <span class="m-icon-cut-sku" v-else>-</span>
               <input type="number" min="1" v-model="num" class="m-num-input" />
-              <span class="m-icon-add" @click.stop="changeNum(1)"></span>
+              <span class="m-icon-add" @click.stop="changeNum(1)"> +</span>
             </div>
           </div>
           <div class="m-guess-num-box" v-if="guess && select_value">
@@ -277,20 +277,22 @@
       height: 990px;
       left: 0;
       bottom:0;
-      border-radius:50px 50px 0 0;
+      /*border-radius:50px 50px 0 0;*/
       -webkit-transition: height 0.88s;
       transition: height 0.88s;
+      box-sizing: border-box;
       .m-icon-close{
         position: absolute;
-        top: 35px;
-        right: 35px;
-        height: 35px;
-        width: 35px;
+        top: 30px;
+        right: 30px;
+        height: 27px;
+        width: 27px;
         padding: 5px;
-        background: url("/static/images/icon-close.png") no-repeat;
+        background: url("/static/images/product/icon-close.png") no-repeat;
         background-size: 100% 100%;
       }
       .m-sku-content{
+
         .m-center{
           text-align: center;
           .m-red{
@@ -300,20 +302,35 @@
           }
         }
         .m-sku-img-box{
+          padding: 0 30px;
           margin: 30px 0 10px;
+          display: flex;
+          flex-flow: row;
+          align-items: flex-end;
+          justify-content: flex-start;
           img{
             display: inline-block;
-            width: 230px;
-            height: 230px;
-            box-shadow: 0 5px 6px rgba(0,0,0,0.16);
+            width: 180px;
+            height: 180px;
+            margin-right: 30px;
+          }
+          .m-price{
+            color: #E22300;
+            font-size: 32px;
+            text-align: left;
+          }
+          .m-underline{
+            color: #C1C1C1;
+            font-size: 24px;
+            text-align: left;
           }
         }
         .m-scroll{
           height: 450px;
           overflow-y: auto;
           overflow-x: hidden;
-          padding: 10px 65px;
-          color: #999999;
+          padding: 10px 30px;
+          color: #000;
           .m-sku-box{
             text-align: left;
             list-style: none;
@@ -333,7 +350,7 @@
                 line-height: 28px;
                 padding: 8px 40px;
                 background-color: #D5D5D5;
-                border-radius: 30px;
+                /*border-radius: 30px;*/
                 margin-right: 30px;
                 margin-bottom: 20px;
                 &.active{
@@ -353,12 +370,12 @@
           text-align: center;
           span{
             display: inline-block;
-            width: 680px;
+            width: 750px;
             background-color: #d5d5d5;
             height: 62px;
             line-height: 62px;
             font-size: 30px;
-            border-radius: 10px;
+            /*border-radius: 10px;*/
             text-align: center;
             &.active{
               color: #ffffff;

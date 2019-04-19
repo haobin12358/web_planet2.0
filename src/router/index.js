@@ -150,8 +150,9 @@ export const constantRouterMap = [
   //个人主页
   { path: '/personal/mainIndex', component: () => import('../views/buyer/personal/mainIndex'), hidden: true },
   { path: '/collect', component: () => import('../views/buyer/personal/collect'), hidden: true },
-  { path: '/personal/starProduct', component: () => import('../views/buyer/personal/starProduct'), hidden: true },  ///星币商城
-  { path: '/personal/starDetail', component: () => import('../views/buyer/personal/starDetail'), hidden: true },  ///星币商城记录
+  { path: '/personal/starProduct', component: () => import('../views/buyer/starProduct/starProduct'), hidden: true },  ///星币商城
+  { path: '/personal/starDetail', component: () => import('../views/buyer/starProduct/starDetail'), hidden: true },  ///星币商城记录
+  { path: '/personal/starProductDetail', component: () => import('../views/buyer/starProduct/starProductDetail'), hidden: true },  ///星币商品详情
   { path: '/personal/setPwd', component: () => import('../views/buyer/personal/setPwd'), hidden: true },  ///设置密码
   { path: '/personal/myWallet', component: () => import('../views/buyer/personal/myWallet'), hidden: true },  ///设置密码
   { path: '/personal/followUser', component: () => import('../views/buyer/personal/followUser'), hidden: true },  ///关注

@@ -150,11 +150,7 @@
             }else{
               for(let i=0;i<this.nav_list.length;i++){
                 if(this.nav_list[i].active){
-                  if(i != 0){
-                    this.getProduct(this.nav_list[i].params + (this.nav_list[i].desc_asc?'|asc':'|desc'));
-                  }else{
-                    this.getProduct()
-                  }
+                  this.getProduct(this.nav_list[i].tlaid)
                 }
               }
             }
