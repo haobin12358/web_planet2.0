@@ -62,7 +62,7 @@
               <img src="/static/images/newpersonal/icon-wallet.png" class="m-icon" alt="">
               <span>我的钱包</span>
             </div>
-            <span class="m-info">¥{{user.usbalance}}</span>
+            <span class="m-info">¥{{user.usbalance | money}}</span>
           </li>
           <li class="m-flex-between" @click="changeRoute('/personal/starProduct')">
             <div class="m-flex-start">

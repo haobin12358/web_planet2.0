@@ -43,6 +43,8 @@ Vue.prototype.$moment = moment;
 import animate from 'animate.css'
 
 Vue.prototype.$http = axios;
+import api from './api/api';
+Vue.prototype.$api = api;
 //拦截器、
 // import { Loading, Message, MessageBox  } from 'element-ui'
 import { Indicator,Toast,MessageBox} from 'mint-ui';
@@ -78,7 +80,6 @@ import store from './vuex';
 // localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTU0NzEwNzQ4NSwiZXhwIjoxNTQ3NzEyMjg1fQ.eyJ1c2VybmFtZSI6Ilx1Njc2OFx1NTZmZFx1NjgwYiIsImlkIjoiNjFmNjdiNWUtMTQyNC0xMWU5LTg0YTgtMDAxNjNlMTNhM2UzIiwibW9kZWwiOiJVc2VyIiwibGV2ZWwiOjR9.8ezghAQB-APPaTigMex2LmAhAeudU1ZwMAHUBdC3184');
 // localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTU0NzE3OTA0NCwiZXhwIjoxNTQ3NzgzODQ0fQ.eyJ1c2VybmFtZSI6Ilx1Njc2OFx1NjdkMCIsImlkIjoiODU0YjNlYTAtMDcyNy0xMWU5LWIyMDAtMDAxNjNlMDhkMzBmIiwibW9kZWwiOiJVc2VyIiwibGV2ZWwiOjF9.STGgLdOvD73gpSjKbtwy3T-kKXYxE9i94jnUyoM8hvY');
 // http响应拦截器
-import api from './api/api'
 import common from './common/js/common';
 axios.interceptors.response.use(data => {// 响应成功关闭loading
   // loadinginstace.close()

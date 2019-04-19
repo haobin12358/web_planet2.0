@@ -502,6 +502,9 @@
           background-color: @mainColor;
           margin: 0;
           border-radius: 0 10px 10px 0;
+          &:first-child{
+            border-radius: 10px 0 0 10px;
+          }
           &.active{
             background-color: @mainColor;
             margin-right: -3px;
