@@ -4,7 +4,7 @@
       <div class="m-personal-body">
         <div class="m-one-part">
           <ul class="m-edit-ul m-li-flex-start">
-            <li v-if="from == 'new' || from == 'phone'">
+            <li v-if="from == 'new' || from == 'phone'|| from == 'password'">
               <span class="m-label">手机号</span>
               <div class="m-flex-between">
                 <input type="text" class="m-edit-input   " placeholder="请输入手机号码" v-model="ustelphone">
@@ -12,7 +12,7 @@
                 <span class="m-get-code" v-if="getCode">{{ count }} 秒后重发</span>
               </div>
             </li>
-            <li v-if="from == 'new' || from == 'phone'">
+            <li v-if="from == 'new' || from == 'phone' || from == 'password'">
 
               <span class="m-label">验证码</span>
               <div>
@@ -37,12 +37,12 @@
 <!--            </li>-->
           </ul>
         </div>
-<!--        <div class="m-editInput-alert" v-if="from == 'passwd'">-->
-<!--          <p class="m-ft-28">提示：</p>-->
-<!--          <p class="m-ft-24">支付密码用于装币/星币等支付验证</p>-->
-<!--          <p class="m-ft-24">让您的资金账户更加安全</p>-->
-<!--        </div>-->
-        <div class="m-editInput-alert" >
+        <div class="m-editInput-alert" v-if="from == 'password'">
+          <p class="m-ft-28">提示：</p>
+          <p class="m-ft-24">支付密码用于星币等支付验证</p>
+          <p class="m-ft-24">让您的资金账户更加安全</p>
+        </div>
+        <div class="m-editInput-alert" v-else>
           <p class="m-ft-28">提示：</p>
           <p class="m-ft-24">微信登录用户请绑定手机号后使用</p>
         </div>
@@ -84,7 +84,7 @@
           this.ustelphone = localStorage.getItem('ustelphone');
           localStorage.removeItem('ustelphone');
         }
-      }else if(this.from == 'phone' || this.from == 'passwd') {
+      }else if(this.from == 'phone' || this.from == 'password') {
         common.changeTitle('安全中心');
       }else {
         common.changeTitle('安全中心');
@@ -135,7 +135,7 @@
       // 保存信息
       saveUser() {
         // 更换手机号或者新人绑定手机号
-        if(this.from == 'new' || this.from == 'phone') {
+        if(this.from == 'new' || this.from == 'phone' || this.form == 'password') {
           if(!this.ustelphone){
             Toast("请先输入手机号码");
             return false;
@@ -145,28 +145,24 @@
             return false;
           }
         }
-        if(this.from == 'passwd') {
-          if(!this.uspaycode){
-            Toast("请先输入支付密码");
-            return false;
-          }
-          if(!this.uspaycodeAgain){
-            Toast("请再次输入支付密码");
-            return false;
-          }
-          if(this.uspaycode != this.uspaycodeAgain){
-            Toast("两次输入的支付密码不一致");
-            return false;
-          }
-        }
+        // if(this.from == 'password') {
+        //   if(!this.uspaycode){
+        //     Toast("请先输入支付密码");
+        //     return false;
+        //   }
+        //   if(!this.uspaycodeAgain){
+        //     Toast("请再次输入支付密码");
+        //     return false;
+        //   }
+        //   if(this.uspaycode != this.uspaycodeAgain){
+        //     Toast("两次输入的支付密码不一致");
+        //     return false;
+        //   }
+        // }
         let params = {
           ustelphone: this.ustelphone,
           identifyingcode: this.identifyingcode
         };
-        if(this.from == 'passwd') {
-          params.uspaycode = this.uspaycode;
-          params.uspaycodeAgain = this.uspaycodeAgain;
-        }
         if(this.from == 'new') {
           params.openid = localStorage.getItem('openid');
           params.app_from = window.location.origin.substr(8, window.location.origin.length);
@@ -208,13 +204,21 @@
               this.identifyingcode = ''
             }
           });
-        }else if(this.from == 'phone' || this.from == 'passwd') {
+        }else if(this.from == 'phone' ) {
           axios.post(api.update_user + '?token=' + localStorage.getItem('token'), params).then(res => {
             if(res.data.status == 200) {
               Toast(res.data.message);
               this.$router.go(-1);
             }
           });
+        }else if(this.from == 'password'){
+          axios.post(api.check_code + '?token=' + localStorage.getItem('token'), params).then(res => {
+            if(res.data.status == 200) {
+              // Toast(res.data.message);
+              this.$router.push({path:'/personal/setPwd',query:{way:this.$route.query.way}});
+            }
+          });
+
         }
       }
     }

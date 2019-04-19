@@ -134,6 +134,8 @@ const api={
   collection_collect: title +'collection/collect',         ///收藏
   get_home_top: title + 'user/get_home_top',             ///用户主页数据
   collection_show: title + 'collection/show',           //获取关注的人和粉丝
+  check_code: title +'user/check_code',        //验证手机
+  set_paycode: title + 'user/set_paycode',    //设置密码
 };
 
 

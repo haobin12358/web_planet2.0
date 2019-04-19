@@ -27,12 +27,13 @@
             <span class="m-icon-more"></span>
           </div>
         </li>
-        <li @click="changeRoute('/personal/setPwd')">
+        <li @click="changeRoute('/personal/editInput','password',user.uspaycode)">
           <div>
             <span>支付密码</span>
           </div>
           <div class="m-flex-end">
-           <span class="m-grey">更换密码</span>
+           <span class="m-grey" v-if="user.uspaycode">更换密码</span>
+            <span class="m-grey" v-else>设置密码</span>
             <span class="m-icon-more"></span>
           </div>
         </li>
@@ -56,9 +57,15 @@
     components: {},
     methods: {
       // 跳转页面
-      changeRoute(v, where) {
+      changeRoute(v, where,code) {
+        let _way = '';
+        if(code){
+          _way = 'change'
+        }else{
+          _way = 'new';
+        }
         if(where) {
-          this.$router.push({ path: v, query: { from: where }});
+          this.$router.push({ path: v, query: { from: where ,way:_way}});
         }else {
           this.$router.push(v);
         }
