@@ -7,12 +7,12 @@
           <p class="m-user-level">{{person_info.uslevel_zh}}</p>
         </div>
         <ul class="m-head-num-ul">
-          <li @click="changeRoute('/personal/followUser')">
+          <li @click="changeRoute('/personal/followUser',0)">
             <p class="m-num">{{person_info.follow}}</p>
             <p>关注</p>
           </li>
           <li class="m-num-line"></li>
-          <li @click="changeRoute('/personal/followUser')">
+          <li @click="changeRoute('/personal/followUser',1)">
             <p class="m-num">{{person_info.fens_count}}</p>
             <p>粉丝</p>
           </li>
@@ -84,15 +84,16 @@
           }
       },
       components:{
-        mCircle
+        mCircle,
+        bottomLine
       },
       mounted(){
           this.getInfo();
           this.getNews();
       },
       methods:{
-        changeRoute(v){
-          this.$router.push({path:v})
+        changeRoute(v,param){
+          this.$router.push({path:v,query:{index:param}})
         },
         getInfo(){
           this.$http.get(api.get_home_top,{

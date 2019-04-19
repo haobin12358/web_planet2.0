@@ -133,6 +133,7 @@ const api={
 
   collection_collect: title +'collection/collect',         ///收藏
   get_home_top: title + 'user/get_home_top',             ///用户主页数据
+  collection_show: title + 'collection/show',           //获取关注的人和粉丝
 };
 
 
