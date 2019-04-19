@@ -1,14 +1,18 @@
 <template>
   <div class="m-storekeeper">
     <!--顶部图片-->
-    <img class="m-storekeeper-bg" src="/static/images/icon-integral-bg-new.png" alt="">
+    <img class="m-storekeeper-bg" src="/static/images/storekeeper/store-background.png" alt="">
     <!--顶部文字-->
     <div class="m-top-box">
       <h3 class="m-title">本月收益</h3>
       <p class="m-num-box"><span>￥</span><span class="m-num">{{user.mounth_count}}</span></p>
-      <div class="m-detail-more" @click="changeRoute('/storekeeper/incomeDetail')">
-        <div class="m-text-bottom">收益详情</div>
-        <img class="m-jump-img" src="/static/images/icon-more.png">
+      <p class="w-wd"><span class="w-wd-btn">提现</span></p>
+      <!-- <div class="m-detail-more" @click="changeRoute('/storekeeper/incomeDetail')"> -->
+      <div class="m-detail-more">
+        <div class="w-detail-text" @click="changeRoute('/storekeeper/incomeDetail')">收益详情</div>
+        <!-- 暂未完成提现历史的跳转 -->
+        <div class="w-detail-text">提现历史</div>
+        <!-- <img class="m-jump-img" src="/static/images/icon-more.png"> -->
       </div>
     </div>
     <div class="m-detail-box" v-if="num_box">
@@ -31,11 +35,11 @@
         </li>
         <li @click="changeRoute('/storekeeper/group')">
           <p class="m-num">{{user.fens_count}}</p>
-          <p class="m-flex-center"><span>团队成员总数(人)</span> <img class="m-jump-img" src="/static/images/icon-more.png"></p>
+          <p class="m-flex-center"><span>团队成员总数(人)</span> <img class="w-icon-more" src="/static/images/storekeeper/store-icon-more.png"></p>
         </li>
         <li @click="changeRoute('/storekeeper/group')">
           <p class="m-num">{{user.fens_mouth_count}}</p>
-          <p class="m-flex-center"><span>新增团队成员(人)</span> <img class="m-jump-img" src="/static/images/icon-more.png"></p>
+          <p class="m-flex-center"><span>新增团队成员(人)</span> <img class="w-icon-more" src="/static/images/storekeeper/store-icon-more.png"></p>
         </li>
       </ul>
     </div>
@@ -56,10 +60,10 @@
       </ul>
     </div>
 
-    <div class="m-store-btn-box">
+    <!-- <div class="m-store-btn-box">
       <span class="m-btn" @click="makeMoney">提现</span>
       <span class="m-btn-a"  @click="changeRoute('/personal/history')">提现历史</span>
-    </div>
+    </div> -->
     <!--<div class="m-total-jump-box m-earnings-detail">-->
       <!--<div class="m-earnings-out m-text-bottom" @click="outPopup = true">提现</div>-->
       <!--<div class="m-detail-box" @click="changeRoute('/storekeeper/incomeDetail')">-->
@@ -442,26 +446,39 @@
     padding-bottom: 50px;
     .m-storekeeper-bg {
       width: 750px;
-      height: 420px;
+      height: 350px;
     }
     .m-top-box{
       width: 750px;
-      height: 365px;
+      height: 350px;
       position: absolute;
-      top: 35px;
+      top: 0;
       left:0;
-      display: flex;
-      flex-flow: column;
-      align-items: center;
-      justify-content: space-between;
+      .flex-col(space-between,center);
+      // display: flex;
+      // flex-flow: column;
+      // align-items: center;
+      // justify-content: space-between;
       .m-title{
-        color: #22A7D2;
-        font-size: 28px;
+        color: #FFFFFF;
+        margin-top: 40px;
+        font-size: 24px;
       }
       .m-num-box{
         color: #fff;
+        font-size: 28px;
         .m-num{
-          font-size: 80px;
+          font-size: 40px;
+          font-weight: 500;
+        }
+      }
+      .w-wd{
+        .w-wd-btn{
+          display: inline-block;
+          padding: 5px 72px;
+          border: 1px solid #fff;
+          font-size:28px;
+          color: #fff;
         }
       }
       .m-detail-more {
@@ -469,6 +486,14 @@
         align-items: center;
         color: #fff;
         font-size: 28px;
+        margin-bottom: 30px;
+        .w-detail-text{
+          padding: 0 139px 0 0;
+          &:last-child{
+            padding: 0 0 0 139px;
+            border-left: 1px solid #fff;
+          }
+        }
       }
     }
 
@@ -489,9 +514,15 @@
             border-right: 1px solid #E9E9E9;
           }
           .m-num{
-            color: #22A7D2;
+            color: #000000;
             font-size: 40px;
             margin-bottom: 15px;
+            font-weight: 600;
+          }
+          .w-icon-more{
+            width: 14px;
+            height: 24px;
+            margin-left: 10px;
           }
         }
       }
