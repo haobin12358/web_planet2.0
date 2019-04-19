@@ -22,8 +22,9 @@
                   <span class="m-store-name">{{items.pbname}}</span>
                   <span class="m-icon-more"></span>
                 </div>
-                <span v-if="items.order_refund_apply==null" class="m-red">{{items.omstatus_zh}}</span>
-                <span v-else class="m-red">{{items.order_refund_apply.orastatus_zh}}</span>
+                <span class="m-red">{{items.omstatus_zh}}</span>
+                <!-- <span v-if="items.order_refund_apply==null" class="m-red">{{items.omstatus_zh}}</span>
+                <span v-else class="m-red">{{items.order_refund_apply.orastatus_zh}}</span> -->
               </div>
               <div class="m-order-product-ul">
                 <template v-for="(item, i) in items.order_part">
@@ -153,7 +154,7 @@
         },
         // 判断订单状态进行跳转
         judgeOrder(items){
-          if(items.order_refund_apply==null){
+          if(!items.ominrefund){
             this.changeRoute('/orderDetail',items);
           }else{
             this.changeRoute('/backDetail',items);

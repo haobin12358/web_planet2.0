@@ -4,7 +4,7 @@
         <!-- <div> -->
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '-20'">售后申请{{refund.orastatus_zh}}</p>
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '-10'">商家{{refund.orastatus_zh}}，请稍后处理</p>
-          <p class="m-alert m-ft-28" v-if="refund.orastatus == '25'">退款关闭</p>
+          <!-- <p class="m-alert m-ft-28" v-if="refund.orastatus == '25'">退款关闭</p> -->
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '0'">等待商家处理</p>
           <p class="m-alert m-ft-28" v-if="refund.orastatus == '10'">
             退款申请通过
@@ -155,7 +155,7 @@
               // document.getElementsByClassName("m-alert")[0].innerHTML="退款关闭"
               // this.getOrderInfo();            // 获取订单详情
               // this.$router.push('/personal/afterSales');
-              this.$router.go(-2);
+              this.$router.go(-3);  //撤销申请后回到orderList页面
             }
           });
         }).catch(() => {
