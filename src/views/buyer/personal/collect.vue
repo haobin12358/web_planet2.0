@@ -4,12 +4,18 @@
         <nav-list :navlist="nav_list"  @navClick="navClick"></nav-list>
       </div>
       <div class="m-collect-content">
-          <m-circle :index="index" v-for="(item,index) in news_list" v-if="nav_list[0].active" :key="index" :circle="item" @likeClick="likeClick" @clickCollect="clickCollect" @followClick="followClick"></m-circle>
-        <div class="m-product-list" >
-
-            <product v-if="nav_list[1].active" v-for="(item,index) in product_list" :key="index" :product="item"></product>
+        <div >
+          <m-circle :index="index" v-for="(item,index) in news_list" v-if="nav_list[0].active && news_list.length > 0" :key="index" :circle="item" @likeClick="likeClick" @clickCollect="clickCollect" @followClick="followClick"></m-circle>
 
         </div>
+        <p v-if="nav_list[0].active && news_list.length == 0" class="m-no-data">暂无收藏的发现内容</p>
+        <div class="m-product-list" >
+
+            <product v-if="nav_list[1].active && product_list.length >0" v-for="(item,index) in product_list" :key="index" :product="item"></product>
+
+        </div>
+        <p v-if="nav_list[1].active && product_list.length == 0" class="m-no-data">暂无收藏的商品</p>
+
         <bottom-line v-if="bottom_show"></bottom-line>
 
       </div>
@@ -220,6 +226,7 @@
 </script>
 
 <style scoped lang="less">
+
 .m-collect{
   background-color: #fff;
   min-height: 100vh;
@@ -233,6 +240,12 @@
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
+  }
+  .m-no-data{
+    text-align: center;
+    font-size: 24px;
+    color: #C1C1C1;
+    padding: 30px ;
   }
 }
 </style>
