@@ -46,11 +46,11 @@
     <div class="m-store-icon-box">
       <ul>
         <li @click="changeRoute('/storekeeper/activationCode')">
-          <img src="/static/images/icon-store-car.png" alt="">
+          <img src="/static/images/storekeeper/store-icon-buykey.png" alt="">
           <p>购买激活码</p>
         </li>
         <li @click="changeRoute('/storekeeper/myActivationCode')">
-          <img src="/static/images/icon-store-person.png" alt="">
+          <img src="/static/images/storekeeper/store-icon-mykey.png" alt="">
           <p>我的激活码</p>
         </li>
         <li @click="changeRoute('/personal/codeHistory')">
@@ -498,7 +498,8 @@
     }
 
     .m-detail-box{
-      padding: 0 50px ;
+      // padding: 0 50px;
+      border-bottom: 10px solid #F4F4F4;
       ul{
         display: flex;
         flex-flow: row;
@@ -506,12 +507,16 @@
         align-items: center;
         justify-content: flex-start;
         li{
-          width: 49%;
+          width: 324px;
           padding: 56px 0;
           border-bottom: 1px solid #E9E9E9;
           font-size: 24px;
           &:nth-child(odd){
             border-right: 1px solid #E9E9E9;
+            padding-left: 50px;
+          }
+          &:nth-child(even){
+            padding-right: 50px;
           }
           .m-num{
             color: #000000;

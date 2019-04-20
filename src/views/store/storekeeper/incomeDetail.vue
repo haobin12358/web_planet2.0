@@ -1,12 +1,15 @@
 
 <template>
   <div class="m-income-detail">
+    <div class="m-nav">
+      <nav-list :navlist="nav_list" @navClick="navClick"></nav-list>
+    </div>
     <div class="m-detail-top">
       <!--年月选择器-->
       <div class="m-time-box" @click="openPicker">
-        <div class="m-time-text">{{now}}</div>
-        <img class="m-time-img" v-if="!popupVisible" src="/static/images/icon-down-close.png" alt="">
-        <img class="m-time-img" v-if="popupVisible" src="/static/images/icon-down-open.png" alt="">
+        <div class="m-time-text">本月</div>
+        <img class="m-time-img" v-if="!popupVisible" src="/static/images/storekeeper/store-icon-open.png" alt="">
+        <img class="m-time-img" v-if="popupVisible" src="/static/images/storekeeper/store-icon-close.png" alt="">
       </div>
       <div class="m-date-popup-box">
         <mt-popup class="m-date-popup" v-model="popupVisible" position="bottom">
@@ -39,8 +42,10 @@
           <div class="m-product-time">{{item.createtime}}</div>
         </div>
         <div class="m-detail-item-right">
-          <div class="money-text" :class="item.ucstatus=='预计到账'?'status':''">+{{item.uccommission | money}}</div>
-          <div class="status-text" v-if="item.ucstatus">（{{item.ucstatus}}）</div>
+          <!-- 暂未完成收益显示，等后端 -->
+          <div class="money-text">￥{{item.uccommission | money}}</div>
+          <!-- <div class="money-text" :class="item.ucstatus=='预计到账'?'status':''">+{{item.uccommission | money}}</div>
+          <div class="status-text" v-if="item.ucstatus">（{{item.ucstatus}}）</div> -->
         </div>
       </div>
       <div v-if="detailList.length == 0">
@@ -61,6 +66,7 @@
     name: "incomeDetail",
     data() {
       return {
+        nav_list:[],
         now: "",                  // 当前时间 - 年月
         navList: [
           { name: "普 通", active: true }, { name: "爆 款", active: false }
@@ -173,24 +179,38 @@
     flex-direction: column;
     color: #666666;
     font-size: 24px;
+    .m-nav{
+      background-color: #fff;
+      box-shadow:0 3px 6px rgba(0,0,0,0.16);
+      margin-bottom: 3px;
+    }
+    .m-nav-list{
+      padding: 0 26px ;
+    }
     .m-detail-top {
       width: 100%;
-      position: fixed;
-      top: 0;
+      // position: fixed;
+      // top: 0;
       background-color: #ffffff;
+      border-bottom: 10px solid #F4F4F4;
+      .flex-row(space-between);
       .m-time-box {
         display: flex;
         justify-content: center;
         align-items: center;
-        text-align: center;
-        padding: 50px 0 70px 0;
+        // text-align: center;
+        margin: 20px 0 20px 40px;
+        width:118px;
+        height:40px;
+        background:rgba(235,235,235,1);
+        border-radius:50px;
         .m-time-text {
           font-size: 28px;
           margin-right: 15px;
         }
         .m-time-img {
-          width: 30px;
-          height: 15px;
+          width: 19px;
+          height: 19px;
         }
       }
       .m-date-popup-box {
@@ -207,13 +227,14 @@
       .m-total-text-box {
         display: flex;
         justify-content: space-between;
-        padding: 0 160px;
+        margin-right: 40px;
+        // padding: 0 160px;
         .m-total-text {
 
         }
         .m-total-num {
-          color: #C70000;
-          font-weight: bold;
+          color: #000000;
+          // font-weight: bold;
         }
       }
       .m-nav{
@@ -222,16 +243,18 @@
       }
     }
     .m-income-detail-box {
-      margin: 260px 50px 0 70px;
+      // margin: 260px 50px 0 70px;
+      // padding: 30px 0;
       .m-detail-item {
         display: flex;
         align-items: center;
-        margin-bottom: 50px;
+        padding: 30px 43px;
+        border-bottom: 1px solid #F2F2F2;
         .m-detail-item-left {
           .m-product-img {
             width: 97px;
             height: 97px;
-            border-radius: 10px;
+            // border-radius: 10px;
           }
         }
         .m-detail-item-middle {
@@ -243,34 +266,42 @@
           text-align: left;
           margin: 0 25px;
           .m-product-name {
-            height: 50px;
-            font-size: 24px;
-            line-height: 28px;
+            height: 40px;
+            font-size: 28px;
+            line-height: 40px;
+            font-weight: 350;
+            color: #000000;
             white-space: normal;
-            overflow: hidden; // 超出的文本隐藏
-            word-break: break-word;  // 英文换行
-            text-overflow: ellipsis;    // 溢出用省略号显示
-            display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
-            -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
-            -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            // overflow: hidden; // 超出的文本隐藏
+            // word-break: break-word;  // 英文换行
+            // text-overflow: ellipsis;    // 溢出用省略号显示
+            // display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+            // -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+            // -webkit-line-clamp: 1; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
           }
           .m-product-time {
             color: #999999;
-            font-size: 21px;
+            font-size: 24px;
             line-height: 35px;
           }
         }
         .m-detail-item-right {
           font-size: 26px;
-          color: #C70000;
+          color: #000000;
           .money-text {
-            font-weight: bold;
+            font-weight: 500;
+            font-size: 28px;
             &.status {
-              color: @mainColor;
+              color: #000000;
             }
           }
           .status-text {
-            color: @mainColor;
+            color: #000000;
             font-size: 18px;
             margin-top: -5px;
           }
