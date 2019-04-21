@@ -507,16 +507,16 @@
         align-items: center;
         justify-content: flex-start;
         li{
-          width: 324px;
-          padding: 56px 0;
+          width: 274px;
+          padding: 56px 50px;
           border-bottom: 1px solid #E9E9E9;
           font-size: 24px;
           &:nth-child(odd){
             border-right: 1px solid #E9E9E9;
-            padding-left: 50px;
+            // padding-left: 50px;
           }
           &:nth-child(even){
-            padding-right: 50px;
+            // padding-right: 50px;
           }
           .m-num{
             color: #000000;
