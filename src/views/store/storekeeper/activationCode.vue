@@ -33,10 +33,10 @@
                 <img class="circle-img" :src="item" alt="" @click="previewImage(index, image)">
                 <img class="del-img" src="/static/images/icon-close.png" alt="" @click="deleteImg(index)">
               </div>
-              <div class="m-selectBack-camera" v-if="img_box.length < 4">
+              <div class="m-selectBack-camera" v-if="img_box.length < 2">
                 <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="" @change="uploadImg" ref="voucherImg">
               </div>
-              <div class="m-selectBack-camera" v-if="img_box.length < 4">
+              <div class="m-selectBack-camera" v-if="img_box.length < 2">
                 <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="" @change="uploadImg" ref="voucherImg">
               </div>
             </div>
@@ -172,7 +172,7 @@
       },
       //上传图片
       uploadImg(e) {
-        if(this.img_box && this.img_box.length == 4) {
+        if(this.img_box && this.img_box.length == 2) {
           Toast('最多只可上传4张图片');
           return false;
         }

@@ -65,6 +65,8 @@ export const constantRouterMap = [
   { path: '/storekeeper/activationCode', component: () => import('../views/store/storekeeper/activationCode'), hidden: true },
   // 店主版 - 店主 - 我的激活码
   { path: '/storekeeper/myActivationCode', component: () => import('../views/store/storekeeper/myActivationCode'), hidden: true },
+  // 店主版 - 店主 - 提现
+  { path: '/storekeeper/withDraw', component: () => import('../views/store/storekeeper/withDraw.vue'), hidden: true },
 
 
   {

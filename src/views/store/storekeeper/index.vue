@@ -6,7 +6,7 @@
     <div class="m-top-box">
       <h3 class="m-title">本月收益</h3>
       <p class="m-num-box"><span>￥</span><span class="m-num">{{user.mounth_count}}</span></p>
-      <p class="w-wd"><span class="w-wd-btn">提现</span></p>
+      <p class="w-wd"><span class="w-wd-btn" @click="changeRoute('/storekeeper/withDraw')">提现</span></p>
       <!-- <div class="m-detail-more" @click="changeRoute('/storekeeper/incomeDetail')"> -->
       <div class="m-detail-more">
         <div class="w-detail-text" @click="changeRoute('/storekeeper/incomeDetail')">收益详情</div>

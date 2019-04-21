@@ -5,8 +5,8 @@
                      :right="rightButtons" :title="item.uaccode">
       </mt-cell-swipe>-->
       <div class="m-code-item" v-if="codeList.length > 0" v-for="(item, index) in codeList">
-        <div class="m-code-text">激活码：{{item.uaccode}}</div>
-        <div class="m-code-status">{{item.uacstatus_zh}}</div>
+        <div class="m-code-text">{{item.uaccode}}</div>
+        <!-- <div class="m-code-status">{{item.uacstatus_zh}}</div> -->
         <div class="m-code-copy-btn" :class="item.uacstatus == 10 ? 'un-active' : ''" @click="copyText(index)">复制</div>
       </div>
       <p class="m-no-data" v-if="codeList.length == 0">暂无数据</p>
@@ -120,25 +120,28 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 20px 60px;
-        padding: 20px 0;
+        // margin: 20px 60px;
+        padding: 38px 60px;
         border-bottom: 1px #CCCCCC solid;
-        font-size: 24px;
+        
         &:first-child {
-          padding-top: 40px;
+          padding-top: 38px;
         }
         .m-code-text {
-
+          font-size: 28px;
+          font-weight: 500;
+          color: #000000;
         }
         .m-code-status {
 
         }
         .m-code-copy-btn {
           padding: 4px 30px;
-          border-radius: 10px;
-          background-color: @mainColor;
-          color: #fff;
-          box-shadow:0 3px 6px rgba(0,0,0,0.16);
+          // border-radius: 10px;
+          // background-color: @mainColor;
+          color: @mainColor;
+          // box-shadow:0 3px 6px rgba(0,0,0,0.16);
+          font-size: 28px;
           line-height: 40px;
           &.un-active {
             background-color: #CCCCCC;
