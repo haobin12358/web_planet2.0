@@ -1,12 +1,15 @@
 <template>
   <div class="m-circle-detail">
     <div class="m-circle-content" v-if="news_info">
-      <h3 class="m-circle-title">{{news_info.netitle}}</h3>
-      <span class="m-icon-gray-share" @click="shareCircle"></span>
+<!--      <h3 class="m-circle-title">{{news_info.netitle}}</h3>-->
       <div class="m-author-box">
-        <img class="m-author-img" :src="news_info.author.usheader">
-        <div class="m-author-name">{{news_info.author.usname}}</div>
-        <div>{{news_info.createtime}}</div>
+        <div class="m-flex-start">
+          <img class="m-author-img" :src="news_info.author.usheader">
+          <div class="m-author-name">{{news_info.author.usname}}</div>
+          <div class="m-user-leval">{{news_info.createtime}}</div>
+        </div>
+        <span class="m-follow" v-if="!news_info.is_own && !news_info.follow" @click.stop="followClick">关注</span>
+        <span class="m-follow cancel" v-if="!news_info.is_own && news_info.follow" @click.stop="followClick">取消关注</span>
       </div>
 
       <div class="m-content">
@@ -26,32 +29,50 @@
           </div>
         </template>
 
-        <div class="m-more-link" >
-          <span @click.stop="lookMore">查看更多></span>
+<!--        <div class="m-more-link" >-->
+<!--          <span @click.stop="lookMore">查看更多></span>-->
+<!--        </div>-->
+        <div class="m-circle-icon-box m-flex-between">
+          <img src="/static/images/circle/icon-share.png" class="m-icon" @click.stop="shareCircle" alt="">
+          <div class="m-flex-end">
+            <div class="m-circle-icon-one"  @click.stop="isLickClick(1)">
+              <img src="/static/images/circle/icon-like-active.png" v-if="news_info.is_favorite == 1" class="m-icon" alt="">
+              <img src="/static/images/circle/icon-like.png" v-else class="m-icon" alt="">
+              <span :class="news_info.is_favorite == 1?'active':''">{{news_info.favoritnumber}}</span>
+            </div>
+            <div class="m-circle-icon-one" >
+              <img src="/static/images/circle/icon-comment.png" class="m-icon" alt="">
+              <span>{{news_info.commentnumber}}</span>
+            </div>
+            <div class="m-circle-icon-one" @click.stop="clickCollect">
+              <img src="/static/images/circle/icon-collect-active.png" v-if="news_info.collected" class="m-icon" alt="">
+              <img src="/static/images/circle/icon-collect.png" v-else class="m-icon" alt="">
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="m-circle-foot" v-if="news_info">
-      <div class="float-left">
-        <span class="m-icon-btn" :class="news_info.is_favorite == 1 ? 'active' : ''" @click.stop="isLickClick(1)">
-          <span class="m-icon-zan"></span>
-          <span>赞同 {{news_info.favoritnumber}}</span>
-        </span>
-        <span class="m-icon-btn" :class="news_info.is_trample == 1 ? 'active' : ''" @click.stop="isLickClick(0)">
-          <span class="m-icon-cai"></span>
-          <span>反对 {{news_info.tramplenumber}}</span>
-        </span>
-        <!--<span class="m-icon-btn" @click="shareCircle">
-          <span>分 享</span>
-        </span>-->
-        <span class="m-icon-btn" @click="deleteCircle" v-if="news_info.is_own">
-          <span>删 除</span>
-        </span>
-      </div>
-      <span class="m-circle-collect float-right" :class="news_info.collected ? 'active':''" @click.stop="clickCollect"></span>
-      <span class="m-circle-comment float-right" @click="changeModal('show_modal',true)">评论 {{news_info.commentnumber}}</span>
+<!--    <div class="m-circle-foot" v-if="news_info">-->
+<!--      <div class="float-left">-->
+<!--        <span class="m-icon-btn" :class="news_info.is_favorite == 1 ? 'active' : ''" @click.stop="isLickClick(1)">-->
+<!--          <span class="m-icon-zan"></span>-->
+<!--          <span>赞同 {{news_info.favoritnumber}}</span>-->
+<!--        </span>-->
+<!--        <span class="m-icon-btn" :class="news_info.is_trample == 1 ? 'active' : ''" @click.stop="isLickClick(0)">-->
+<!--          <span class="m-icon-cai"></span>-->
+<!--          <span>反对 {{news_info.tramplenumber}}</span>-->
+<!--        </span>-->
+<!--        &lt;!&ndash;<span class="m-icon-btn" @click="shareCircle">-->
+<!--          <span>分 享</span>-->
+<!--        </span>&ndash;&gt;-->
+<!--        <span class="m-icon-btn" @click="deleteCircle" v-if="news_info.is_own">-->
+<!--          <span>删 除</span>-->
+<!--        </span>-->
+<!--      </div>-->
+<!--      <span class="m-circle-collect float-right" :class="news_info.collected ? 'active':''" @click.stop="clickCollect"></span>-->
+<!--      <span class="m-circle-comment float-right" @click="changeModal('show_modal',true)">评论 {{news_info.commentnumber}}</span>-->
 
-    </div>
+<!--    </div>-->
     <div class="m-box">
       <div class="m-item" v-if="news_info.coupon">
         <div class="m-box-title">优惠领取</div>
@@ -65,35 +86,41 @@
     </div>
 
 
-    <div class="m-comment-modal" v-if="show_modal">
+    <div class="m-comment-modal" >
       <div class="m-modal-state">
-        <span class="m-icon-close" @click="changeModal('show_modal',false, 0)"></span>
         <div class="m-modal-content">
-           <h3>全部 {{comment_count}} 条评论</h3>
-          <div class="m-scroll" ref="comment" @touchmove="touchMove">
+           <h3 class="m-no-data" v-if="!comment_count">成为第一个评论的人吧</h3>
+          <div class="m-scroll" v-else ref="comment" @touchmove="touchMove">
             <ul class="m-comment-ul">
               <li v-for="(items,index) in comment_list">
                 <img :src="items.user.usheader" class="m-user-img" alt="">
                 <div class="m-comment-text">
                   <div>
-                    <p class="m-user-name">{{items.user.usname}}</p>
-                    <p class="m-user-comment" @touchstart="gtouchstart(items,index)" @touchmove="gtouchmove()" @touchend="gtouchend(items,index)">{{items.nctext}}</p>
-                    <div class="m-icon-list">
-                      <span >{{items.createtime}}</span>
-                      <div>
+                    <div class="m-user-name m-flex-between">
+                      {{items.user.usname}}
+                      <div cllass="m-icon-list m-like">
+                        <span :class="items.is_favorite?'active':''">{{items.favorite_count}}</span>
                         <span class="m-icon-like" :class="items.is_favorite?'active':''" @click.stop="commentLike(index)"></span>
-                        <span>{{items.favorite_count}}</span>
-                        <span class="m-icon-comment" @click.stop="commentClick(items,index)"></span>
-                        <span @click.stop="commentClick(items,index)">{{items.reply_count}}</span>
+
+<!--                        <span class="m-icon-comment" @click.stop="commentClick(items,index)"></span>-->
+<!--                        <span @click.stop="commentClick(items,index)">{{items.reply_count}}</span>-->
                       </div>
                     </div>
+                    <div class="m-icon-list">
+                      <span >{{items.createtime}}</span>
+                    </div>
+                    <p class="m-user-comment" @touchstart="gtouchstart(items,index)" @touchmove="gtouchmove()" @touchend="gtouchend(items,index)" @click.stop="commentClick(items,index)">{{items.nctext}}</p>
+
                   </div>
-                  <p class="m-comment-content" v-for="(item,i) in items.reply" @click.stop="commentClick(item,index)" @touchstart="gtouchstart(item,index,i)" @touchmove="gtouchmove()" @touchend="gtouchend(item,index,i)">
-                    <span class="m-user-name m-mr">{{item.commentuser}}</span>
-                    <span class="m-comment-back" v-if="item.replieduser">回复</span>
-                    <span class="m-user-name m-mr" v-if="item.replieduser">{{item.replieduser}}</span>
-                    <span>{{item.nctext}}</span>
-                  </p>
+                  <div class="m-comment-content" >
+                    <p v-for="(item,i) in items.reply" @click.stop="commentClick(item,index)" @touchstart="gtouchstart(item,index,i)" @touchmove="gtouchmove()" @touchend="gtouchend(item,index,i)">
+                      <span class="m-user-name m-mr">{{item.commentuser}}:</span>
+                      <span class="m-comment-back" v-if="item.replieduser">回复</span>
+                      <span class="m-user-name m-mr" v-if="item.replieduser">{{item.replieduser}}</span>
+                      <span>{{item.nctext}}</span>
+                    </p>
+
+                  </div>
                 </div>
               </li>
             </ul>
@@ -162,6 +189,7 @@
     components: { bottomLine, couponCard, product },
     mounted() {
       this.getNewsDetail();
+      this.getComment();
       // 从圈子首页点击单条的评论图标
       sessionStorage.setItem('neid', this.$route.query.neid);
       if(sessionStorage.getItem('showComments') == 'show') {
@@ -403,7 +431,7 @@
         }
         axios.get(api.get_news_comment,{
           params:{
-            neid: sessionStorage.getItem('neid'),
+            neid: this.$route.query.neid,
             token:localStorage.getItem('token'),
             page_num:this.page_info.page_num,
             page_size: this.page_info.page_size
@@ -587,6 +615,22 @@
           // window.router.push('/login');
           this.$store.state.show_login = true;
         }
+      },
+      //  关注
+      followClick(){
+        this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+          uclcollection:this.news_info.neid,
+          uclcotype:2
+        }).then(res => {
+          if(res.data.status == 200){
+            Toast(
+              {
+                message: res.data.message,
+                duration: 500
+              });
+           this.news_info.follow = !this.news_info.follow;
+          }
+        })
       }
     }
   }
@@ -595,7 +639,8 @@
 <style lang="less" rel="stylesheet/less" scoped>
 @import "../../../common/css/index";
 .m-circle-content{
-  padding: 18px 0 150px 0;
+  padding: 18px 0 20px 0;
+  border-bottom: 10px solid #F4F4F4;
   .m-circle-title{
     width: 640px;
     font-size: 28px;
@@ -616,12 +661,13 @@
   .m-author-box {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin: 25px 40px;
     font-size: 24px;
     .m-author-img {
       display: block;
-      width: 40px;
-      height: 40px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       margin-right: 18px;
       border: none;
@@ -629,9 +675,24 @@
       background-size: 100% 100%;
     }
     .m-author-name {
-      flex: 1;
+      /*flex: 1;*/
       text-align: left;
-      color: #999999;
+      color: #000;
+      font-size: 28px;
+    }
+    .m-user-leval{
+      display: inline-block;
+      padding: 0 8px;
+      border: 1px solid @mainColor;
+      color: @mainColor;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+    .m-follow{
+      display: inline-block;
+      padding: 0 8px;
+      border: 1px solid @mainColor;
+      color: @mainColor;
     }
   }
   .m-circle-img{
@@ -642,7 +703,7 @@
     margin: 20px 0 20px ;
   }
   .m-content{
-    padding: 46px 46px 150px 46px;
+    padding: 46px 46px 20px 46px;
     text-align: left;
     .m-video-box{
       position: relative;
@@ -720,51 +781,41 @@
   }
 }
 .m-comment-modal{
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100%;
-  background-color: rgba(0,0,0,0.2);
-  z-index: 101;
-  transition: opacity .5s;
+  /*position: fixed;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*height: 100vh;*/
+  /*width: 100%;*/
+  /*background-color: rgba(0,0,0,0.2);*/
+  /*z-index: 101;*/
+  /*transition: opacity .5s;*/
   .m-modal-state{
     background-color: #fff;
-    position: absolute;
-    width: 100%;
-    height: 80%;
-    right:0;
-    bottom:0;
-    margin: auto;
-    border: 1px solid @borderColor;
-    border-radius: 50px 50px 0 0;
-    -webkit-transition: height 0.88s;
-    transition: height 0.88s;
-    .m-icon-close{
-      position: absolute;
-      top:30px;
-      right: 32px;
-      width: 35px;
-      height: 35px;
-      background: url("/static/images/icon-close.png") no-repeat;
-      background-size: 100% 100%;
-    }
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*height: 80%;*/
+    /*right:0;*/
+    /*bottom:0;*/
+    /*margin: auto;*/
+
     .m-modal-content{
-      padding: 28px 48px;
+      padding: 28px 30px;
       h3{
         font-size: 28px;
       }
       .m-scroll{
-        width: 650px;
-        height: 880px;
-        overflow-y: auto;
+        width: 750px;
+        /*height: 880px;*/
+        /*overflow-y: auto;*/
         .m-comment-ul{
           li{
             display: flex;
             flex-flow: row;
             justify-content: flex-start;
             align-items: flex-start;
-            margin: 40px 0 60px 0;
+            width: 750px;
+            box-sizing: border-box;
+            padding: 40px 0 60px 0;
             .m-user-img{
               display: block;
               width: 96px;
@@ -779,6 +830,7 @@
               text-align: left;
               &.m-mr{
                 margin-right: 8px;
+                color: #006FCE;
               }
             }
             .m-user-comment {
@@ -787,20 +839,24 @@
             .m-comment-text{
               width: 560px;
               text-align: left;
-            }
-            .m-icon-list{
-              color: #999;
-              .flex-row(space-between);
-              margin: 25px 0 15px;
+              span{
+                &.active{
+                  color: @mainColor;
+                }
+              }
+              .m-like{
+                display: flex;
+                flex-flow: row;
+                align-items: flex-start;
+              }
               .m-icon-like{
                 display: inline-block;
-                width: 24px;
-                height: 24px;
-                background: url("/static/images/icon-like.png") no-repeat;
+                width: 30px;
+                height: 30px;
+                background: url("/static/images/circle/icon-like.png") no-repeat;
                 background-size: 100% 100%;
-                margin-right: 10px;
                 &.active{
-                  background: url("/static/images/icon-like-active.png") no-repeat;
+                  background: url("/static/images/circle/icon-like-active.png") no-repeat;
                   background-size: 100% 100%;
                 }
               }
@@ -814,8 +870,14 @@
                 margin-left: 34px;
               }
             }
+            .m-icon-list{
+              color: #999;
+              margin: 0 0 15px;
+            }
             .m-comment-content{
               margin: 8px 0;
+              background-color: #EBEBEB;
+              padding: 10px 17px;
             }
             .m-comment-back{
               display: inline-block;
@@ -855,73 +917,22 @@
     }
   }
 }
-.m-circle-foot{
-  box-shadow: 5px 5px 6px 5px rgba(0, 0, 0, 0.16);
-  position: fixed;
-  z-index: 100;
-  bottom: 0;
-  left: 0;
-  padding: 30px 49px 30px 49px;
-  width: 652px;
-  background-color: #fff;
-  font-size: 18px;
-  &:after{
-    content: '';
-    display: block;
-    clear: both;
-  }
-  .m-circle-comment{
-    display: block;
-    width: 90px;
-    height: 45px;
-    line-height: 45px;
-    font-size: 24px;
-    padding: 3px 10px;
-    background: url("/static/images/icon-circle-comment.png") no-repeat;
-    background-size: 100% 100%;
-    color: #fff;
-  }
-  .m-circle-collect{
-    display: block;
-    width: 45px;
-    height: 45px;
-    margin-left: 20px;
-    line-height: 45px;
-    background: url("/static/images/circle/icon-collect.png") no-repeat;
-    background-size: 100% 100%;
-    &.active{
-      background: url("/static/images/icon-circle-collect-active.png") no-repeat;
-      background-size: 100% 100%;
-    }
-  }
-  .m-icon-btn{
+.m-circle-icon-box{
+  margin-top:20px;
+  .m-icon{
     display: inline-block;
-    padding: 5px 18px 0 18px;
-    background-color: #ccc;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 24px;
-    line-height: 42px;
-    margin-right: 30px;
-    vertical-align: middle;
-    &.active{
-      background-color: @mainColor;
-    }
-    .m-icon-zan{
-      display: inline-block;
-      width: 38px;
-      height: 38px;
-      background: url("/static/images/icon-zan.png") no-repeat;
-      background-size: 100% 100%;
-      vertical-align: text-top;
-    }
-    .m-icon-cai{
-      display: inline-block;
-      width: 38px;
-      height: 38px;
-      background: url("/static/images/icon-cai.png") no-repeat top;
-      background-size: 100% 100%;
-      vertical-align: text-bottom;
+    width: 40px;
+    height: 40px;
+  }
+  .m-circle-icon-one{
+    display: flex;
+    flex-flow: row;
+    align-items: flex-start;
+    margin-left: 40px;
+    span{
+      &.active{
+        color: @mainColor;
+      }
     }
   }
 }
