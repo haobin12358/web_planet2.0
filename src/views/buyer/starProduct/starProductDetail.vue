@@ -314,7 +314,7 @@
           let product = {};
           product.pb = this.product_info.brand;
           product.cart = [];
-          product.cart.push({product:{prtitle:this.product_info.prtitle,ipfreight:this.product_info.ipfreight},sku:this.select_value,canums:this.canums,prid:this.product_info.prid});
+          product.cart.push({product:{prtitle:this.product_info.prtitle,ipfreight:this.product_info.ipfreight},sku:this.select_value,canums:this.canums,ipid:this.product_info.ipid});
           let arr = [];
           arr.push(product);
           this.$router.push({path:'/personal/orderStar',query:{product:JSON.stringify(arr)}});

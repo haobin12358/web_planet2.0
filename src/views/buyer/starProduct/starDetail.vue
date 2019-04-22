@@ -21,7 +21,7 @@
 
         <ul class="m-detail-list" v-if="history_list.length >0  ">
           <li class="m-flex-start" v-for="(item,index) in history_list">
-            <img src="" class="m-detail-list-img" v-if="select_nav.name == '消耗明细'" alt="">
+            <img :src="item.prmainpic" class="m-detail-list-img" v-if="select_nav.name == '消耗明细'" alt="">
             <div class="m-detail-list-text">
               <p class="m-flex-between">
                 <span class="m-detail-list-title">{{item.uiaction}}</span>

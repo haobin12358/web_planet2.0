@@ -86,7 +86,7 @@
       </ul>
     </div>
     <div class="m-order-btn">
-      <span  @click="show_modal = true">提交订单</span>
+      <span  @click="submitOrder">提交订单</span>
     </div>
     <div class="m-modal-pwd" v-if="show_modal ">
       <div class="m-modal-state" @click.self="closeModel">
@@ -103,16 +103,16 @@
           <span >160币</span>
         </div>
         <div >
-          <input ref="pwd" type="tel" maxlength="6" v-model="msg" class="pwd" unselectable="on" />
+          <input ref="pwd" type="tel" maxlength="6" v-model="msg" class="pwd" unselectable="on" autofocus />
           <ul class="m-input-box" @click="focus">
-            <li :class="msg.length == 0?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 0"></i></li>
-            <li :class="msg.length == 1?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 1"></i></li>
-            <li :class="msg.length == 2?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 2"></i></li>
-            <li :class="msg.length == 3?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 3"></i></li>
-            <li :class="msg.length == 4?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 4"></i></li>
-            <li :class="msg.length == 5?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 5"></i></li>
+            <li :class="msg.length == 0?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 0"></i><s></s></li>
+            <li :class="msg.length == 1?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 1"></i><s></s></li>
+            <li :class="msg.length == 2?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 2"></i><s></s></li>
+            <li :class="msg.length == 3?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 3"></i><s></s></li>
+            <li :class="msg.length == 4?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 4"></i><s></s></li>
+            <li :class="msg.length == 5?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 5"></i><s></s></li>
           </ul>
-          <p class="m-forget">忘记密码？</p>
+          <p class="m-forget" @click="changeRoute('/personal/editInput', 'forget')">忘记密码？</p>
         </div>
       </div>
     </div>
@@ -145,7 +145,9 @@
         total_money: 0,
         uaid: "",                 // 收货地址id
         msg:'',
-        show_modal:false
+        show_modal:false,
+        omid:'',
+        omtruemount:''
       }
     },
     components: {  },
@@ -175,6 +177,7 @@
         this.product_info[i].total = 0;
         // this.product_info[i].preview = 0;
         this.product_info[i].discount = 0;
+        this.product_info[i].ommessage = '';
         this.product_info[i].prfreight = 0;
         this.product_info[i].couponList = [];
         this.product_info[i].coupon_info = { caid: [] };
@@ -210,7 +213,8 @@
           this.msg = this.msg.replace(/[^\d]/g, '');
         }
         if(this.msg.length == 6){
-          this.submitOrder();
+          // this.submitOrder();
+          this.payOrder();
         }
       },
     },
@@ -221,9 +225,13 @@
         // this.pay = values[0];
       },
       // 跳转其他页面的方法
-      changeRoute(v, where) {
-
+      changeRoute(v, item) {
+        if(item){
+          this.$router.push({path:v,query:{from:'password',way:item}})
+        }else{
           this.$router.push(v);
+        }
+
 
       },
       // 获取默认地址
@@ -266,54 +274,21 @@
         let params = {
           omclient: 0,
           uaid: this.uaid,
-          info: []
+          info: [],
+          ipid: this.product_info[0].cart[0].ipid,
+          ommessage: this.product_info[0].ommessage || "",
+          pbid:this.product_info[0].pb.pbid,
+          ipsid:this.product_info[0].cart[0].sku.ipsid,
+          nums:this.product_info[0].cart[0].canums
         };
-        params.omfrom = this.$route.query.from;
-        for(let i = 0; i < this.product_info.length; i ++) {
-          params.info[i] = {
-            pbid: this.product_info[i].pb.pbid,
-            ommessage: this.product_info[i].ommessage || "",
-            skus: [],
-          };
-          params.info[i].coupons = [];
-          if(this.product_info[i].coupon_info.coid) {
-            params.info[i].coupons.push(this.product_info[i].coupon_info.coid);
-          }
 
-          for(let j = 0; j < this.product_info[i].cart.length; j ++) {
-            if(this.product_info[i].cart[j].contentid && this.product_info[i].cart[j].contentid != ''){
-              this.act = true;
-            }
-            let sku = {
-              skuid: this.product_info[i].cart[j].sku.skuid,
-              nums: this.product_info[i].cart[j].canums,
-              cafrom:this.product_info[i].cart[j].cafrom,
-              contentid:this.product_info[i].cart[j].contentid
-            };
-            params.info[i].skus.push(sku);
-          }
-        }
-        if(this.act){
-          localStorage.setItem('activityOrderNo', 4);
-        }
         axios.post(api.integral_order + "?token=" + localStorage.getItem('token'), params).then(res => {
           if(res.data.status == 200) {
-            if(this.payType.opaytype ==20) {
-              // Toast(res.data.message);
-              // this.giftPopup = true;
-
-              if(this.act){
-                this.$router.push("/activityOrder");
-              }else{
-                this.$router.push("/orderList?which=2");
-              }
-
-              // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
-              sessionStorage.setItem('use', 'used');
-            }else {
-              this.wxPay(res.data.data.args);
+              // this.wxPay(res.data.data.args);
+              this.omid = res.data.data.omid;
+              this.omtruemount = res.data.data.omtruemount;
+              this.show_modal = true;
               localStorage.removeItem('product');
-            }
           }
         });
       },
@@ -323,60 +298,25 @@
       closeModel(){
         this.show_modal = false;
         this.msg = '';
+        this.$router.push("/orderList?which=2");
       },
-      // 调起微信支付
-      wxPay(data) {
-        let that = this;
-        function onBridgeReady() {      // 微信支付接口
-          WeixinJSBridge.invoke(
-            'getBrandWCPayRequest', {
-              "appId": data.appId,                 // 公众号名称，由商户传入
-              "timeStamp": data.timeStamp,         // 时间戳，自1970年以来的秒数
-              "nonceStr": data.nonceStr,           // 随机串
-              "package": data.package,             // 统一下单接口返回的prepay_id参数值
-              "signType": data.signType,           // 微信签名方式
-              "paySign": data.sign                 // 微信签名
-            },
-            function(res){
-              // console.log(res);
-              // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
-              sessionStorage.setItem('use', 'used');
-              if(res.err_msg == "get_brand_wcpay_request:ok" ){             // 支付成功
-                // 是从商家大礼包来结算的则弹出popup
-                if(that.fromGift) {
-                  this.$router.push("/orderList?which=2");
-                }else if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
-                  that.$router.push('/activityOrder');
-                }else {     // 去待发货页
-                  that.$router.push("/orderList?which=2");
-                }
-              }else if(res.err_msg == "get_brand_wcpay_request:cancel" ){   // 支付过程中用户取消
-                Toast('支付已取消');
-                if(that.from == 'new' || that.from == 'try' || that.isGuess ||that.act) {
-                  that.$router.push('/activityOrder');
-                }else {     // 去待付款页
-                  that.$router.push("/orderList?which=1");
-                }
-              }else if(res.err_msg == "get_brand_wcpay_request:fail" ){     // 支付失败
-                Toast('支付失败');
-                if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
-                  that.$router.push('/activityOrder');
-                }else{     // 去待付款页
-                  that.$router.push("/orderList?which=1");
-                }
-              }
-            });
-        }
-        if (typeof WeixinJSBridge == "undefined"){
-          if( document.addEventListener ){
-            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-          }else if (document.attachEvent){
-            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+      payOrder(){
+        this.$http.post(this.$api.order_pay + '?token=' +localStorage.getItem('token'),{
+          omid:this.omid,
+          omclient:0,
+          opaytype:30,
+          uspaycode:this.msg,
+          omtruemount: this.omtruemount
+        }).then(res => {
+          Toast(res.data.message);
+          this.msg = '';
+          if(res.data.status == 200){
+            this.$router.push("/orderList");
+            this.show_modal = false;
+          }else if(res.data.message == '请输入正确的支付密码'){
+            this.show_modal = true;
           }
-        }else{
-          onBridgeReady();
-        }
+        })
       }
     }
   }
@@ -625,8 +565,23 @@
       .psd-blink {
         display: inline-block;
         /*background: url("./img/blink.gif") no-repeat center;*/
+        /*border-right: 1px solid #ccc;*/
+        s:after{
+           content: '|';
+          color: #000;
+          display: inline-block;
+          -webkit-animation:gogogo 0.5s infinite  ;
+        }
       }
 
+    }
+  }
+  @-webkit-keyframes gogogo {
+    0%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
     }
   }
 </style>
