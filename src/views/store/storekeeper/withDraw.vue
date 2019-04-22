@@ -13,24 +13,51 @@
 					<p>提示：</p>
 					<p>提交申请后，提现金额将在3个工作日内到微信钱包。</p>
 				</div>
+				<div class="w-foot-btn">
+					<span>提交申请</span>
+				</div>
 
 			</div>
 		</div>
 </template>
 
 <script type="text/ecmascript-6">
+import common from '../../../common/js/common';
 export default {
 	data () {
 		return {
 			amount: null,
+			user: { uc_count: '', mounth_count: '', usbalance: '' },
+			moneyNum: '',
+			num_box:null,
+			usidentification:'',
 
 		}
 	},
 	methods: {
 		emptyInput(){
 			this.amount = null;
-		} 
-	}
+		},
+		getUser() {
+        axios.get(api.get_agent_center + "?token=" + localStorage.getItem('token')).then(res => {
+          if(res.data.status == 200) {
+            // this.user = res.data.data;
+            this.moneyNum = res.data.usbalance;
+          }
+        })
+        axios.get(api.get_home + "?token=" + localStorage.getItem('token')).then(res => {
+          if(res.data.status == 200){
+            // this.num_box = res.data.data;
+            this.usidentification = res.data.usidentification;
+          }
+        })
+			},
+			
+	},
+	mounted() {
+				common.changeTitle('提现');
+				this.getUser();
+	},
 }
 </script>
 
@@ -83,6 +110,21 @@ export default {
 				}
 
 			}
+			.w-foot-btn{
+          position: absolute;
+          bottom: 50px;
+          // left: 25px;
+          span{
+            color: #ffffff;
+            display: inline-block;
+            width: 750px;
+            height: 106px;
+            line-height: 106px;
+            background:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
+            font-size: 38px;
+            font-weight: bold;
+          }
+        }
 		}
 	}
 </style>

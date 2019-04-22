@@ -54,7 +54,7 @@
           <p>我的激活码</p>
         </li>
         <li @click="changeRoute('/personal/codeHistory')">
-          <img src="/static/images/icon-store-record.png" alt="">
+          <img src="/static/images/storekeeper/store-icon-record.png" alt="">
           <p>购买激活码记录</p>
         </li>
       </ul>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--顶部左上角买家、店主身份切换-->
-    <!-- <span class="m-icon-home" @click="buyerStore" v-if="buyer_store"></span> -->
+    <span class="m-icon-home" @click="buyerStore" v-if="buyer_store"></span>
 
 <!--    <mt-tabbar v-model="selected" :fixed="true" v-if="is_weixin">-->
 <!--      <template v-for="(item,index) in tabbar" >-->
@@ -12,7 +12,7 @@
 <!--        </mt-tab-item>-->
 <!--      </template>-->
 <!--    </mt-tabbar>-->
-    <!-- <div class="m-footer-box">
+    <div class="m-footer-box">
       <ul>
         <li v-for="(item,index) in tabbar" @click.stop="footerClick(item)">
           <img :src="item.icon" v-if="index != 2 && item.name != selected" class="m-footer-icon" alt="">
@@ -24,7 +24,7 @@
           <span :class="selected == item.name?'active':''">{{item.name}}</span>
         </li>
       </ul>
-    </div> -->
+    </div>
   </div>
 </template>
 
