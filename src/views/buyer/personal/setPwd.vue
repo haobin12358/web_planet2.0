@@ -86,8 +86,7 @@
             this.$refs.pwd.focus();
           }
         }
-      },
-      mounted() {}
+      }
     }
 </script>
 

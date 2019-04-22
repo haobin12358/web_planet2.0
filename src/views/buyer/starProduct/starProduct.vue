@@ -1,10 +1,10 @@
 <template>
-    <div class="m-starProduct">
+    <div class="m-starProduct" v-if="integral" @touchmove="touchMove">
       <div class="m-starProduct-head">
         <p class="m-right" @click="rulePopup = true">规则</p>
         <div class="m-flex-center">
           <img src="/static/images/newpersonal/icon-star-total.png" class="m-icon" alt="">
-          <span class="m-star-num">1200</span>
+          <span class="m-star-num">{{integral.balance}}</span>
           <span class="m-ft-20">星币</span>
         </div>
         <!--星币规则popup-->
@@ -13,11 +13,11 @@
 <!--            <div @click="rulePopup = false">取消</div>-->
             规则
           </div>
-          <div class="m-rule-text">是放松的方式</div>
+          <div class="m-rule-text">{{integral.rule}}</div>
         </mt-popup>
         <div class="m-head-part">
-          <span @click="changeRoute('/personal/starDetail')">获取记录</span>
-          <span @click="changeRoute('/personal/starDetail')">消耗明细</span>
+          <span @click="changeRoute('/personal/starDetail',0)">获取记录</span>
+          <span @click="changeRoute('/personal/starDetail',1)">消耗明细</span>
         </div>
       </div>
       <div class="m-mainIndex-edit m-flex-between">
@@ -52,56 +52,110 @@
 <!--          </div>-->
 <!--        </div>-->
       </div>
-      <div class="m-product-list">
-        <div class="m-one-product" @click="changeRoute('/personal/starProductDetail')">
-          <img src="" class="m-product-img" alt="">
-          <h3 class="m-product-title">【TAWA】TAWA防水帐篷户外野营必备TAWA防水帐篷户外野营必备</h3>
+      <div class="m-product-list" v-if=" product_list.length >0 ">
+        <div class="m-one-product"  v-for="(item,index) in product_list" @click="changeRoute('/personal/starProductDetail',item)">
+          <img :src="item.prmainpic" class="m-product-img" alt="">
+          <h3 class="m-product-title">【{{item.pbname}}】{{item.prtitle}}</h3>
           <div class="m-flex-end ">
-            <img src="/static/images/newpersonal/icon-star-can.png" class="m-icon" alt="">
-            <span class="m-star-num active">160币</span>
+            <img src="/static/images/newpersonal/icon-star-can.png" v-if="integral.balance >= item.ipprice" class="m-icon" alt="">
+            <img src="/static/images/newpersonal/icon-star.png" v-else class="m-icon" alt="">
+            <span class="m-star-num" :class="integral.balance >= item.ipprice?'active':''">{{item.ipprice}}币</span>
           </div>
         </div>
-        <div class="m-one-product">
-          <img src="" class="m-product-img" alt="">
-          <h3 class="m-product-title">【TAWA】TAWA防水帐篷户外野营必备TAWA防水帐篷户外野营必备</h3>
-          <div class="m-flex-end ">
-            <img src="/static/images/newpersonal/icon-star.png" class="m-icon" alt="">
-            <span class="m-star-num">160币</span>
-          </div>
-        </div>
-        <div class="m-one-product">
-          <img src="" class="m-product-img" alt="">
-          <h3 class="m-product-title">【TAWA】TAWA防水帐篷户外野营必备TAWA防水帐篷户外野营必备</h3>
-          <div class="m-flex-end ">
-            <img src="/static/images/newpersonal/icon-star.png" class="m-icon" alt="">
-            <span class="m-star-num">160币</span>
-          </div>
-        </div>
-        <div class="m-one-product">
-          <img src="" class="m-product-img" alt="">
-          <h3 class="m-product-title">【TAWA】TAWA防水帐篷户外野营必备TAWA防水帐篷户外野营必备</h3>
-          <div class="m-flex-end ">
-            <img src="/static/images/newpersonal/icon-star.png" class="m-icon" alt="">
-            <span class="m-star-num">160币</span>
-          </div>
-        </div>
+        <bottom-line v-if="bottom_show"></bottom-line>
       </div>
+      <p class="m-no-data" v-else>暂无商品</p>
     </div>
 </template>
 
 <script>
+  import common from '../../../common/js/common';
+  import {Toast} from 'mint-ui';
+  import bottomLine from '../../../components/common/bottomLine';
     export default {
         name: "starProduct",
       data(){
           return{
             labelShow:false,
-            rulePopup:false
+            rulePopup:false,
+            product_list:[],
+            page_info:{
+              page_num:1,
+              page_size:10
+            },
+            isScroll:true,
+            total_count:0,
+            total_page:0,
+            bottom_show:false,
+            integral:null
           }
       },
+      components:{
+        bottomLine
+      },
+      mounted(){
+        common.changeTitle('星币商城');
+        this.getProduct();
+      },
       methods:{
-        changeRoute(v){
-          this.$router.push({path:v,query:{prid:'e65069a0-56b4-11e9-a6f6-00163e08d30f'}});
-        }
+        changeRoute(v,item){
+          if(item.ipid){
+            this.$router.push({path:v,query:{ipid:item.ipid}});
+          }else{
+            this.$router.push({path:v,query:{index:item}});
+          }
+
+        },
+        //滚动加载更多
+        touchMove(e){
+          let scrollTop = common.getScrollTop();
+          let scrollHeight = common.getScrollHeight();
+          let ClientHeight = common.getClientHeight();
+          if (scrollTop + ClientHeight  >= scrollHeight -10) {
+            if(this.isScroll){
+              this.isScroll = false;
+              if(this.page_info.page_num > this.total_page){
+                this.bottom_show = true;
+              }else{
+                this.getProduct();
+
+              }
+            }
+          }
+        },
+        //获取商品列表
+        getProduct(){
+          let _kw = this.$route.query.kw || '';
+          let start = this.page_info.page_num;
+          this.$http.get(this.$api.integral_list,{
+            params:{
+              status:'agree',
+              page_size:this.page_info.page_size,
+              page_num:start,
+              prtitle:_kw,
+              token:localStorage.getItem('token')
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              this.integral= res.data.data.integral;
+              if(res.data.data.product.length >0){
+                this.page_info.page_num =   this.page_info.page_num +1;
+              }else{
+                return false;
+              }
+              if(start >1){
+                this.product_list = this.product_list.concat(res.data.data.product);
+              }else{
+                this.product_list = res.data.data.product;
+              }
+              this.isScroll = true;
+              this.total_count = res.data.total_count;
+              this.total_page = res.data.total_page;
+            }
+          },error => {
+            Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
+          })
+        },
       }
     }
 </script>

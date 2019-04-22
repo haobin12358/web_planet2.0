@@ -10,14 +10,14 @@
           <div v-if="select_value">
             <p v-if="isAct &&  select_value.tlsprice" class="m-price">¥{{select_value.tlsprice | money}}</p>
             <p class="m-price" v-else>￥{{select_value.skuprice | money}}</p>
-            <p class="m-underline">价格：<s>¥{{product.prlineprice | money}}</s></p>
+            <p class="m-underline">价格：<s>¥{{product.prlineprice && (product.prlineprice | money)}}</s></p>
             <!--<span class="m-red" v-if="select_value.skustock">￥{{select_value.skuprice}}</span>-->
             <!--<span class="m-ft-26 m-red" v-if="select_value.skustock == 0">库存不足</span>-->
           </div>
           <div v-else>
             <p class="m-price" v-if="product.price_range">￥{{product.price_range | money }}</p>
-            <p class="m-price" v-else>￥{{product.prprice | money}}</p>
-            <p class="m-underline">价格：<s>¥{{product.prlineprice | money}}</s></p>
+            <p class="m-price" v-else>￥{{product.prprice && (product.prprice | money)}}</p>
+            <p class="m-underline">价格：<s>¥{{product.prlineprice && (product.prlineprice | money)}}</s></p>
           </div>
         </div>
         <div class="m-scroll">
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="m-sku-btn">
-          <span  class="active" v-if="select_value && select_value.skustock > 0" @click.stop="sureClick">确 定</span>
+          <span  class="active" v-if="select_value && (select_value.ipsstock &&  select_value.ipsstock > 0 || select_value.skustock &&  select_value.skustock > 0)" @click.stop="sureClick">确 定</span>
           <span v-else>确 定</span>
         </div>
       </div>
@@ -191,11 +191,11 @@
             // if(this.product.skus[j].skuattritedetail[i] == this.select[i] && this.product.skus[j].skustock >0){
             //
             // }
-            if(item == '' && this.product.skus[j].skustock >0){
+            if(item == '' && ((this.product.skus[j].ipsstock && this.product.skus[j].ipsstock >0) || (this.product.skus[j].skustock && this.product.skus[j].skustock >0))){
               newArr.push(this.product.skus[j].skuattritedetail);
               change_arr.push(this.product.skus[j]);
             }
-            else if(this.contrastArr(this.product.skus[j].skuattritedetail,ad) && this.product.skus[j].skustock >0){
+            else if(this.contrastArr(this.product.skus[j].skuattritedetail,ad) &&  ((this.product.skus[j].ipsstock && this.product.skus[j].ipsstock >0) || (this.product.skus[j].skustock && this.product.skus[j].skustock >0))){
               newArr.push(this.product.skus[j].skuattritedetail);
               change_arr.push(this.product.skus[j]);
             }

@@ -1,7 +1,7 @@
 // const title = 'https://planet.daaiti.cn/api/v1/';
 // const title = 'https://www.bigxingxing.com/api/v1/'; //正式
 let title = '';
-if(location.origin.indexOf('localhost') != -1 || location.origin.indexOf('pre') != -1){
+if(location.origin.indexOf('localhost') != -1){
    title = 'https://test.bigxingxing.com/api/v2/'; //测试
 }else{
    title = `${location.origin}/api/v2/`
@@ -136,6 +136,9 @@ const api={
   collection_show: title + 'collection/show',           //获取关注的人和粉丝
   check_code: title +'user/check_code',        //验证手机
   set_paycode: title + 'user/set_paycode',    //设置密码
+  integral_list: title +'integral/list',       //获取星币商城列表
+  integral_get: title +'integral/get',         //获取星币商城详情
+  integral_order: title + 'integral/order',     //星币下单
 };
 
 
