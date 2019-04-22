@@ -1,9 +1,5 @@
 <template>
-  <div class="m-product" @touchmove="touchMove">
-    <div class="m-product-head">
-      <div>
-
-      </div>
+    <div class="m-product">
       <div class="m-selected-search left">
         <div class="m-search-input-box" >
           <span class="m-icon-search"></span>
@@ -11,52 +7,40 @@
         </div>
         <!--        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>-->
       </div>
-    </div>
-    <div class="m-product-nav">
-      <img src="/static/images/product/icon-product-sort.png" class="m-icon-sort" alt="">
-        <span v-for="(item,index) in nav_list" class="m-nav-one" :class="item.active?'active':''" @click="navClick(index)">
-          {{item.name}}
-        </span>
-      <span class="m-product-more" @click="changeRoute('/equipment/detail')">
-        更多分类
-        <img src="/static/images/newpersonal/icon-more.png" class="m-icon" alt="">
-      </span>
-    </div>
-    
-    <product :list="product_list"></product>
-    <bottom-line v-if="bottom_show"></bottom-line>
-    <!--<div class="m-modal-select" v-if="show_modal" @click="changeModal('show_modal',false)">-->
-    <div class="m-modal-select" v-if="show_modal">
-      <div class="m-modal-state">
-        <div class="m-state-content">
-          <template v-for="(items,index) in category_list">
-            <div class="m-one-select" v-if="items.subs">
-              <p >{{items.pcname}}</p>
-              <div class="m-sku-list">
-                <span class="m-one-sku" :class="item.active?'active':''" v-for="(item,i) in items.subs" @click.stop="categoryClick(index,i)">{{item.pcname}}</span>
+      <nav-list  :navlist="nav_list" @navClick="navClick"></nav-list>
+      <product :list="product_list"></product>
+      <bottom-line v-if="bottom_show"></bottom-line>
+      <!--<div class="m-modal-select" v-if="show_modal" @click="changeModal('show_modal',false)">-->
+      <div class="m-modal-select" v-if="show_modal" @click.self="show_modal = false">
+        <div class="m-modal-state">
+          <div class="m-state-content">
+            <template v-for="(items,index) in category_list">
+              <div class="m-one-select" v-if="items.subs">
+                <p >{{items.pcname}}</p>
+                <div class="m-sku-list">
+                  <span class="m-one-sku" :class="item.active?'active':''" v-for="(item,i) in items.subs" @click.stop="categoryClick(index,i)">{{item.pcname}}</span>
+                </div>
               </div>
+            </template>
+            <!--<div class="m-one-select">-->
+            <!--<p>防风衣/运动外套</p>-->
+            <!--<div class="m-sku-list">-->
+            <!--<input type="text" placeholder="最低价">-->
+            <!--<span class="m-grey">——</span>-->
+            <!--<input type="text" placeholder="最低价">-->
+            <!--</div>-->
+            <!--</div>-->
+          </div>
+          <div class="m-state-foot">
+            <div class="m-product-detail-btn">
+              <span @click="resetPrid">重 置</span>
+              <span class="active" @click="searchProduct">确 定</span>
             </div>
-          </template>
-          <!--<div class="m-one-select">-->
-          <!--<p>防风衣/运动外套</p>-->
-          <!--<div class="m-sku-list">-->
-          <!--<input type="text" placeholder="最低价">-->
-          <!--<span class="m-grey">——</span>-->
-          <!--<input type="text" placeholder="最低价">-->
-          <!--</div>-->
-          <!--</div>-->
-        </div>
-        <div class="m-state-foot">
-          <div class="m-product-detail-btn">
-            <span @click="resetPrid">重 置</span>
-            <span class="active" @click="searchProduct">确 定</span>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
-
 <script>
   import product from '../components/product';
   import navList from '../../../components/common/navlist';
@@ -88,21 +72,28 @@
             name:'销量',
             params:'sale_value',
             active:true,
+            icon:true,
+            desc_asc:true
           },
           {
             name:'新品',
             params:'time',
             active:false,
+            icon:true,
+            desc_asc:true
           },
           {
             name:'价格',
             params:'price',
-            active:false
+            active:false,
+            icon:true,
+            desc_asc:true
           },
           {
             name:'筛选',
             params:'',
             active:false,
+            desc_asc:true
           }
         ],
         pcid: '',
@@ -156,8 +147,8 @@
         }
       },
       // 页面跳转
-      changeRoute(v){
-        this.$router.push(v)
+      changeRoute(){
+        this.$router.push(1,'/equipment/detail')
       },
       //导航切换
       navClick(index){
@@ -288,60 +279,8 @@
   .m-product{
     width: 100%;
     overflow-x: hidden;
-
-    .m-product-head{
-      width: 100%;
-      position: relative;
-      height: 250px;
-      .m-selected-search{
-        position: absolute;
-        top:10px;
-        left: 0;
-        padding: 0 33px;
-        width: 680px;
-        .m-search-input-box{
-          .flex-row(flex-start);
-          background-color: rgba(0,0,0,0.4);
-          .m-icon-search{
-            background: url("/static/images/product/icon-product-search.png") no-repeat;
-            background-size: 100%;
-          }
-        }
-      }
-    }
-    .m-product-nav{
-      .flex-row(space-around);
-      box-shadow:0 3px 6px rgba(0,0,0,0.16);
-      .m-icon-sort{
-        display: block;
-        width: 40px;
-        height: 40px ;
-      }
-      .m-nav-one{
-        display: inline-block;
-        padding: 20px 0;
-        font-size: 24px;
-        color: #666666;
-        &.active{
-          border-bottom: 2px solid @mainColor;
-          color: @mainColor;
-        }
-      }
-      .m-product-more{
-        color: #C1C1C1;
-        font-size: 24px;
-        .flex-row(center);
-        .m-icon{
-          display: inline-block;
-          width: 17px;
-          height: 30px;
-          margin-left: 10px;
-        }
-      }
-    }
     .m-nav-list{
       padding: 0 75px;
-      box-shadow:none;
     }
     .m-modal-select{
       position: fixed;
@@ -376,7 +315,7 @@
               width: 200px;
               height: 40px;
               background-color: #e9e9e9;
-              border-radius: 30px;
+
               text-align: center;
               margin: 20px 10px;
             }
@@ -384,7 +323,6 @@
               display: inline-block;
               padding: 6px 34px;
               background-color: #E9E9E9;
-              border-radius: 10px;
               margin-right: 20px;
               margin-top: 20px;
               &.active {
@@ -409,12 +347,9 @@
               text-align: center;
               background-color: @subColor;
               margin: 0;
-              border-top-left-radius: 30px;
-              border-bottom-left-radius: 30px;
               &.active{
                 background-color: @mainColor;
                 margin-left: -8px;
-                border-radius: 0 30px 30px 0;
               }
             }
           }

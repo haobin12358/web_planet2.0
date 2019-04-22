@@ -14,7 +14,7 @@
         <div>
           <p class="m-star-num-total">
             <img src="/static/images/newpersonal/icon-star-can.png" class="m-star-icon" alt="">
-            <span>160</span>
+            <span>{{product_info.ipprice}}</span>
           </p>
           <p class="m-marking-price">价格：<s>{{product_info.prlineprice}}</s></p>
         </div>
@@ -24,8 +24,8 @@
         <span class="m-product-title">{{product_info.prtitle}}</span>
       </div>
       <div class="m-info-list">
-        <span>快递：{{product_info.prfreight | money}} 元</span>
-        <span>月销：{{product_info.month_sale_value}}</span>
+        <span>快递：{{product_info.ipfreight }} 元</span>
+        <span>月销：{{product_info.ipsalevolume}}</span>
         <div @click="changeRoute('/brandDetail')">
           <span class="m-brand-name">{{product_info.brand.pbname}}</span>
           <span class="m-more"></span>
@@ -97,7 +97,7 @@
     data(){
       return{
         show_sku:false,
-        product_info:null,
+        product_info:{},
         sku:null,
         select_value:null,
         canums:1,
@@ -116,7 +116,7 @@
       common.changeTitle('商品详情');
       wxapi.wxRegister(location.href.split('#')[0]);
       this.getInfo();
-      this.getUser();
+      // this.getUser();
 
       localStorage.removeItem('share');
       localStorage.removeItem('url');
@@ -150,12 +150,12 @@
             title: this.product_info.prtitle,
             desc: this.product_info.prdescription,
             imgUrl: this.product_info.prmainpic,
-            link: location.href.split('#')[0] + '?prid=' + this.$route.query.prid
+            link: location.href.split('#')[0] + '?prid=' + this.$route.query.ipid
           };
           axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
             if(res.data.status == 200) {
               options.link += '&secret_usid=' + res.data.data.secret_usid;
-              this.share_url = location.origin + '/?prid=' + this.$route.query.prid +  '&secret_usid=' + res.data.data.secret_usid;
+              this.share_url = location.origin + '/?prid=' + this.$route.query.ipid +  '&secret_usid=' + res.data.data.secret_usid;
               if(val !== 1) {
                 // 点击分享
                 this.show_invite = true;
@@ -251,21 +251,16 @@
       },
       //获取商品信息
       getInfo(){
-        axios.get(api.product_get,{
+        axios.get(api.integral_get,{
           params:{
-            prid:this.$route.query.prid,
+            ipid:this.$route.query.ipid,
             token:localStorage.getItem('token')
           }
         }).then(res => {
           if(res.data.status == 200){
             this.product_info = res.data.data;
-            this.product_info.praveragescore = this.product_info.praveragescore / 2;
-            /*if(this.product_info.prtitle.length > 27) {
-              this.product_info.prtitle = this.product_info.prtitle.slice(0, 27) + '...'
-            }*/
-            /*if(this.product_info.profict) {
-              this.product_info.profict = this.product_info.profict.toString().slice(0, 5) + '...'
-            }*/
+            console.log(res.data.data)
+
           }
         },error => {
           Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
@@ -319,10 +314,10 @@
           let product = {};
           product.pb = this.product_info.brand;
           product.cart = [];
-          product.cart.push({product:{prtitle:this.product_info.prtitle,prfreight:this.product_info.prfreight},sku:this.select_value,canums:this.canums,prid:this.product_info.prid});
+          product.cart.push({product:{prtitle:this.product_info.prtitle,ipfreight:this.product_info.ipfreight},sku:this.select_value,canums:this.canums,ipid:this.product_info.ipid});
           let arr = [];
           arr.push(product);
-          this.$router.push({path:'/submitOrder',query:{product:JSON.stringify(arr)}});
+          this.$router.push({path:'/personal/orderStar',query:{product:JSON.stringify(arr)}});
         }else{
           this.show_sku = true;
           this.cart_buy = 'buy';

@@ -1,40 +1,33 @@
 <template>
     <div class="m-equipment-detail">
-      <!--搜索-->
-      <div class="m-selected-search">
-        <span class="m-icon-back" @click="changeRoute('/selected')"></span>
-        <div class="m-search-input-box" @click="changeRoute('/search')">
-          <span class="m-icon-search"></span>
-          <span>搜索商品/分类</span>
-        </div>
+
+      <div class="m-side-scroll">
+        <ul class="m-side-ul">
+          <li>
+            <img src="/static/images/product/icon-product-sort.png" class="m-icon-sort" alt="">
+            <p>推荐分类</p>
+          </li>
+          <li v-for="(item,index) in icon_list" :class="item.active?'active':''" @click="sideClick(index)">
+<!--            <img :src="item.pcpic"  alt="">-->
+            <span class="m-ft-24">{{item.pcname}}</span>
+          </li>
+        </ul>
       </div>
-      <h3 class="m-equipment-h3"></h3>
+<!--      <h3 class="m-equipment-h3"></h3>-->
       <!--<h3 class="m-equipment-h3">装备分类</h3>-->
-      <section>
-        <div class="m-equipment-info" v-for="item in icon_list" v-if="item.active">
-          <img class="m-equipment-img" :src="item.pctoppic" alt="">
-          <!--圆弧-->
-          <!--<span class="m-equipment-bg"></span>
-          <div class="m-equipment-detail-name">
-          <img :src="head_src" class="m-equipment-head-portrait" alt="">
-          <span>{{head_name}}</span>
-          </div>-->
+      <section class="m-equipment-detail-content">
+        <!--搜索-->
+        <div class="m-selected-search">
+          <div class="m-search-input-box m-flex-start" @click="changeRoute('/searchProduct')">
+            <span class="m-icon-search"></span>
+          </div>
         </div>
-        <div class="m-side-scroll">
-          <ul class="m-side-ul">
-            <li v-for="(item,index) in icon_list" :class="item.active?'active':''" @click="sideClick(index)">
-              <img :src="item.pcpic"  alt="">
-              <span class="m-ft-24">{{item.pcname}}</span>
-            </li>
-          </ul>
-        </div>
-        <div class="m-equipment-detail-content">
           <div v-if="category_list" v-for="(item,index) in category_list">
-            <div class="m-line" v-if="item.subs">
-              <p class="m-line-name">
-                <span >{{item.pcname}}</span>
-              </p>
-            </div>
+
+            <p class="m-category-name"  v-if="item.subs">
+              {{item.pcname}}
+            </p>
+
             <ul class="m-equipment-detail-product" v-if="item.subs">
               <li  v-for="(v,i) in item.subs" @click="changeRoute('/product',v)">
                 <img :src="v.pcpic" alt="">
@@ -42,7 +35,6 @@
               </li>
             </ul>
           </div>
-        </div>
       </section>
 
     </div>
@@ -50,7 +42,7 @@
 
 <script>
   import common from '../../../common/js/common';
-  import axios from 'axios';
+  import axios from 'axios/index';
   import api from '../../../api/api'
 
   export default {
@@ -150,11 +142,16 @@
   @import "../../../common/css/index";
   .m-equipment-detail{
     background-color: #fff;
-    min-height: 100%;
+    min-height: 100vh;
+    position: relative;
+    color: #666;
     .m-selected-search{
-      border-bottom: 1px solid #f0f0f0;
-      width: 100%;
+      width: 610px;
+      padding: 0;
       box-sizing: border-box;
+      .m-search-input-box{
+        height: 60px;
+      }
     }
     .m-equipment-h3{
       text-align: left;
@@ -162,88 +159,48 @@
       color: #333;
       margin-top: -35px;
     }
-    section{
-      position: relative;
-      min-height: 100%;
-      .m-line{
-        .m-line-name{
-          /*text-align: right;*/
-        }
-      }
-      .m-equipment-info{
-        position: relative;
-        width: 100%;
-        height: 330px;
-        margin: 20px 0 40px;
-        .m-equipment-img{
-          display: block;
-          width: 100%;
-          height: 330px;
-          background-color: #9fd0bf;
-          box-shadow: 0 5px 6px rgba(0,0,0,0.16);
-        }
-        .m-equipment-bg{
-          position: absolute;
-          bottom: -3px;
-          left: 0;
-          width: 100%;
-          height: 30px;
-          background: url("/static/images/icon-bg.png") no-repeat center;
-          background-size: 100% 100%;
-        }
-        .m-equipment-detail-name{
-          position: absolute;
-          left: 21px;
-          bottom: -94px;
-          font-size: 38px;
-          font-weight: bold;
-          line-height: 180px;
-          .m-equipment-head-portrait{
-            display: inline-block;
-            width: 180px;
-            height: 180px;
-            vertical-align: middle;
+    .m-side-scroll{
+      position: absolute;
+      width: 150px;
+      overflow-y: auto;
+      background-color: #fff;
+      box-shadow: 5px 0 10px rgba(0,0,0,0.16);
+      top: 0;
+      min-height: 100vh;
+      z-index: 100;
+      li{
+        padding: 30px 0;
+        border-bottom: 1px solid #f2f2f2;
+        &.active{
+          span{
+            display: block;
+            width: 99%;
+            color: @mainColor;
+            border-right: 4px solid @mainColor;
           }
         }
-      }
-      .m-side-scroll{
-        position: absolute;
-        width: 220px;
-        overflow-y: auto;
-        background-color: #fff;
-        box-shadow: 5px 0 10px rgba(0,0,0,0.16);
-        top: 0;
-        min-height: 100%;
-        margin-top: 330px;
-        li{
-          line-height: 130px;
-          padding: 5px 0;
-          &.active{
-            background-color: @mainColor;
-          }
-          img{
-            display: inline-block;
-            width: 80px;
-            height: 80px;
-            margin-right: 5px;
-            vertical-align: middle;
-            border-radius: 50%;
-          }
+        .m-icon-sort{
+          display: inline-block;
+          width: 40px;
+          height: 40px;
         }
       }
-      .m-equipment-detail-content{
-        padding: 0 0 50px 260px;
-        margin-right: 10px;
+    }
+
+    .m-equipment-detail-content{
+        padding: 0 0 50px 150px;
+      .m-category-name{
+        text-align: left;
+        padding: 10px 20px;
+      }
         .m-equipment-detail-product{
           .flex-row(flex-start);
           flex-wrap: wrap;
-          padding-left: 20px;
+          padding-left: 30px;
           li{
-            width: 170px;
+            width: 164px;
             height: 220px;
             background:rgba(255,255,255,1);
-            box-shadow:0 5px 6px rgba(0,0,0,0.16);
-            border-radius:10px;
             line-height: 63px;
             margin: 0 35px 20px 0;
             /*&:nth-child(3n){
@@ -252,15 +209,12 @@
             img{
               display: block;
               width: 100%;
-              height: 170px;
-              background-color: #9fd0bf;
-              border-top-left-radius:10px;
-              border-top-right-radius:10px;
+              height: 164px;
             }
           }
         }
       }
-    }
+
 
   }
 </style>

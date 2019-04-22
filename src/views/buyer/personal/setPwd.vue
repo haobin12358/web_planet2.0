@@ -21,12 +21,12 @@
 <!--      </div>-->
       <input ref="pwd" type="tel" maxlength="6" v-model="msg" class="pwd" unselectable="on" />
       <ul class="m-input-box" @click="focus">
-        <li :class="msg.length == 0?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 0"></i></li>
-        <li :class="msg.length == 1?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 1"></i></li>
-        <li :class="msg.length == 2?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 2"></i></li>
-        <li :class="msg.length == 3?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 3"></i></li>
-        <li :class="msg.length == 4?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 4"></i></li>
-        <li :class="msg.length == 5?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 5"></i></li>
+        <li :class="msg.length == 0?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 0"></i><s></s></li>
+        <li :class="msg.length == 1?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 1"></i><s></s></li>
+        <li :class="msg.length == 2?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 2"></i><s></s></li>
+        <li :class="msg.length == 3?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 3"></i><s></s></li>
+        <li :class="msg.length == 4?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 4"></i><s></s></li>
+        <li :class="msg.length == 5?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 5"></i><s></s></li>
       </ul>
       <div class="m-setPwd-btn" v-if="msg.length <6">完成</div>
       <div class="m-setPwd-btn active" v-else @click="sureClick">完成</div>
@@ -86,8 +86,7 @@
             this.$refs.pwd.focus();
           }
         }
-      },
-      mounted() {}
+      }
     }
 </script>
 
@@ -144,6 +143,12 @@
   .psd-blink {
     display: inline-block;
     /*background: url("./img/blink.gif") no-repeat center;*/
+    s:after{
+      content: '|';
+      color: #000;
+      display: inline-block;
+      -webkit-animation:gogogo 0.5s infinite  ;
+    }
   }
 
 
@@ -160,4 +165,12 @@
 
   }
 }
+  @-webkit-keyframes gogogo {
+    0%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  }
 </style>

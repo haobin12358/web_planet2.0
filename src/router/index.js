@@ -93,14 +93,9 @@ export const constantRouterMap = [
   { path: '/circle/detail', component: () => import('../views/buyer/circle/detail'), hidden: true },
   { path: '/circle/editCircle', component: () => import('../views/buyer/circle/editCircle'), hidden: true },
   { path: '/circle/newEdit', component: () => import('../views/buyer/circle/newEdit'), hidden: true },
-  {
-    path: '/equipment',
-    component: Layout,
-    redirect: 'equipment',
-    children: [{ path: '/equipment', component: () => import('../views/buyer/equipment/index'), hidden: true , meta: { keepAlive: true } }
-    ],
-  },
-  { path: '/equipment/detail', component: () => import('../views/buyer/equipment/detail'), hidden: true , meta: { keepAlive: true }},
+  { path: '/circle/circleSort', component: () => import('../views/buyer/circle/circleSort'), hidden: true },
+  { path: '/equipment', component: () => import('../views/buyer/equipment/index'), hidden: true , meta: { keepAlive: true } },
+  { path: '/equipment/detail', component: () => import('../views/buyer/newProduct/detail'), hidden: true , meta: { keepAlive: true }},
   { path: '/product', component: () => import('../views/buyer/product/product'), meta: { keepAlive: true }, hidden: true },
   { path: '/productDetail', name: 'productDetail', component: () => import('../views/buyer/product/productDetail'), meta: { keepAlive: false }, hidden: true },
   { path: '/evaluate', component: () => import('../views/buyer/product/evaluate'), hidden: true },
@@ -112,6 +107,7 @@ export const constantRouterMap = [
       { path: '/newProduct', component: () => import('../views/buyer/newProduct/index'), meta: { keepAlive: false }, hidden: true }
     ],
   },
+  { path: '/searchProduct', component: () => import('../views/buyer/newProduct/search'), hidden: true },
   { path: '/shop', component: () => import('../views/buyer/shop/index'), meta: { keepAlive: true }, hidden: true },
   { path: '/submitOrder', component: () => import('../views/buyer/shop/submitOrder'), hidden: true },
   { path: '/orderList', component: () => import('../views/buyer/shop/orderList'), meta: { keepAlive: false }, hidden: true },
@@ -153,6 +149,7 @@ export const constantRouterMap = [
   { path: '/personal/mainIndex', component: () => import('../views/buyer/personal/mainIndex'), hidden: true },
   { path: '/collect', component: () => import('../views/buyer/personal/collect'), hidden: true },
   { path: '/personal/starProduct', component: () => import('../views/buyer/starProduct/starProduct'), hidden: true },  ///星币商城
+  { path: '/personal/orderStar', component: () => import('../views/buyer/starProduct/orderStar'), hidden: true },  ///星币商城下单
   { path: '/personal/starDetail', component: () => import('../views/buyer/starProduct/starDetail'), hidden: true },  ///星币商城记录
   { path: '/personal/starProductDetail', component: () => import('../views/buyer/starProduct/starProductDetail'), hidden: true },  ///星币商品详情
   { path: '/personal/setPwd', component: () => import('../views/buyer/personal/setPwd'), hidden: true },  ///设置密码

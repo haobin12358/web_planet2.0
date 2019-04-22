@@ -12,7 +12,7 @@
       <div class="m-circle-content">
         <div class="m-flex-between m-circle-nav">
           <nav-list :navlist="nav_list" :isScroll="true" :is-get="true" @navClick="navClick"></nav-list>
-          <span class="m-add-nav-label">+</span>
+          <span class="m-add-nav-label" @click="changeRoute('/circle/circleSort')">+</span>
         </div>
 
         <!--<mt-loadmore :top-method="loadTop" ref="loadmore">-->
