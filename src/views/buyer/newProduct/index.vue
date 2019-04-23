@@ -1,8 +1,13 @@
 <template>
   <div class="m-product" @touchmove="touchMove">
     <div class="m-product-head">
-      <div>
-
+      <!--轮播图-->
+      <div class="m-newProduct-swipe">
+        <mt-swipe :auto="3000" v-if="swipe_list">
+          <mt-swipe-item v-for="item in swipe_list" :key="item.ibid">
+            <img :src="item.ibpic" class="img" @click="changeRoute('/productDetail', item)">
+          </mt-swipe-item>
+        </mt-swipe>
       </div>
       <div class="m-selected-search left">
         <div class="m-search-input-box" >
@@ -100,7 +105,8 @@
         total_page:0,
         bottom_show:false,
         category_list:null,
-        temp: []
+        temp: [],
+        swipe_list:[]
       }
     },
     components:{
@@ -112,9 +118,11 @@
     mounted(){
       common.changeTitle('商城');
       this.getCategory();
+      this.getSwipe();
     },
     activated() {
       this.getCategory();
+      this.getSwipe();
     },
     methods:{
       //滚动加载更多
@@ -205,11 +213,21 @@
             }
             this.nav_list[0].active = true;
             this.getProduct(this.nav_list[0].pcid)
-
           }
         });
       },
-
+    //  获取顶部轮播图
+      getSwipe(){
+        this.$http.get(this.$api.list_hypermarket_banner,{
+          params:{
+            token:localStorage.getItem('token')
+          }
+        }).then(res => {
+          if(res.data.status == 200){
+            this.swipe_list = res.data.data;
+          }
+        })
+      }
 
     }
   }

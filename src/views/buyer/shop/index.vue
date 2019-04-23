@@ -1,26 +1,22 @@
 <template>
     <div class="m-shop" >
-     <div class="m-shop-bg">
-       <span class="m-icon-bg"></span>
-     </div>
       <div class="m-shop-content" @touchmove="touchMove">
-        <h3 class="m-shop-title">
-          <span class="m-title">购物车</span>
-          <span class="m-ft-26" v-if="!isManage" @click="changeManage">管理</span>
-          <span class="m-ft-26" v-if="isManage" @click="changeManage">完成</span>
-        </h3>
-        <p class="m-p">共{{total_number}}件商品</p>
+<!--        <h3 class="m-shop-title">-->
+<!--          <span class="m-title">购物车</span>-->
+<!--          <span class="m-ft-26" v-if="!isManage" @click="changeManage">管理</span>-->
+<!--          <span class="m-ft-26" v-if="isManage" @click="changeManage">完成</span>-->
+<!--        </h3>-->
+<!--        <p class="m-p">共{{total_number}}件商品</p>-->
 
-        <div class="m-no-coupon" v-if="cart_list.length == 0">
-          <span class="m-no-img m-shop-no-img"></span>
-          <p>购物车空空如也，去逛逛吧~</p>
-        </div>
+
+          <p class="m-no-data" v-if="cart_list.length == 0">购物车内暂无商品，<span class="m-main-color" @click="changeRoute('/newProduct')">去选购</span></p>
         <template v-for="(items, index) in cart_list" v-if="cart_list != 0">
           <div class="m-shop-one" >
             <div class="m-shop-store-name">
               <span class="m-icon-radio" :class="items.active?'active':''" @click="radioClick('store',index)"></span>
-              <span @click="changeRoute('brandDetail', items)">{{items.pb.pbname}}</span>
-              <span class="m-icon-more"></span>
+              <span>{{items.pb.pbname}}</span>
+<!--              <span @click="changeRoute('brandDetail', items)">{{items.pb.pbname}}</span>-->
+<!--              <span class="m-icon-more"></span>-->
             </div>
             <template v-for="(item,i) in items.cart" >
               <div class="m-shop-product" v-if="item.product.tlastatus != -10">
@@ -42,9 +38,9 @@
                       <span class="m-red" @click="changeRoute('product',item)" v-if="item.sku.tlsprice">￥{{item.sku.tlsprice | money}}</span>
                       <span class="m-red" @click="changeRoute('product',item)" v-else>￥{{item.sku.skuprice | money}}</span>
                       <div class="m-num">
-                        <span class="m-icon-cut" @click.stop="changeNum(-1,index,i)"></span>
+                        <span class="m-icon-cut" @click.stop="changeNum(-1,index,i)">-</span>
                         <input type="number" v-model="item.canums" class="m-num-input" >
-                        <span class="m-icon-add" @click.stop="changeNum(1,index,i)"></span>
+                        <span class="m-icon-add" @click.stop="changeNum(1,index,i)">+</span>
                       </div>
                     </div>
                   </div>
@@ -57,15 +53,17 @@
         <!--<sku v-if="show_sku" :now_select="select_value" :now_num="canums" :product="product_info" @changeModal="changeModal" @sureClick="sureClick"></sku>-->
       </div>
       <div class="m-shop-foot">
-         <span class="m-icon-radio" :class="allRadio?'active':''" @click="radioClick('all')"></span>
-         <div v-if="!isManage">
+        <div class="m-flex-start">
+          <span class="m-icon-radio" :class="allRadio?'active':''" @click="radioClick('all')"></span>
+          <span class="m-grey">全选</span>
+        </div>
+
+         <div >
+           <span>共计{{select_num}}件商品</span>
            <span>合计</span>
-           <span class="m-red">￥{{total_money | money}}</span>
+           <span >￥{{total_money | money}}</span>
            <span class="m-shop-btn" @click.stop="payOrder">结算</span>
          </div>
-        <div v-else>
-          <span class="m-shop-btn" @click.stop="DestroyCart">删除</span>
-        </div>
       </div>
     </div>
 </template>
@@ -113,7 +111,8 @@
           sku_pr_index:null,
           allRadio:false,
           total_money:0,
-          isManage:false
+          isManage:false,
+          select_num:0
         }
       },
       components: { sku, bottomLine },
@@ -135,7 +134,6 @@
 
       methods: {
         changeRoute(v, item){
-          console.log(item)
           if(item) {
             if(v == "brandDetail") {
               this.$router.push({ path: '/brandDetail', query: { pbid: item.pb.pbid, pbname: item.pb.pbname }});
@@ -353,7 +351,16 @@
             }
             this.cart_list = [].concat(arr);
           }
+          let num = 0;
+          for(let i in this.cart_list){
+            for(let j in this.cart_list[i].cart){
+              if(this.cart_list[i].cart[j].active){
+                num += 1;
+              }
+            }
 
+          }
+          this.select_num = num;
           this.dealMoney();
         },
         //数量改变
@@ -392,10 +399,6 @@
             Toast("请先选择商品");
           }
         },
-        /*点击管理*/
-        changeManage(){
-          this.isManage = !this.isManage;
-        }
       }
     }
 </script>
@@ -407,31 +410,13 @@
     min-height: 100vh;
     background-color: #ffffff;
     position: relative;
-    /*z-index: -2;*/
-    .m-shop-bg{
-      width: 100%;
-      height: 450px;
-      background:linear-gradient(180deg, @mainColor 0%, @subColor 100%);
-      position: absolute;
-      top:0;
-      left: 0;
-      /*z-index: -1;*/
-      .m-icon-bg{
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        width: 100%;
-        height: 67px;
-        background: url("/static/images/icon-bg.png") no-repeat;
-        background-size: 100% 100%;
-      }
+    .m-main-color{
+      color: @mainColor;
+      text-decoration: underline;
     }
     .m-shop-content{
       padding: 0 25px 200px 25px;
       text-align: left;
-      position: absolute;
-      top:0;
-      left: 0;
       .m-no-coupon{
         margin: 200px 80px 0 100px;
       }
@@ -450,8 +435,6 @@
         background-color: #fff;
         width: 654px;
         padding: 23px;
-        border-radius: 10px;
-        box-shadow:0 5px 6px rgba(0,0,0,0.16);
         color: #333;
         margin-bottom: 20px;
         .m-icon-radio{
@@ -489,15 +472,18 @@
             }
             .m-text-info{
               width: 410px;
+              .m-sku-num{
+                text-align: center;
+              }
               h3{
                 font-weight: 400;
               }
               .m-product-sku-select-p{
                 margin: 30px 0 30px;
                 .m-product-sku-select{
-                  padding: 8px 20px;
-                  background-color: #E9E9E9;
-                  border-radius: 10px;
+                  padding: 2px 20px;
+                  color: @mainColor;
+                  border: 1px solid @mainColor;
                   .m-sku-more{
                     display: inline-block;
                     width: 16px;
@@ -515,15 +501,16 @@
     }
     .m-shop-foot{
       position: fixed;
-      bottom: 95px;
+      bottom: 0;
       left: 0;
-      height: 90px;
-      padding: 0 50px;
-      width: 650px;
+      height: 98px;
+      padding: 0  0 0 50px;
+      width: 750px;
+      box-sizing: border-box;
       background-color: #fff;
       z-index: 10;
       .flex-row(space-between);
-      color: #999999;
+      color: #000;
       line-height: 60px;
       .m-red{
         color: @priceColor;
@@ -532,24 +519,27 @@
       }
       .m-shop-btn{
         display: inline-block;
-        width: 193px;
-        height: 60px;
-        line-height: 62px;
+        width: 210px;
+        height: 98px;
+        line-height: 98px;
         background:linear-gradient(90deg, @subColor 0%, @mainColor 100%);
-        border-radius: 30px;
         font-size: 30px;
         color: #ffffff;
+        margin-left: 30px;
+      }
+      .m-icon-radio{
+        margin-right: 20px;
       }
     }
     .m-icon-radio{
       display: inline-block;
-      width: 40px;
-      height: 40px;
-      background: url("/static/images/icon-radio.png") no-repeat;
+      width: 34px;
+      height: 34px;
+      background: url("/static/images/order/icon-radio.png") no-repeat;
       background-size: 100% 100%;
       vertical-align: text-top;
       &.active{
-        background: url("/static/images/icon-radio-active.png") no-repeat;
+        background: url("/static/images/order/icon-radio-active.png") no-repeat;
         background-size: 100% 100%;
       }
     }
