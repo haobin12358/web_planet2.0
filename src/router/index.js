@@ -35,11 +35,11 @@ export const constantRouterMap = [
   // 店主版 - 店主
   {
     path: '/storekeeper',
-    component: Layout,
-    redirect: '',
-    children: [{
-      path: '/storekeeper', component: () => import('../views/store/storekeeper/index'), meta: { keepAlive: false }, hidden: true }
-    ],
+    component: () => import('../views/store/storekeeper/index'),
+    meta: { keepAlive: false },
+    // children: [{
+    //   path: '/storekeeper', component: () => import('../views/store/storekeeper/index'), meta: { keepAlive: false }, hidden: true }
+    // ],
   },
   // 店主版 - 申请成为店主
   { path: '/storekeeper/applyOwner', component: () => import('../views/store/storekeeper/applyOwner'), hidden: true },
@@ -65,6 +65,8 @@ export const constantRouterMap = [
   { path: '/storekeeper/activationCode', component: () => import('../views/store/storekeeper/activationCode'), hidden: true },
   // 店主版 - 店主 - 我的激活码
   { path: '/storekeeper/myActivationCode', component: () => import('../views/store/storekeeper/myActivationCode'), hidden: true },
+  // 店主版 - 店主 - 提现
+  { path: '/storekeeper/withDraw', component: () => import('../views/store/storekeeper/withDraw.vue'), hidden: true },
 
 
   {

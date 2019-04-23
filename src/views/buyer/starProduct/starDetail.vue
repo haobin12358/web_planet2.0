@@ -19,7 +19,7 @@
       </div>
       <div class="m-starDetail-content">
 
-        <ul class="m-detail-list" v-if="history_list.length >0  ">
+        <ul class="m-detail-list" v-if="history_list.length >0">
           <li class="m-flex-start" v-for="(item,index) in history_list">
             <img :src="item.prmainpic" class="m-detail-list-img" v-if="select_nav.name == '消耗明细'" alt="">
             <div class="m-detail-list-text">

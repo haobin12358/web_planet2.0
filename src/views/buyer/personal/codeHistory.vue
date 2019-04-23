@@ -1,7 +1,13 @@
 <template>
   <div class="m-history">
     <div class="m-history-box">
+      <div class="w-month">
+          <div class="w-month-last"></div>
+          <div class="w-month-now">{{month }}</div>
+          <div class="w-month-next"></div>
+        </div>
       <div class="m-history-item" v-for="item in history">
+        
         <div class="m-text-content">
           <div class="m-item-left">
             <p>
@@ -25,8 +31,8 @@
             <p>{{item.acaapplystatus_zh}}</p>
           </div>
         </div>
-        <img class="m-image-content" v-for="(img, index) in item.acavouchers"
-             @click="previewImage(index, item.acavouchers)" v-lazy="img" :key="img">
+        <!-- <img class="m-image-content" v-for="(img, index) in item.acavouchers"
+             @click="previewImage(index, item.acavouchers)" v-lazy="img" :key="img"> -->
       </div>
     </div>
     <div class="m-no-history" v-if="history.length == 0">
@@ -45,7 +51,8 @@
   export default {
     data() {
       return {
-        history: []
+        history: [],
+        month: new Date()
       }
     },
     mixins: [wxapi],
@@ -73,8 +80,11 @@
         });
       }
     },
+    filters:{
+
+    },
     mounted() {
-      common.changeTitle('申请列表');
+      common.changeTitle('购买记录');
       this.getHistory();               // 获取申请列表
     }
   }
@@ -84,15 +94,37 @@
 
   .m-history {
     min-height: 100vh;
-    background-color: #EEEEEE;
+    background-color: #fff;
     .m-history-box {
-      width: 690px;
-      margin: 50px 30px;
+      width: 750px;
+      // margin: 50px 30px;
       text-align: left;
+      .w-month{
+        .w-month-last{
+          width: 22px;
+          height: 22px;
+          &:active{
+
+          }
+        }
+        .w-month-now{
+          font-size:28px;
+          font-weight:300;
+          line-height:40px;
+          color:#666666;
+        }
+        .w-month-next{
+          width: 22px;
+          height: 22px;
+          &:active{
+
+          }
+        }
+      }
       .m-history-item {
         background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 5px 6px rgba(0,0,0,0.16);
+        // border-radius: 10px;
+        // box-shadow: 0 5px 6px rgba(0,0,0,0.16);
         margin-bottom: 20px;
         .m-text-content {
           display: flex;

@@ -1,10 +1,10 @@
 <template>
   <div class="m-IDCard-box">
-    <div class="m-IDCard-bg"></div>
+    <!-- <div class="m-IDCard-bg"></div> -->
     <div class="m-content">
       <div class="m-IDCard">
-        <div>
-          <p class="m-title m-ft-32">打款信息</p>
+        <div class="w-IDCard-info">
+          <p class="m-title m-ft-32">打款账号</p>
           <div class="m-IDCard-row">
             <div class="m-row-title">姓名</div>
             <input type="text" class="m-row-input m-width-450" v-model="name" placeholder="请填写姓名">
@@ -16,21 +16,27 @@
           <div class="m-IDCard-row">
             <div class="m-row-title">银行名称</div>
             <!--<input type="text" class="m-row-input m-width-450" v-model="bank" maxlength="18" placeholder="请选择银行">-->
-            <div @click="getBankName">{{bank}}</div>
+            <div class="m-row-input" @click="getBankName">{{bank}}</div>
           </div>
-          <div class="m-IDCard-row">
-            <div class="m-row-title">打款凭证</div>
-          </div>
+          
         </div>
         <!--添加视频和图片的区域-->
         <div class="m-upload-box">
+          
           <div>
+          <p class="w-title m-ft-32">打款凭证</p>
+            <!-- <div class="m-IDCard-row">
+            <div class="m-row-title">打款凭证</div>
+          </div> -->
             <div class="m-selectBack-img-box">
               <div class="img-box" v-for="(item,index) in img_box">
                 <img class="circle-img" :src="item" alt="" @click="previewImage(index, image)">
                 <img class="del-img" src="/static/images/icon-close.png" alt="" @click="deleteImg(index)">
               </div>
-              <div class="m-selectBack-camera" v-if="img_box.length < 4">
+              <div class="m-selectBack-camera" v-if="img_box.length < 2">
+                <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="" @change="uploadImg" ref="voucherImg">
+              </div>
+              <div class="m-selectBack-camera" v-if="img_box.length < 2">
                 <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="" @change="uploadImg" ref="voucherImg">
               </div>
             </div>
@@ -38,9 +44,9 @@
         </div>
 
         <div class="m-rule">
-          <img class="m-agree-img" v-if="!agree" src="/static/images/icon-radio.png" @click="agree = true">
-          <img class="m-agree-img" v-if="agree" src="/static/images/icon-radio-active.png" @click="agree = false">
-          <p class="m-rule-text">我已阅读并同意 <span class="m-rule-popup-text" @click="rulePopup = true">规则</span></p>
+          <img class="m-agree-img" v-if="!agree" src="/static/images/storekeeper/store-radio-off.png" @click="agree = true">
+          <img class="m-agree-img" v-if="agree" src="/static/images/storekeeper/store-radio-on.png" @click="agree = false">
+          <p class="m-rule-text">我已阅读并同意 <span class="m-rule-popup-text" @click="rulePopup = true">《规则》</span></p>
         </div>
         <!--按钮-->
         <div class="m-foot-btn">
@@ -166,7 +172,7 @@
       },
       //上传图片
       uploadImg(e) {
-        if(this.img_box && this.img_box.length == 4) {
+        if(this.img_box && this.img_box.length == 2) {
           Toast('最多只可上传4张图片');
           return false;
         }
@@ -266,28 +272,73 @@
 
   .m-IDCard-box {
     min-height: 100vh;
-    background-color: #EEEEEE;
+    background-color: #fff;
     .m-IDCard-bg {
       width: 750px;
       height: 371px;
-      background: linear-gradient(180deg, @mainColor 0%, @subColor 100%);
+      
     }
     .m-content {
-      position: absolute;
-      top: 25px;
+      // position: absolute;
+      // top: 25px;
       .m-IDCard {
-        width: 600px;
-        padding: 60px 50px 30px 50px;
-        margin: 0 0 260px 25px;
-        border-radius: 10px;
+        width: 750px;
+        // padding: 60px 50px 30px 50px;
+        // margin: 0 0 260px 25px;
+        // border-radius: 10px;
         background-color: #ffffff;
-        box-shadow: 0 5px 6px rgba(0,0,0,0.16);
+        // box-shadow: 0 5px 6px rgba(0,0,0,0.16);
+        .w-IDCard-info{
+          border-bottom: 10px solid #F4F4F4;
+          .m-title {
+            color: #000000;
+            text-align: left;
+            // margin: -20px 0 40px 0;
+            padding: 30px 40px; 
+            border-bottom: 1px solid #F2F2F2;
+          }
+          .m-IDCard-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px 0 40px;
+            // border-bottom: 1px #CCCCCC solid;
+            &:last-child {
+              padding-bottom: 30px;
+            }
+            .m-row-title {
+              color: #999999;
+              font-size: 28px;
+              // margin-right: 32px;
+            }
+            .m-row-input {
+              color: #999999;
+              border-radius: 30px;
+              font-size: 28px;
+              text-align: right;
+              font-weight: 400;
+            }
+            .m-width-220 {
+              width: 220px;
+            }
+            .m-width-450 {
+              width: 400px;
+            }
+          }
+        }
         .m-upload-box{
           display: flex;
           flex-flow: row;
           justify-content: space-between;
           align-items: flex-end;
-          margin-top: 20px;
+          padding: 30px 40px;
+          .w-title {
+            color: #000000;
+            text-align: left;
+            // margin: -20px 0 40px 0;
+            // padding: 30px 40px; 
+            margin-bottom: 30px;
+            // border-bottom: 1px solid #F2F2F2;
+          }
           .m-selectBack-img-box{
             margin-bottom: 30px;
             width: 100%;
@@ -311,17 +362,17 @@
               }
             }
             .m-selectBack-camera{
-              width: 180px;
-              height: 180px;
-              background: url('/static/images/icon-camera-text.png') no-repeat;
+              width: 377px;
+              height: 247px;
+              background: url('/static/images/storekeeper/store-img-upload.png') no-repeat;
               background-size: 100% 100%;
               display: inline-block;
-              margin: 0 15px 15px 0;
+              margin: 15px 15px 15px 0;
               position: relative;
             }
             .m-upload-input{
-              width: 180px;
-              height: 180px;
+              width: 377px;
+              height: 247px;
               position: absolute;
               top: 0;
               left: 0;
@@ -336,38 +387,7 @@
             }
           }
         }
-        .m-title {
-          color: #999999;
-          text-align: left;
-          margin: -20px 0 40px 0;
-        }
-        .m-IDCard-row {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 25px;
-          padding-bottom: 20px;
-          border-bottom: 1px #CCCCCC solid;
-          &:last-child {
-            border-bottom: 0;
-          }
-          .m-row-title {
-            color: #999999;
-            font-size: 26px;
-            margin-right: 32px;
-          }
-          .m-row-input {
-            color: #999999;
-            border-radius: 30px;
-            font-size: 24px;
-            text-align: right;
-          }
-          .m-width-220 {
-            width: 220px;
-          }
-          .m-width-450 {
-            width: 400px;
-          }
-        }
+        
         .m-IDCard-img {
           position: relative;
           text-align: left;
@@ -380,40 +400,41 @@
         }
         .m-rule {
           display: flex;
-          padding-bottom: 10px;
+          .flex-row(flex-start,center);
+          padding-left: 40px;
           .m-agree-img {
-            width: 35px;
-            height: 35px;
+            width: 24px;
+            height: 24px;
             margin-right: 20px;
           }
           .m-rule-text {
             color: #999999;
-            font-size: 24px;
+            font-size: 28px;
             .m-rule-popup-text {
-              color: #333333;
-              border-bottom: 1px #333333 solid;
+              color: @mainColor;
+              // border-bottom: 1px #333333 solid;
             }
           }
         }
         .m-foot-btn{
           position: absolute;
           bottom: 50px;
-          left: 25px;
+          // left: 25px;
           span{
             color: #ffffff;
             display: inline-block;
-            width: 700px;
+            width: 750px;
             height: 106px;
             line-height: 106px;
-            background-color: @mainColor;
+            background-color:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
             font-size: 38px;
             font-weight: bold;
-            border-radius: 10px;
-            box-shadow: 0 5px 6px rgba(0,0,0,0.16);
+            // border-radius: 10px;
+            // box-shadow: 0 5px 6px rgba(0,0,0,0.16);
           }
           .not-agree {
             color: #999999;
-            background-color: #EEEEEE;
+            background-color: #eeeeee;
           }
         }
         .m-submit-popup {
@@ -434,7 +455,7 @@
           width: 620px;
           height: 880px;
           margin: -480px 0 0 25px;
-          border-radius: 30px;
+          // border-radius: 30px;
           padding: 40px 40px 60px 40px;
           .m-rule-title {
             display: flex;
