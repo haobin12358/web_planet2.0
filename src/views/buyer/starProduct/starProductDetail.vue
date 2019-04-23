@@ -26,9 +26,10 @@
       <div class="m-info-list">
         <span>快递：{{product_info.ipfreight }} 元</span>
         <span>月销：{{product_info.ipsalevolume}}</span>
-        <div @click="changeRoute('/brandDetail')">
+<!--         @click="changeRoute('/brandDetail')"-->
+        <div>
           <span class="m-brand-name">{{product_info.brand.pbname}}</span>
-          <span class="m-more"></span>
+<!--          <span class="m-more"></span>-->
         </div>
       </div>
     </div>

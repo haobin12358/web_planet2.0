@@ -65,6 +65,7 @@ import bottomLine from '../../../components/common/bottomLine';
             slots: [
               {
                 flex: 1,
+                defaultIndex:0,
                 values: ['2018', '2019', '2020', '2021', '2022', '2023'],
                 className: 'slot1',
                 textAlign: 'right'
@@ -126,7 +127,15 @@ import bottomLine from '../../../components/common/bottomLine';
           }
          this.slots[0].values = arr.concat([]);
           let month = _date.getMonth()+1 >9? _date.getMonth()+1 : '0'+(_date.getMonth()+1);
-
+          for(let i in this.slots[0].values){
+            if(this.slots[0].values[i] == year)
+                 this.slots[0].defaultIndex = Number(i);
+          }
+          console.log(this.slots[0].defaultIndex, year)
+          for(let j in this.slots[2].values){
+            if(this.slots[2].values[j] == month)
+              this.slots[2].defaultIndex = Number(j);
+          }
           this.now = `${year}-${month}`
         },
         navClick(index){

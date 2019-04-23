@@ -31,10 +31,11 @@
         <div class="m-info-list">
           <span>快递：{{product_info.prfreight | money}} 元</span>
           <span>月销：{{product_info.month_sale_value}}</span>
-          <div @click="changeRoute('/brandDetail')">
-            <span class="m-brand-name">{{product_info.brand.pbname}}</span>
-            <span class="m-more"></span>
-          </div>
+          <span >{{product_info.brand.pbname}}</span>
+<!--          <div @click="changeRoute('/brandDetail')">-->
+<!--            <span class="m-brand-name">{{product_info.brand.pbname}}</span>-->
+<!--            <span class="m-more"></span>-->
+<!--          </div>-->
         </div>
       </div>
       <div class="m-product-detail-more" @click="changeModal('show_sku',true)">
@@ -62,6 +63,21 @@
         <div>
           <span class="m-ft-20">查看详情</span>
           <span class="m-more"></span>
+        </div>
+      </div>
+      <div class="m-product-detail-more">
+        <div class="m-flex-start">
+          <span class="m-label">优惠券</span>
+          <template v-for="(a, b) in product_info.coupons.slice(0,2)">
+            <span class="m-coupon-label" v-if="a.codiscount == '10'" ><span v-if="a.codownline != 0"> 满{{a.codownline}}</span><span v-else>无限制</span>减{{a.cosubtration}}</span>
+            <span class="m-coupon-label" v-else >{{a.codiscount}}折</span>
+          </template>
+
+        </div>
+        <div>
+          <span class="m-ft-20" v-if="product_info.coupons.length > 0"  @click="show_coupon = true">领劵</span>
+          <span class="m-ft-20" v-else>暂无</span>
+          <span class="m-more"  @click="show_coupon = true"></span>
         </div>
       </div>
       <div class="m-product-description" v-if="product_info.prdescription">
@@ -95,6 +111,19 @@
           <img :src="share_img" class="m-share-img" alt="">
         </div>
       </div>
+      <shop-icon></shop-icon>
+      <mt-popup v-model="show_coupon" popup-transition="popup-fade" class="m-coupon-modal">
+        <div class="m-coupon-head">
+          <span>领取优惠券</span>
+          <img src="/static/images/product/icon-close.png" @click="show_coupon = false" alt="">
+        </div>
+        <div class="m-coupon-scroll">
+          <div class="m-coupon-modal-content">
+            <coupon :couponList="product_info.coupons"  @getCoupon="getCoupon" ></coupon>
+          </div>
+        </div>
+
+      </mt-popup>
       <sku v-if="show_sku" :now_select="select_value" :now_num="canums" :product="product_info" @changeModal="changeModal" @sureClick="sureClick"></sku>
     </div>
 </template>
@@ -102,12 +131,13 @@
 <script>
   import sku from '../components/sku';
   import common from '../../../common/js/common';
-  import axios from 'axios';
+  import axios from 'axios/index';
   import api from '../../../api/api';
   import { Toast } from 'mint-ui'
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
-
+  import shopIcon from './compoments/shopIcon';
+  import coupon from '../components/couponCard';
   var scroll = (function (className) {
     var scrollTop;
     return {
@@ -137,11 +167,13 @@
           show_invite: false,
           show_img:false,
           share_img:'',
-          share_url:''
+          share_url:'',
+          show_coupon:false,
+
         }
       },
       mixins: [wxapi],
-      components: { sku },
+      components: { sku ,shopIcon,coupon},
       mounted() {
         common.changeTitle('商品详情');
         wxapi.wxRegister(location.href.split('#')[0]);
@@ -263,6 +295,17 @@
             this.$router.push('/shop');
            }
         },
+        // 点击领取优惠券
+        getCoupon(index) {
+
+          axios.post(api.coupon_fetch + '?token=' + localStorage.getItem('token'), { coid: this.product_info.coupons[index].coid }).then(res => {
+            if(res.data.status == 200){
+              Toast("领取成功");
+              console.log(this.product_info.coupons)
+              this.product_info.coupons[index].ready_collected = true;
+            }
+          });
+        },
         // 预览图片
         previewImage(index, image) {
           let images = [];
@@ -327,6 +370,7 @@
           }).
           then(res => {
             if(res.data.status == 200){
+              this.$store.state.shop_num = Number(this.$store.state.shop_num) + 1;
               Toast({ message: res.data.message,duration:1000, className: 'm-toast-success' });
             }
           },error => {
@@ -510,6 +554,17 @@
       display: inline-block;
       margin-right: 30px;
     }
+    .m-coupon-label{
+      display: inline-block;
+      background: url("/static/images/product/icon-coupon-bg.png") no-repeat;
+      background-size: 100% 100%;
+      margin-right: 10px;
+      height: 36px;
+      line-height: 36px;
+      font-size: 20px;
+      color: #EA3F29;
+      padding: 0 16px 0 26px;
+    }
     .m-black{
       color: #666666;
     }
@@ -611,6 +666,35 @@
         width: 500px;
         height: 700px;
       }
+    }
+  }
+  .m-coupon-modal{
+    display: flex;
+    flex-flow: column;
+    /*justify-content: center;*/
+    align-items: center;
+    height: 660px;
+    padding-bottom: 40px;
+    .m-coupon-head{
+      .flex-row(space-between);
+      width: 100%;
+      padding: 15px 25px;
+      font-size: 28px;
+      box-sizing: border-box;
+      color: @mainColor;
+      img{
+        display: block;
+        width: 27px;
+        height: 27px;
+      }
+    }
+    .m-coupon-scroll{
+      height: 580px;
+      overflow-y: auto;
+    }
+    .m-coupon-modal-content{
+      width: 750px;
+      padding: 40px 0;
     }
   }
 }

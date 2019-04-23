@@ -30,36 +30,40 @@
             <img :src="item.sku.skupic" class="m-product-img" alt="">
           </div>
           <div>
-            <h3>{{item.product.prtitle}}</h3>
+            <div class="m-title-box">
+              <h3>{{item.product.prtitle}}</h3>
+              <div >
+                <p  v-if="act && item.sku.tlsprice">￥{{item.sku.tlsprice | money}}</p>
+                <p v-else>￥{{item.sku.skuprice | money}}</p>
+                <p class="m-num-product">x{{item.canums}}</p>
+              </div>
+            </div>
+
             <p class="m-sku-select">
               <template v-for="(key,k) in item.sku.skuattritedetail" >
                 <span >{{key}}</span>
                 <span v-if="k < item.sku.skuattritedetail.length-1">；</span>
               </template>
             </p>
-            <p class="m-price-num">
-              <span class="m-price" v-if="act && item.sku.tlsprice">￥{{item.sku.tlsprice | money}}</span>
-              <span class="m-price" v-else>￥{{item.sku.skuprice | money}}</span>
-              <span>x{{item.canums}}</span>
-            </p>
+
           </div>
         </div>
         <ul class="m-order-ul">
           <li class="m-sku-num">
-            <span>商品金额</span>
-            <div class="m-num m-price">
+            <span>购买金额</span>
+            <div >
               ￥{{items.total | money}}
             </div>
           </li>
           <li class="m-sku-num" v-if="from != 'try' && !isGuess">
             <span>预计收益</span>
-            <div class="m-num m-price">
+            <div class=" m-price">
               ￥{{items.preview | money}}
             </div>
           </li>
           <li class="m-sku-num" v-if="isGuess">
             <span>减免金额</span>
-            <div class="m-num m-price">
+            <div class="m-price">
               ￥{{items.discount | money}}
             </div>
           </li>
@@ -71,13 +75,9 @@
               <!--<span class="m-icon-more"></span>-->
             </div>
           </li>
-          <li class="m-message" v-if="!isGuess">
-            <span>买家留言：</span>
-            <textarea  v-model="items.ommessage" id=""></textarea>
-            <!--<textarea name="" id=""  placeholder="选填"></textarea>-->
-          </li>
+
           <li class="m-flex-between" @click="changeModel('show_coupon',true, index + 1)" v-if="!isGuess">
-            <span>优惠方式</span>
+            <span>优惠选择</span>
             <div v-if="items.couponList.length > 0">
               <span class="m-grey" v-if="items.coupon_info.coname">{{items.coupon_info.coname}}</span>
               <span v-else>请选择优惠券</span>
@@ -87,13 +87,29 @@
               <span>暂无优惠券</span>
             </div>
           </li>
+          <li class="m-flex-between" @click="changeModel('show_coupon',true, index + 1)" v-if="!isGuess">
+            <span>星币抵扣</span>
+            <div v-if="items.couponList.length > 0">
+              <span class="m-grey" v-if="items.coupon_info.coname">{{items.coupon_info.coname}}</span>
+              <span v-else>请选择优惠券</span>
+              <span class="m-icon-more"></span>
+            </div>
+            <div v-else>
+              <span>暂无优惠券</span>
+            </div>
+          </li>
+          <li class="m-message" v-if="!isGuess">
+            <span>买家留言：</span>
+            <textarea  v-model="items.ommessage" id=""></textarea>
+            <!--<textarea name="" id=""  placeholder="选填"></textarea>-->
+          </li>
         </ul>
       </div>
       <div class="m-one-part">
         <ul class="m-order-ul">
           <li class="m-sku-num">
             <span>总计金额</span>
-            <div class="m-num m-price">
+            <div class=" m-price">
               ￥{{total_money | money}}
             </div>
           </li>
@@ -625,9 +641,9 @@
   @import "../../../common/css/index";
 .m-submitOrder{
   min-height: 100vh;
-  background-color: #eee;
-  padding: 17px 25px 100px 25px;
-  color: #333;
+  background-color: #fff;
+  /*padding: 17px 25px 100px 25px;*/
+  color: #000;
   .m-icon-more{
     display: inline-block;
     width: 22px;
@@ -636,24 +652,33 @@
     background-size: 100% 100%;
     vertical-align: middle;
   }
+  .m-price{
+    color: @mainColor;
+  }
   .m-one-part {
-    width: 612px;
-    padding: 16px 44px 22px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 0 22px;
     background-color: #fff;
-    box-shadow:0 5px 6px rgba(0,0,0,0.16);
-    border-radius: 10px;
-    margin-bottom: 20px;
+    /*box-shadow:0 5px 6px rgba(0,0,0,0.16);*/
+    /*border-radius: 10px;*/
+    /*margin-bottom: 20px;*/
+    border-bottom: 10px solid #f4f4f4;
     text-align: left;
     &.m-pl-s{
-      width: 630px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 16px 14px 22px 26px;
       &.m-pr-s{
-        width: 660px;
+        width: 100%;
+        box-sizing: border-box;
         padding: 16px 14px 22px 26px;
       }
     }
     &.m-pr-s{
-      width: 642px;
+      /*width: 642px;*/
+      width: 100%;
+      box-sizing: border-box;
       padding: 16px 14px 22px 44px;
     }
     &.m-address-part{
@@ -693,14 +718,40 @@
       font-weight: 400;
       color: #333;
       margin-top: 10px;
+      padding: 0 40px;
     }
     .m-product{
       display: flex;
       flex-flow: row;
       justify-content: flex-start;
       margin-top: 20px;
+      padding: 0 40px;
+      .m-title-box{
+        display: flex;
+        flex-flow: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 530px;
+        p{
+          text-align: right;
+        }
+        .m-num-product{
+          color: #C1C1C1;
+        }
+      }
       h3{
+        padding: 0;
+        text-align: left;
         margin: 0;
+        width: 352px;
+        white-space: normal;
+        font-size: 24px;
+        overflow: hidden; // 超出的文本隐藏
+        word-break: break-word;  // 英文换行
+        text-overflow: ellipsis;    // 溢出用省略号显示
+        display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+        -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+        -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
       }
       .m-product-img{
         display: block;
@@ -718,16 +769,14 @@
         display: flex;
         flex-flow: row;
         justify-content: space-between;
-        width: 480px;
-        .m-price{
-          color: #FF6600;
-        }
+        width: 560px;
       }
     }
     .m-order-ul{
       li{
         border-bottom: 1px solid #ccc;
-        padding: 28px 0;
+        padding: 28px 40px;
+        box-sizing: border-box;
         &:last-child{
           border-bottom: none;
         }
@@ -787,17 +836,17 @@
   }
   .m-order-btn{
     padding: 0;
-    width: 700px;
+    width: 750px;
     margin-top: 100px;
     span{
       color: #ffffff;
       display: inline-block;
-      width: 700px;
+      width: 750px;
       height:106px;
       line-height: 106px;
       background: @mainColor;
-      box-shadow: 0 5px 6px rgba(0,0,0,0.16);
-      border-radius: 10px;
+      /*box-shadow: 0 5px 6px rgba(0,0,0,0.16);*/
+      /*border-radius: 10px;*/
       font-weight: bold;
       font-size: 38px;
     }

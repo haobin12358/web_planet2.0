@@ -93,6 +93,7 @@
               imgUrl: this.brand_info.tlatoppic,
               link: window.location.href.split('#')[0] + '?tlaid=' + id
             };
+
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid

@@ -180,6 +180,20 @@ Vue.filter('money', function(val) {
 
   return (((sign)?'':'-') + val + '.' + cents);
 });
+Vue.filter('time', function(val) {
+
+  let _val = '';
+
+  if(val){
+    val = val.toString();
+
+
+    _val = `${val.slice(0,4)}/${val.slice(5,7)}/${val.slice(8,10)}`
+
+  }
+
+  return _val;
+});
 
 router.beforeEach((to,from,next) => {
   if(localStorage.getItem('version') && localStorage.getItem('version') != store.state.version){

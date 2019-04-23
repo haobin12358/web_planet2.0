@@ -13,7 +13,7 @@
        <ul class="m-sort-ul">
          <li>
            <span>活动</span>
-           <img src="/static/images/circle/icon-circle-close.png" v-if="isEdit " class="m-circle-close" alt="">
+           <img src="/static/images/circle/icon-circle-close.png" v-if="isEdit " @click="deleteClick" class="m-circle-close" alt="">
          </li>
          <li>
            <span>活动</span>
@@ -41,7 +41,7 @@
 
         <ul class="m-sort-ul m-cancel">
           <li>
-            <span>活动</span>
+            <span @click="addClick"> 活动</span>
 
           </li>
           <li>
@@ -70,12 +70,24 @@
         name: "circleSort",
       data(){
           return{
-            isEdit:false
+            isEdit:false,
+            my_label:[],
+            all_label:[]
           }
       },
       methods:{
         changeRoute(){
           this.$router.go(-1);
+        },
+        //点击删除
+        deleteClick(index){
+          this.all_label.push(this.my_label[index])
+          this.my_label.splice(index,1);
+        },
+        //点击添加分类
+        addClick(index){
+          this.my_label.push(this.all_label[index]);
+          this.all_label.splice(index,1);
         }
       }
     }

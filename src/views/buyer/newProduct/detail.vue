@@ -18,7 +18,7 @@
       <section class="m-equipment-detail-content">
         <!--搜索-->
         <div class="m-selected-search">
-          <div class="m-search-input-box m-flex-start" @click="changeRoute('/searchProduct')">
+          <div class="m-search-input-box m-flex-start" >
             <span class="m-icon-search"></span>
           </div>
         </div>
@@ -29,7 +29,7 @@
             </p>
 
             <ul class="m-equipment-detail-product" v-if="item.subs">
-              <li  v-for="(v,i) in item.subs" @click="changeRoute('/product',v)">
+              <li  v-for="(v,i) in item.subs" @click="changeRoute('/searchProduct',v)">
                 <img :src="v.pcpic" alt="">
                 <span>{{v.pcname}}</span>
               </li>
