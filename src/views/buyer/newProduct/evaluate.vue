@@ -6,17 +6,17 @@
             <div class="m-evaluate-one">
               <img :src="item.user.usheader" class="m-evaluate-portrait" alt="">
               <div class="m-evaluate-one-content">
-                <h3>{{item.user.usname}}</h3>
+                <h3 class="m-black">{{item.user.usname}}</h3>
                 <div class="m-evaluate-start">
                   <div>
                     <span class="m-label">评价</span>
                     <span class="m-icon-start" v-for="(a, b) in star" :class="b < item.oescore ? 'active' : ''"></span>
                   </div>
-                  <span>{{item.zh_oescore}}</span>
+                  <span class="m-black">{{item.zh_oescore}}</span>
                 </div>
                 <p class="m-evaluate-text">
                   <span class="m-label">评价详情</span>
-                  <span>
+                  <span class="m-black">
                  {{item.oetext}}
                </span>
                 </p>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import axios from 'axios/index';
   import api from '../../../api/api';
   import {Toast} from 'mint-ui'
   import common from '../../../common/js/common';
@@ -174,9 +174,10 @@
     }
   }
   .m-evaluate-content{
-    min-height: 100vh;
-    background-color: #EEEEEE;
     padding-bottom: 20px;
+    .m-black{
+      color: #000000;
+    }
   }
   .m-no-comments {
     font-size: 30px;
@@ -184,15 +185,17 @@
   }
   .m-evaluate-one{
     background-color: #fff;
-    box-shadow:0 5px 6px rgba(0,0,0,0.16);
+
     padding: 16px 20px 30px 30px;
     text-align: left;
-    margin-bottom: 20px;
+    border-bottom: 10px solid #F4F4F4;
+    &:last-child{
+      border-bottom: none;
+    }
     .m-evaluate-portrait{
       display: inline-block;
       width: 90px;
       height: 90px;
-      background-color: #9fd0bf;
       margin-right: 30px;
       vertical-align: top;
     }
@@ -201,7 +204,7 @@
       color: #8A8A8A;
       width: 570px;
       h3{
-        font-size: 24px;
+        font-size: 28px;
         font-weight: normal;
         margin: 0;
       }
@@ -220,11 +223,11 @@
           display: inline-block;
           width: 35px;
           height: 35px;
-          background: url("/static/images/icon-evaluate-star.png") no-repeat;
+          background: url("/static/images/order/comment-star-off.png") no-repeat;
           background-size: 100% 100%;
           vertical-align: text-bottom;
           &.active{
-            background: url("/static/images/icon-evaluate-star-active.png") no-repeat;
+            background: url("/static/images/order/comment-star-on.png") no-repeat;
             background-size: 100% 100%;
           }
         }

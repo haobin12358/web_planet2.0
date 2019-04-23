@@ -15,7 +15,7 @@
     <div class="m-product-nav">
       <img src="/static/images/product/icon-product-sort.png" class="m-icon-sort" alt="">
         <span v-for="(item,index) in nav_list" class="m-nav-one" :class="item.active?'active':''" @click="navClick(index)">
-          {{item.name}}
+          {{item.pcname}}
         </span>
       <span class="m-product-more" @click="changeRoute('/equipment/detail')">
         更多分类
@@ -25,35 +25,36 @@
     
     <product :list="product_list"></product>
     <bottom-line v-if="bottom_show"></bottom-line>
+    <shop-icon></shop-icon>
     <!--<div class="m-modal-select" v-if="show_modal" @click="changeModal('show_modal',false)">-->
-    <div class="m-modal-select" v-if="show_modal">
-      <div class="m-modal-state">
-        <div class="m-state-content">
-          <template v-for="(items,index) in category_list">
-            <div class="m-one-select" v-if="items.subs">
-              <p >{{items.pcname}}</p>
-              <div class="m-sku-list">
-                <span class="m-one-sku" :class="item.active?'active':''" v-for="(item,i) in items.subs" @click.stop="categoryClick(index,i)">{{item.pcname}}</span>
-              </div>
-            </div>
-          </template>
-          <!--<div class="m-one-select">-->
-          <!--<p>防风衣/运动外套</p>-->
-          <!--<div class="m-sku-list">-->
-          <!--<input type="text" placeholder="最低价">-->
-          <!--<span class="m-grey">——</span>-->
-          <!--<input type="text" placeholder="最低价">-->
-          <!--</div>-->
-          <!--</div>-->
-        </div>
-        <div class="m-state-foot">
-          <div class="m-product-detail-btn">
-            <span @click="resetPrid">重 置</span>
-            <span class="active" @click="searchProduct">确 定</span>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--    <div class="m-modal-select" v-if="show_modal">-->
+<!--      <div class="m-modal-state">-->
+<!--        <div class="m-state-content">-->
+<!--          <template v-for="(items,index) in category_list">-->
+<!--            <div class="m-one-select" v-if="items.subs">-->
+<!--              <p >{{items.pcname}}</p>-->
+<!--              <div class="m-sku-list">-->
+<!--                <span class="m-one-sku" :class="item.active?'active':''" v-for="(item,i) in items.subs" @click.stop="categoryClick(index,i)">{{item.pcname}}</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </template>-->
+<!--          &lt;!&ndash;<div class="m-one-select">&ndash;&gt;-->
+<!--          &lt;!&ndash;<p>防风衣/运动外套</p>&ndash;&gt;-->
+<!--          &lt;!&ndash;<div class="m-sku-list">&ndash;&gt;-->
+<!--          &lt;!&ndash;<input type="text" placeholder="最低价">&ndash;&gt;-->
+<!--          &lt;!&ndash;<span class="m-grey">——</span>&ndash;&gt;-->
+<!--          &lt;!&ndash;<input type="text" placeholder="最低价">&ndash;&gt;-->
+<!--          &lt;!&ndash;</div>&ndash;&gt;-->
+<!--          &lt;!&ndash;</div>&ndash;&gt;-->
+<!--        </div>-->
+<!--        <div class="m-state-foot">-->
+<!--          <div class="m-product-detail-btn">-->
+<!--            <span @click="resetPrid">重 置</span>-->
+<!--            <span class="active" @click="searchProduct">确 定</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -65,6 +66,7 @@
   import api from '../../../api/api'
   import {Toast} from 'mint-ui';
   import bottomLine from '../../../components/common/bottomLine';
+  import shopIcon from './compoments/shopIcon';
   var scroll = (function (className) {
     var scrollTop;
     return {
@@ -83,35 +85,14 @@
   export default {
     data(){
       return{
-        nav_list:[
-          {
-            name:'销量',
-            params:'sale_value',
-            active:true,
-          },
-          {
-            name:'新品',
-            params:'time',
-            active:false,
-          },
-          {
-            name:'价格',
-            params:'price',
-            active:false
-          },
-          {
-            name:'筛选',
-            params:'',
-            active:false,
-          }
-        ],
+        nav_list:[],
         pcid: '',
         show_modal: false,
         // brand_info:null,
         pcidList:[],
         product_list:[],
         page_info:{
-          page_num:0,
+          page_num:1,
           page_size:10
         },
         isScroll:true,
@@ -125,14 +106,15 @@
     components:{
       product,
       navList,
-      bottomLine
+      bottomLine,
+      shopIcon
     },
     mounted(){
       common.changeTitle('商城');
-      this.getProduct(1,'sale_value|asc');
+      this.getCategory();
     },
     activated() {
-      this.getProduct(1,'sale_value|asc');
+      this.getCategory();
     },
     methods:{
       //滚动加载更多
@@ -148,7 +130,7 @@
             }else{
               for(let i=0;i<this.nav_list.length;i++){
                 if(this.nav_list[i].active){
-                  this.getProduct(this.page_info.page_num,this.nav_list[i].params + (this.nav_list[i].desc_asc?'|asc':'|desc'));
+                  this.getProduct(this.nav_list[i].pcid);
                 }
               }
             }
@@ -166,22 +148,10 @@
           arr[i].active = false;
         }
         arr[index].active = true;
-        arr[index].desc_asc = !arr[index].desc_asc;
         this.nav_list = [].concat(arr);
         this.page_info.page_num = 1;
         this.bottom_show = false;
-        if(index == 3){
-          this.changeModal('show_modal',true);
-          this.getCategory();
-        }else{
-          if(arr[index].desc_asc){
-            // this.getProduct(1,arr[index].params +'|asc')
-            this.getProduct(1,arr[index].params +'|desc')
-          }else{
-            // this.getProduct(1,arr[index].params +'|desc')
-            this.getProduct(1,arr[index].params +'|asc')
-          }
-        }
+        this.getProduct(this.nav_list[index].pcid);
       },
       //显示隐藏模态框
       changeModal(v,bool) {
@@ -193,14 +163,13 @@
         }
       },
       //获取商品列表
-      getProduct(start,desc_asc){
-        let _pcid = this.$route.query.pcid || this.pcid;
+      getProduct(id){
+        let start = this.page_info.page_num;
         let _kw = this.$route.query.kw || '';
         axios.get(api.product_list,{
           params:{
-            pcid:_pcid,
+            pcid:id,
             page_size:this.page_info.page_size,
-            order_type:desc_asc,
             page_num:start,
             kw:_kw,
             token:localStorage.getItem('token')
@@ -210,6 +179,7 @@
             if(res.data.data.length >0){
               this.page_info.page_num =   this.page_info.page_num +1;
             }else{
+              this.product_list = [];
               return false;
             }
             if(start >1){
@@ -227,58 +197,20 @@
       },
       //获取装备信息
       getCategory(){
-        axios.get(api.category_list + '?deep=2').then(res => {
+        axios.get(api.category_list + '?deep=1').then(res => {
           if(res.data.status == 200){
-            this.category_list = res.data.data;
-            this.resetPrid();
-            for(let i = 0; i < this.temp.length; i ++) {
-              this.category_list[this.temp[i][0]].subs[this.temp[i][1]].active = true;
-              this.category_list = this.category_list.concat();
+            this.nav_list = res.data.data.slice(0,4);
+            for(let i in this.nav_list){
+              this.nav_list[i].active = false;
             }
+            this.nav_list[0].active = true;
+            this.getProduct(this.nav_list[0].pcid)
+
           }
         });
       },
-      // 重置二级分类
-      resetPrid() {
-        for(let i = 0; i < this.category_list.length; i ++) {
-          if(this.category_list[i].subs) {
-            for(let j = 0; j < this.category_list[i].subs.length; j ++) {
-              this.category_list[i].subs[j].active = false;
-              this.category_list = this.category_list.concat();
-            }
-          }
-        }
-      },
-      // 筛选点击
-      categoryClick(index,i) {
-        this.category_list[index].subs[i].active = !this.category_list[index].subs[i].active;
-        this.category_list = this.category_list.concat();
-      },
-      // 确定按钮
-      searchProduct() {
-        this.pcid = '';
-        this.temp = [];
-        this.pcidList = [];
-        for(let i = 0; i < this.category_list.length; i ++) {
-          if(this.category_list[i].subs) {
-            let temp = [];
-            for(let j = 0; j < this.category_list[i].subs.length; j ++) {
-              if(this.category_list[i].subs[j].active) {
-                temp = [i, j];
-                this.temp.push(temp);
-                this.pcidList.push(this.category_list[i].subs[j].pcid);
-              }
-            }
-          }
-        }
-        for(let i = 0; i < this.pcidList.length; i ++) {
-          this.pcid = this.pcid + this.pcidList[i] + '|';
-        }
-        this.pcid = this.pcid.substr(0, this.pcid.length - 1);
-        this.getProduct(1,'sale_value|asc');
-        this.pcidList = [];
-        this.show_modal = false;
-      }
+
+
     }
   }
 </script>

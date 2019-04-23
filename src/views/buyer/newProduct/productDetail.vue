@@ -31,10 +31,11 @@
         <div class="m-info-list">
           <span>快递：{{product_info.prfreight | money}} 元</span>
           <span>月销：{{product_info.month_sale_value}}</span>
-          <div @click="changeRoute('/brandDetail')">
-            <span class="m-brand-name">{{product_info.brand.pbname}}</span>
-            <span class="m-more"></span>
-          </div>
+          <span >{{product_info.brand.pbname}}</span>
+<!--          <div @click="changeRoute('/brandDetail')">-->
+<!--            <span class="m-brand-name">{{product_info.brand.pbname}}</span>-->
+<!--            <span class="m-more"></span>-->
+<!--          </div>-->
         </div>
       </div>
       <div class="m-product-detail-more" @click="changeModal('show_sku',true)">
@@ -95,6 +96,7 @@
           <img :src="share_img" class="m-share-img" alt="">
         </div>
       </div>
+      <shop-icon></shop-icon>
       <sku v-if="show_sku" :now_select="select_value" :now_num="canums" :product="product_info" @changeModal="changeModal" @sureClick="sureClick"></sku>
     </div>
 </template>
@@ -102,12 +104,12 @@
 <script>
   import sku from '../components/sku';
   import common from '../../../common/js/common';
-  import axios from 'axios';
+  import axios from 'axios/index';
   import api from '../../../api/api';
   import { Toast } from 'mint-ui'
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
-
+  import shopIcon from './compoments/shopIcon';
   var scroll = (function (className) {
     var scrollTop;
     return {
@@ -141,7 +143,7 @@
         }
       },
       mixins: [wxapi],
-      components: { sku },
+      components: { sku ,shopIcon},
       mounted() {
         common.changeTitle('商品详情');
         wxapi.wxRegister(location.href.split('#')[0]);
@@ -327,6 +329,7 @@
           }).
           then(res => {
             if(res.data.status == 200){
+              this.$store.state.shop_num = Number(this.$store.state.shop_num) + 1;
               Toast({ message: res.data.message,duration:1000, className: 'm-toast-success' });
             }
           },error => {

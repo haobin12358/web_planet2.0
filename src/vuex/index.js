@@ -11,6 +11,7 @@ let store= new Vuex.Store({
     token: '',
     show_login:false,
     version:'1.2.6',
+    shop_num: -1,
     tabbar_store: [
       /*{
         name:'素材',
