@@ -5,33 +5,69 @@
            v-for="(item, index) in couponList" @click="couponClick(item)">
         <img class="m-cancel-icon" v-if="!item.choose && circle" src="/static/images/icon-radio.png" @click="productCouponCancel('circle', index)">
         <img class="m-cancel-icon" v-if="item.choose && circle" src="/static/images/icon-radio-active.png" @click="productCouponCancel('circle', index)">
-        <div class="m-card-left">
-          <img class="m-store-img" :class="item.navName == '已过期' ? 'm-had' : '' || item.navName == '已使用' ? 'm-have' : '' || item.ready_collected ? 'm-have' : ''"
-               :src="item.title_subtitle.left_logo" alt="">
-          <div class="m-store-name">{{item.title_subtitle.left_text}}</div>
-        </div>
-        <div class="m-card-right">
-          <div class="m-card-time">{{item.covalidstarttime}}—{{item.covalidendtime}}</div>
-          <div class="m-card-detail">
-            <div class="m-detail-left" v-if="item.codiscount == '10'">
-              <span class="m-text-small">￥</span>
-              <span class="m-text-big">{{item.cosubtration}}</span>
-              <span class="m-text-small" v-if="item.cosubtration == 999">+</span>
-            </div>
-            <div class="m-detail-left m-space" v-else>
-              <span class="m-text-big">{{item.codiscount}}</span>
-              <span class="m-text-small">折</span>
-            </div>
-            <div class="m-detail-right">
-              <div>{{item.title_subtitle.title}}</div>
-              <div class="m-subtitle">{{item.title_subtitle.subtitle}}</div>
-              <div class="m-detail-btn" v-if="item.cocancollect && !item.ready_collected && !item.navName && !order && !circle" @click="getCoupon(index)">点击领取</div>
-              <div class="m-detail-btn" v-if="!item.cocancollect">不可领取</div>
-              <div class="m-detail-btn" v-if="item.ready_collected">已领取</div>
-              <div class="m-detail-btn" v-if="item.navName">{{item.navName}}</div>
+        <div>
+          <div class="m-top">
+            <img class="m-store-img" :class="item.navName == '已过期' ? 'm-had' : '' || item.navName == '已使用' ? 'm-have' : '' || item.ready_collected ? 'm-have' : ''"
+                 :src="item.title_subtitle.left_logo" alt="">
+            <div>
+              <div v-if="item.codiscount == '10'">
+                <span class="m-text-small">￥</span>
+                <span class="m-text-big">{{item.cosubtration}}</span>
+                <span class="m-text-small" v-if="item.cosubtration == 999">+</span>
+                <span class="m-text-small">OFF</span>
+              </div>
+              <div  v-else>
+                <span class="m-text-big">-{{item.codiscount}}</span>
+                <span class="m-text-small">%OFF</span>
+              </div>
+              <p>{{item.title_subtitle.left_text}}</p>
             </div>
           </div>
+          <div class="m-bottom">
+            <div>
+              <p class="m-flex-start">
+                <img src="/static/images/coupon/coupon-card.png" class="m-icon" alt="">
+                <span>{{item.covalidstarttime | time}}—{{item.covalidendtime | time}}</span>
+              </p>
+              <p class="m-flex-start">
+                <img src="/static/images/coupon/coupon-time.png" class="m-icon" alt="">
+                <span  v-if="item.codiscount == '10'" ><span v-if="item.codownline != 0"> 满{{item.codownline}}</span><span v-else>无限制</span>减{{item.cosubtration}}</span>
+                <span  v-else >{{item.codiscount}}折</span>
+              </p>
+            </div>
+            <span class="m-coupon-btn" v-if="item.ready_collected">去使用</span>
+            <span class="m-coupon-btn" v-else-if="item.cocancollect && !item.ready_collected && !item.navName && !order && !circle" @click="getCoupon(index)">立即领取</span>
+            <span class="m-coupon-btn" v-else-if="!item.cocancollect">不可领取</span>
+<!--            <span class="m-coupon-btn" v-if="item.cocancollect && !item.ready_collected && !item.navName && !order && !circle">立即领取</span>-->
+          </div>
         </div>
+<!--        <div class="m-card-left">-->
+<!--          <img class="m-store-img" :class="item.navName == '已过期' ? 'm-had' : '' || item.navName == '已使用' ? 'm-have' : '' || item.ready_collected ? 'm-have' : ''"-->
+<!--               :src="item.title_subtitle.left_logo" alt="">-->
+<!--          <div class="m-store-name">{{item.title_subtitle.left_text}}</div>-->
+<!--        </div>-->
+<!--        <div class="m-card-right">-->
+<!--          <div class="m-card-time">{{item.covalidstarttime}}—{{item.covalidendtime}}</div>-->
+<!--          <div class="m-card-detail">-->
+<!--            <div class="m-detail-left" v-if="item.codiscount == '10'">-->
+<!--              <span class="m-text-small">￥</span>-->
+<!--              <span class="m-text-big">{{item.cosubtration}}</span>-->
+<!--              <span class="m-text-small" v-if="item.cosubtration == 999">+</span>-->
+<!--            </div>-->
+<!--            <div class="m-detail-left m-space" v-else>-->
+<!--              <span class="m-text-big">{{item.codiscount}}</span>-->
+<!--              <span class="m-text-small">折</span>-->
+<!--            </div>-->
+<!--            <div class="m-detail-right">-->
+<!--              <div>{{item.title_subtitle.title}}</div>-->
+<!--              <div class="m-subtitle">{{item.title_subtitle.subtitle}}</div>-->
+<!--              <div class="m-detail-btn" v-if="item.cocancollect && !item.ready_collected && !item.navName && !order && !circle" @click="getCoupon(index)">点击领取</div>-->
+<!--              <div class="m-detail-btn" v-if="!item.cocancollect">不可领取</div>-->
+<!--              <div class="m-detail-btn" v-if="item.ready_collected">已领取</div>-->
+<!--              <div class="m-detail-btn" v-if="item.navName">{{item.navName}}</div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </div>
     <div class="m-no-coupon" v-if="couponList.length == 0 && !circle">
@@ -80,18 +116,33 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    width: 720px;
-    height: 176px;
-    margin: 0 0 5px 15px;
-    background: url("/static/images/coupon/icon-new.png") no-repeat;
+    width: 750px;
+    height: 310px;
+    margin: 0 0 5px 0;
+    box-sizing: border-box;
+    padding: 25px 64px;
+    background: url("/static/images/coupon/coupon-can.png") no-repeat;
     background-size: 100% 100%;
+    .m-coupon-btn{
+      display: inline-block;
+      width: 150px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border: 1px solid @mainColor;
+      color: @mainColor;
+    }
     &.m-had {
-      background: url("/static/images/coupon/icon-had.png") no-repeat;
+      background: url("/static/images/coupon/coupon-done.png") no-repeat;
       background-size: 100% 100%;
     }
     &.m-have {
-      background: url("/static/images/coupon/icon-have.png") no-repeat;
+      background: url("/static/images/coupon/coupon-cancel.png") no-repeat;
       background-size: 100% 100%;
+      .m-coupon-btn{
+        border: 1px solid #C1C1C1;
+        color: #C1C1C1;
+      }
     }
     .m-cancel-icon {
       width: 45px;
@@ -99,6 +150,47 @@
       position: absolute;
       top: -20px;
       right: -10px;
+    }
+    .m-top{
+      height: 180px;
+      width: 620px;
+      color: #fff;
+      font-size: 24px;
+      text-align: right;
+      .flex-row(space-between);
+      .m-store-img {
+        width: 100px;
+        height: 100px;
+        background: #ffffff;
+        /*box-shadow: 2px 3px 6px rgba(0,0,0,0.16);*/
+        border-radius: 50%;
+        &.m-had {
+          opacity: 0.3;
+        }
+        &.m-have {
+          opacity: 0.5;
+        }
+      }
+      .m-text-big{
+        font-size: 76px;
+        font-weight: 600;
+      }
+      .m-text-small{
+        font-weight: 400;
+        font-size: 40px;
+      }
+    }
+    .m-bottom{
+      .flex-row(space-between);
+      color: #C1C1C1;
+      font-size: 24px;
+      text-align: left;
+      .m-icon{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        margin-right: 20px;
+      }
     }
     .m-card-left {
       margin: 20px 0 0 45px;
