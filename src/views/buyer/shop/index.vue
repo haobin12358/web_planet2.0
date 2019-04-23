@@ -11,7 +11,7 @@
 
           <p class="m-no-data" v-if="cart_list.length == 0">购物车内暂无商品，<span class="m-main-color" @click="changeRoute('/newProduct')">去选购</span></p>
         <template v-for="(items, index) in cart_list" v-if="cart_list != 0">
-          <div class="m-shop-one" >
+          <div class="m-shop-one"  >
             <div class="m-shop-store-name">
               <span class="m-icon-radio" :class="items.active?'active':''" @click="radioClick('store',index)"></span>
               <span>{{items.pb.pbname}}</span>
@@ -19,8 +19,8 @@
 <!--              <span class="m-icon-more"></span>-->
             </div>
             <template v-for="(item,i) in items.cart" >
-              <div class="m-shop-product" v-if="item.product.tlastatus != -10">
-                <div class="m-product-info">
+              <div class="m-shop-product" v-if="item.product.tlastatus != -10" data-type="0">
+                <div class="m-product-info"  @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="skip">
                   <span class="m-icon-radio m-radio-margin" :class="item.active?'active':''" @click.stop="radioClick('product',index,i)"></span>
                   <img :src="item.sku.skupic" class="m-product-img" alt="" @click="changeRoute('product',item)">
                   <div class="m-text-info">
@@ -45,6 +45,7 @@
                     </div>
                   </div>
                 </div>
+                <span class="m-delete" @click.stop="DestroyCart(item)">删除</span>
               </div>
             </template>
           </div>
@@ -112,7 +113,9 @@
           allRadio:false,
           total_money:0,
           isManage:false,
-          select_num:0
+          select_num:0,
+          startX : 0 ,
+          endX : 0 ,
         }
       },
       components: { sku, bottomLine },
@@ -373,15 +376,16 @@
           this.dealMoney();
         },
         /*删除*/
-        DestroyCart() {
+        DestroyCart(item) {
           let caid = [];
-          for(let i = 0; i < this.cart_list.length; i ++) {
-            for(let j = 0; j < this.cart_list[i].cart.length; j ++) {
-              if(this.cart_list[i].cart[j].active) {
-                caid.push(this.cart_list[i].cart[j].caid);
-              }
-            }
-          }
+          // for(let i = 0; i < this.cart_list.length; i ++) {
+          //   for(let j = 0; j < this.cart_list[i].cart.length; j ++) {
+          //     if(this.cart_list[i].cart[j].active) {
+          //       caid.push(this.cart_list[i].cart[j].caid);
+          //     }
+          //   }
+          // }
+          caid.push(item.caid);
           if(caid.length > 0) {
             MessageBox.confirm('确认删除吗?').then(() => {
               axios.post(api.cart_destroy + '?token=' + localStorage.getItem('token'), { caids: caid }).then(res => {
@@ -397,6 +401,53 @@
             });
           }else {
             Toast("请先选择商品");
+          }
+        },
+        skip(){
+          if( this.checkSlide() ){
+            this.restSlide();
+          }
+        },
+        //滑动开始
+        touchStart(e){
+          // 记录初始位置
+          this.startX = e.touches[0].clientX;
+        },
+        //滑动结束
+        touchEnd(e){
+          // 当前滑动的父级元素
+          let parentElement = e.currentTarget.parentElement;
+          // 记录结束位置
+          this.endX = e.changedTouches[0].clientX;
+          // 左滑
+          if( parentElement.dataset.type == 0 && this.startX - this.endX > 30 ){
+            this.restSlide();
+            parentElement.dataset.type = 1;
+          }
+          // 右滑
+          if( parentElement.dataset.type == 1 && this.startX - this.endX < -30 ){
+            this.restSlide();
+            parentElement.dataset.type = 0;
+          }
+          this.startX = 0;
+          this.endX = 0;
+        },
+        //判断当前是否有滑块处于滑动状态
+        checkSlide(){
+          let listItems = document.querySelectorAll('.m-shop-product');
+          for( let i = 0 ; i < listItems.length ; i++){
+            if( listItems[i].dataset.type == 1 ) {
+              return true;
+            }
+          }
+          return false;
+        },
+        //复位滑动状态
+        restSlide(){
+          let listItems = document.querySelectorAll('.m-shop-product');
+          // 复位
+          for( let i = 0 ; i < listItems.length ; i++){
+            listItems[i].dataset.type = 0;
           }
         },
       }
@@ -415,7 +466,7 @@
       text-decoration: underline;
     }
     .m-shop-content{
-      padding: 0 25px 200px 25px;
+      padding: 0 0 200px 0;
       text-align: left;
       .m-no-coupon{
         margin: 200px 80px 0 100px;
@@ -433,8 +484,11 @@
       }
       .m-shop-one{
         background-color: #fff;
-        width: 654px;
-        padding: 23px;
+        /*width: 654px;*/
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+        padding: 23px 0 23px 23px;
         color: #333;
         margin-bottom: 20px;
         .m-icon-radio{
@@ -458,11 +512,27 @@
           align-items: center;
           justify-content: flex-start;
           margin: 30px 0;
+          position: relative;
+          -webkit-transition: all 0.2s;
+          transition: all 0.2s;
+          .m-delete{
+            width: 144px;
+            height: 232px;
+            line-height: 232px;
+            background: @mainColor;
+            font-size: 28px;
+            color: #fff;
+            text-align: center;
+            position: absolute;
+            top:0;
+            right: -144px;
+          }
           .m-product-info{
             display: flex;
             flex-flow: row;
             align-items: flex-start;
             justify-content: flex-start;
+            width: 727px;
             .m-product-img{
               display: block ;
               width: 153px;
@@ -495,6 +565,12 @@
                 }
               }
             }
+          }
+          &.m-shop-product[data-type="0"]{
+            transform: translate3d(0,0,0);
+          }
+          &.m-shop-product[data-type="1"]{
+            transform: translate3d(-144px,0,0);
           }
         }
       }
