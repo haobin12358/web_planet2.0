@@ -9,9 +9,9 @@
       <p class="w-wd"><span class="w-wd-btn" @click="changeRoute('/storekeeper/withDraw')">提现</span></p>
       <!-- <div class="m-detail-more" @click="changeRoute('/storekeeper/incomeDetail')"> -->
       <div class="m-detail-more">
-        <div class="w-detail-text" @click="changeRoute('/storekeeper/incomeDetail')">收益详情</div>
+        <div class="w-detail-text" @click="changeRoute('/storekeeper/incomeDetail',0)">收益详情</div>
         <!-- 暂未完成提现历史的跳转 -->
-        <div class="w-detail-text">提现历史</div>
+        <div class="w-detail-text" @click="changeRoute('/storekeeper/incomeDetail',1)">提现历史</div>
         <!-- <img class="m-jump-img" src="/static/images/icon-more.png"> -->
       </div>
     </div>
@@ -180,6 +180,9 @@
       // 跳转其他页面的方法
       changeRoute(v) {
         this.$router.push(v)
+      },
+      changeRoute(v,item){
+        this.$router.push({path:v,query:{index:item}});
       },
       // 提现的选择银行确定按钮
       bankDone() {
