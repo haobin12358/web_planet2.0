@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="m-nav">
-      <nav-list :navlist="nav_list" @navClick="navClick"></nav-list>
+      <nav-list :navlist="nav_list" :isGroup="true" @navClick="navClick"></nav-list>
     </div>
     <div class="m-detail-top">
       <!-- 年月选择器 -->
@@ -382,7 +382,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 60px 50px 60px;
+        padding: 25px 40px;
         .m-img-name-time {
           display: flex;
           .m-img-box {

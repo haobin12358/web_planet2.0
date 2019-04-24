@@ -9,7 +9,7 @@
       <div class="m-history-item" v-for="item in history">
         
         <div class="m-text-content">
-          <div class="m-item">
+          <div class="m-item" @click="changeRoute('/personal/codeHistory/codeDetail',item.acaid)">
               <div class="w-item-time">{{item.createtime}}</div>
               <div class="w-item-code">{{item.uaccode}}</div>       
             <!-- <p v-if="item.acareason">
@@ -48,6 +48,9 @@
     mixins: [wxapi],
     components: {},
     methods: {
+      changeRoute(v,value){
+        this.$router.push({path:v,query:{index:value}});
+      },
       // 预览图片
       previewImage(index, image) {
         let images = [];

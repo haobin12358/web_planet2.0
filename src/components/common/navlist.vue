@@ -12,6 +12,14 @@
         </li>
       </template>
     </ul>
+    <ul class="m-nav-list" v-else-if="isGroup">
+      <template v-for="(item,index) in navlist">
+        <li :class="item.active?'active':''" @click="navClick(index)">
+          {{item.name}}
+          ({{item.count}})
+        </li>
+      </template>
+    </ul>
     <ul class="m-nav-list" v-else>
       <template v-for="(item,index) in navlist">
         <li :class="item.active?'active':''" @click="navClick(index)">{{item.name}}
@@ -29,6 +37,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { type } from 'os';
     export default {
         data() {
             return {
@@ -51,6 +60,10 @@
           isAct:{
             type:Boolean,
             default:false
+          },
+          isGroup:{
+            type: Boolean,
+            default: false
           }
         },
         methods: {
