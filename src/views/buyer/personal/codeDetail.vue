@@ -1,27 +1,33 @@
 <template>
   <div class="w-codeDetail">
 		<div class="w-codeDetail-top">
-			<div class="w-codeDetail-time">{{index}}</div>
-      <div class="w-codeDetail-code"></div> 
+			<div class="w-codeDetail-time">{{item.time}}</div>
+      <div class="w-codeDetail-code">{{item.code}}</div> 
 		</div>
 		<div class="w-codeDetail-info">
 			<div class="w-codeDetail-name">
 				<span>姓名</span>
+				<span>{{item.acaname}}</span>
 
 			</div>
 			<div class="w-codeDetail-card">
 				<span>银行卡号</span>
+				<span>{{item.acabanksn}}</span>
 
 			</div>
 			<div class="w-codeDetail-bank">
 				<span>开户行</span>
+				<span>{{item.acabankname}}</span>
 
 			</div>
 
 		</div>
 		<div class="w-codeDetail-cert">
 			<p class="w-codeDetail-cert-text">打款凭证</p>
-
+			<div class="w-codeDetail-cert-img" v-for="link in item.acavouchers">
+				<img src="link" alt="">
+			</div>
+			
 		</div>
 
   </div>
@@ -37,15 +43,31 @@
     data () {
 			return {
 				index:'',
+				item:{},
 				
 			}
 		},
 		methods:{
+			getCodeDetail(){
+				let params = {
+					acaid: this.index,
+					token: localStorage.getItem('token'),
+				}
+				axios.get(api.act_code_get_detail,{ params: params }).then(res => {
+					if(res.data.status == 200){
+						// console.log(res.data.data);
+						this.item=res.data.data;
+						console.log(this.item);
+					}
+				});
+
+			}
 
 		},
 		mounted () {
-			common.changeTitle("购买详情")
-			this.index=this.$route.query.index
+			common.changeTitle("购买详情");
+			this.index=this.$route.query.index;
+			this.getCodeDetail();
 			
 		},
 	}
