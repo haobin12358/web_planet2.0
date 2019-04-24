@@ -1,7 +1,7 @@
 <template>
   <div class="m-history">
     <div class="m-history-box">
-      <div class="m-history-item" v-for="item in history">
+      <div class="m-history-item" >
         <div class="m-item-left">
           <p>
             <span>姓名：</span>
@@ -23,21 +23,24 @@
             <span>申请时间：</span>
             <span>{{item.createtime}}</span>
           </p>
-          <p v-if="item.cnrejectreason">
-            <span>审核回复：</span>
-            <span>{{item.cnrejectreason}}</span>
+          <p>
+            <span>申请金额：</span>
+            <span>￥{{item.cncashnum | money}}</span>
           </p>
+          <p >
+            <span>审核状态：</span>
+            <span v-if="item.cnstatus_en != 'refuse'" :class="item.cnstatus_en == 'agree'?'m-had':'active'">{{item.cnstatus_zh}}</span>
+            <span v-else class="m-refuse">{{item.cnstatus_zh}}:{{item.cnrejectreason}}</span>
+          </p>
+
         </div>
-        <div class="m-item-right">
-          <p class="m-price">￥{{item.cncashnum | money}}</p>
-          <p>{{item.cnstatus}}</p>
-        </div>
+<!--        <div class="m-item-right">-->
+<!--          <p class="m-price">￥{{item.cncashnum | money}}</p>-->
+<!--          <p>{{item.cnstatus}}</p>-->
+<!--        </div>-->
       </div>
     </div>
-    <div class="m-no-history" v-if="history.length == 0">
-      <span class="m-no-img"></span>
-      <div class="m-no-text m-ft-26 m-ft-b">暂无提现历史</div>
-    </div>
+
   </div>
 </template>
 
@@ -49,28 +52,30 @@
   export default {
     data() {
       return {
-        history: []
+        item:null
       }
     },
     components: {},
     methods: {
-      // 获取提现历史记录
-      getHistory() {
-        let params = {
-          token: localStorage.getItem('token'),
-          page_size: 200,
-          page_num: 1
-        };
-        axios.get(api.get_cash_notes, { params: params }).then(res => {
-          if(res.data.status == 200) {
-            this.history = res.data.data;
-          }
-        });
-      }
+      // // 获取提现历史记录
+      // getHistory() {
+      //   let params = {
+      //     token: localStorage.getItem('token'),
+      //     page_size: 200,
+      //     page_num: 1
+      //   };
+      //   axios.get(api.get_cash_notes, { params: params }).then(res => {
+      //     if(res.data.status == 200) {
+      //       this.history = res.data.data;
+      //     }
+      //   });
+      // }
     },
     mounted() {
       common.changeTitle('提现历史');
-      this.getHistory();               // 获取提现历史
+      // this.getHistory();               // 获取提现历史
+      this.item = JSON.parse(this.$route.query.item)
+      console.log(this.item)
     }
   }
 </script>
@@ -79,45 +84,39 @@
 
   .m-history {
     min-height: 100vh;
-    background-color: #EEEEEE;
+    background-color: #fff;
+    color: #333;
     .m-history-box {
-      width: 690px;
-      margin: 50px 30px;
+      width: 750px;
       text-align: left;
       .m-history-item {
         background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 5px 6px rgba(0,0,0,0.16);
         display: flex;
-        margin-bottom: 20px;
+
         .m-item-left {
-          padding: 20px 30px;
+
           p {
+            width: 750px;
+            box-sizing: border-box;
             font-size: 24px;
             line-height: 35px;
-          }
-        }
-        .m-item-right {
-          padding: 60px 0 0 40px;
-          text-align: center;
-          font-size: 30px;
-          .m-price {
-            color: #FF0000;
+            padding: 30px 40px;
+            border-bottom: 1px solid #f4f4f4;
+            .flex-row(space-between);
+            span:last-child{
+              color: #999;
+              &.active{
+                color: @mainColor;
+              }
+              &.m-refuse{
+                color: #B70000;
+              }
+            }
           }
         }
       }
     }
-    .m-no-history {
-      .m-no-img {
-        display: inline-block;
-        width: 516px;
-        height: 516px;
-        background: url("/static/images/icon-no-coupon.png") no-repeat;
-        background-size: 100% 100%;
-      }
-      .m-no-text {
-        margin-top: -100px;
-      }
-    }
+
   }
+
 </style>

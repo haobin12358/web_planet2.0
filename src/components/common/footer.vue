@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--顶部左上角买家、店主身份切换-->
-    <span class="m-icon-home" @click="buyerStore" v-if="buyer_store"></span>
+<!--    <span class="m-icon-home" @click="buyerStore" v-if="buyer_store"></span>-->
 
 <!--    <mt-tabbar v-model="selected" :fixed="true" v-if="is_weixin">-->
 <!--      <template v-for="(item,index) in tabbar" >-->

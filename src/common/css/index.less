@@ -282,6 +282,9 @@ body{
     height: 42px;
     line-height: 42px;
     background-color: @mainColor;
+    &.cancel{
+      background-color: @subColor;
+    }
   }
   .m-icon-cut{
     display: inline-block;
@@ -503,12 +506,30 @@ body{
     border-bottom: 1px solid #F2F2F2;
     width: 100%;
     box-sizing: border-box;
+    color: #000;
     p{
       width: 100%;
       text-align: left;
     }
     .m-detail-list-text{
       width: 100%;
+    }
+    .m-status{
+      color: @mainColor;
+      &.m-had{
+        color: #C1C1C1;
+      }
+      &.m-refuse{
+        color: #B70000;
+      }
+    }
+    .m-btn{
+      display: inline-block;
+      padding: 0 28px;
+      height: 40px;
+      line-height: 40px;
+      background:linear-gradient(270deg,@mainColor 0%,@subColor 100%);
+      color: #fff;
     }
     .m-detail-list-title{
       font-size: 28px;
@@ -523,6 +544,9 @@ body{
     .m-time{
       font-size: 24px;
       color: #999999;
+    }
+    .m-num{
+      font-weight: 500;
     }
     .m-detail-list-img{
       display: block;
