@@ -2,13 +2,13 @@
     <div class="m-selected"  @touchmove="touchMove">
       <!--<mt-loadmore :top-method="loadTop" ref="loadmore">-->
         <!--搜索-->
-        <div class="m-selected-search">
-          <span class="m-icon-home"></span>
-          <div class="m-search-input-box" @click="changeRoute('/search')">
-            <span class="m-icon-search"></span>
-            <span class="m-search-text">商品搜索</span>
-          </div>
-        </div>
+<!--        <div class="m-selected-search">-->
+<!--          <span class="m-icon-home"></span>-->
+<!--          <div class="m-search-input-box" @click="changeRoute('/search')">-->
+<!--            <span class="m-icon-search"></span>-->
+<!--            <span class="m-search-text">商品搜索</span>-->
+<!--          </div>-->
+<!--        </div>-->
         <!--轮播图-->
         <div class="m-swipe">
           <mt-swipe :auto="3000" v-if="swipe_list">
@@ -26,90 +26,30 @@
             </div>
             <ul class="m-selected-label-ul">
               <li>
-                <span class="m-icon-label"></span>
+                <img src="/static/images/index/icon-zheng.png" class="m-icon-label">
                 <span>正品保证</span>
               </li>
               <li>
-                <span class="m-icon-label"></span>
+                <img src="/static/images/index/icon-zhuan.png" class="m-icon-label">
                 <span>专业精选</span>
               </li>
               <li>
-                <span class="m-icon-label"></span>
+                <img src="/static/images/index/icon-tui.png" class="m-icon-label">
                 <span>十五天无忧退换</span>
               </li>
             </ul>
           </div>
           <div class="m-selected-label-right" @click="changeRoute('personal/couponCenter')">
-            <span class="m-icon-gift"></span>
-            <span>签到有礼</span>
+<!--            <span class="m-icon-gift"></span>-->
+            <span>立即领取</span>
           </div>
         </div>
-        <!--场景推荐-->
+
+      <div class="m-selected-one" v-if="activity_img">
+        <img :src="activity_img.enpic" @click="goActivity" class="m-activity-img" alt="">
+      </div>
         <div class="m-selected-one">
-          <h3 class="m-selected-title m-flex-between" @click="changeRoute('scene')">
-            <span>场景推荐</span>
-            <span class="m-scenes-text">Scenes</span>
-            <span class="m-selected-title-more">
-              <span>查看更多</span>
-              <span class="m-icon-more"></span>
-            </span>
-          </h3>
-          <div class="m-scroll">
-            <ul class="m-selected-scene-ul">
-              <li v-for="(item,index) in scene_list" @click.stop = "sceneClick(item)" >
-                <img :src="item.pspic" class="m-selected-scene-img" alt="" >
-                <img src="/static/images/icon-hot.png" class="m-hot" v-if="item.countdown" alt="">
-                <div class="m-time-box" v-if="item.countdown">
-                  <img src="/static/images/icon-time.png" class="m-time" alt="">
-                  <span>{{item.hour}}:{{item.min}}:{{item.sec}}</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!--品牌推荐-->
-        <div class="m-selected-one">
-          <h3 class="m-selected-title m-flex-between">
-            <span>品牌推荐</span>
-            <span class="m-scenes-text">Brand</span>
-            <span class="m-selected-title-more"  @click="changeRoute('brandList')">
-              <span>查看更多</span>
-              <span class="m-icon-more"></span>
-            </span>
-          </h3>
-          <div class="m-scroll ">
-            <ul class="m-selected-brand-ul" v-if="brand_list">
-              <li v-for="(item,index) in brand_list" @click="brandProduct(item, index)">
-              <!--<li v-for="(item,index) in brand_list" @click="changeRoute('/brandDetail',item)">-->
-                <img :src="item.pblogo" :class="item.active?'active':''" class="m-selected-brand-img" alt="" >
-              </li>
-            </ul>
-          </div>
-          <div class="m-scroll">
-            <ul class="m-selected-brand-product-ul">
-              <li v-for="(item,index) in brand_product" @click.stop="productClick(item)">
-                <img :src="item.prmainpic" class="m-selected-brand-product-img" alt="" >
-                <div class="m-selected-brand-product-text">
-                  <h3>
-                    <span class="m-brand-name">【{{item.brand.pbname}}】</span>
-                    <span>{{item.prtitle}}</span>
-                  </h3>
-                  <p class="m-flex-between m-ft-18">
-                    <span class="money-text m-ft-b">￥{{item.prprice |money}}</span>
-                    <s class="money-text m-grey m-ft-18" v-if="item.prlineprice">￥{{item.prlineprice | money}}</s>
-                  </p>
-                </div>
-              </li>
-            </ul>
-          </div>
           <!--商品分类-->
-          <h3 class="m-selected-title m-flex-between">
-            <span>商品分类</span>
-            <span class="m-selected-title-more"  @click="changeRoute('equipment/detail')">
-              <span>查看更多</span>
-              <span class="m-icon-more"></span>
-            </span>
-          </h3>
           <div class="m-scroll " v-if="icon_list">
             <ul class="m-equipment-icon-ul">
               <li v-for="(item,index) in icon_list" @click="changeRoute('equipment/detail',item)">
@@ -118,26 +58,52 @@
               </li>
             </ul>
           </div>
-          <div class="m-selected-hot m-flex-start" v-if="hot_list && hot_list.length>0">
-            <img class="m-hot-sales" src="/static/images/hot_sales.png">
+        </div>
 
-            <mt-swipe style="height: 100%;background: white;" :auto="3000" v-if="hot_list">
-              <mt-swipe-item v-for="item in hot_list" :key="item.prid" @click.native.stop="productClick(item)">
-                <img :src="item.prmainpic" style="height: 100%;max-width: 100%;text-align: center;">
-              </mt-swipe-item>
-            </mt-swipe>
-
+      <div class="m-selected-activity">
+        <div class="m-row" @click="changeRoute('/activity')">
+         <div>
+           <img src="/static/images/index/icon-limit.png" class="m-img-limit" alt="">
+           <p class="m-time-box">
+             <img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">
+             <span>12:23:30</span>
+           </p>
+         </div>
+          <div>
+            <h3 class="m-limit-title">商品名称商品名称商品名称…</h3>
+            <p>
+              <span class="m-limit-price">¥123</span>
+              <s class="m-underline">¥123</s>
+            </p>
+          </div>
+          <img src="" class="m-product-img" alt="">
+        </div>
+        <div class="m-row">
+          <div class="m-col">
+            <h3 class="m-activity-name">拼团竞猜</h3>
+            <div class="m-activity-box">
+              <div>
+                <p class="m-red">¥999</p>
+                <p><s class="m-underline">¥123</s></p>
+              </div>
+              <img src="" class="m-product-img" alt="">
+            </div>
+          </div>
+          <div class="m-col">
+            <h3 class="m-activity-name">拼团竞猜</h3>
+            <div class="m-activity-box">
+              <div>
+                <p class="m-red">¥999</p>
+                <p><s class="m-underline">¥123</s></p>
+              </div>
+              <img src="" class="m-product-img" alt="">
+            </div>
           </div>
         </div>
+      </div>
         <div class="m-selected-one">
-          <h3 class="m-selected-title m-flex-between">
-            <span>为您精选</span>
-            <!--<span class="m-selected-title-more">
-              <span>查看更多</span>
-              <span class="m-icon-more"></span>
-            </span>-->
-          </h3>
-          <product :list="recommend_for_you_list"></product>
+
+          <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
         </div>
       <bottom-line v-if="bottom_show"></bottom-line>
       <!--</mt-loadmore>-->
@@ -153,16 +119,15 @@
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
   import bottomLine from '../../../components/common/bottomLine';
+  import mCircle from '../../../components/common/circle';
+  import { Toast} from 'mint-ui';
     export default {
       name: 'SelectedIndex',
       data() {
         return {
           swipe_list:null,
-          brand_list:null,
-          brand_product:null,
           hot_list:null,
-          scene_list:null,
-          recommend_for_you_list: [],
+          news_list: [],
           icon_list:null,
           page_info:{
             page_num :1,
@@ -171,10 +136,11 @@
           isScroll: true,
           total_count: 0,
           bottom_show: false,
+          activity_img:null
         }
       },
       mixins: [wxapi],
-      components: { product,bottomLine },
+      components: { product,bottomLine,mCircle},
       inject:['reload'],
       mounted() {
         common.changeTitle('首页');
@@ -295,9 +261,9 @@
         }, 100);
 
         this.getSwipe();
-        this.getBrand();
-        this.getScene();
         this.getCategory();
+        this.getImg();
+        this.getNews();
         if(sessionStorage.getItem('shop')) {
           this.$router.push('/shop');
           sessionStorage.removeItem('shop');
@@ -355,6 +321,9 @@
           }
 
         },
+        goActivity(){
+          window.location.href = this.activity_img.contentlink;
+        },
         /*获取轮播图*/
         getSwipe(){
           axios.get(api.list_banner_index).then(res => {
@@ -363,91 +332,114 @@
             }
           })
         },
-        //获取场景
-        getScene(){
-          axios.get(api.scene_list,{
-            params:{
-              token:localStorage.getItem('token') || ''
-            }
-          }).then(res => {
+        //获取首页活动图
+        getImg(){
+          this.$http.get(api.get_entry).then(res => {
             if(res.data.status == 200){
-              this.scene_list = [].concat(res.data.data);
-              for(let i = 0; i < this.scene_list.length; i ++) {
-                if(this.scene_list[i].countdown) {
-                  this.timeOut();       // 倒计时
-                }
-              }
+              this.activity_img = res.data.data;
             }
           })
-        },
-        /*获取品牌推荐*/
-        getBrand(){
-          axios.get(api.brand_recommend_index,{
-            params:{
-              page_num:this.page_info.page_num,
-              page_size:this.page_info.page_size
-            }
-          }).then(res => {
-            if(res.data.status == 200){
-              this.brand_list = res.data.data.brands;
-              // this.brand_product = res.data.data.product;
-              this.hot_list = res.data.data.hot;
-              this.isScroll = true;
-              if(res.data.data.recommend_for_you.length > 0){
-                if(this.page_info.page_num == 1){
-                  this.recommend_for_you_list = res.data.data.recommend_for_you;
-                }else{
-                  this.recommend_for_you_list = this.recommend_for_you_list.concat(res.data.data.recommend_for_you);
-                }
-                this.page_info.page_num = this.page_info.page_num + 1;
-              }else if(this.page_info.page_num == 1 && res.data.data.recommend_for_you.length == 0){
-                this.recommend_for_you_list = [];
-                this.page_info.page_num = 1;
-              }
-              this.total_count = res.data.total_count;
-              this.getBrandProduct();
-            }
-          })
-        },
-        /*获取品牌下的推荐商品*/
-        getBrandProduct(pbid) {
-          if(localStorage.getItem('brandIndex') == null) {
-            localStorage.setItem('brandIndex', 0);
-          }
-          axios.get(api.product_list, { params:
-              { pbid: pbid || this.brand_list[localStorage.getItem('brandIndex')].pbid, itid: 'index_brand_product' }}).then(res => {
-            if(res.data.status == 200) {
-              this.brand_product = res.data.data;
-              if(localStorage.getItem('brandIndex')) {
-                this.brand_list[localStorage.getItem('brandIndex')].active = true;
-              }else {
-                this.brand_list[0].active = true;
-              }
-            }
-          })
-        },
-        // 品牌logo点击效果
-        brandProduct(item, index) {
-          localStorage.setItem('brandIndex', index);
-          if(item.active) {
-            // console.log('two');
-            this.$router.push({ path: 'brandDetail', query: { pbid: item.pbid, pbname: item.pbname }});
-          }else {
-            if(index > -1) {
-              for(let i in this.brand_list) {
-                this.brand_list[i].active = false
-              }
-              this.brand_list[index].active = true;
-              this.brand_list = this.brand_list.concat()
-            }
-            this.getBrandProduct(item.pbid);
-          }
         },
         //获取装备信息
         getCategory(){
           axios.get(api.category_list).then(res => {
             if(res.data.status == 200){
               this.icon_list = [].concat(res.data.data);
+            }
+          })
+        },
+        /*获取资讯列表*/
+        getNews() {
+          axios.get(api.get_all_news,{
+            params:{
+              token:localStorage.getItem('token'),
+              page_num:this.page_info.page_num,
+              page_size: this.page_info.page_size,
+              nestatus:'usual',
+              kw:this.$route.query.kw
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              this.isScroll =true;
+              if(res.data.data.length >0){
+                for(let i in res.data.data){
+                  if(res.data.data[i].netext)
+                    res.data.data[i].netext = res.data.data[i].netext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
+                }
+                if(this.page_info.page_num >1){
+                  this.news_list =  this.news_list.concat(res.data.data);
+                }else{
+                  this.news_list = res.data.data;
+                }
+                this.page_info.page_num = this.page_info.page_num + 1;
+                this.total_count = res.data.total_count;
+              }else{
+                this.news_list = null;
+                this.page_info.page_num = 1;
+                this.total_count = 0;
+              }
+            }
+          })
+        },
+        /*点赞*/
+        likeClick(i){
+          // if(!localStorage.getItem('token')){
+          //   Toast('请登录后再试');
+          //   let url = location.href.split('#')[0] + '?neid=' + this.news_list[i].neid
+          //   localStorage.setItem('login_to',url);
+          //   this.$router.push('/login');
+          //   return false;
+          // }
+          axios.post(api.favorite_news + '?token='+localStorage.getItem('token'),{
+            neid:this.news_list[i].neid,
+            tftype:1
+          }).then(res => {
+            if(res.data.status == 200){
+              let arr = [].concat(this.news_list);
+              if(arr[i].is_favorite){
+                arr[i].favoritnumber = arr[i].favoritnumber-1;
+              }else{
+                arr[i].favoritnumber = arr[i].favoritnumber+1;
+              }
+              arr[i].is_favorite = !arr[i].is_favorite;
+              this.news_list = [].concat(arr);
+            }
+          })
+        },
+        //  收藏
+        clickCollect(index){
+          this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+            uclcollection:this.news_list[index].neid,
+            uclcotype:1
+          }).then(res => {
+            if(res.data.status == 200){
+              Toast(
+                {
+                  message: res.data.message,
+                  duration: 500
+                });
+              let arr = [].concat(this.news_list)
+              arr[index].collected = !arr[index].collected;
+              // arr.splice(index,1);
+              this.news_list = [].concat(arr)
+            }
+          })
+        },
+        //  关注
+        followClick(index){
+          this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+            uclcollection:this.news_list[index].neid,
+            uclcotype:2
+          }).then(res => {
+            if(res.data.status == 200){
+              Toast(
+                {
+                  message: res.data.message,
+                  duration: 500
+                });
+              let arr = [].concat(this.news_list)
+              arr[index].follow = !arr[index].follow;
+              this.news_list = [].concat(arr)
             }
           })
         },
@@ -459,11 +451,10 @@
           if (scrollTop + ClientHeight  >= scrollHeight -10) {
             if(this.isScroll){
               this.isScroll = false;
-              console.log(this.recommend_for_you_list.length,this.total_count)
-              if(this.recommend_for_you_list.length == this.total_count){
+              if(this.news_list.length == this.total_count){
                 this.bottom_show = true;
               }else{
-                    this.getBrand();
+                    this.getNews();
               }
             }
           }
@@ -489,16 +480,6 @@
               break;
             default:
               this.$router.push({path:v,});
-          }
-        },
-        /*场景点击*/
-        sceneClick(item){
-          this.$router.push({path:'/scene',query:{ psid:item.psid}})
-        },
-        /*商品点击*/
-        productClick(item){
-          if(item.prid){
-            this.$router.push({path:'/productDetail',query:{ prid:item.prid}});
           }
         },
         /*下拉刷新*/
@@ -602,14 +583,15 @@
     /*}*/
   /*}*/
   .m-selected-label{
-    width: 615px;
-    padding: 15px 33px;
+    width: 750px;
+    padding: 30px 33px;
     margin: 20px auto;
     height: 60px;
-    border-radius: 50px;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-    background-image: linear-gradient(to right, @subColor, @mainColor);
+    /*border-radius: 50px;*/
+    /*box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);*/
+    box-sizing: border-box;
     .flex-row(space-between);
+    color: #000;
     .m-selected-label-left{
       text-align: left;
       .m-selected-label-l{
@@ -629,6 +611,7 @@
         .flex-row(flex-start);
         font-size: 18px;
         letter-spacing: -0.4px;
+        color: #666666;
         li{
           margin-right: 20px;
         }
@@ -636,8 +619,6 @@
           display: inline-block;
           width: 20px;
           height: 20px;
-          background: url("/static/images/icon-label.png") no-repeat;
-          background-size: 100% 100%;
           margin-right: 10px;
         }
       }
@@ -645,12 +626,14 @@
     .m-selected-label-right{
       width: 160px;
       height: 50px;
-      border-radius: 50px;
-      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-      background-color: #fff;
-      font-size: 21px;
+      /*border-radius: 50px;*/
+      /*box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);*/
+      background:linear-gradient(270deg,@mainColor 0%,@subColor 100%);
+      font-size: 28px;
+      color: #fff;
       line-height: 50px;
       text-align: center;
+      font-weight: 600;
       .m-icon-gift{
         display: inline-block;
         width: 27px;
@@ -687,63 +670,32 @@
     }
   }
   .m-selected-one{
-    .m-one-activity{
-      padding: 0 33px ;
-      &.m-top{
-        padding-top: 30px;
-      }
-      .m-activity-img{
-        display: block;
-        width: 682px;
-        height: 325px;
-        background-color: #edb3b1;
-        border-radius: 10px;
-      }
-      .m-activity-ul{
-        text-align: left;
-        margin: 15px 0;
-        .flex-row(space-between);
-        li{
-          .m-one-activity-img{
-            display: block;
-            width: 200px;
-            height: 200px;
-            background-color: #edb3b1;
-          }
-          .m-one-activity-text{
-            width: 200px;
-            font-size: 19px;
-            margin-top: 10px;
-            h3{
-              width: 200px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-          }
-        }
-      }
+    padding: 0 33px ;
+    .m-activity-img{
+      display: block;
+      width: 684px;
+      height: 150px;
+      background-color: #edb3b1;
     }
   }
   .m-equipment-icon-ul{
     .flex-row(flex-start);
+    margin-top: 20px;
     li{
       /*margin-right: 10px;*/
       font-size: 21px;
       line-height: 24px;
       letter-spacing: -0.4px;
       position: relative;
-      width: 180px;
+      width: 120px;
       /*height: 180px;*/
-      margin-top: 0;
-      margin-bottom: 10px;
       box-shadow: none;
-      margin-right: 15px;
+      margin: 0 15px 10px 0;
+      .flex-col(center);
       img{
         display: block;
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
+        width: 80px;
+        height: 80px;
         /*box-shadow:5px 5px 6px rgba(0,0,0,0.16);*/
       }
       .m-name{
@@ -753,78 +705,87 @@
       }
     }
   }
-  .m-selected-hot{
-    background-color: #f1f1f1;
-    width: 685px;
-    height: 360px;
-    border-radius: 10px;
-    margin: 30px 32px;
-    .m-hot-sales {
-      width: 164px;
-      height: 360px;
-    }
-    .m-hot-box{
-      width: 160px;
-      background-color: #e9e9e9;
-      height: 360px;
-      font-weight: bold;
-      font-size: 30px;
-      border-radius: 10px;
-      padding:0 10px;
-      .m-hot{
-        font-size: 58px;
-        color: @mainColor;
-        margin-top: 120px;
+  .m-selected-activity{
+    padding: 0 40px;
+    .m-row{
+      .flex-row(space-between);
+      border-bottom: 1px solid #f4f4f4;
+      text-align: left;
+      .m-img-limit{
         display: block;
+        width: 148px;
+        height: 36px;
+        margin-bottom: 18px;
       }
-    }
-    .m-one-product{
-      margin: 20px;
-      position: relative;
-      width: 160px;
-      height: 160px;
-      .m-one-product-img{
+      .m-time-box{
+        color: #fff;
+        .flex-row(center);
+        font-size: 20px;
+        background-color: @mainColor;
+        margin: 0 10px  18px 0;
+      }
+      .m-icon-time{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+
+      }
+      .m-limit-title{
+        width: 302px;
+        height: 33px;
+        line-height: 33px;
+        overflow: hidden; // 超出的文本隐藏
+        text-overflow: ellipsis;    // 溢出用省略号显示
+        white-space:nowrap;
+        font-weight: 400;
+        margin-bottom: 6px;
+      }
+      .m-limit-price{
+        font-weight: 600;
+        font-size: 32px;
+        margin-right: 15px;
+      }
+      .m-underline{
+        color: #B4B4B4;
+        font-size: 20px;
+      }
+      .m-product-img{
         display: block;
-        width: 160px;
-        height: 160px;
-        background-color: #fff;
+        width: 180px;
+        height: 120px;
+        margin-left: 20px;
       }
-      &.m-l{
-        width: 300px;
-        height: 335px;
-        margin-right: 0;
-        .m-one-product-img{
-          display: block;
-          width: 300px;
-          height: 335px;
-          background-color: #fff;
+      .m-col{
+        width: 49%;
+        padding: 23px 0 10px ;
+        &:first-child{
+          border-right: 1px solid #f4f4f4;
         }
-        .m-one-product-text{
-          h3{
-            width: 300px;
+        .m-activity-name{
+          font-size: 32px;
+          font-weight: 600;
+        }
+        .m-activity-box{
+          .flex-row(space-between,flex-end);
+          .m-red{
+            color: #E22300;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 20px;
           }
-        }
-      }
-      .m-one-product-text{
-        position: absolute;
-        top: 8px;
-        left: 0;
-        text-align: left;
-        h3{
-          width: 160px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
         }
       }
     }
   }
+
   .money-text {
     width: 240px;
     font-size: 20px;
     padding: 5px;
     overflow: hidden; // 超出的文本隐藏
     text-overflow: ellipsis;    // 溢出用省略号显示
+    white-space:nowrap;
   }
 }
 

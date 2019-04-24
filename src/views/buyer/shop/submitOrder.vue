@@ -79,18 +79,7 @@
           <li class="m-flex-between" @click="changeModel('show_coupon',true, index + 1)" v-if="!isGuess">
             <span>优惠选择</span>
             <div v-if="items.couponList.length > 0">
-              <span class="m-grey" v-if="items.coupon_info.coname">{{items.coupon_info.coname}}</span>
-              <span v-else>请选择优惠券</span>
-              <span class="m-icon-more"></span>
-            </div>
-            <div v-else>
-              <span>暂无优惠券</span>
-            </div>
-          </li>
-          <li class="m-flex-between" @click="changeModel('show_coupon',true, index + 1)" v-if="!isGuess">
-            <span>星币抵扣</span>
-            <div v-if="items.couponList.length > 0">
-              <span class="m-grey" v-if="items.coupon_info.coname">{{items.coupon_info.coname}}</span>
+              <span class="m-coupon-label" v-if="items.coupon_info.coname">{{items.coupon_info.coname}}</span>
               <span v-else>请选择优惠券</span>
               <span class="m-icon-more"></span>
             </div>
@@ -107,6 +96,14 @@
       </div>
       <div class="m-one-part">
         <ul class="m-order-ul">
+          <li class="m-flex-between" v-if="star_info.can_reduce">
+            <span>星币抵扣</span>
+            <div >
+              <span class="m-price">可用{{star_info.reduce_integral}}星币抵扣{{star_info.reduce_mount}}元</span>
+              <img src="/static/images/order/icon-radio-active.png" class="m-radio" v-if="show_star" @click="changeStar" alt="">
+              <img src="/static/images/order/icon-radio.png" class="m-radio" v-else @click="changeStar"  alt="">
+            </div>
+          </li>
           <li class="m-sku-num">
             <span>总计金额</span>
             <div class=" m-price">
@@ -157,10 +154,34 @@
       </div>
 
       <mt-popup v-model="show_coupon" popup-transition="popup-fade" class="m-coupon-modal">
+        <div class="m-coupon-head">
+          <span>选择优惠券</span>
+          <img src="/static/images/product/icon-close.png" @click="show_coupon = false" alt="">
+        </div>
         <div class="m-coupon-modal-content">
           <coupon :couponList="couponList" :order="true" @couponClick="couponClick"></coupon>
         </div>
       </mt-popup>
+<!--      <mt-popup v-model="show_star" popup-transition="popup-fade" class="m-coupon-modal">-->
+<!--          <div class="m-coupon-head">-->
+<!--            <span></span>-->
+<!--            <img src="/static/images/product/icon-close.png" @click="show_star = false" alt="">-->
+<!--          </div>-->
+<!--          <div class="m-star-ul">-->
+<!--            <div class="m-item m-flex-between m-sku-num">-->
+<!--              <span>抵用星币</span>-->
+<!--              <div class="m-num">-->
+<!--                <span class="m-icon-cut" >-</span>-->
+<!--                <input type="number"  class="m-num-input" >-->
+<!--                <span class="m-icon-add cancel" >+</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="m-item m-flex-between ">-->
+<!--              <span>我的星币</span>-->
+<!--              <span class="m-price">123星币</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--      </mt-popup>-->
     </div>
 </template>
 
@@ -200,7 +221,9 @@
           payType: { name: '微信' },          // 支付方式
           code: '',                           // 激活码
           isGuess: false,                     // 是否从每日竞猜来的
-          act:false
+          act:false,
+          show_star:false,
+          star_info:null
         }
       },
       components: { coupon },
@@ -269,6 +292,7 @@
           this.getDiscount();         // 订单页获取减免金额
           this.isGuess = true;
         }
+        this.getStar();
       },
       methods: {
         // 付款方式picker的确认按钮
@@ -359,6 +383,35 @@
               });
             }
           }
+        },
+        //获取可用xingb
+        getStar(){
+
+          let info = []
+          for(let i in this.product_info){
+            let skus = [];
+            for(let j in this.product_info[i].cart){
+              skus.push({skuid:this.product_info[i].cart[j].sku.skuid,nums:this.product_info[i].cart[j].canums,cafrom:10})
+              info.push({pbid:this.product_info[i].pb.pbid,skus:skus})
+            }
+          }
+          this.$http.post(this.$api.integral_pay_preview + '?token='+localStorage.getItem('token'),{
+            info:info
+          }).then(res => {
+            if(res.data.status == 200){
+              this.star_info = res.data.data;
+            }
+          })
+        },
+        //s点击是否使用star
+        changeStar(){
+          if(this.show_star){
+            this.total_money =  this.total_money + this.star_info.reduce_mount
+          }else{
+            this.total_money =  this.total_money - this.star_info.reduce_mount
+          }
+          sessionStorage.setItem('total_money', this.total_money);
+          this.show_star = !this.show_star
         },
         // 订单页获取减免金额
         getDiscount() {
@@ -522,7 +575,9 @@
               }
               params.activation_code = this.code;
             }
-          }else {
+          }else if(this.show_star){
+            params.opaytype = 40;
+          }else{
             params.opaytype = 0;
           }
           if(this.$route.query.from === undefined) {
@@ -788,6 +843,23 @@
           line-height: 50px;
           font-size: 24px;
         }
+        .m-coupon-label{
+          display: inline-block;
+          background: url("/static/images/product/icon-coupon-bg.png") no-repeat;
+          background-size: 100% 100%;
+          margin-right: 10px;
+          height: 36px;
+          line-height: 36px;
+          font-size: 20px;
+          color: #EA3F29;
+          padding: 0 16px 0 26px;
+        }
+        .m-radio{
+          display: inline-block;
+          width:30px;
+          height: 30px;
+          vertical-align: text-top;
+        }
       }
     }
     .m-pay-popup {
@@ -859,6 +931,29 @@
     height: 660px;
     overflow-y: auto;
     padding-bottom: 40px;
+    .m-coupon-head{
+      .flex-row(space-between);
+      width: 100%;
+      padding: 15px 25px;
+      font-size: 28px;
+      box-sizing: border-box;
+      color: @mainColor;
+      img{
+        display: block;
+        width: 27px;
+        height: 27px;
+      }
+    }
+    .m-star-ul{
+      width: 100%;
+      margin-top: 40px;
+      .m-item{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 37px 40px;
+        border-bottom: 1px solid #f4f4f4;
+      }
+    }
     .m-coupon-modal-content{
       width: 750px;
       padding: 40px 0;

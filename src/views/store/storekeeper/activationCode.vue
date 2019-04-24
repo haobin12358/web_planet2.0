@@ -417,16 +417,17 @@
           }
         }
         .m-foot-btn{
-          position: absolute;
-          bottom: 50px;
+          // position: absolute;
+          // bottom: 50px;
           // left: 25px;
+          margin-top: 150px;
           span{
             color: #ffffff;
             display: inline-block;
             width: 750px;
             height: 106px;
             line-height: 106px;
-            background-color:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
+            background:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
             font-size: 38px;
             font-weight: bold;
             // border-radius: 10px;

@@ -68,44 +68,44 @@
 
 
 
-      <!--店主版选择商品或优惠券-->
-      <div class="m-product-coupon" v-if="usLevel == '2'">
-        <!--<div class="m-input-box" @click="getProduct">
-          <div class="m-input-text">选择商品</div>
-          <img class="m-input-icon" v-if="productList.length == 0" src="/static/images/icon-down-active.png">
-          <img class="m-input-icon" v-else src="/static/images/icon-up.png">
-        </div>-->
-        <div class="m-product-search">
-          <input type="text" v-model="search" @blur="getProduct" placeholder="商品搜索关键词(商品名/品牌名)">
-        </div>
-        <div class="m-scroll-box">
-          <div class="m-scroll" style="padding-left: 40px;">
-            <ul class="m-selected-brand-product-ul" style="margin: 0;">
-              <li v-for="(item, index) in productList">
-                <img class="m-cancel-icon" v-if="!item.choose" src="/static/images/icon-radio.png" @click="productCouponCancel('product', index)">
-                <img class="m-cancel-icon" v-else src="/static/images/icon-radio-active.png" @click="productCouponCancel('product', index)">
-                <img :src="item.prmainpic" class="m-selected-brand-product-img">
-                <div class="m-selected-brand-product-text">
-                  <h3>【{{item.brand.pbname}}】{{item.prtitle}}</h3>
-                  <p class="m-flex-between m-ft-18">
-                    <span>￥{{item.prprice | money}}</span>
-                    <s class="m-grey m-ft-18" v-if="item.prlineprice">￥{{item.prlineprice | money}}</s>
-                  </p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="m-input-box" @click="getUserCoupon">
-          <div class="m-input-text">选择优惠券</div>
-          <img class="m-input-icon" v-if="couponList.length == 0" src="/static/images/icon-down-active.png">
-          <img class="m-input-icon" v-else src="/static/images/icon-up.png">
-        </div>
-        <div class="m-coupon-box">
-          <coupon-card :couponList="couponList" :circle="circleCoupon" @productCouponCancel="productCouponCancel"></coupon-card>
-          <div class="m-no-coupon" v-if="couponList.length == 0 && getCoupon">暂无优惠券</div>
-        </div>
-      </div>
+<!--      &lt;!&ndash;店主版选择商品或优惠券&ndash;&gt;-->
+<!--      <div class="m-product-coupon" v-if="usLevel == '2'">-->
+<!--        &lt;!&ndash;<div class="m-input-box" @click="getProduct">-->
+<!--          <div class="m-input-text">选择商品</div>-->
+<!--          <img class="m-input-icon" v-if="productList.length == 0" src="/static/images/icon-down-active.png">-->
+<!--          <img class="m-input-icon" v-else src="/static/images/icon-up.png">-->
+<!--        </div>&ndash;&gt;-->
+<!--        <div class="m-product-search">-->
+<!--          <input type="text" v-model="search" @blur="getProduct" placeholder="商品搜索关键词(商品名/品牌名)">-->
+<!--        </div>-->
+<!--        <div class="m-scroll-box">-->
+<!--          <div class="m-scroll" style="padding-left: 40px;">-->
+<!--            <ul class="m-selected-brand-product-ul" style="margin: 0;">-->
+<!--              <li v-for="(item, index) in productList">-->
+<!--                <img class="m-cancel-icon" v-if="!item.choose" src="/static/images/icon-radio.png" @click="productCouponCancel('product', index)">-->
+<!--                <img class="m-cancel-icon" v-else src="/static/images/icon-radio-active.png" @click="productCouponCancel('product', index)">-->
+<!--                <img :src="item.prmainpic" class="m-selected-brand-product-img">-->
+<!--                <div class="m-selected-brand-product-text">-->
+<!--                  <h3>【{{item.brand.pbname}}】{{item.prtitle}}</h3>-->
+<!--                  <p class="m-flex-between m-ft-18">-->
+<!--                    <span>￥{{item.prprice | money}}</span>-->
+<!--                    <s class="m-grey m-ft-18" v-if="item.prlineprice">￥{{item.prlineprice | money}}</s>-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="m-input-box" @click="getUserCoupon">-->
+<!--          <div class="m-input-text">选择优惠券</div>-->
+<!--          <img class="m-input-icon" v-if="couponList.length == 0" src="/static/images/icon-down-active.png">-->
+<!--          <img class="m-input-icon" v-else src="/static/images/icon-up.png">-->
+<!--        </div>-->
+<!--        <div class="m-coupon-box">-->
+<!--          <coupon-card :couponList="couponList" :circle="circleCoupon" @productCouponCancel="productCouponCancel"></coupon-card>-->
+<!--          <div class="m-no-coupon" v-if="couponList.length == 0 && getCoupon">暂无优惠券</div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
 
     <div class="m-bottom-btn-box">
@@ -518,7 +518,7 @@
       }
     },
     mounted() {
-      common.changeTitle('发布圈子');
+      common.changeTitle('发布');
       this.getNav();                 // 获取圈子所在的标签
       this.getUserLevel();           // 获取当前用户是否是店主
     },
@@ -681,9 +681,9 @@
       padding: 0 0 50px 0;
       span{
         display: inline-block;
-        width: 700px;
+        width: 750px;
         height: 106px;
-        border-radius: 10px;
+        /*border-radius: 10px;*/
         background-color: @mainColor;
         line-height: 106px;
         font-size: 38px;

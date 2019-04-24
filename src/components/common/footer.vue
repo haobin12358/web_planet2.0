@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--顶部左上角买家、店主身份切换-->
-    <span class="m-icon-home" @click="buyerStore" v-if="buyer_store"></span>
+<!--    <span class="m-icon-home" @click="buyerStore" v-if="buyer_store"></span>-->
 
 <!--    <mt-tabbar v-model="selected" :fixed="true" v-if="is_weixin">-->
 <!--      <template v-for="(item,index) in tabbar" >-->
@@ -141,7 +141,7 @@
             this.$router.push('/circle');
             break;
           case '发布':
-            this.$router.push('/activity');
+            this.$router.push('/circle/newEdit');
             break;
           case '商城':
             this.$router.push('/newProduct');
@@ -175,7 +175,7 @@
               this.selected = '发现';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;
-            case '/activity':
+            case '/circle/newEdit':
               this.selected = '发布';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;

@@ -14,22 +14,83 @@
     </div>
     <div class="m-myWallet-activity" v-if="head_name == '活动订单'">
       <nav-list :navlist="nav_list" @navClick="navClick"></nav-list>
-      <div class="m-activity-order-list">
-        <div class="m-one-order">
-          <img src="" class="m-img" alt="">
-          <div class="m-one-order-text">
-            <div class="m-one-order-title">
-              <h3 class="m-product-name">TAWA防水帐篷户外野营必备防水帐篷帐户外野营必备TAWA防水…</h3>
-              <span class="m-price">¥160.00</span>
+      <mt-loadmore :top-method="loadTop" ref="loadmore">
+
+        <p v-if="order_list.length == 0" class="m-no-data">暂无订单哦,<span class="m-red">去下单</span>吧~</p>
+        <div class="m-orderList-content" v-else>
+          <template v-for="(items,index) in order_list">
+            <div class="m-one-part"  @click.stop="changeRoute('/orderDetail',items)">
+              <div class="m-order-store-tile" >
+<!--                @click.stop="changeRoute('/brandDetail',items)"-->
+                <div >
+<!--                  <span class="m-icon-store"></span>-->
+                  <span class="m-store-name">{{items.pbname}}</span>
+<!--                  <span class="m-icon-more"></span>-->
+                </div>
+                <span class="m-red" v-if="items.omstatus != 25">{{items.omstatus_zh}}</span>
+                <span class="m-red" v-else>已完成</span>
+              </div>
+              <div class="m-order-product-ul">
+                <template v-for="(item,i) in items.order_part">
+                  <div class="m-product-info" >
+                    <img :src="item.prmainpic" v-lazy="item.prmainpic" :key="item.prmainpic" class="m-product-img">
+                    <div>
+                      <p class="m-flex-between">
+                        <span class="m-product-name">{{item.prtitle}}</span>
+                        <span class="m-price" v-if="item.tlsprice">￥{{item.tlsprice | money}}</span>
+                        <span class="m-price" v-else>￥{{item.skuprice | money}}</span>
+                      </p>
+                      <p class="m-flex-between">
+                      <span class="m-product-label">
+                        <template v-for="(key,k) in item.skuattritedetail" >
+                        <span >{{key}}</span>
+                        <span v-if="k < item.skuattritedetail.length-1">；</span>
+                      </template>
+                      </span>
+                        <span >x{{item.opnum}}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <p class="m-end-time" v-if="items.deposit_expires">押金返还时间：{{items.deposit_expires}}</p>
+                </template>
+                <ul class="m-order-btn-ul">
+                  <div class="duration-box">
+                    <div v-if="items.duration">支付倒计时<span class="duration-text">{{items.min}}:{{items.sec}}</span></div>
+                  </div>
+                  <div>
+                    <!--<li v-if="items.omstatus==10" @click.stop="changeRoute('/selectBack',items)">退款</li>-->
+                    <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund" @click.stop="changeRoute('/selectBack',items)">退款</li>
+                    <li @click.stop="changeRoute('/logisticsInformation',items)" v-if="items.omstatus==20
+                || items.omstatus == 30 || items.omstatus == 25">查看物流</li>
+                    <!--<li v-if=" items.omstatus == -40">删除订单</li>-->
+                    <li v-if="items.omstatus == 0" @click.stop="cancelOrder(items)">取消订单</li>
+                    <li class="active" v-if="items.omstatus == 0" @click.stop="payBtn(items)">立即付款</li>
+                    <li class="active" v-if="items.omstatus == 20" @click.stop="orderConfirm(items)">确认收货</li>
+                    <li class="active" v-if="items.omstatus==25 && indexTemp != 3" @click.stop="changeRoute('/addComment', items)">评价</li>
+                  </div>
+                </ul>
+              </div>
             </div>
-            <p class="m-product-sku">绿色；单人款</p>
-            <div class="m-order-num">
-              <span class="m-text">返现¥</span>
-              <span>160.00</span>
-            </div>
-          </div>
+          </template>
         </div>
-      </div>
+        <bottom-line v-if="bottom_show"></bottom-line>
+      </mt-loadmore>
+<!--      <div class="m-activity-order-list">-->
+<!--        <div class="m-one-order">-->
+<!--          <img src="" class="m-img" alt="">-->
+<!--          <div class="m-one-order-text">-->
+<!--            <div class="m-one-order-title">-->
+<!--              <h3 class="m-product-name">TAWA防水帐篷户外野营必备防水帐篷帐户外野营必备TAWA防水…</h3>-->
+<!--              <span class="m-price">¥160.00</span>-->
+<!--            </div>-->
+<!--            <p class="m-product-sku">绿色；单人款</p>-->
+<!--            <div class="m-order-num">-->
+<!--              <span class="m-text">返现¥</span>-->
+<!--              <span>160.00</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
     <div class="m-myWallet-history" v-else>
       <div class="m-date-select">
@@ -51,10 +112,14 @@
       <!--        获取记录-->
       <ul class="m-detail-list" v-if="history_list.length >0 ">
         <li class="m-flex-start" v-for="(item,index) in history_list">
-          <div class="m-detail-list-text">
+          <div class="m-detail-list-text" @click="changeRouteHis('/personal/history',item)">
+            <p class="m-flex-between">
+              <span class="m-status" :class="item.cnstatus_en == 'agree'? 'm-had':(item.cnstatus_en == 'refuse'? 'm-refuse':'')">{{item.cnstatus_zh}}</span>
+              <span class="m-btn" v-if="item.cnstatus_en == 'refuse'" @click.stop="changeRoute('/storekeeper/withDraw')">再次发起审批</span>
+            </p>
             <p class="m-flex-between">
               <span class="m-detail-list-title">{{item.createtime}}</span>
-              <span>¥{{item.cncashnum}}</span>
+              <span class="m-num">¥{{item.cncashnum}}</span>
             </p>
 <!--            <p class="m-time">2018-0-20  14:12:31</p>-->
           </div>
@@ -62,75 +127,7 @@
       </ul>
       <p v-else class="m-no-data">暂无提现记录</p>
       <bottom-line v-if="bottom_show"></bottom-line>
-      <mt-popup class="m-gift-popup" v-model="giftPopup" pop-transition="popup-fade">
-        <!--            <img class="m-gift-popup-img" src="/static/images/icon-out-know.png" alt="">-->
-        <div class=" m-gift-popup-title m-ft-30 m-ft-b">请先进行身份认证</div>
-        <div class="m-gift-popup-text m-ft-24">认证成功，提交申请并完成审批即可成为提现。</div>
-        <div class="m-gift-popup-btn m-ft-30 m-ft-b" @click="changeRoute('/storekeeper/IDCardApprove')">填写申请</div>
-      </mt-popup>
-      <!--提现-->
-      <div class="m-out-popup-box">
-        <mt-popup class="m-out-popup" v-model="outPopup">
-          <div class="m-out-box" v-if="!outSubmit">
-            <div class="m-popup-close m-ft-28" @click="outPopup = false">X</div>
-            <div class="m-out-title m-ft-30">提现金额</div>
-            <div class="m-out-num-box">
-              <div class="m-out-RMB">￥</div>
-              <input class="m-out-num-input" type="text" v-model="moneyNum" @focus="moneyFocus">
-              <img class="m-out-num-clean" src="/static/images/icon-close.png" @click="moneyNum = '0'">
-            </div>
-            <div class="m-out-row">
-              <div class="m-row-left">姓名</div>
-              <div class="m-row-right">
-                <input type="text" v-model="realName" class="m-row-input m-width-180">
-              </div>
-            </div>
-            <div class="m-out-row">
-              <div class="m-row-left">银行卡号</div>
-              <div class="m-row-right">
-                <input type="text" v-model="bankNo" class="m-row-input m-width-300">
-              </div>
-            </div>
-            <div class="m-out-row">
-              <div class="m-row-left">银行名称</div>
-              <div class="m-row-right" @click="getBankName">{{bank}}</div>
-            </div>
-            <div class="m-out-row">
-              <div class="m-row-left">开户行</div>
-              <div class="m-row-right">
-                <input type="text" v-model="bankName" class="m-row-input m-width-300">
-              </div>
-            </div>
-            <div class="m-out-btn" @click="outBtn('submit')">提 交</div>
-          </div>
-          <div class="m-out-box" v-if="outSubmit">
-            <img class="m-out-know-img" src="/static/images/icon-out-know.png" alt="">
-            <div class="m-out-know-title">提交成功</div>
-            <div class="m-out-know-text">已成功提交提现申请，我们将在3个工作日内完成审核，请及时关注您的账户余额。</div>
-            <div class="m-out-btn" @click="outBtn('know')">我知道了</div>
-          </div>
-        </mt-popup>
-        <!--银行picker-->
-        <mt-popup class="m-bank-popup" v-model="bankPopup" position="bottom">
-          <div class="m-popup-btn">
-            <div @click="bankPopup = false">取消</div>
-            <div @click="bankDone">确认</div>
-          </div>
-          <div class="m-out-row m-out-bank">
-            <div class="m-row-left">银行名称</div>
-            <div class="m-row-right">
-              <input type="text" v-model="bankResult" class="m-row-input m-width-300">
-            </div>
-          </div>
-          <mt-picker :slots="slot" @change="bankChange"></mt-picker>
-        </mt-popup>
-        <!--toast-->
-        <mt-popup class="m-toast-popup" popup-transition="popup-fade" v-model="toast">
-          {{text}}
-        </mt-popup>
 
-
-      </div>
     </div>
   </div>
 </template>
@@ -191,6 +188,7 @@
         now:'',
         timeValue:[],
         history_list:[],
+        order_list:[],
         cntotal:0,
         page_info:{
           page_num: 1,
@@ -199,35 +197,296 @@
         isScroll: true,
         total_count: 0,
         bottom_show: false,
-        outPopup: false,
-        outSubmit: false,
-        bankPopup: false,
-        moneyNum: "0",
-        moneyNumTemp: "0",
-        slot: [{ values: ['请点击选择银行'] }],
-        realName: "",
-        bankName: "",
-        bankResult: "",
-        bank: "",
-        bankNo: "",
-        store: '成为店主',
         text: '',
         toast: false,
-        giftPopup:false,
-        usidentification:''
       }
     },
     components:{navList,bottomLine},
     mounted(){
       this.initYear();
       this.getUser();
+      this.getOrderNum();             // 获取各状态的订单数量
     },
     methods:{
       // 跳转页面
-      changeRoute(v){
+      changeRouteHis(v,item){
+          if(item){
+            this.$router.push({path:v,query:{item:JSON.stringify(item)}})
+          }else{
+            this.$router.push(v);
+          }
+      },
+      changeRoute(v, item) {
+        switch (v){
+          case '/brandDetail':
+            this.$router.push({ path: v, query: { pbid: item.pbid, pbname: item.pbname }});
+            break;
+          case '/orderDetail':
+            this.$router.push({ path: v, query: { omid: item.omid , from: "activityProduct" }});
+            break;
+          case '/logisticsInformation':
+            this.$router.push({ path: v, query: { omid: item.omid }});
+            break;
+          case '/selectBack':
+            this.$router.push({ path: v, query: { product: JSON.stringify(item), allOrder: 1 }});
+            break;
+          case '/addComment':
+            localStorage.setItem('productComment', JSON.stringify(item));
+            this.$router.push({path:v,query:{product:JSON.stringify(item)}});
+            break;
+          default:
+            this.$router.push(v)
+        }
+      },
+      // 导航点击
+      navClick(index) {
+        this.indexTemp = index;
+        localStorage.setItem('activityOrderNo', index);
+        this.page_info.page_num = 1;
+        this.total_count = 0;
+        this.bottom_show = false;
+        let arr = [].concat(this.nav_list);
+        if(arr[index].active) {
+          return false;
+        }
+        for(let i = 0; i < arr.length; i ++) {
+          arr[i].active = false;
+        }
+        arr[index].active = true;
+        this.nav_list = [].concat(arr);
+        this.page_info.page_num = 1;
+        this.omfrom = arr[index].omfrom;
+        for(let i = 0; i < this.order_list.length; i ++) {
+          if(this.order_list[i].time_interVal){
+            clearInterval(this.order_list[i].time_interVal);
+          }
 
-          this.$router.push(v);
+        }
+        this.getOrderList();
+      },
+      // 获取订单列表
+      getOrderList() {
+        let params = {
+          token: localStorage.getItem('token'),
+          page_num: this.page_info.page_num,
+          page_size: this.page_info.page_size,
+          omfrom: this.omfrom
+        };
+        this.$http.get(this.$api.order_list, { params: params }).then(res => {
+          if(res.data.status == 200) {
+            this.isScroll = true;
+            if(res.data.data.length > 0) {
+              if(this.page_info.page_num > 1) {
+                this.order_list = this.order_list.concat(res.data.data);
+              }else{
+                this.order_list = res.data.data;
+              }
+              this.page_info.page_num = this.page_info.page_num + 1;
+              this.total_count = res.data.total_count;
+            }else{
+              this.order_list = [];
+              this.page_info.page_num = 1;
+              this.total_count = 0;
+              return false;
+            }
+            for(let i in this.order_list) {
+              if(this.order_list[i].duration) {
+                if(this.order_list[i].time_interVal){
+                  clearInterval(this.order_list[i].time_interVal);
+                }
+                this.timeOut();       // 倒计时
+              }
+            }
+          }
+        })
+      },
+      // 倒计时
+      timeOut() {
+        for(let i in this.order_list) {
+          if(this.order_list[i].duration) {
+            if(this.order_list[i].duration.substr(0, 1) > -1) {
+              this.order_list[i].min = 0;
+              this.order_list[i].sec = 0;
+              this.order_list[i].min = this.order_list[i].duration.substr(2, 2);
+              this.order_list[i].sec = this.order_list[i].duration.substr(5, 2);
+              let TIME_OUT = Number(this.order_list[i].min) * 60 + Number(this.order_list[i].sec);
+              let count = TIME_OUT;
+              if(this.order_list[i].time_interVal){
+                clearInterval(this.order_list[i].time_interVal);
+              }
+              this.order_list[i].time_interVal  = setInterval(() => {
+                if(count > 0 && count <= TIME_OUT) {
+                  count --;
+                  this.order_list[i].sec --;
+                  if(this.order_list[i].sec < 10 && this.order_list[i].sec > -1) {
+                    this.order_list[i].sec = '0' + this.order_list[i].sec;
+                  }
+                  if(this.order_list[i].sec == -1) {
+                    this.order_list[i].sec = 59;
+                    if(this.order_list[i].min > 0) {
+                      this.order_list[i].min -= 1;
+                    }
+                    if(this.order_list[i].min < 10) {
+                      if(this.order_list[i].min !== '00') {
+                        this.order_list[i].min = '0' + this.order_list[i].min;
+                      }else {
+                        this.order_list[i].duration = null;
+                      }
+                    }
+                  }
+                  this.order_list = this.order_list.concat();
+                }else {
+                  this.page_info.page_num = 1;
+                  this.order_list[i].duration = null;
+                  this.getOrderNum();             // 获取各状态的订单数量
+                  clearInterval(this.order_list[i].time_interVal);
+                }
+              }, 1000);
+            }else {
+              this.order_list[i].duration = null
+            }
+          }
+        }
+      },
+      // 获取各状态的订单数量
+      getOrderNum() {
+        this.$http.get(this.$api.order_count + "?ordertype=act&token=" + localStorage.getItem('token')).then(res => {
+          if(res.data.status == 200) {
+            for(let i = 0; i < res.data.data.length; i ++) {
+              res.data.data[i].active = false;
+            }
+            // res.data.data[0].active = true;
+            this.nav_list = [].concat(res.data.data);
 
+            if(localStorage.getItem('activityOrderNo')) {
+              this.navClick(localStorage.getItem('activityOrderNo'));         // 导航点击
+            }else {
+              this.navClick(0);                // 导航点击
+            }
+          }
+        })
+      },
+      //滚动加载更多
+      touchMove(e) {
+        let scrollTop = common.getScrollTop();
+        let scrollHeight = common.getScrollHeight();
+        let ClientHeight = common.getClientHeight();
+        if (scrollTop + ClientHeight  >= scrollHeight -10) {
+          if(this.isScroll){
+            this.isScroll = false;
+            if(this.order_list.length == this.total_count){
+              this.bottom_show = true;
+            }else{
+              if(this.head_name == '活动订单') {
+                for (let i = 0; i < this.order_list.length; i++) {
+                  if (this.order_list[i].time_interVal) {
+                    clearInterval(this.order_list[i].time_interVal);
+                  }
+
+                }
+                for (let i = 0; i < this.nav_list.length; i++) {
+                  if (this.nav_list[i].active) {
+                    this.getOrderList();
+                  }
+                }
+              }else{
+                if(this.history_list.length == this.total_count){
+                  this.bottom_show = true;
+                }else{
+                  this.getHistory();
+                }
+
+              }
+            }
+          }
+        }
+      },
+      // 下拉刷新
+      loadTop() {
+        this.page_info.page_num = 1;
+        for(let i = 0; i < this.order_list.length; i ++) {
+          if(this.order_list[i].time_interVal){
+            clearInterval(this.order_list[i].time_interVal);
+          }
+
+        }
+        for(let i = 0; i < this.nav_list.length; i ++) {
+          if(this.nav_list[i].active) {
+            this.omfrom = this.nav_list[i].omfrom;
+            this.getOrderNum();             // 获取各状态的订单数量
+          }
+        }
+        this.$refs.loadmore.onTopLoaded();
+      },
+      // 请求微信支付参数
+      payBtn(items) {
+        let params = { omid: items.omid, omclient: '0', opaytype: '0' };
+        axios.post(api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
+          if(res.data.status == 200) {
+            this.wxPay(res.data.data.args, items.omid);
+          }
+        });
+      },
+      // 调起微信支付
+      wxPay(data, omid) {
+        let that = this;
+        function onBridgeReady() {      // 微信支付接口
+          WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', {
+              "appId": data.appId,                 // 公众号名称，由商户传入
+              "timeStamp": data.timeStamp,         // 时间戳，自1970年以来的秒数
+              "nonceStr": data.nonceStr,           // 随机串
+              "package": data.package,             // 统一下单接口返回的prepay_id参数值
+              "signType": data.signType,           // 微信签名方式
+              "paySign": data.sign                 // 微信签名
+            },
+            function(res){
+              // console.log(res);
+              if(res.err_msg == "get_brand_wcpay_request:ok" ){             // 支付成功
+                that.$router.push({ path: '/orderDetail', query: { omid: omid, from: 'activityProduct' }});
+              }else if(res.err_msg == "get_brand_wcpay_request:cancel" ){   // 支付过程中用户取消
+                Toast('支付已取消');
+              }else if(res.err_msg == "get_brand_wcpay_request:fail" ){     // 支付失败
+                Toast('支付失败');
+              }
+            });
+        }
+        if (typeof WeixinJSBridge == "undefined"){
+          if( document.addEventListener ){
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+          }else if (document.attachEvent){
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+          }
+        }else{
+          onBridgeReady();
+        }
+      },
+      // 确认收货
+      orderConfirm(items) {
+        MessageBox.confirm('是否确认该订单的收货？').then(() => {
+          axios.post(api.order_confirm + '?token='+ localStorage.getItem('token'), { omid: items.omid }).then(res => {
+            if(res.data.status == 200){
+              this.reload();
+            }
+          });
+        }).catch(() => {
+
+        });
+      },
+      // 取消订单
+      cancelOrder(item) {
+        MessageBox.confirm('是否取消该订单？').then(() => {
+          this.page_info.page_num = 1;
+          axios.post(api.cancle_order + '?token=' + localStorage.getItem('token'),
+            { omid:item.omid }).then(res => {
+            if(res.data.status == 200) {
+              this.getOrderList();
+            }
+          })
+        }).catch(() => {
+
+        });
       },
       changeContent(v){
         this.head_name = v;
@@ -262,13 +521,6 @@
         this.now = `${year}-${month}`;
         this.timeValue[0] = year;
         this.timeValue[1] = month;
-      },
-      //活动切换
-      navClick(index){
-        for(let i in this.nav_list){
-          this.nav_list[i].active = false;
-        }
-        this.nav_list[index].active = true;
       },
       // 打开 - 关闭时间选择器
       openPicker() {
@@ -318,42 +570,7 @@
           }
         })
       },
-      //获取活动订单
-      getOrder(){
 
-      },
-      //滚动加载更多
-      touchMove(e){
-        let scrollTop = common.getScrollTop();
-        let scrollHeight = common.getScrollHeight();
-        let ClientHeight = common.getClientHeight();
-        if (scrollTop + ClientHeight  >= scrollHeight -10) {
-          if(this.isScroll){
-            this.isScroll = false;
-
-             if(this.head_name == '活动订单'){
-               if(this.order_list.length == this.total_count){
-                 this.bottom_show = true;
-               }else{
-                 for(let i in this.nav_list){
-                   if(this.nav_list[i].index){
-                     this.getOrder(this.nav_list[i].value);
-                   }
-                 }
-               }
-             }else{
-               if(this.history_list.length == this.total_count){
-                 this.bottom_show = true;
-               }else{
-                 this.getHistory();
-               }
-
-             }
-
-
-          }
-        }
-      },
       // 获取个人信息
       getUser() {
         this.$http.get(this.$api.get_home + "?token=" + localStorage.getItem('token')).then(res => {
@@ -363,208 +580,10 @@
         })
       },
       makeMoney() {
-        if (this.user.usidentification == "") {
-          this.giftPopup = true;
-        } else {
-          this.outPopup = true
-        }
-      },
-      getBankName() {
-        if(this.bankNo.length < 10) {
-          Toast({ message: '请先输入正确的银行卡号', position: 'bottom' });
-          return false;
-        }
-        this.bankPopup = true;
-        axios.get(api.get_bankname + "?cncardno=" + this.bankNo).then(res => {
-          if(res.data.status == 200) {
-            this.slots[0].values = ['可输入银行名称', res.data.data.cnbankname];
-            /*if(!res.data.data.validated) {
-              Toast('该银行卡已失效');
-            }else {
-              this.slots[0].values = ['请点击选择银行', res.data.data.cnbankname];
-            }*/
-            this.validated = res.data.data.validated;
-          }else {
-            this.slots[0].values = ['可输入银行名称'];
-          }
-        })
-      },
-      // 提现金额输入框获取焦点
-      moneyFocus() {
-        if(this.moneyNum == '0') {
-          this.moneyNum = '';
-        }
-      },
-      // 提现的提交按钮
-      outBtn(where) {
-        if(where == "submit") {
-          if(this.moneyNum < 0.01) {
-            // Toast({ message: '提现金额应大于0', position: 'bottom' });
-            this.text = '提现金额应大于0';
-            this.toast = true;
-            // 倒计时
-            const TIME_COUNT = 1;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.toast = false;
-                clearInterval(time);
-              }
-            }, 1000);
-            return false;
-          }
-          if(this.moneyNum > this.user.usbalance) {
-            // Toast({ message: '提现金额应不大于可用余额', position: 'bottom' });
-            this.text = '提现金额应不大于可用余额';
-            this.toast = true;
-            // 倒计时
-            const TIME_COUNT = 1;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.toast = false;
-                clearInterval(time);
-              }
-            }, 1000);
-            return false;
-          }
-          if(!this.realName) {
-            // Toast({ message: '请先输入姓名', position: 'bottom' });
-            this.text = '请先输入姓名';
-            this.toast = true;
-            // 倒计时
-            const TIME_COUNT = 1;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.toast = false;
-                clearInterval(time);
-              }
-            }, 1000);
-            return false;
-          }
-          if(this.bankNo.length < 10) {
-            // Toast({ message: '请先输入正确的银行卡号', position: 'bottom' });
-            this.text = '请先输入正确的银行卡号';
-            this.toast = true;
-            // 倒计时
-            const TIME_COUNT = 1;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.toast = false;
-                clearInterval(time);
-              }
-            }, 1000);
-            return false;
-          }
-          if((this.bank == '请点击选择银行' || this.bank == '可输入银行名称' || !this.bank) && !this.bankResult) {
-            // Toast({ message: '请先选择银行', position: 'bottom' });
-            this.text = '请先选择银行';
-            this.toast = true;
-            // 倒计时
-            const TIME_COUNT = 1;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.toast = false;
-                clearInterval(time);
-              }
-            }, 1000);
-            return false;
-          }
-          if(!this.bankName) {
-            // Toast({ message: '请先输入开户行', position: 'bottom' });
-            this.text = '请先输入开户行';
-            this.toast = true;
-            // 倒计时
-            const TIME_COUNT = 1;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.toast = false;
-                clearInterval(time);
-              }
-            }, 1000);
-            return false;
-          }
-          /*if(!this.validated) {
-            Toast({ message: '该银行卡已失效', position: 'bottom' });
-            return false;
-          }*/
-          let params = {
-            cncashnum: this.moneyNum,
-            cncardno: this.bankNo,
-            cncardname: this.realName,
-            cnbankname: this.bank,
-            cnbankdetail: this.bankName
-          };
-          this.$http.post(this.$api.apply_cash + '?token='+ localStorage.getItem('token'), params).then(res => {
-            if(res.data.status == 200) {
-              this.msg = res.data.message;
-              this.outSubmit = true;
 
-              this.realName = '';
-              this.bankNo = '';
-              this.bank = '';
-              this.bankName = '';
-              this.slots[0].values = ['请点击选择银行'];
-            }else {
-              this.text = res.data.message;
-              this.toast = true;
-              // 倒计时
-              const TIME_COUNT = 1;
-              let count = TIME_COUNT;
-              let time = setInterval(() => {
-                if (count > 0 && count <= TIME_COUNT) {
-                  count --;
-                } else {
-                  this.toast = false;
-                  clearInterval(time);
-                }
-              }, 1000);
-            }
-          });
-        }else if(where == "know") {
-          this.getUser();           // 获取用户信息
-          this.outPopup = false;
-          // 倒计时
-          const TIME_COUNT = 1;
-          let count = TIME_COUNT;
-          let time = setInterval(() => {
-            if (count > 0 && count <= TIME_COUNT) {
-              count --;
-            } else {
-              this.outSubmit = false;
-              clearInterval(time);
-            }
-          }, 1000);
-        }
       },
-      // 提现的选择银行确定按钮
-      bankDone() {
-        if(this.bankResult) {
-          this.bank = this.bankResult;
-        }
-        this.bankPopup = false;
-      },
-      // picker选择的银行改变
-      bankChange(picker, values) {
-        this.bank = values[0];
-      },
-      }
+
+    }
   }
 </script>
 <style scoped lang="less">
@@ -629,6 +648,100 @@
       height: 30px;
       margin-right: 10px;
     }
+    .m-orderList-content{
+      .m-icon-more{
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background: url("/static/images/icon-more.png") no-repeat;
+        background-size: 100% 100%;
+      }
+      .m-one-part{
+        background-color: #fff;
+        padding: 30px 37px;
+        margin-bottom: 20px;
+        .m-end-time {
+          text-align: right;
+        }
+        .m-order-store-tile{
+          .flex-row(space-between);
+          .m-icon-store{
+            display: inline-block;
+            width: 31px;
+            height: 29px;
+            background: url("/static/images/icon-store.png") no-repeat;
+            background-size: 100% 100%;
+            vertical-align: text-bottom;
+          }
+          .m-store-name{
+            display: inline-block;
+            margin: 0 25px;
+          }
+        }
+        .m-order-product-ul{
+          margin-top: 16px;
+          .m-product-info{
+            display: flex;
+            flex-flow: row;
+            justify-content: flex-start;
+            margin: 15px 0;
+            .m-product-img{
+              display: block;
+              width: 153px;
+              height: 153px;
+              background-color: #9fd0bf;
+              margin-right: 30px;
+            }
+            p{
+              line-height: 36px;
+            }
+            .m-product-name{
+              display: block;
+              width: 350px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              text-align: left;
+            }
+            .m-product-label{
+              color: #999999;
+              font-size: 21px;
+            }
+          }
+          .m-order-btn-ul{
+            display: flex;
+            justify-content: space-between;
+            text-align: right;
+            color: #999;
+            margin-top: 20px;
+            .duration-box {
+              margin-top: 10px;
+              .duration-text {
+                font-size: 24px;
+                font-weight: bold;
+                color: @mainColor;
+                margin-left: 10px;
+              }
+            }
+            li{
+              display: inline-block;
+              width: 129px;
+              height: 41px;
+              line-height: 41px;
+              text-align: center;
+              border: 1px solid #999;
+              border-radius: 30px;
+              margin-left: 15px;
+              &.active{
+                color: #ffffff;
+                background-color: @mainColor;
+                border: 1px solid @mainColor;
+              }
+            }
+          }
+        }
+      }
+    }
     .m-activity-order-list{
       .m-one-order{
         padding: 30px;
@@ -677,34 +790,6 @@
             }
           }
         }
-      }
-    }
-    .m-gift-popup {
-      width: 700px;
-      height: 600px;
-      margin: -300px 0 0 25px;
-      border-radius: 30px;
-      .m-gift-popup-img {
-        width: 85px;
-        height: 85px;
-        margin: 100px 0 36px 0;
-      }
-      .m-gift-popup-title{
-        text-align: center;
-        margin: 100px 0 36px 0;
-      }
-      .m-gift-popup-text {
-        margin: 45px 0 120px 0;
-        text-align: center;
-      }
-      .m-gift-popup-btn {
-        width: 120px;
-        color: #ffffff;
-        background-color: @mainColor;
-        padding: 15px 70px;
-        margin-left: 220px;
-        border-radius: 10px;
-        box-shadow: 2px 8px 8px rgba(0,0,0,0.16);
       }
     }
   }

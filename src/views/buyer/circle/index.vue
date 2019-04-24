@@ -7,7 +7,7 @@
           <span class="m-icon-search"></span>
           <span class="m-search-text">搜索内容/用户</span>
         </div>
-        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>
+<!--        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>-->
       </div>
       <div class="m-circle-content">
         <div class="m-flex-between m-circle-nav">

@@ -25,7 +25,7 @@
             <div class="m-detail-list-text">
               <p class="m-flex-between">
                 <span class="m-detail-list-title">{{item.uiaction}}</span>
-                <span>+{{item.uiintegral}}</span>
+                <span>{{item.uiintegral}}</span>
               </p>
               <p class="m-time">{{item.createtime}}</p>
             </div>
@@ -164,6 +164,7 @@ import bottomLine from '../../../components/common/bottomLine';
           this.now = this.timeValue[0] + "-" + this.timeValue[1];
           // this.getIncomeList();         // 获取店主收益详情
           this.popupVisible = false;
+          this.page_info.page_num = 1;
           this.getInfo();
         },
         getInfo(){

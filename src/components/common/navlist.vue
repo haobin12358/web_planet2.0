@@ -6,6 +6,12 @@
         </li>
       </template>
     </ul>
+    <ul class="m-nav-list" v-else-if="isAct">
+      <template v-for="(item,index) in navlist">
+        <li :class="item.active?'active':''" @click="navClick(index)">{{item.acname}}
+        </li>
+      </template>
+    </ul>
     <ul class="m-nav-list" v-else>
       <template v-for="(item,index) in navlist">
         <li :class="item.active?'active':''" @click="navClick(index)">{{item.name}}
@@ -39,6 +45,10 @@
             default:false
           },
           isGet:{
+            type:Boolean,
+            default:false
+          },
+          isAct:{
             type:Boolean,
             default:false
           }

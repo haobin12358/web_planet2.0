@@ -282,6 +282,9 @@ body{
     height: 42px;
     line-height: 42px;
     background-color: @mainColor;
+    &.cancel{
+      background-color: @subColor;
+    }
   }
   .m-icon-cut{
     display: inline-block;
@@ -359,6 +362,7 @@ body{
       margin-right: 0;
     }
     &.active{
+      color: @mainColor;
       border-bottom: 3px solid @mainColor;
     }
     .m-icon-box{
@@ -412,6 +416,7 @@ body{
       line-height: 34px;
       margin-right: 62px;
       &.active{
+        color: @mainColor;
         border-bottom: 5px solid @mainColor;
       }
     }
@@ -503,12 +508,30 @@ body{
     border-bottom: 1px solid #F2F2F2;
     width: 100%;
     box-sizing: border-box;
+    color: #000;
     p{
       width: 100%;
       text-align: left;
     }
     .m-detail-list-text{
       width: 100%;
+    }
+    .m-status{
+      color: @mainColor;
+      &.m-had{
+        color: #C1C1C1;
+      }
+      &.m-refuse{
+        color: #B70000;
+      }
+    }
+    .m-btn{
+      display: inline-block;
+      padding: 0 28px;
+      height: 40px;
+      line-height: 40px;
+      background:linear-gradient(270deg,@mainColor 0%,@subColor 100%);
+      color: #fff;
     }
     .m-detail-list-title{
       font-size: 28px;
@@ -523,6 +546,9 @@ body{
     .m-time{
       font-size: 24px;
       color: #999999;
+    }
+    .m-num{
+      font-weight: 500;
     }
     .m-detail-list-img{
       display: block;
@@ -548,4 +574,110 @@ body{
   font-size: 24px;
   color: #C1C1C1;
   padding: 30px ;
+}
+.m-modal-pwd{
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.2);
+  .m-modal-state{
+    width: 600px;
+    height: 500px;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -250px 0 0 -300px;
+    .m-one{
+      padding: 20px 40px;
+      border-bottom: 1px solid #F2F2F2;
+      h3{
+        padding: 10px 0;
+        font-size: 28px;
+      }
+      .m-close{
+        position: absolute;
+        top: 30px;
+        right: 20px;
+        width: 27px;
+        height: 27px;
+      }
+      .m-icon{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+      .m-star-num{
+        font-size: 52px;
+        font-weight: 600;
+        color: @mainColor;
+      }
+    }
+    .m-forget{
+      text-align: right;
+      color: #000;
+      padding-right: 40px;
+    }
+  }
+  .m-input-box{
+    .flex-row(center);
+    /*margin: 90px;*/
+    margin-bottom: 30px;
+    .m-setPwd-input{
+      display: block;
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      border: 1px solid @mainColor;
+      border-right: none;
+      &:last-child{
+        border-right: 1px solid @mainColor;
+      }
+      i {
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        background: #000;
+        display: inline-block;
+      }
+    }
+  }
+  input[type=tel] {
+    width: 0.1px;
+    height: 0.1px;
+    color: transparent;
+    position: relative;
+    top: 23px;
+    background: #000000;
+    left: 46px;
+    border: none;
+    font-size: 18px;
+    opacity: 0;
+    z-index: -1;
+  }
+  //光标
+  .psd-blink {
+    display: inline-block;
+    /*background: url("./img/blink.gif") no-repeat center;*/
+    /*border-right: 1px solid #ccc;*/
+    s:after{
+      content: '|';
+      color: #000;
+      display: inline-block;
+      -webkit-animation:gogogo 0.5s infinite  ;
+    }
+  }
+
+}
+@-webkit-keyframes gogogo {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
 }
