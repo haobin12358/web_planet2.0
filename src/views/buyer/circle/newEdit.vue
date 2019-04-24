@@ -518,7 +518,7 @@
       }
     },
     mounted() {
-      common.changeTitle('发布圈子');
+      common.changeTitle('发布');
       this.getNav();                 // 获取圈子所在的标签
       this.getUserLevel();           // 获取当前用户是否是店主
     },

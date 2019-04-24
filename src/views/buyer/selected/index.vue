@@ -61,7 +61,7 @@
         </div>
 
       <div class="m-selected-activity">
-        <div class="m-row">
+        <div class="m-row" @click="changeRoute('/activity')">
          <div>
            <img src="/static/images/index/icon-limit.png" class="m-img-limit" alt="">
            <p class="m-time-box">
@@ -683,6 +683,7 @@
     padding: 5px;
     overflow: hidden; // 超出的文本隐藏
     text-overflow: ellipsis;    // 溢出用省略号显示
+    white-space:nowrap;
   }
 }
 

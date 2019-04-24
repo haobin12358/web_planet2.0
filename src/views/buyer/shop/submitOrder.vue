@@ -410,6 +410,7 @@
           }else{
             this.total_money =  this.total_money - this.star_info.reduce_mount
           }
+          sessionStorage.setItem('total_money', this.total_money);
           this.show_star = !this.show_star
         },
         // 订单页获取减免金额

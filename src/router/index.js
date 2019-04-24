@@ -92,7 +92,7 @@ export const constantRouterMap = [
   },
   { path: '/circle/detail', component: () => import('../views/buyer/circle/detail'), hidden: true },
   { path: '/circle/editCircle', component: () => import('../views/buyer/circle/editCircle'), hidden: true },
-  { path: '/circle/newEdit', component: () => import('../views/buyer/circle/newEdit'), hidden: true },
+  // { path: '/circle/newEdit', component: () => import('../views/buyer/circle/newEdit'), hidden: true },
   { path: '/circle/circleSort', component: () => import('../views/buyer/circle/circleSort'), hidden: true },
   { path: '/equipment', component: () => import('../views/buyer/equipment/index'), hidden: true , meta: { keepAlive: true } },
   { path: '/equipment/detail', component: () => import('../views/buyer/newProduct/detail'), hidden: true , meta: { keepAlive: true }},
@@ -155,14 +155,16 @@ export const constantRouterMap = [
   { path: '/personal/setPwd', component: () => import('../views/buyer/personal/setPwd'), hidden: true },  ///设置密码
   { path: '/personal/myWallet', component: () => import('../views/buyer/personal/myWallet'), hidden: true ,meta: { keepAlive: true }},  ///设置密码
   { path: '/personal/followUser', component: () => import('../views/buyer/personal/followUser'), hidden: true },  ///关注
-  // 活动模块
+
   {
-    path: '/activity',
+    path: '/circle',
     component: Layout,
-    redirect: 'activity',
-    children: [{ path: '/activity', component: () => import('../views/buyer/activity/index'), meta: { keepAlive: true }, hidden: true }
+    redirect: '',
+    children: [{ path: 'newEdit', component: () => import('../views/buyer/circle/newEdit'),hidden: true }
     ],
   },
+  // 活动模块
+  { path: '/activity', component: () => import('../views/buyer/activity/index'), meta: { keepAlive: true }, hidden: true},
   { path: '/newcomer', component: () => import('../views/buyer/activity/newcomer'), hidden: true },            // 新人尝鲜礼包
   { path: '/limitedTime', component: () => import('../views/buyer/activity/limitedTime'), hidden: true },            // 限时活动
   { path: '/dailyGuess', component: () => import('../views/buyer/activity/dailyGuess'), hidden: true },        // 每日竞猜

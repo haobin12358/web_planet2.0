@@ -2,30 +2,169 @@
   <div class="m-activity" ref="activity">
     <!--<div class="m-activity-top-bg"></div>-->
 
-    <div class="m-activity-box">
-      <div class="m-activity-item" v-for="item in activityList">
-        <img class="m-activity-img" :src="item.acbackground" alt="">
-        <div class="m-product-count animated infinite pulse" v-if="item.actype == 2 && item.stock">
-          <div v-if="item.stock > 99" class="m-ft-44" style="line-height: 90px">余量充足</div>
-          <div v-else>{{item.stock}}</div>
+    <img :src="selecte_nav.actoppic" class="m-activity-top-img" alt="">
+    <nav-list :navlist="activityList" :is-act="true" @navClick="navClick"></nav-list>
+    <mt-loadmore :top-method="loadTop" ref="loadmore">
+      <div  v-if="selecte_nav.acname == '限时特惠'">
+        <div class="m-one-limit">
+          <div class="m-limit-title">
+            <span>限时特惠</span>
+            <div class="m-flex-end">
+              <span class="m-active">距离开始</span>
+              <span class="m-activity-time"><img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">12.34</span>
+            </div>
+          </div>
+          <div class="m-hot">
+           <div class="m-hot-left">
+             <p class="m-hot-hot">HOT</p>
+             <p class="m-line-left"></p>
+             <p> 好物推荐</p>
+           </div>
+            <div class="m-hot-right">
+             <ul>
+               <li>
+                 <img src="" class="m-hot-product-img" alt="">
+                 <p>2019新款卫衣</p>
+                 <p class="m-num">¥999</p>
+               </li>
+               <li>
+                 <img src="" class="m-hot-product-img" alt="">
+                 <p>2019新款卫衣</p>
+                 <p class="m-num">¥999</p>
+               </li>
+               <li>
+                 <img src="" class="m-hot-product-img" alt="">
+                 <p>2019新款卫衣</p>
+                 <p class="m-num">¥999</p>
+               </li>
+             </ul>
+            </div>
+          </div>
         </div>
-        <div class="m-product-count animated infinite pulse" v-if="item.actype == 1 && item.prcount">
-          <div v-if="item.prcount > 99" class="m-ft-44" style="line-height: 90px">余量充足</div>
-          <div v-else>{{item.prcount}}</div>
+        <div class="m-one-limit">
+          <div class="m-limit-title">
+            <span>限时特惠</span>
+            <div class="m-flex-end">
+              <span class="m-active">距离开始</span>
+              <span class="m-activity-time"><img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">12.34</span>
+            </div>
+          </div>
+          <div class="m-limit-center-content">
+            <ul class="m-center-product-ul">
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+            </ul>
+            <p class="m-more-text">
+              <span>更多折扣</span>
+              <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">
+            </p>
+          </div>
         </div>
-        <!--<img class="m-activity-img" src="http://img.zcool.cn/community/01e021593541cfa8012193a3a081af.gif" alt="">-->
-        <!--用户****中奖了-->
-        <!--<div class="m-activity-user-demo" v-if="item.record">{{item.record}}</div>-->
-        <div class="m-activity-btn animated infinite pulse" :class="item.acbutton.length > 6 ? 'active' : ''" @click="changeRoute(item.actype)">{{item.acbutton}}</div>
+        <div class="m-one-limit">
+          <div class="m-limit-title">
+            <span>限时特惠</span>
+            <div class="m-flex-end">
+              <span class="m-active">距离开始</span>
+              <span class="m-activity-time"><img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">12.34</span>
+            </div>
+          </div>
+          <div class="m-limit-center-content">
+            <ul class="m-center-product-ul">
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <s>¥999</s>
+                </p>
+              </li>
+            </ul>
+            <p class="m-more-text">
+              <span>更多折扣</span>
+              <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+      <bottom-line v-if="bottom_show"></bottom-line>
+    </mt-loadmore>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import common from '../../../common/js/common';
-  import axios from 'axios';
-  import api from '../../../api/api';
+  import navList from '../../../components/common/navlist';
+  import bottomLine from '../../../components/common/bottomLine';
   import { Toast } from 'mint-ui';
 
   export default {
@@ -33,10 +172,18 @@
     data() {
       return {
         name: '',
-        activityList: []
+        activityList: [],
+        selecte_nav:{},
+        page_info:{
+          page_num:1,
+          page_size:10
+        },
+        isScroll: true,
+        total_count: 0,
+        bottom_show: false,
       }
     },
-    components: {},
+    components: {navList,bottomLine},
     methods: {
       // 跳转页面
       changeRoute(v) {
@@ -58,15 +205,52 @@
             break;
         }
       },
+      // 导航点击
+      navClick(index) {
+        this.page_info.page_num = 1;
+        this.total_count = 0;
+        this.bottom_show = false;
+        let arr = [].concat(this.activityList);
+        if(arr[index].active) {
+          return false;
+        }
+        for(let i = 0; i < arr.length; i ++) {
+          arr[i].active = false;
+        }
+        arr[index].active = true;
+        this.activityList = [].concat(arr);
+        this.selecte_nav = this.activityList[index];
+      },
       // 获取活动list
       getActivit() {
-        axios.get(api.activity_list + "?token=" + localStorage.getItem('token')).then(res => {
+        this.$http.get(this.$api.activity_list + "?token=" + localStorage.getItem('token')).then(res => {
           if(res.data.status == 200){
             this.activityList = res.data.data;
+            for(let i in this.activityList){
+              this.activityList[i].active = false;
+            }
+            console.log(this.activityList)
+            this.navClick(0);
             // this.$refs.activity.style.height = this.activityList.length * 520 + 'px';
           }
         });
-      }
+      },
+      // 下拉刷新
+      loadTop() {
+        this.page_info.page_num = 1;
+        // for(let i = 0; i < this.order_list.length; i ++) {
+        //   if(this.order_list[i].time_interVal){
+        //     clearInterval(this.order_list[i].time_interVal);
+        //   }
+        //
+        // }
+        // for(let i = 0; i < this.nav_list.length; i ++) {
+        //   if(this.nav_list[i].active) {
+        //     this.getOrderList(this.nav_list[i].status);          // 获取订单列表
+        //   }
+        // }
+        this.$refs.loadmore.onTopLoaded();
+      },
     },
     mounted() {
       common.changeTitle('活动');
@@ -85,75 +269,167 @@
     /*overflow-y: hidden;*/
     min-height: 100vh;
     background-color: #ffffff;
-    margin-bottom: -100px;
-    .m-activity-top-bg {
+    color: #000;
+    .m-activity-top-img{
+      display: block;
       width: 750px;
-      height: 350px;
-      background: linear-gradient(180deg, @mainColor 0%, @subColor 100%);
+      height: 250px;
     }
-    .m-activity-box {
-      /*position: absolute;*/
-      /*top: 20px;*/
-      padding-top: 20px;
-      .m-activity-item {
-        width: 700px;
-        height: 500px;
-        margin: 0 0 20px 25px;
-        box-shadow: 0 5px 6px rgba(0,0,0,0.16);
-        border-radius: 20px;
-        position: relative;
-        text-align: center;
-        &:last-child {
-          margin-bottom: 130px;
+    .m-one-limit{
+      width: 100%;
+      border-bottom: 10px solid #F4F4F4;
+      .m-limit-title{
+        .flex-row(space-between);
+        padding: 5px 0 5px 20px;
+        border-bottom: 1px solid #F2F2F2;
+        font-weight: 600;
+        font-size: 28px;
+        .m-active{
+          color: @mainColor;
+          font-size: 24px;
+          font-weight: 400;
+          margin-right: 20px;
         }
-        .m-activity-img {
-          width: 700px;
-          height: 500px;
-          background: #ffffff;
-          border-radius: 20px;
+        .m-activity-time{
+          color: #fff;
+          padding: 0 15px;
+          background:linear-gradient(270deg,@mainColor 0%,@subColor 100%);
+          font-size: 20px;
+          .flex-row(center);
+          .m-icon-time{
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+          }
         }
-        .m-product-count {
-          white-space: nowrap;
-          width: 180px;
-          font-size: 120px;
-          padding: 20px 50px;
-          margin: 0 auto;
-          border-radius: 50px;
-          background-color: #ffffff;
-          position: absolute;
-          top: 120px;
-          left: 200px;
-          opacity: 0.9;
+      }
+      .m-hot{
+        .flex-row(space-between);
+        padding: 20px;
+        .m-hot-left{
+          width: 88px;
+          height: 258px;
+          padding: 10px;
+          box-sizing: border-box;
+          background: url("/static/images/newActivity/icon-hot.png") no-repeat;
+          background-size: 100% 100%;
+          text-align: left;
+          margin-right: 30px;
+          .m-hot-hot{
+            font-size: 28px;
+            font-weight: 600;
+          }
+          .m-line-left{
+            border-left: 1px solid #000;
+            height: 117px;
+            margin: 7px 0 7px 10px;
+          }
         }
-        .m-activity-user-demo {
-          width: 490px;
-          padding: 10px 25px;
-          opacity: 0.5;
-          border-radius: 50px;
-          background-color: #EEEEEE;
-          position: absolute;
-          bottom: 180px;
-          left: 80px;
+        .m-hot-right{
+          ul{
+            .flex-row(flex-start);
+            li{
+              margin-right: 20px;
+              width: 180px;
+              text-align: left;
+              &:last-child{
+                margin-right: 0;
+              }
+              .m-hot-product-img{
+                display: block;
+                width: 180px;
+                height: 180px;
+              }
+              .m-num{
+                font-weight: 600;
+                font-size: 32px;
+              }
+            }
+          }
         }
-        .m-activity-btn {
-          width: 300px;
-          color: #ffffff;
-          /*color: #AF3300;*/
-          font-size: 38px;
-          height: 60px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: bold;
-          padding: 20px 25px;
-          background: linear-gradient(180deg, @subColor 0%, @mainColor 100%);
-          box-shadow: 0 5px 10px rgba(0,0,0,0.16);
-          border-radius: 50px;
-          position: absolute;
-          bottom: 50px;
-          left: 175px;
-          &.active {
-            font-size: 30px;
+      }
+      .m-limit-center-content{
+        padding: 0 45px;
+        .m-more-text{
+          color: #C1C1C1;
+          font-size: 24px;
+          .flex-row(flex-end);
+          margin: 20px 0;
+          .m-icon-more{
+            display: inline-block;
+            width: 17px;
+            height: 30px;
+            margin-left: 10px;
+          }
+        }
+        ul.m-center-product-ul{
+          .flex-row(flex-start);
+          flex-flow: wrap;
+          li{
+            margin: 20px 20px 0 0;
+            width: 150px;
+            &:nth-child(4n){
+              margin-right: 0;
+            }
+            .m-product-img{
+              display: block;
+              width: 150px;
+              height: 150px;
+            }
+            .m-product-name{
+              width: 150px;
+              height: 28px;
+              line-height: 28px;
+              font-size: 20px;
+              overflow: hidden;
+              text-overflow: ellipsis;    // 溢出用省略号显示
+              white-space:nowrap;
+            }
+            .m-num{
+              font-size: 24px;
+            }
+            s{
+              font-size: 16px;
+              color: #C1C1C1;
+            }
+          }
+        }
+      }
+      &:last-child{
+        border-bottom: none;
+        .m-limit-center-content{
+          ul.m-center-product-ul{
+            .flex-row(flex-start);
+            flex-flow: wrap;
+            li{
+              margin: 20px 20px 0 0;
+              width: 320px;
+              &:nth-child(2n){
+                margin-right: 0;
+              }
+              .m-product-img{
+                display: block;
+                width: 320px;
+                height: 450px;
+              }
+              .m-product-name{
+                width: 320px;
+                height: 28px;
+                line-height: 28px;
+                font-size: 20px;
+                overflow: hidden;
+                text-overflow: ellipsis;    // 溢出用省略号显示
+                white-space:nowrap;
+              }
+              .m-num{
+                font-size: 24px;
+              }
+              s{
+                font-size: 16px;
+                color: #C1C1C1;
+              }
+            }
           }
         }
       }
