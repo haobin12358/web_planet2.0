@@ -102,7 +102,7 @@
           </p>
         </div>
         <div class="m-total-money">
-          共{{totalProductNum}}件商品 合计：<span class="w-price">￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）
+          共{{totalProductNum}}件商品 合计：<span class="w-price" v-if="order_info.omfrom = 80">{{order_info.omtruemount}}星币</span><span class="w-price" v-else>￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）
           <p class="m-back-btn">
             <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26)">全部退款</span>
           </p>
@@ -161,6 +161,34 @@
         <span class="active" v-if="order_info.omstatus == 25" @click="changeRoute('/addComment')">评价</span>
       </div>
       <!-- <bottom></bottom> -->
+      <div class="m-modal-pwd" v-if="show_modal ">
+        <div class="m-modal-state" @click.self="show_modal = false">
+          <div class="m-one">
+            <img src="/static/images/product/icon-close.png" class="m-close" @click="show_modal = false" alt="">
+            <h3>请输入星币支付密码</h3>
+          </div>
+          <div class="m-one">
+            <img src="/static/images/newpersonal/icon-star-can.png" class="m-icon" alt="">
+            <span class="m-star-num">{{omtruemount}}</span>
+          </div>
+          <div class="m-one m-flex-between">
+            <span>星币余额</span>
+            <span >{{usintegral}}币</span>
+          </div>
+          <div >
+            <input ref="pwd" type="tel" maxlength="6" v-model="msg" class="pwd" unselectable="on" autofocus />
+            <ul class="m-input-box" @click="focus">
+              <li :class="msg.length == 0?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 0"></i><s></s></li>
+              <li :class="msg.length == 1?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 1"></i><s></s></li>
+              <li :class="msg.length == 2?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 2"></i><s></s></li>
+              <li :class="msg.length == 3?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 3"></i><s></s></li>
+              <li :class="msg.length == 4?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 4"></i><s></s></li>
+              <li :class="msg.length == 5?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 5"></i><s></s></li>
+            </ul>
+            <p class="m-forget" @click="changeRoute('/personal/editInput', 'forget')">忘记密码？</p>
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -180,7 +208,12 @@
         from: "",
         refund: null,
         refund_notes: null,
-        part_refund: false
+        part_refund: false,
+        show_modal:false,
+        msg:'',
+        omtruemount:0,
+        omid:'',
+        usintegral:0
       }
     },
     components: { bottom },
@@ -189,6 +222,17 @@
       common.changeTitle('订单详情');
       this.getOrderInfo();
       this.from = this.$route.query.from;
+    },
+    watch: {
+      msg(curVal) {
+        if(/[^\d]/g.test(curVal)) {
+          this.msg = this.msg.replace(/[^\d]/g, '');
+        }
+        if(this.msg.length == 6){
+          // this.submitOrder();
+          this.payOrder();
+        }
+      },
     },
     computed:{
       totalProductNum: function(){
@@ -214,6 +258,8 @@
             case '/productDetail':
               if(this.order_info.omlogistictype == 10) {
                 this.$router.push({ path: '/gift', query: { prid: item.prid }});
+              }else if (this.order_info.omfrom == 80){
+                this.$router.push({path:'/personal/starProductDetail',query:{ipid:item.prid}});
               }else {
                 this.$router.push({ path: v, query: { prid: item.prid }});
               }
@@ -237,6 +283,9 @@
               localStorage.setItem('productComment', JSON.stringify(this.order_info));
               this.$router.push(v);
               // this.$router.push({ path: v, query: { product: JSON.stringify(this.order_info) }});
+              break;
+            case '/personal/editInput':
+              this.$router.push({path:v,query:{from:'password',way:item}});
               break;
             default:
               this.$router.push(v);
@@ -269,6 +318,9 @@
             case '/addComment':
               localStorage.setItem('productComment', JSON.stringify(this.order_info));
               this.$router.push(v);
+              break;
+            case '/personal/editInput':
+              this.$router.push({path:v,query:{from:'password',way:item}});
               break;
           }
         }
@@ -393,13 +445,47 @@
         });
       },
       // 请求微信支付参数
+      // 请求微信支付参数
       payBtn() {
-        let params = { omid: this.$route.query.omid, omclient: '0', opaytype: '0' };
-        axios.post(api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
-          if(res.data.status == 200) {
-            this.wxPay(res.data.data.args);
+        let items = this.order_info;
+        let params = { omid: items.omid, omclient: '0', opaytype: '0' };
+        if(items.omfrom == 80){
+          this.omtruemount = items.omtruemount;
+          this.omid = items.omid;
+          this.usintegral = items.usintegral;
+          this.show_modal = true;
+        }else{
+          axios.post(api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
+            if(res.data.status == 200) {
+
+              this.wxPay(res.data.data.args, items.omid);
+
+            }
+          });
+        }
+
+      },
+      payOrder(){
+        this.$http.post(this.$api.order_pay + '?token=' +localStorage.getItem('token'),{
+          omid:this.omid,
+          omclient:0,
+          opaytype:30,
+          uspaycode:this.msg,
+          omtruemount: this.omtruemount
+        }).then(res => {
+          Toast(res.data.message);
+          this.msg = '';
+          if(res.data.status == 200){
+            // this.$router.push("/orderList");
+            this.getOrderInfo();
+            this.show_modal = false;
+          }else if(res.data.message == '请输入正确的支付密码'){
+            this.show_modal = true;
           }
-        });
+        })
+      },
+      focus() {
+        this.$refs.pwd.focus();
       },
       // 调起微信支付
       wxPay(data) {

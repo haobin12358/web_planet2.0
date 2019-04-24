@@ -96,11 +96,11 @@
         </div>
         <div class="m-one">
           <img src="/static/images/newpersonal/icon-star-can.png" class="m-icon" alt="">
-          <span class="m-star-num">160</span>
+          <span class="m-star-num">{{omtruemount}}</span>
         </div>
         <div class="m-one m-flex-between">
           <span>星币余额</span>
-          <span >160币</span>
+          <span >{{usintegral}}币</span>
         </div>
         <div >
           <input ref="pwd" type="tel" maxlength="6" v-model="msg" class="pwd" unselectable="on" autofocus />
@@ -147,7 +147,8 @@
         msg:'',
         show_modal:false,
         omid:'',
-        omtruemount:''
+        omtruemount:'',
+        usintegral:''
       }
     },
     components: {  },
@@ -287,6 +288,7 @@
               // this.wxPay(res.data.data.args);
               this.omid = res.data.data.omid;
               this.omtruemount = res.data.data.omtruemount;
+              this.usintegral = res.data.data.usintegral;
               this.show_modal = true;
               localStorage.removeItem('product');
           }
@@ -476,104 +478,6 @@
         font-weight: bold;
         font-size: 38px;
       }
-    }
-    .m-modal-pwd{
-      position: fixed;
-      top:0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background-color: rgba(0,0,0,0.2);
-      .m-modal-state{
-        width: 600px;
-        height: 500px;
-        background-color: #fff;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -250px 0 0 -300px;
-        .m-one{
-          padding: 20px 40px;
-          border-bottom: 1px solid #F2F2F2;
-          h3{
-            padding: 10px 0;
-            font-size: 28px;
-          }
-          .m-close{
-            position: absolute;
-            top: 30px;
-            right: 20px;
-            width: 27px;
-            height: 27px;
-          }
-          .m-icon{
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-          }
-          .m-star-num{
-            font-size: 52px;
-            font-weight: 600;
-            color: @mainColor;
-          }
-        }
-        .m-forget{
-          text-align: right;
-          color: #000;
-          padding-right: 40px;
-        }
-      }
-      .m-input-box{
-        .flex-row(center);
-        /*margin: 90px;*/
-        margin-bottom: 30px;
-        .m-setPwd-input{
-          display: block;
-          width: 80px;
-          height: 80px;
-          line-height: 80px;
-          text-align: center;
-          border: 1px solid @mainColor;
-          border-right: none;
-          &:last-child{
-            border-right: 1px solid @mainColor;
-          }
-          i {
-            height: 10px;
-            width: 10px;
-            border-radius: 50%;
-            background: #000;
-            display: inline-block;
-          }
-        }
-      }
-      input[type=tel] {
-        width: 0.1px;
-        height: 0.1px;
-        color: transparent;
-        position: relative;
-        top: 23px;
-        background: #000000;
-        left: 46px;
-        border: none;
-        font-size: 18px;
-        opacity: 0;
-        z-index: -1;
-      }
-      //光标
-      .psd-blink {
-        display: inline-block;
-        /*background: url("./img/blink.gif") no-repeat center;*/
-        /*border-right: 1px solid #ccc;*/
-        s:after{
-           content: '|';
-          color: #000;
-          display: inline-block;
-          -webkit-animation:gogogo 0.5s infinite  ;
-        }
-      }
-
     }
   }
   @-webkit-keyframes gogogo {

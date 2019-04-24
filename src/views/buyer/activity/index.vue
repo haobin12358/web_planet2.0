@@ -156,6 +156,72 @@
           </div>
         </div>
       </div>
+      <div  v-if="selecte_nav.acname == '新人首单'">
+        <div class="m-one-limit">
+          <div class="m-limit-center-content">
+            <ul class="m-center-product-ul">
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <img src="/static/images/newActivity/icon-new.png"  class="m-label-img" alt="">
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <img src="/static/images/newActivity/icon-new.png"  class="m-label-img" alt="">
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <img src="/static/images/newActivity/icon-new.png"  class="m-label-img" alt="">
+                </p>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div  v-if="selecte_nav.acname === '试用商品'">
+        <div class="m-one-limit">
+          <div class="m-limit-center-content">
+            <ul class="m-center-product-ul">
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <img src="/static/images/newActivity/icon-try.png"  class="m-label-img-try" alt="">
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <img src="/static/images/newActivity/icon-try.png"  class="m-label-img-try" alt="">
+                </p>
+              </li>
+              <li>
+                <img src="" class="m-product-img" alt="">
+                <p class="m-product-name"> 2019新款卫衣</p>
+                <p class="m-flex-between">
+                  <span class="m-num">¥999</span>
+                  <img src="/static/images/newActivity/icon-try.png"  class="m-label-img-try" alt="">
+                </p>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
       <bottom-line v-if="bottom_show"></bottom-line>
     </mt-loadmore>
   </div>
@@ -385,6 +451,7 @@
               overflow: hidden;
               text-overflow: ellipsis;    // 溢出用省略号显示
               white-space:nowrap;
+              text-align: left;
             }
             .m-num{
               font-size: 24px;
@@ -392,6 +459,16 @@
             s{
               font-size: 16px;
               color: #C1C1C1;
+            }
+            .m-label-img{
+              display: inline-block;
+              width: 90px;
+              height: 40px;
+            }
+            .m-label-img-try{
+              display: inline-block;
+              width: 40px;
+              height: 40px;
             }
           }
         }

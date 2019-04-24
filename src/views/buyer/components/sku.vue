@@ -16,6 +16,7 @@
           </div>
           <div v-else>
             <p class="m-price" v-if="product.price_range">￥{{product.price_range | money }}</p>
+            <p class="m-price" v-else-if="product.ipprice">{{product.ipprice}}星币</p>
             <p class="m-price" v-else>￥{{product.prprice && (product.prprice | money)}}</p>
             <p class="m-underline">价格：<s>¥{{product.prlineprice && (product.prlineprice | money)}}</s></p>
           </div>
