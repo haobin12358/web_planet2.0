@@ -55,7 +55,7 @@
                     <div v-if="items.duration">支付倒计时<span class="duration-text">{{items.min}}:{{items.sec}}</span></div>
                   </div>
                   <div>
-                    <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund"
+                    <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund && items.omfrom !=80"
                       @click.stop="changeRoute('/selectBack',items)">退款</li>
                     <li v-if="items.omstatus==20 || items.omstatus==25"
                       @click.stop="changeRoute('/logisticsInformation',items)">查看物流</li>

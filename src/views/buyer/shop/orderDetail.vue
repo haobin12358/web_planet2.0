@@ -96,7 +96,7 @@
             <span class="w-price">￥{{item.opsubtotal | money}}</span>
           </p>
           <p class="m-back-btn" v-if="from !== 'afterSales'  && !order_info.ominrefund">
-            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && !item.order_refund_apply">发起退款</span>
+            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && !item.order_refund_apply && order_info.omfrom != 80"">发起退款</span>
             <span @click="changeRoute('/backDetail', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && item.order_refund_apply">查看退款</span>
             <span @click="changeRoute('/storekeeper/IDCardApprove')" v-if="order_info.omlogistictype == 10 && order_info.omstatus == 30 && from !== 'activityProduct'">身份认证</span>
           </p>
@@ -104,7 +104,7 @@
         <div class="m-total-money">
           共{{totalProductNum}}件商品 合计：<span class="w-price" v-if="order_info.omfrom = 80">{{order_info.omtruemount}}星币</span><span class="w-price" v-else>￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）
           <p class="m-back-btn">
-            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26)">全部退款</span>
+            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && order_info.omfrom != 80">全部退款</span>
           </p>
         </div>
       </div>
