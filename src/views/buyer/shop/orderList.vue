@@ -458,7 +458,8 @@
             Toast(res.data.message);
             this.msg = '';
             if(res.data.status == 200){
-              this.$router.push("/orderList");
+              // this.$router.push("/orderList");
+              this.$router.push({ path: '/orderDetail', query: { omid: this.omid }});
               this.show_modal = false;
             }else if(res.data.message == '请输入正确的支付密码'){
               this.show_modal = true;
