@@ -45,8 +45,8 @@
           </div>
         </div>
 
-      <div class="m-selected-one">
-        <img src="" class="m-activity-img" alt="">
+      <div class="m-selected-one" v-if="activity_img">
+        <img :src="activity_img.enpic" @click="goActivity" class="m-activity-img" alt="">
       </div>
         <div class="m-selected-one">
           <!--商品分类-->
@@ -102,14 +102,8 @@
         </div>
       </div>
         <div class="m-selected-one">
-          <h3 class="m-selected-title m-flex-between">
-            <span>为您精选</span>
-            <!--<span class="m-selected-title-more">
-              <span>查看更多</span>
-              <span class="m-icon-more"></span>
-            </span>-->
-          </h3>
-          <product :list="recommend_for_you_list"></product>
+
+          <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
         </div>
       <bottom-line v-if="bottom_show"></bottom-line>
       <!--</mt-loadmore>-->
@@ -125,13 +119,15 @@
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
   import bottomLine from '../../../components/common/bottomLine';
+  import mCircle from '../../../components/common/circle';
+  import { Toast} from 'mint-ui';
     export default {
       name: 'SelectedIndex',
       data() {
         return {
           swipe_list:null,
           hot_list:null,
-          recommend_for_you_list: [],
+          news_list: [],
           icon_list:null,
           page_info:{
             page_num :1,
@@ -140,10 +136,11 @@
           isScroll: true,
           total_count: 0,
           bottom_show: false,
+          activity_img:null
         }
       },
       mixins: [wxapi],
-      components: { product,bottomLine },
+      components: { product,bottomLine,mCircle},
       inject:['reload'],
       mounted() {
         common.changeTitle('首页');
@@ -265,6 +262,8 @@
 
         this.getSwipe();
         this.getCategory();
+        this.getImg();
+        this.getNews();
         if(sessionStorage.getItem('shop')) {
           this.$router.push('/shop');
           sessionStorage.removeItem('shop');
@@ -322,6 +321,9 @@
           }
 
         },
+        goActivity(){
+          window.location.href = this.activity_img.contentlink;
+        },
         /*获取轮播图*/
         getSwipe(){
           axios.get(api.list_banner_index).then(res => {
@@ -330,12 +332,114 @@
             }
           })
         },
-
+        //获取首页活动图
+        getImg(){
+          this.$http.get(api.get_entry).then(res => {
+            if(res.data.status == 200){
+              this.activity_img = res.data.data;
+            }
+          })
+        },
         //获取装备信息
         getCategory(){
           axios.get(api.category_list).then(res => {
             if(res.data.status == 200){
               this.icon_list = [].concat(res.data.data);
+            }
+          })
+        },
+        /*获取资讯列表*/
+        getNews() {
+          axios.get(api.get_all_news,{
+            params:{
+              token:localStorage.getItem('token'),
+              page_num:this.page_info.page_num,
+              page_size: this.page_info.page_size,
+              nestatus:'usual',
+              kw:this.$route.query.kw
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              this.isScroll =true;
+              if(res.data.data.length >0){
+                for(let i in res.data.data){
+                  if(res.data.data[i].netext)
+                    res.data.data[i].netext = res.data.data[i].netext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
+                }
+                if(this.page_info.page_num >1){
+                  this.news_list =  this.news_list.concat(res.data.data);
+                }else{
+                  this.news_list = res.data.data;
+                }
+                this.page_info.page_num = this.page_info.page_num + 1;
+                this.total_count = res.data.total_count;
+              }else{
+                this.news_list = null;
+                this.page_info.page_num = 1;
+                this.total_count = 0;
+              }
+            }
+          })
+        },
+        /*点赞*/
+        likeClick(i){
+          // if(!localStorage.getItem('token')){
+          //   Toast('请登录后再试');
+          //   let url = location.href.split('#')[0] + '?neid=' + this.news_list[i].neid
+          //   localStorage.setItem('login_to',url);
+          //   this.$router.push('/login');
+          //   return false;
+          // }
+          axios.post(api.favorite_news + '?token='+localStorage.getItem('token'),{
+            neid:this.news_list[i].neid,
+            tftype:1
+          }).then(res => {
+            if(res.data.status == 200){
+              let arr = [].concat(this.news_list);
+              if(arr[i].is_favorite){
+                arr[i].favoritnumber = arr[i].favoritnumber-1;
+              }else{
+                arr[i].favoritnumber = arr[i].favoritnumber+1;
+              }
+              arr[i].is_favorite = !arr[i].is_favorite;
+              this.news_list = [].concat(arr);
+            }
+          })
+        },
+        //  收藏
+        clickCollect(index){
+          this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+            uclcollection:this.news_list[index].neid,
+            uclcotype:1
+          }).then(res => {
+            if(res.data.status == 200){
+              Toast(
+                {
+                  message: res.data.message,
+                  duration: 500
+                });
+              let arr = [].concat(this.news_list)
+              arr[index].collected = !arr[index].collected;
+              // arr.splice(index,1);
+              this.news_list = [].concat(arr)
+            }
+          })
+        },
+        //  关注
+        followClick(index){
+          this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+            uclcollection:this.news_list[index].neid,
+            uclcotype:2
+          }).then(res => {
+            if(res.data.status == 200){
+              Toast(
+                {
+                  message: res.data.message,
+                  duration: 500
+                });
+              let arr = [].concat(this.news_list)
+              arr[index].follow = !arr[index].follow;
+              this.news_list = [].concat(arr)
             }
           })
         },
@@ -347,11 +451,10 @@
           if (scrollTop + ClientHeight  >= scrollHeight -10) {
             if(this.isScroll){
               this.isScroll = false;
-              console.log(this.recommend_for_you_list.length,this.total_count)
-              if(this.recommend_for_you_list.length == this.total_count){
+              if(this.news_list.length == this.total_count){
                 this.bottom_show = true;
               }else{
-                    this.getBrand();
+                    this.getNews();
               }
             }
           }
@@ -577,6 +680,7 @@
   }
   .m-equipment-icon-ul{
     .flex-row(flex-start);
+    margin-top: 20px;
     li{
       /*margin-right: 10px;*/
       font-size: 21px;
@@ -585,10 +689,8 @@
       position: relative;
       width: 120px;
       /*height: 180px;*/
-      margin-top: 0;
-      margin-bottom: 10px;
       box-shadow: none;
-      margin-right: 15px;
+      margin: 0 15px 10px 0;
       .flex-col(center);
       img{
         display: block;
@@ -604,7 +706,7 @@
     }
   }
   .m-selected-activity{
-    padding: 40px;
+    padding: 0 40px;
     .m-row{
       .flex-row(space-between);
       border-bottom: 1px solid #f4f4f4;

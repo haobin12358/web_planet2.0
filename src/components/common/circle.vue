@@ -188,6 +188,12 @@
       .m-circle-user-name{
         font-size: 28px;
         margin: 0 10px;
+        max-width:200px ;
+        overflow: hidden;
+        text-overflow: ellipsis;    // 溢出用省略号显示
+        white-space:nowrap;
+        height: 36px;
+        line-height: 36px;
       }
       .m-circle-user-level{
         font-size: 16px;

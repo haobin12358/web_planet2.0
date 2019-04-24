@@ -3,7 +3,7 @@
     <!--<div class="m-activity-top-bg"></div>-->
 
     <img :src="selecte_nav.actoppic" class="m-activity-top-img" alt="">
-    <nav-list :navlist="activityList" :is-act="true" @navClick="navClick"></nav-list>
+    <nav-list :navlist="activityList" :is-scroll="true" :is-act="true" @navClick="navClick"></nav-list>
     <mt-loadmore :top-method="loadTop" ref="loadmore">
       <div  v-if="selecte_nav.acname == '限时特惠'">
         <div class="m-one-limit">

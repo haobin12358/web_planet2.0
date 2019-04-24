@@ -141,6 +141,9 @@ const api={
   integral_order: title + 'integral/order',     //星币下单
   list_hypermarket_banner: title +'index/list_hypermarket_banner', //获取商城顶部轮播图
   integral_pay_preview: title +'order/integral_pay_preview',  ///可抵用星币数
+
+  get_entry: title +'index/get_entry',  //h获取首页活动图
+
 };
 
 
