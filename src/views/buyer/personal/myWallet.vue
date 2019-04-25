@@ -135,7 +135,7 @@
 <script>
   import navList from '../../../components/common/navlist';
   import bottomLine from '../../../components/common/bottomLine';
-  import {Toast} from 'mint-ui';
+  import {Toast,MessageBox} from 'mint-ui';
   export default {
     name: "starProduct",
     data(){
@@ -421,7 +421,7 @@
       // 请求微信支付参数
       payBtn(items) {
         let params = { omid: items.omid, omclient: '0', opaytype: '0' };
-        axios.post(api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
+        this.$http.post(this.$api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
           if(res.data.status == 200) {
             this.wxPay(res.data.data.args, items.omid);
           }
@@ -465,7 +465,7 @@
       // 确认收货
       orderConfirm(items) {
         MessageBox.confirm('是否确认该订单的收货？').then(() => {
-          axios.post(api.order_confirm + '?token='+ localStorage.getItem('token'), { omid: items.omid }).then(res => {
+          this.$http.post(this.$api.order_confirm + '?token='+ localStorage.getItem('token'), { omid: items.omid }).then(res => {
             if(res.data.status == 200){
               this.reload();
             }
@@ -478,7 +478,7 @@
       cancelOrder(item) {
         MessageBox.confirm('是否取消该订单？').then(() => {
           this.page_info.page_num = 1;
-          axios.post(api.cancle_order + '?token=' + localStorage.getItem('token'),
+          this.$http.post(this.$api.cancle_order + '?token=' + localStorage.getItem('token'),
             { omid:item.omid }).then(res => {
             if(res.data.status == 200) {
               this.getOrderList();

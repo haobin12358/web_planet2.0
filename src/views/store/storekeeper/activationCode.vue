@@ -34,10 +34,10 @@
                 <img class="del-img" src="/static/images/icon-close.png" alt="" @click="deleteImg(index)">
               </div>
               <div class="m-selectBack-camera" v-if="img_box.length < 2">
-                <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="" @change="uploadImg" ref="voucherImg">
+                <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="true" @change="uploadImg" ref="voucherImg">
               </div>
               <div class="m-selectBack-camera" v-if="img_box.length < 2">
-                <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="" @change="uploadImg" ref="voucherImg">
+                <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="true" @change="uploadImg" ref="voucherImg">
               </div>
             </div>
           </div>
