@@ -6,8 +6,8 @@
           <img class="product-img" :src="item.tcipic" @click="previewImage(index, product.image)">
         </mt-swipe-item>
       </mt-swipe>
-      <span class="m-icon-back" @click="changeBack"></span>
-      <span class="m-icon-gray-share" @click="shareProduct"></span>
+<!--      <span class="m-icon-back" @click="changeBack"></span>-->
+<!--      <span class="m-icon-gray-share" @click="shareProduct"></span>-->
     </div>
     <!--商品详情的文字信息-->
     <div class="m-detail-text">
@@ -44,9 +44,14 @@
     </div>
     <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
 
-    <div class="m-detail-btn-box">
-      <div class="m-detail-service" @click.stop="changeRoute('/personal/serviceCenter')"></div>
-      <div class="m-buy-btn m-ft-30" @click="buy">立即下单</div>
+    <div class="m-product-detail-foot">
+      <div class="m-icon-box">
+        <img src="/static/images/product/icon-service.png" class="m-icon" @click.stop="changeRoute('/personal/serviceCenter')" />
+        <p>客服</p>
+      </div>
+      <div class="m-product-detail-btn">
+        <span @click="buy">立即购买</span>
+      </div>
     </div>
   </div>
 </template>
@@ -404,27 +409,49 @@
         margin-bottom: -5px;
       }
     }
-    .m-detail-btn-box {
-      width: 750px;
-      display: flex;
-      align-items: center;
-      padding: 20px 17px 20px 55px;
-      background-color: #ffffff;
+    .m-product-detail-foot{
       position: fixed;
       bottom: 0;
       left: 0;
-      .m-detail-service {
-        width: 52px;
-        height: 53px;
-        background: url("/static/images/icon-service.png") no-repeat;
-        background-size: 100% 100%;
+      width: 100%;
+      padding: 0 0 0 50px;
+      /*padding: 26px 0 98px;*/
+      background-color: #fff;
+      .flex-row(space-between);
+      .m-icon-box{
+        .flex-col(center);
+        width: 80px;
+        font-size: 18px;
+        .m-icon{
+          display: block;
+          width: 40px;
+          height: 40px;
+        }
       }
-      .m-buy-btn {
-        color: #ffffff;
-        margin-left: 50px;
-        padding: 11px 220px;
-        border-radius: 10px;
-        background-color: @mainColor;
+      .m-product-detail-btn{
+        display: inline-block;
+        height: 98px;
+        line-height: 98px;
+        span{
+          color: #ffffff;
+          display: inline-block;
+          width: 620px;
+          text-align: center;
+          font-size: 30px;
+          background:linear-gradient(313deg,@mainColor 0%,@subColor 100%);
+          margin: 0;
+          &:first-child{
+            margin-right: -6px;
+          }
+        }
+      }
+      .m-invite-course {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
       }
     }
     .m-invite-course {

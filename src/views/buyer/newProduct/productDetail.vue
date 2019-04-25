@@ -72,7 +72,6 @@
             <span class="m-coupon-label" v-if="a.codiscount == '10'" ><span v-if="a.codownline != 0"> 满{{a.codownline}}</span><span v-else>无限制</span>减{{a.cosubtration}}</span>
             <span class="m-coupon-label" v-else >{{a.codiscount}}折</span>
           </template>
-
         </div>
         <div>
           <span class="m-ft-20" v-if="product_info.coupons.length > 0"  @click="show_coupon = true">领劵</span>

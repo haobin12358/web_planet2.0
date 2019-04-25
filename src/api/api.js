@@ -131,6 +131,7 @@ const api={
   timelimited_list_product:title + 'timelimited/list_product',//获取限时活动列表
   timelimited_get:title +'timelimited/get',                      //获取限时活动详情
   timelimited_list_activity:title +'timelimited/list_activity',//获取所有限时活动
+  list_activity_product: title +'timelimited/list_activity_product',//获取所有可见限时活动和商品
 
 
   collection_collect: title +'collection/collect',         ///收藏

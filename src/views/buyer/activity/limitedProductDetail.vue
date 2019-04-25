@@ -6,30 +6,40 @@
           <img class="product-img" :src="item.pipic" @click="previewImage(index, product.images)">
         </mt-swipe-item>
       </mt-swipe>
-      <span class="m-icon-back" @click="changeBack"></span>
-      <span class="m-icon-gray-share" @click="shareProduct"></span>
+<!--      <span class="m-icon-back" @click="changeBack"></span>-->
+<!--      <span class="m-icon-gray-share" @click="shareProduct"></span>-->
     </div>
     <div class="m-activity-time">
       活动时间：{{product.tlastarttime}} - {{product.tlaendtime}}
-
     </div>
     <!--商品详情的文字信息-->
     <div class="m-detail-text">
 
-      <div class="m-text-row">
-        <div class="m-text-name">{{product.tctitle}}</div>
-        <div class="m-activity-price">
-          <div class="m-price" v-if="product.tlpprice">活动价：￥{{product.tlpprice | money}}</div>
-          <div  v-if="product.prprice"><s>原价：￥{{product.prprice | money}}</s></div>
+      <div class="m-flex-between">
+        <div>
+          <p class="m-flex-start">
+            <span class="m-activity-price" v-if="product.tlpprice">￥{{product.tlpprice | money}}</span>
+            <img src="/static/images/newActivity/limit-label.png" class="m-activity-label" alt="">
+          </p>
+          <p class="m-marking-price m-flex-between">
+            <span>价格：<s>{{product.prlineprice}}</s></span>
+            <span>市场价：<s>￥{{product.prprice | money}}</s></span>
+          </p>
         </div>
-
       </div>
-      <div class="m-text-row">
-        <div class="m-text-description">{{product.tcdescription}}</div>
-        <div class="m-text-time" v-if="product.zh_deadline">（<span class="m-time-bold">{{product.zh_deadline}}</span>）</div>
+      <div class="m-flex-between m-product-title-box">
+        <span class="m-product-title">{{product.prtitle}}</span>
+<!--        <img src="/static/images/product/icon-collect-active.png" v-if="product.collected" @click="clickCollect" class="m-icon-collect" alt="">-->
+<!--        <img src="/static/images/product/icon-product-collect.png" v-else @click="clickCollect" class="m-icon-collect" alt="">-->
       </div>
-      <div class="m-text-row">
-        <div class="m-text-courier">快递：{{product.tcfreight}} 元</div>
+      <div class="m-info-list">
+        <span>快递：{{product.prfreight | money}} 元</span>
+        <span>月销：{{product.month_sale_value}}</span>
+        <span >{{product.brand.pbname}}</span>
+        <!--          <div @click="changeRoute('/brandDetail')">-->
+        <!--            <span class="m-brand-name">{{product_info.brand.pbname}}</span>-->
+        <!--            <span class="m-more"></span>-->
+        <!--          </div>-->
       </div>
     </div>
     <!--选择sku-->
@@ -47,6 +57,20 @@
       </div>
       <img class="m-right-img" src="/static/images/icon-right.png" alt="">
     </div>
+<!--    <div class="m-product-detail-more">-->
+<!--      <div class="m-flex-start">-->
+<!--        <span class="m-label">优惠券</span>-->
+<!--        <template v-for="(a, b) in product.coupons.slice(0,2)">-->
+<!--          <span class="m-coupon-label" v-if="a.codiscount == '10'" ><span v-if="a.codownline != 0"> 满{{a.codownline}}</span><span v-else>无限制</span>减{{a.cosubtration}}</span>-->
+<!--          <span class="m-coupon-label" v-else >{{a.codiscount}}折</span>-->
+<!--        </template>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <span class="m-ft-20" v-if="product.coupons.length > 0"  @click="show_coupon = true">领劵</span>-->
+<!--        <span class="m-ft-20" v-else>暂无</span>-->
+<!--        <span class="m-more"  @click="show_coupon = true"></span>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="m-detail-img-box">
       <img class="m-detail-img" v-for="item in product.tcdesc" :src="item" alt="">
     </div>
@@ -62,8 +86,31 @@
         <span class="cancel" v-else>立即购买</span>
 
       </div>
-      <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
+
     </div>
+    <div class="m-product-detail-foot">
+      <div class="m-icon-box">
+        <img src="/static/images/product/icon-service.png" class="m-icon" @click.stop="changeRoute('/personal/serviceCenter')" />
+        <p>客服</p>
+      </div>
+      <div class="m-icon-box">
+        <img src="/static/images/product/icon-bottom-car.png" class="m-icon" @click.stop="changeRoute('/shop')" />
+        <p>购物车</p>
+      </div>
+      <div class="m-icon-box">
+        <img src="/static/images/product/icon-share.png" class="m-icon" @click="shareProduct" />
+        <p>推广</p>
+      </div>
+      <div class="m-product-detail-btn">
+        <span class="active" @click="addCart" v-if="can_buy == true">加入购物车</span>
+        <span class="cancel" v-else>加入购物车</span>
+        <span @click="buy" v-if="can_buy == true">立即购买</span>
+        <span class="cancel" v-else>立即购买</span>
+      </div>
+      <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
+      <!--        <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">-->
+    </div>
+
   </div>
 </template>
 
@@ -373,7 +420,7 @@
     }
     .m-activity-time{
       font-size: 28px;
-      background:linear-gradient(312deg,rgba(34,167,210,1) 0%,rgba(168,217,233,1) 100%);
+      background:linear-gradient(312deg,@mainColor 0%,@subColor 100%);
       color: #fff;
       line-height: 50px;
     }
@@ -402,8 +449,68 @@
       }
     }
     .m-detail-text {
-      padding: 25px 25px 15px 30px;
+      padding: 25px 0 15px 30px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    }
+    .m-marking-price{
+      width: 700px;
+      span{
+        &:first-child{
+          color: #C1C1C1;
+          font-size: 24px;
+        }
+      }
+    }
+    .m-info-list{
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+      justify-content: space-between;
+      color: #999999;
+      padding-right: 25px;
+      .m-brand-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: @mainColor;
+      }
+      .m-more{
+        display: inline-block;
+        width: 13px;
+        height: 19px;
+        background: url("/static/images/icon-right.png") no-repeat;
+        background-size: 100% 100%;
+        margin-left: 10px;
+      }
+    }
+    .m-activity-price{
+      color: #E22300;
+      font-size: 40px;
+      font-weight: 600;
+    }
+    .m-activity-label{
+      display: inline-block;
+      width: 90px;
+      height: 40px;
+      margin-left: 20px;
+    }
+    .m-product-title-box{
+      padding: 20px 0;
+      .m-product-title{
+        font-size: 28px;
+        color: #000000;
+        margin-right: 20px;
+        text-align: left;
+        overflow: hidden; // 超出的文本隐藏
+        text-overflow: ellipsis;    // 溢出用省略号显示
+        display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+        -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+        -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
+      }
+      .m-icon-collect{
+        display: inline-block;
+        width: 75px;
+        height: 40px;
+      }
     }
     .m-text-row {
       display: flex;
@@ -468,53 +575,39 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      padding: 26px 0;
+      padding: 0 0 0 26px;
       /*padding: 26px 0 98px;*/
       background-color: #fff;
-      text-align: left;
-      .m-icon-car{
-        display: inline-block;
-        width: 53px;
-        height: 53px;
-        background: url("/static/images/icon-car.png") no-repeat;
-        background-size: 100% 100%;
-        margin: 0 29px 0 15px;
-        vertical-align: middle;
-      }
-      .m-icon-service{
-        display: inline-block;
-        width: 53px;
-        height: 53px;
-        background: url("/static/images/icon-service.png") no-repeat;
-        background-size: 100% 100%;
-        margin-right: 20px;
-        vertical-align: middle;
+      .flex-row(space-between);
+      .m-icon-box{
+        .flex-col(center);
+        width: 80px;
+        font-size: 18px;
+        .m-icon{
+          display: block;
+          width: 40px;
+          height: 40px;
+        }
       }
       .m-product-detail-btn{
         display: inline-block;
-        height: 62px;
-        line-height: 62px;
+        height: 98px;
+        line-height: 98px;
         span{
           color: #ffffff;
           display: inline-block;
-          width: 246px;
+          width: 210px;
           text-align: center;
-          background-color: @mainColor;
+          font-size: 30px;
+          background:linear-gradient(313deg,@mainColor 0%,@subColor 100%);
           margin: 0;
-          border-radius: 0 10px 10px 0;
           &:first-child{
-            border-radius: 10px 0 0 10px;
+            margin-right: -6px;
           }
           &.active{
             background-color: @mainColor;
             margin-right: -3px;
-            border-radius: 10px 0 0 10px;
-          }
-          &.m-border{
-            background-color: #fff;
-            border: 3px solid  @mainColor;
-            color: @mainColor;
-            border-radius: 10px;
+            /*border-radius: 10px 0 0 10px;*/
           }
           &.cancel{
             background-color: #a4a4a4;

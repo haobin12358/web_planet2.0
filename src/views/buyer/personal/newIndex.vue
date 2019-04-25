@@ -45,7 +45,7 @@
               <img src="/static/images/newpersonal/icon-order.png" class="m-icon" alt="">
               <span>订单</span>
             </div>
-            <span class="m-red">2</span>
+            <span class="m-red">{{user.ordercount}}</span>
           </li>
 <!--          <li class="m-flex-between" @click="changeRoute('/orderList')">-->
 <!--            <div class="m-flex-start">-->

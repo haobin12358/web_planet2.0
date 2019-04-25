@@ -1,32 +1,18 @@
 <template>
   <div class="m-activity-product">
-    <div class="m-img-box">
-      <img class="m-member-img" :src="banner">
-      <div class="m-top-bg"></div>
-    </div>
     <div class="m-activity-product-text-box">
-      <div class="m-ft-36 m-ft-b">{{title}}</div>
+      <div class="m-left">{{title}}</div>
       <!--<div class="m-activity-product-text m-ft-24">{{remarks}}</div>-->
     </div>
     <!--内容-->
     <div class="m-product-content">
-      <div class="m-product-part" v-for="item in productList" @click="changeRoute('/guessProductDetail', item)">
-        <div class="m-part-left">
-          <img class="m-product-img" :src="item.prmainpic">
-        </div>
-        <div class="m-part-right">
-          <div class="m-right-row">
-            <div class="m-product-name"><span class="m-product-tag">【{{title}}】</span>{{item.prtitle}}</div>
-          </div>
-          <div class="m-product-description"></div>
-          <!--<div class="m-product-description">{{item.prdescription}}</div>-->
-          <div class="m-price-share">
-            <div class="m-product-price" v-if="item.prprice"><span class="m-price-time">￥{{item.prprice | money}}</span></div>
-            <!--<img class="m-share-img" src="/static/images/icon-gray-share.png" alt="" @click="productShare(item)">-->
-            <!--<div class="m-share-text" @click.stop="productShare(item)">分享</div>-->
-          </div>
-          <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
-        </div>
+      <div class="m-product-item" v-for="item in productList" @click="changeRoute('/guessProductDetail', item)">
+        <span class="m-down-price">
+          直降3元
+        </span>
+        <img class="m-product-img" :src="item.prmainpic">
+        <div class="m-product-name"><span class="m-product-tag">【{{title}}】</span>{{item.prtitle}}</div>
+        <div class="m-product-price" v-if="item.prprice"><span class="m-price-time">￥{{item.prprice | money}}</span></div>
       </div>
     </div>
   </div>
@@ -230,24 +216,57 @@
 
   .m-activity-product {
     min-height: 100%;
-    .m-img-box {
-      margin-bottom: -15px;
-      .m-member-img {
-        width: 750px;
-        height: 360px;
-      }
-      .m-top-bg {
-        width: 750px;
-        height: 67px;
-        background: url("/static/images/icon-bg.png") no-repeat;
-        background-size: 100% 100%;
-        position: absolute;
-        top: 295px;
-        left: 0;
-      }
-    }
+   .m-activity-product-text-box{
+     padding: 30px 20px;
+     .flex-row(space-between);
+     font-size: 28px;
+     color: #000;
+   }
     .m-product-content {
-      padding: 70px 50px 0 50px;
+      padding-left: 20px;
+      .flex-row(flex-start);
+      flex-wrap: wrap;
+      .m-product-item{
+        width: 340px;
+        margin-right: 20px;
+        text-align: left;
+        position: relative;
+        &:nth-child(even){
+          margin-right: 0;
+        }
+        .m-product-img{
+          width: 340px;
+          height: 453px;
+          display: block;
+        }
+        .m-product-name{
+          font-size: 24px;
+          width: 340px;
+          overflow: hidden; // 超出的文本隐藏
+          text-overflow: ellipsis;    // 溢出用省略号显示
+          display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+          -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+          -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
+        }
+        .m-product-price{
+          font-size: 24px;
+          font-weight: 600;
+        }
+        .m-down-price{
+          position: absolute;
+          top:0;
+          left:0;
+          width: 84px;
+          height: 100px;
+          box-sizing: border-box;
+          background: url("/static/images/newActivity/down-price.png") no-repeat;
+          background-size: 100% 100%;
+          color: #fff;
+          font-size: 20px;
+          padding: 10px 20px;
+        }
+      }
+
     }
   }
 </style>

@@ -96,7 +96,7 @@
       </div>
       <div class="m-one-part">
         <ul class="m-order-ul">
-          <li class="m-flex-between" v-if="star_info.can_reduce">
+          <li class="m-flex-between" v-if="!isGuess && star_info.can_reduce">
             <span>星币抵扣</span>
             <div >
               <span class="m-price">可用{{star_info.reduce_integral}}星币抵扣{{star_info.reduce_mount}}元</span>
@@ -291,6 +291,7 @@
         if(this.$route.query.from == 'guess') {
           this.getDiscount();         // 订单页获取减免金额
           this.isGuess = true;
+          console.log(this.product_info)
         }
         this.getStar();
       },

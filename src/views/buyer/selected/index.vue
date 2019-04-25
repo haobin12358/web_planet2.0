@@ -489,7 +489,6 @@
         // 倒计时
         timeOut() {
           let arr = [].concat(this.scene_list);
-
           for(let i in arr) {
             let arr_int = [];
             if(arr[i].countdown) {
