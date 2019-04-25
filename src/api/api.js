@@ -125,6 +125,8 @@ const api={
   act_code_list: title + 'act_code/get_list',                    // 获取激活码申请列表
   get_code_rule: title + 'act_code/get_rule',                    // 获取个人激活码购买规则(购买申请页)
   act_code_apply: title + 'act_code/apply',                      // 购买激活码申请 - 打款凭证
+  act_code_get_list: title + 'act_code/get_actcode_list',        // 根据月份获取个人激活码列表
+  act_code_get_detail: title + 'act_code/get_actcode_detail',    // 获取激活码详情
 
   timelimited_list_product:title + 'timelimited/list_product',//获取限时活动列表
   timelimited_get:title +'timelimited/get',                      //获取限时活动详情

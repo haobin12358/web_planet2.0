@@ -80,8 +80,8 @@
         </div>
       </div>
       <div v-if="detailList.length == 0">
-        <img class="m-detail-img" src="/static/images/icon-no-income.png" alt="">
-        <div class="m-detail-text">暂无收益，请加油哦~</div>
+        <!-- <img class="m-detail-img" src="/static/images/icon-no-income.png" alt=""> -->
+        <div class="m-detail-text">暂无记录，请加油哦~</div>
       </div>
     </div>
   </div>
@@ -523,9 +523,9 @@
       }
 
       .m-detail-text {
-        color: #333333;
+        color: #000000;
         font-size: 28px;
-        font-weight: bold;
+        margin-top: 20px;
       }
     }
   }
