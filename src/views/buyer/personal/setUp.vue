@@ -1,81 +1,51 @@
 <template>
-  <div class="m-personal " >
-    <div class="m-personal-bg">
-      <span class="m-icon-bg"></span>
-    </div>
-    <div class="m-personal-content m-setUp">
-      <div class="m-personal-info">
-        <img :src="user.usheader" class="m-personal-head-portrait" alt="">
-        <div class="m-personal-info-box">
-          <div class="m-personal-info-text">
-            <div>
-              <p>{{user.usname}}</p>
-              <p>
-                <span class="m-personal-identity">{{user.usidname}}</span>
-              </p>
-            </div>
-            <div @click="changeRoute('/personal/personalInfo')">
-              <span>个人资料</span>
-              <span class="m-icon-more"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="m-personal-body">
-        <div class="m-one-part">
-           <ul class="m-edit-ul">
-             <li @click="changeRoute('/personal/addressManagement')">
-               <div>
-                 <span class="m-icon m-icon-loc"></span>
-                 <span>收货地址</span>
-               </div>
-               <div>
-                 <span></span>
-                 <span class="m-icon-more"></span>
-               </div>
-             </li>
-             <li @click="clearCache">
-               <div>
-                 <span class="m-icon m-icon-delete"></span>
-                 <span>清除缓存</span>
-               </div>
-               <div>
-                 <span class="m-icon-more"></span>
-               </div>
-             </li>
-             <li @click="changeRoute('/personal/about')">
-               <div>
-                 <span class="m-icon m-icon-about"></span>
-                 <!--<span>关于大行星</span>-->
-                 <span>大行星版本</span>
-               </div>
-               <div>
-                 <span>1.0</span>
-                 <span class="m-icon-more"></span>
-               </div>
-             </li>
-           </ul>
-        </div>
-      </div>
-    </div>
-    <div class="m-foot-btn">
-      <span @click="clearCache">退出登录</span>
-    </div>
-  </div>
+  <div class="w-setting">
+		<div class="w-setting-box">
+			<div class="w-setting-item">
+				<span>用户生日</span>
+				<span class="w-setting-right" @click="openPicker('birthdayPicker')">{{birthday}}</span>
 
+			</div>
+			<div class="w-setting-item">
+				<span>地址管理</span>
+				<span class="w-setting-icon-more"></span>
+
+			</div>
+			<div class="w-setting-item">
+				<span>清除缓存</span>
+				<span class="w-setting-icon-more" @click="clearCache"></span>
+				<!-- 暂不现实缓存大小 -->
+
+			</div>
+			<div class="w-setting-item">
+				<span>当前版本</span>
+				<span class="w-setting-right">2.0</span>
+
+			</div>
+
+		</div>
+		<mt-datetime-picker ref="birthdayPicker" type="date" v-model="user.usbirthday" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日"
+                             :startDate="startDate" :endDate="endDate" @confirm="handleChange">
+    </mt-datetime-picker>
+	</div>
 </template>
+
 
 <script type="text/ecmascript-6">
   import common from '../../../common/js/common';
   import axios from 'axios';
   import api from '../../../api/api';
-  import { Toast, MessageBox } from 'mint-ui';
+	import { Toast, MessageBox } from 'mint-ui';
+  import moment from 'moment';  
 
   export default {
     data() {
       return {
         name: '',
-        user: {},              // 个人信息
+				user: {},              // 个人信息
+				birthday:"",
+				startDate: new Date("1901-01-01"),
+        endDate: new Date()
       }
     },
     components: {},
@@ -89,8 +59,40 @@
         axios.get(api.get_home + "?token=" + localStorage.getItem('token')).then(res => {
           if(res.data.status == 200){
             this.user = res.data.data;
+            this.name = this.user.usname;
+            if(!this.user.usbirthday) {
+              this.user.usbirthday = "1995-01-01";
+            }
+            this.birthday = this.user.usbirthday;
           }
-        })
+        });
+			},
+			// 打开date-picker
+      openPicker(picker) {
+        this.$refs[picker].open();
+      },
+      // picker选择的日期改变
+      handleChange(value) {
+				this.birthday = moment(value).format('YYYY-MM-DD');
+				console.log(this.birthday);
+				this.saveUser();
+      },
+      // 保存用户信息
+      saveUser() {
+        let params = {
+					usname: this.name,
+					usbirthday: this.birthday
+				};
+        // if(this.gender == "男") {
+        //   params.usgender = "0";
+        // }else if(this.gender == "女") {
+        //   params.usgender = "1";
+        // }
+        axios.post(api.update_user + '?token=' + localStorage.getItem('token'), params).then(res => {
+          if(res.data.status == 200){
+            Toast(res.data.message);
+          }
+        });
       },
       // 清除缓存
       clearCache() {
@@ -106,11 +108,36 @@
       }
     },
     mounted() {
-      common.changeTitle('账户设置');
+      common.changeTitle('设置中心');
       this.getUser();       // 获取个人信息
     }
   }
 </script>
 <style lang="less" rel="stylesheet/less" scoped>
-  @import "../../../common/css/personal";
+	@import "../../../common/css/index";
+	.w-setting{
+		.w-setting-box{
+			font-size:28px;
+			font-weight:400;
+			.w-setting-item{
+				padding:30px 40px;
+				border-bottom: 1px solid #F2F2F2;
+				color: #000000;
+				.flex-row(space-between);
+				span{
+					display: inline-block;
+				}
+				.w-setting-right{
+					color:#999999;
+				}
+				.w-setting-icon-more{
+					width: 17px;
+					height: 30px;
+					background: url("/static/images/storekeeper/store-icon-more.png") no-repeat;
+					background-size: 100% 100%;
+				}
+			}
+		}
+	}
+	
 </style>

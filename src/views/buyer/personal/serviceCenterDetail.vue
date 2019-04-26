@@ -1,39 +1,39 @@
 <template>
   <div class="m-personal  m-service" >
-    <div class="m-personal-bg">
+    <!-- <div class="m-personal-bg">
       <span class="m-icon-bg"></span>
-    </div>
+    </div> -->
     <div class="m-personal-content m-serviceCenter ">
       <div class="m-personal-body">
         <div class="m-one-part">
-          <div>
-            <span class="m-icon-text active">问</span>
+          <div class="w-serviceCenter-title">
+            <!-- <span class="m-icon-text active">问</span> -->
             <span class="m-ft-26">{{question.ququest}}</span>
           </div>
           <div class="m-serviceCenter-answer">
-            <span class="m-icon-text">答</span>
+            <!-- <span class="m-icon-text">答</span> -->
             <p class="m-serviceCenter-answer-content m-ft-24">{{question.qacontent}}</p>
           </div>
         </div>
 
         <div class="m-serviceCenter-foot">
           <div class="m-serviceCenter-btn">
-            <span class="m-icon-tell"></span>
-            <div>
-              <p>客服电话</p>
-              <p>15079564151</p>
-            </div>
-          </div>
-          <div class="m-serviceCenter-btn">
-            <span class="m-icon-service"></span>
+            <!-- <span class="m-icon-tell"></span> -->
             <div>
               <p>客服QQ</p>
               <p>3441362480</p>
             </div>
-            <!--            <div>-->
-            <!--              <p>客服邮箱</p>-->
-            <!--              <p>kuahu123@163.com</p>-->
-            <!--            </div>-->
+          </div>
+          <div class="m-serviceCenter-btn">
+            <!-- <span class="m-icon-service"></span> -->
+            <div>
+              <p>客服邮箱</p>
+              <p>kuahu123@163.com</p>
+            </div>
+                       <!-- <div>
+                         <p>客服邮箱</p>
+                         <p>kuahu123@163.com</p>
+                       </div> -->
           </div>
         </div>
 
@@ -84,9 +84,9 @@
     }
   }
   .m-serviceCenter{
-    margin-top: 30px;
+    // margin-top: 30px;
     .m-one-part{
-      min-height: 1000px;
+      // min-height: 1000px;
       .m-icon-text{
         display: inline-block;
         width: 60px;
@@ -102,34 +102,49 @@
           background-color: @mainColor;
         }
       }
+      .w-serviceCenter-title{
+        padding: 30px 40px;
+        font-weight:500;
+        border-bottom: 1px solid #F2F2F2;
+      }
       .m-serviceCenter-answer{
         display: flex;
         flex-flow: row;
         justify-content: flex-start;
-        margin-top: 40px;
+        padding: 30px 40px 90px;
+        border-bottom: 1px solid #F2F2F2;
         .m-serviceCenter-answer-content{
-          width: 507px;
-          padding: 14px 4px;
-          line-height: 40px;
-          text-indent: 2em;
+          // width: 507px;
+          // padding: 14px 4px;
+          // line-height: 40px;
+          // text-indent: 2em;
+          font-size:28px;
+          font-weight:300;
         }
       }
     }
     .m-serviceCenter-foot{
-      padding: 10px 0;
-      border-radius: 10px;
-      box-shadow:0 5px 6px rgba(0,0,0,0.16);
-      margin-top: 44px;
+      // padding: 10px 0;
+      width: 749px;
+      position: fixed;
+      bottom: 70px;
+      height: 98px;
+      border: 1px solid @mainColor;
+      // border-radius: 10px;
+      // box-shadow:0 5px 6px rgba(0,0,0,0.16);
+      // margin-top: 44px;
       .flex-row(space-around);
-      background-color: @mainColor;
+      // background-color: @mainColor;
+      
       .m-serviceCenter-btn{
         width: 50%;
+        height: 98px;
         text-align: center;
         .flex-row(center);
-        line-height: 36px;
-        color: #fff;
+        // line-height: 36px;
+        color: @mainColor;
         &:first-child{
-          border-right: 1px solid #fff;
+          border-right: 1px solid @mainColor;
         }
         .m-icon-service{
           display: inline-block;
