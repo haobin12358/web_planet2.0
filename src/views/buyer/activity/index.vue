@@ -52,7 +52,7 @@
                 </p>
               </li>
             </ul>
-            <p class="m-more-text">
+            <p class="m-more-text" @click="changeRouteLimit('/limitedTime',items)">
               <span>更多折扣</span>
               <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">
             </p>
@@ -317,6 +317,17 @@
         localStorage.setItem('guess', JSON.stringify(this.guess));
         this.$router.push({ path: '/guessProduct',query:{which:'guess'} });
       },
+      changeRouteLimit(v,item){
+        let endDate,status;
+        if(item.duration_start){
+          endDate = item.tlastarttime;
+          status = '开始'
+        }else if(item.duration_end){
+          endDate = item.tlaendtime;
+          status = '结束'
+        }
+        this.$router.push({ path: '/limitedTime',query:{tlaid:item.tlaid,tlatoppic:item.tlatoppic,tlaname:item.tlaname,status:status,endDate:endDate} });
+      },
       // 用户获取今天猜数字活动所有商品
       getTodayProduct() {
         this.$http.get(this.$api.today_gnap + '?token='+ localStorage.getItem('token')).then(res => {
@@ -502,7 +513,16 @@
             if(this.hot_list.length == this.total_count){
               this.bottom_show = true;
             }else{
-              this.getTry();
+              let name = this.selecte_nav.acname;
+              for(let i in this.limit_list){
+                clearInterval(this.limit_list[i].timer);
+              }
+              switch (name) {
+                case '试用商品':
+                  this.getTry();
+                  break;
+              }
+
             }
           }
         }

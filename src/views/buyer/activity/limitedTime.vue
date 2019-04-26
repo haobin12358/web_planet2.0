@@ -1,26 +1,15 @@
 <template>
-  <div class="m-limitedTime" v-if="brand_info" @touchmove="touchMove">
-    <div class="m-brand-info" >
-      <img :src="brand_info.tlatoppic" class="m-brand-img" alt="">
-      <span class="m-icon-bg"></span>
-    </div>
-    <div class="m-limitedTime-title">
-      <p>限时特惠</p>
-      <p class="m-time">活动时间：{{brand_info.tlastarttime}} - {{brand_info.tlaendtime}}</p>
-    </div>
-<!--    <nav-list class="m-width" :navlist="nav_list" @navClick="navClick"></nav-list>-->
-    <div class="m-scroll">
-      <ul class="m-nav-list m-width" >
-        <template v-for="(item,index) in nav_list">
-          <li :class="item.active?'active':''" @click="navClick(index)">{{item.tlaname}}
-          </li>
-        </template>
-      </ul>
-    </div>
+  <div class="m-limitedTime"  @touchmove="touchMove">
 
-
-    <p class="m-no-data" v-if="product_list && product_list.length == 0">暂无数据</p>
-    <product :list="product_list" :isAct="true" :limited="true" v-else></product>
+    <div class="m-limit-title">
+      <span>{{$route.query.tlaname}}</span>
+      <div class="m-flex-end">
+        <span class="m-active" v-if="show_time">距离{{$route.query.status}}</span>
+        <span class="m-active" v-else>已结束</span>
+        <span class="m-activity-time" v-if="show_time"><img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">{{show_time}}</span>
+      </div>
+    </div>
+    <product :list="product_list" :isAct="true" :limited="true" ></product>
 
     <bottom-line v-if="bottom_show"></bottom-line>
   </div>
@@ -46,14 +35,16 @@
         bottom_show: false,
         page_info: { page_num: 1, page_size: 6 },
         isScroll: true,
-        total_count: 0
+        total_count: 0,
+        timer:'',
+        show_time:''
       }
     },
     components:{ navList, product, bottomLine },
     mounted() {
       common.changeTitle('限时特惠');
-      this.getNav();
-      // this.getProduct();
+      this.getProduct();
+      this.timeOut();
       wxapi.wxRegister(location.href.split('#')[0]);
       localStorage.removeItem('share');
       localStorage.removeItem('url');
@@ -81,16 +72,12 @@
           if(localStorage.getItem('token')) {
             let options = {};
             let title = '',id = '';
-            for(let i in this.nav_list){
-              if(this.nav_list[i].active){
-                title = this.nav_list[i].tlaname,
-                  id = this.nav_list[i].tlaid;
-              }
-            }
+
+            id = this.$route.query.tlaid;
             options = {
-              title: title,
+              title: this.$route.query.tlaname,
               desc: `活动时间：${this.brand_info.tlastarttime} - ${this.brand_info.tlaendtime}`,
-              imgUrl: this.brand_info.tlatoppic,
+              imgUrl: this.$route.query.tlatoppic,
               link: window.location.href.split('#')[0] + '?tlaid=' + id
             };
 
@@ -149,40 +136,18 @@
             if(this.product_list.length == this.total_count){
               this.bottom_show = true;
             }else{
-              for(let i=0;i<this.nav_list.length;i++){
-                if(this.nav_list[i].active){
-                  this.getProduct(this.nav_list[i].tlaid)
-                }
-              }
+
+                  this.getProduct()
             }
           }
         }
       },
-      //  导航点击
-      navClick(index){
-        this.page_info.page_num = 1;
-        this.total_count= 0;
-        this.bottom_show = false;
-        let arr = [].concat(this.nav_list);
-        for(let i=0;i<arr.length;i++){
-          arr[i].active = false;
-        }
-        arr[index].active = true;
-
-          this.getProduct(arr[index].tlaid);
-
-
-          this.brand_info = arr[index];
-        this.nav_list = [].concat(arr);
-        this.shareList(1);
-
-      },
       /*获取商品*/
-      getProduct(id){
+      getProduct(){
         let start = this.page_info.page_num;
         axios.get(api.timelimited_list_product,{
           params:{
-            tlaid:id,
+            tlaid:this.$route.query.tlaid,
             page_size:this.page_info.page_size,
             page_num:start,
             token:localStorage.getItem('token')
@@ -195,7 +160,6 @@
             }else{
               this.page_info.page_num = 1;
               this.total_count= 0;
-              console.log(start)
               if(start == 1){
                 this.product_list = res.data.data;
               }
@@ -213,30 +177,47 @@
           Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
         })
       },
-      //获取所有限时活动
-      getNav(){
-        axios.get(api.timelimited_list_activity).then(res => {
-          if(res.data.status == 200){
-            this.nav_list = res.data.data;
-            for(let i in this.nav_list){
-              this.nav_list[i].active = false;
-            }
+      // 倒计时
+      timeOut() {
 
-            let _index  =0;
-            if(this.$route.query.tlaid){
-              for(let i in this.nav_list){
-                if(this.nav_list[i].tlaid == this.$route.query.tlaid){
-                  _index = i;
-                  break;
-                }
+        let that = this;
+
+
+          if(this.$route.query.endDate){
+            if(this.timer){
+              clearInterval(this.timer);
+            }
+            let endDate;
+            endDate = new Date(this.$route.query.endDate);
+            this.timer = setInterval(function () {
+              let now = new Date();
+              let leftTime = endDate.getTime()-now.getTime();
+              let dd = parseInt(leftTime / 1000 / 60 / 60 / 24, 10);//计算剩余的天数
+              let hh = parseInt(leftTime / 1000 / 60 / 60 % 24, 10);//计算剩余的小时数
+              let mm = parseInt(leftTime / 1000 / 60 % 60, 10);//计算剩余的分钟数
+              let ss = parseInt(leftTime / 1000 % 60, 10);//计算剩余的秒数
+              dd = that.checkTime(dd);
+              hh = that.checkTime(hh);
+              mm = that.checkTime(mm);
+              ss = that.checkTime(ss);//小于10的话加0
+              let str =  `${dd}天${hh}:${mm}:${ss}`;
+              if(dd == '00' && hh == '00' && mm== '00' && ss =='00'){
+                  that.show_time = '';
+                  clearInterval(that.timer);
+                  that.timeOut();
+              }else{
+                that.show_time = str;
               }
-            }
-            this.nav_list[_index].active = true;
-
-            this.brand_info = this.nav_list[_index];
-            this.getProduct(this.nav_list[_index].tlaid);
+            },1000)
           }
-        })
+
+
+      },
+      checkTime(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
       }
 
     },
@@ -246,42 +227,29 @@
 <style lang="less" rel="stylesheet/less" scoped>
   @import "../../../common/css/index";
   .m-limitedTime{
-    .m-brand-info{
-      height:440px;
-      width: 100%;
-      position: relative;
-      /*margin-bottom: 18px;*/
-      .m-brand-img{
-        display: block;
-        width: 100%;
-        height: 440px;
-        background-color: #9fd0bf;
+    .m-limit-title{
+      .flex-row(space-between);
+      padding: 5px 0 5px 20px;
+      border-bottom: 1px solid #F2F2F2;
+      font-weight: 600;
+      font-size: 28px;
+      .m-active{
+        color: @mainColor;
+        font-size: 24px;
+        font-weight: 400;
+        margin-right: 20px;
       }
-      .m-icon-bg{
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        width: 100%;
-        height: 67px;
-        background: url("/static/images/icon-bg.png") no-repeat;
-        background-size: 100% 100%;
-      }
-    }
-    .m-width {
-      /*width: 600px;*/
-      /*padding: 0 75px;*/
-      box-shadow: 0 5px 6px rgba(0,0,0,0.16);
-      margin-bottom: 40px;
-    }
-    .m-limitedTime-title{
-      font-size: 30px;
-      line-height: 42px;
-      text-align: left;
-      padding-left: 47px;
-      p{
-        margin-bottom: 14px;
-        &.m-time{
-          font-size: 24px;
+      .m-activity-time{
+        color: #fff;
+        padding: 0 15px;
+        background:linear-gradient(270deg,@mainColor 0%,@subColor 100%);
+        font-size: 20px;
+        .flex-row(center);
+        .m-icon-time{
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin-right: 10px;
         }
       }
     }

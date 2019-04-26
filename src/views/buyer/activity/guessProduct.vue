@@ -7,8 +7,8 @@
     <!--内容-->
     <div class="m-product-content">
       <div class="m-product-item" v-for="item in productList" @click="changeRoute('/guessProductDetail', item)">
-        <span class="m-down-price">
-          直降3元
+        <span class="m-down-price" v-if="item.skudiscount">
+          直降{{item.skudiscount}}元
         </span>
         <img class="m-product-img" :src="item.prmainpic">
         <div class="m-product-name"><span class="m-product-tag">【{{title}}】</span>{{item.prtitle}}</div>

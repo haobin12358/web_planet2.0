@@ -73,6 +73,7 @@ const api={
   coupon_list : title + 'coupon/list',                           // 获取优惠券列表
   coupon_fetch : title + 'coupon/fetch',                         // 领取优惠券
 
+  choose_category: title +'news/choose_category',//添加分类
   create_news: title + 'news/create_news',                       // 发布资讯
   get_all_news: title + 'news/get_all_news',                     // 获取资讯列表
   get_news_content: title +'news/get_news_content',              // 获取资讯详情
@@ -83,6 +84,8 @@ const api={
   del_comment: title + 'news/del_comment',                       // 删除评论
   get_news_comment: title + 'news/get_news_comment',             // 获取资讯评论
   news_banner: title + 'news/banner',                            // 获取素材页轮播（店主）
+  news_location: title +'news/location',        ///获取定位
+  news_topic: title +'news/topic',      //获取话题、
 
   list_with_group: title + 'brand/list_with_group',              // 获取品牌列表
   get_one_brand: title + 'brand/get',                            // 获取一个品牌

@@ -356,7 +356,8 @@
               page_num:this.page_info.page_num,
               page_size: this.page_info.page_size,
               nestatus:'usual',
-              kw:this.$route.query.kw
+              kw:this.$route.query.kw,
+              itid:'index'
             }
           }).then(res => {
             if(res.data.status == 200){

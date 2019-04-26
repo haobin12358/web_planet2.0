@@ -10,9 +10,9 @@
         </mt-swipe>
       </div>
       <div class="m-selected-search left">
-        <div class="m-search-input-box" >
+        <div class="m-search-input-box" @click="changeRoute('/search')">
           <span class="m-icon-search"></span>
-          <span class="m-search-text"></span>
+          <span class="m-search-text">{{$route.query.kw}}</span>
         </div>
         <!--        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>-->
       </div>
@@ -252,6 +252,7 @@
         .m-search-input-box{
           .flex-row(flex-start);
           background-color: rgba(0,0,0,0.4);
+          color: #fff;
           .m-icon-search{
             background: url("/static/images/product/icon-product-search.png") no-repeat;
             background-size: 100%;

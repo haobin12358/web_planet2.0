@@ -47,7 +47,7 @@ const wxApi = {
           nonceStr: res.data.data.noncestr,
           signature: res.data.data.sign,
           jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareAppMessage', 'onMenuShareTimeline',
-            'previewImage']
+            'previewImage','getLocation']
         });
       }
     }).catch((error) => {

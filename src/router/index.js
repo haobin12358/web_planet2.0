@@ -94,6 +94,7 @@ export const constantRouterMap = [
   { path: '/circle/editCircle', component: () => import('../views/buyer/circle/editCircle'), hidden: true },
   // { path: '/circle/newEdit', component: () => import('../views/buyer/circle/newEdit'), hidden: true },
   { path: '/circle/circleSort', component: () => import('../views/buyer/circle/circleSort'), hidden: true },
+  { path: '/circle/createTopic', component: () => import('../views/buyer/circle/createTopic'), hidden: true },
   { path: '/equipment', component: () => import('../views/buyer/equipment/index'), hidden: true , meta: { keepAlive: true } },
   { path: '/equipment/detail', component: () => import('../views/buyer/newProduct/detail'), hidden: true , meta: { keepAlive: true }},
   { path: '/product', component: () => import('../views/buyer/product/product'), meta: { keepAlive: true }, hidden: true },

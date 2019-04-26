@@ -140,7 +140,7 @@
               this.$router.push({path:'/circle',query:{kw: this.searchContent}})
             }
           }else{
-            this.$router.push({path:'/product',query:{kw: this.searchContent}})
+            this.$router.push({path:'/searchProduct',query:{kw: this.searchContent}})
           }
 
         },

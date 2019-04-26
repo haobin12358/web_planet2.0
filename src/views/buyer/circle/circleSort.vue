@@ -5,31 +5,15 @@
          <span>我的分类</span>
          <div class="m-flex-end">
            <span class="m-edit" v-if="!isEdit" @click="isEdit = true">编辑</span>
-           <span class="m-edit" v-else @click="isEdit = false">完成</span>
+           <span class="m-edit" v-else @click="doSelect">完成</span>
            <img src="/static/images/product/icon-close.png" class="m-icon" alt="" @click="changeRoute">
          </div>
        </div>
 
        <ul class="m-sort-ul">
-         <li>
-           <span>活动</span>
-           <img src="/static/images/circle/icon-circle-close.png" v-if="isEdit " @click="deleteClick" class="m-circle-close" alt="">
-         </li>
-         <li>
-           <span>活动</span>
-           <img src="" alt="">
-         </li>
-         <li>
-           <span>活动</span>
-           <img src="" alt="">
-         </li>
-         <li>
-           <span>活动</span>
-           <img src="" alt="">
-         </li>
-         <li>
-           <span>活动</span>
-           <img src="" alt="">
+         <li v-for="(item,index) in my_label" :class="item.active?'active':''">
+           <span>{{item.itname}}</span>
+           <img src="/static/images/circle/icon-circle-close.png" v-if="isEdit " @click="deleteClick(index)" class="m-circle-close" alt="">
          </li>
        </ul>
      </section>
@@ -40,25 +24,8 @@
         </div>
 
         <ul class="m-sort-ul m-cancel">
-          <li>
-            <span @click="addClick"> 活动</span>
-
-          </li>
-          <li>
-            <span>活动</span>
-
-          </li>
-          <li>
-            <span>活动</span>
-            <img src="" alt="">
-          </li>
-          <li>
-            <span>活动</span>
-            <img src="" alt="">
-          </li>
-          <li>
-            <span>活动</span>
-            <img src="" alt="">
+          <li v-for="(item,index) in all_label">
+            <span @click="addClick(index)"> {{item.itname}}</span>
           </li>
         </ul>
       </section>
@@ -75,19 +42,55 @@
             all_label:[]
           }
       },
+      mounted(){
+         this.getMy();
+      },
       methods:{
         changeRoute(){
-          this.$router.go(-1);
+          this.doSelect('关闭');
         },
         //点击删除
         deleteClick(index){
+          this.my_label[index].active = false;
           this.all_label.push(this.my_label[index])
           this.my_label.splice(index,1);
         },
         //点击添加分类
         addClick(index){
+          this.all_label[index].active = true;
           this.my_label.push(this.all_label[index]);
           this.all_label.splice(index,1);
+        },
+      //  获取我的分类
+        getMy(){
+          this.$http.get(this.$api.items_list, { params: { ittype:10,token:localStorage.getItem('token'),option:1}}).then(res => {
+            if(res.data.status == 200){
+                this.my_label = [].concat(res.data.data.my_item);
+                for(let i in this.my_label){
+                  this.my_label[i].active = false;
+                }
+              this.all_label = [].concat(res.data.data.candidate_item);
+              for(let i in this.all_label){
+                this.all_label[i].active = false;
+              }
+            }
+          })
+        },
+        doSelect(item){
+          let arr = [];
+          for(let i in this.my_label){
+            arr.push(this.my_label[i].itid);
+          }
+          this.$http.post(this.$api.choose_category + '?token=' +localStorage.getItem('token'),{
+            itids:arr
+          }).then(res => {
+            if(res.data.status == 200){
+              if(item == '关闭')
+                this.$router.go(-1);
+              else
+                this.isEdit = false;
+            }
+          })
         }
       }
     }

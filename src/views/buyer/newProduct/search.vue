@@ -1,9 +1,9 @@
 <template>
     <div class="m-product">
       <div class="m-selected-search left">
-        <div class="m-search-input-box" >
+        <div class="m-search-input-box" @click="changeRoute('/search')" >
           <span class="m-icon-search"></span>
-          <span class="m-search-text"></span>
+          <span class="m-search-text">{{$route.query.kw}}</span>
         </div>
         <!--        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>-->
       </div>
@@ -147,8 +147,8 @@
         }
       },
       // 页面跳转
-      changeRoute(){
-        this.$router.push(1,'/equipment/detail')
+      changeRoute(v){
+        this.$router.push(v)
       },
       //导航切换
       navClick(index){

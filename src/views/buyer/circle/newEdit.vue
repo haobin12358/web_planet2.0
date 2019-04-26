@@ -1,9 +1,12 @@
 <template>
   <div class="m-editCircle">
     <div class="m-editCircle-content">
-      <div class="m-select m-one" @click="circlePopup = true">
-        <span>{{circle}}</span>
-        <span class="m-select-more"></span>
+<!--      <div class="m-select m-one" @click="circlePopup = true">-->
+<!--        <span>{{circle}}</span>-->
+<!--        <span class="m-select-more"></span>-->
+<!--      </div>-->
+      <div class="m-one m-flex-end">
+        <span class="m-edit-btn" @click="createNews">发布</span>
       </div>
       <!--圈子类别-->
       <mt-popup class="m-circle-popup" v-model="circlePopup" position="bottom">
@@ -19,14 +22,14 @@
       </div>
 
       <div class="m-edit-content" >
-        <div  class="m-add-cut" style="margin-bottom: 20px;">
-          <span style="margin-right: 20px;">编辑内容：</span>
+        <div  class="m-add-cut m-flex-between" style="margin-bottom: 20px;">
+          <span >编辑内容：</span>
           <div class="m-add">
-            <img src="/static/images/icon-add.png" class="m-icon" alt="" @click="showIcon('show_add')">
+            <img src="/static/images/circle/icon-add.png" class="m-icon" alt="" @click="showIcon('show_add')">
             <div class="m-edit-icon" v-if="show_add">
-              <div class="m-icon-one" @click.stop="addRow(-1,'text')"><img src="/static/images/icon-up-text.png" alt=""></div>
-              <div class="m-icon-one" @click.stop="addRow(-1,'image')"><img src="/static/images/icon-up-img.png" alt=""></div>
-              <div class="m-icon-one" v-if="show_video" @click.stop="addRow(-1,'video')"><img src="/static/images/icon-up-video.png" alt=""></div>
+              <div class="m-icon-one" @click.stop="addRow(-1,'text')"><img src="/static/images/circle/icon-text.png" alt=""></div>
+              <div class="m-icon-one" @click.stop="addRow(-1,'image')"><img src="/static/images/circle/icon-pic.png" alt=""></div>
+              <div class="m-icon-one" v-if="show_video" @click.stop="addRow(-1,'video')"><img src="/static/images/circle/icon-video.png" alt=""></div>
             </div>
           </div>
         </div>
@@ -52,20 +55,56 @@
           </div>
           <div class="m-add-cut">
             <div class="m-add">
-              <img src="/static/images/icon-add.png" class="m-icon" alt="" @click="showIcon(index)">
+              <img src="/static/images/circle/icon-add.png" class="m-icon" alt="" @click="showIcon(index)">
               <div class="m-edit-icon" v-if="item.click">
-                <div class="m-icon-one" @click.stop="addRow(index,'text')"><img src="/static/images/icon-up-text.png" alt=""></div>
-                <div class="m-icon-one" @click.stop="addRow(index,'image')"><img src="/static/images/icon-up-img.png" alt=""></div>
-                <div class="m-icon-one" v-if="show_video" @click.stop="addRow(index,'video')"><img src="/static/images/icon-up-video.png" alt=""></div>
+                <div class="m-icon-one" @click.stop="addRow(index,'text')"><img src="/static/images/circle/icon-text.png" alt=""></div>
+                <div class="m-icon-one" @click.stop="addRow(index,'image')"><img src="/static/images/circle/icon-pic.png" alt=""></div>
+                <div class="m-icon-one" v-if="show_video" @click.stop="addRow(index,'video')"><img src="/static/images/circle/icon-video.png" alt=""></div>
               </div>
             </div>
             <div class="m-cut" >
-              <img src="/static/images/icon-cut-sku.png" class="m-icon" alt="" @click="cutType(index)">
+              <img src="/static/images/circle/icon-cut.png" class="m-icon" alt="" @click="cutType(index)">
             </div>
           </div>
         </div>
       </div>
-
+      <div class="m-edit-select-box">
+        <ul>
+          <li>
+            <span>
+              <img src="/static/images/circle/icon-label.png" class="m-icon" alt="">
+              <span>标签</span>
+            </span>
+            <span @click="circlePopup = true" class="m-grey">
+              <span>{{circle}}</span>
+              <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">
+            </span>
+          </li>
+          <li>
+            <span>
+              <img src="/static/images/circle/icon-loc.png" class="m-icon" alt="">
+              <span>定位</span>
+            </span>
+            <span  class="m-grey">
+              <span>{{nelocation}}</span>
+<!--              <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">-->
+            </span>
+          </li>
+          <li>
+            <span>
+              <img src="/static/images/circle/icon-topic.png" class="m-icon" alt="">
+              <span>话题</span>
+            </span>
+            <span  class="m-grey" @click="changeRoute('/circle/createTopic')">
+              <span>{{select_topic.toctitle || '请选择话题'}}</span>
+              <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">
+            </span>
+          </li>
+        </ul>
+        <div class="m-topic-box">
+          <span class="m-one-topic" v-for="(item,index) in news_topic" :class="select_topic.tocid == item.tocid?'active':''" @click="tocClick(item)">#{{item.toctitle}}#</span>
+        </div>
+      </div>
 
 
 <!--      &lt;!&ndash;店主版选择商品或优惠券&ndash;&gt;-->
@@ -108,9 +147,7 @@
 <!--      </div>-->
     </div>
 
-    <div class="m-bottom-btn-box">
-      <span @click="createNews">确认发布</span>
-    </div>
+
   </div>
 </template>
 
@@ -122,6 +159,7 @@
   import product from '../components/product'
   import couponCard from '../components/couponCard'
   import wxapi from '../../../common/js/mixins'
+  import wx from 'weixin-js-sdk';
   export default {
     name: "edit-circle",
     data() {
@@ -146,7 +184,10 @@
         edit_data:[],
         show_add:false,
         show_video:false,
-        select_product:[]
+        select_product:[],
+        nelocation:'',
+        news_topic:[],
+        select_topic:{}
       }
     },
     mixins: [wxapi],
@@ -163,6 +204,9 @@
     //
     // },
     methods: {
+      changeRoute(v){
+        this.$router.push(v)
+      },
       // 预览图片
       previewImage(j,index, image) {
         let images = [];
@@ -389,6 +433,8 @@
           images: this.upload_img,
           video: this.video,
           source: "h5",
+          tocid:this.select_topic.tocid,
+          nelocation: this.nelocation
         };
         params.coupon = [];
         params.product = [];
@@ -515,12 +561,57 @@
         addEvent('input', change);
         addEvent('focus', change);
         change();
+      },
+    //  获取地址
+      getLoc(){
+        // if(wxapi.isweixin()){
+          let that = this;
+          wx.getLocation({
+            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success: function (res) {
+              that.$http.get(that.$api.news_location,{
+                params:{
+                  token:localStorage.getItem('token'),
+                  longitude:res.longitude,
+                  latitude:res.latitude
+                }
+              }).then(resData =>{
+                if(resData.data.status == 200){
+                  that.nelocation = resData.data.data.nelocation;
+                }
+              })
+            }
+          });
+        // }
+      },
+    //  获取话题
+      getTopic(){
+        console.log(this.$api.news_topic,'assfds')
+        this.$http.get(this.$api.news_topic).then(res => {
+          if(res.data.status == 200){
+            this.news_topic = res.data.data;
+          }
+        })
+      },
+    //  话题点击
+      tocClick(item){
+        if(item.tocid == this.select_topic.tocid){
+          this.select_topic = {};
+        }else{
+          this.select_topic = item;
+        }
       }
     },
     mounted() {
       common.changeTitle('发布');
       this.getNav();                 // 获取圈子所在的标签
       this.getUserLevel();           // 获取当前用户是否是店主
+      wxapi.wxRegister(location.href.split('#')[0]);
+      this.getLoc();
+      this.getTopic();
+      if(this.$route.query.select){
+        this.select_topic = JSON.parse(this.$route.query.select);
+      }
     },
     watch: {
       search(val) {
@@ -535,7 +626,7 @@
   @import "../../../common/css/scroll";
 
   .m-editCircle{
-    color: #999;
+    color: #000;
     text-align: left;
     font-size: 21px;
     .m-editCircle-content{
@@ -547,21 +638,16 @@
       /*margin: 0 50px 40px 50px;*/
       padding: 31px 50px 31px 50px;
       border-bottom: 1px solid #eee;
-    }
-    .m-select{
-      /*width: 284px;*/
-      display: flex;
-      flex-flow: row;
-      justify-content: space-between;
-      align-items: center;
-      .m-select-more{
+      .m-edit-btn{
         display: block;
-        width: 22px;
-        height: 22px;
-        margin-top: -10px;
-        background: url("/static/images/icon-up.png") no-repeat;
-        transform: rotate(180deg);
-        background-size: 100% 100%;
+        width: 160px;
+        height: 50px;
+        color: #fff;
+        font-size: 28px;
+        line-height: 50px;
+        background:linear-gradient(90deg,@subColor 0%,@mainColor 100%);
+        text-align: center;
+        font-weight: 500;
       }
     }
     .m-input{
@@ -613,7 +699,7 @@
       .m-selectBack-camera{
         width: 186px;
         height: 186px;
-        background: url('/static/images/icon-upload-img.png') no-repeat;
+        background: url('/static/images/circle/icon-upload-img.png') no-repeat;
         background-size: 100% 100%;
         display: inline-block;
         margin: 0 15px 15px 0;
@@ -622,7 +708,7 @@
       .m-selectBack-video{
         width: 186px;
         height: 186px;
-        background: url('/static/images/icon-upload-video.png') no-repeat;
+        background: url('/static/images/circle/icon-upload-video.png') no-repeat;
         background-size: 100% 100%;
         display: inline-block;
         margin: 0 15px 15px 0;
@@ -648,7 +734,7 @@
         padding: 10px 30px 10px 60px;
         margin-bottom: 30px;
         .m-input-text {
-          color: #999999;
+          color: #000;
           font-size: 21px;
         }
         .m-input-icon {
@@ -692,7 +778,7 @@
       }
     }
     input::-webkit-input-placeholder{
-      color: #999;
+      color: #000;
     }
     textarea::-webkit-input-placeholder{
       color: #999;
@@ -710,39 +796,51 @@
     .m-checklist {
       padding: 50px 0;
       text-align: center;
+      .mint-checkbox-input:checked + .mint-checkbox-core {
+        background-color: @mainColor;
+        border-color: @mainColor;
+      }
     }
   }
   .m-edit-content{
     min-height: 700px;
-    margin: 20px 50px;
+    padding: 20px 50px;
+    border-bottom: 10px solid #F4F4F4;
     .m-add-cut{
       display: flex;
       flex-flow: row;
       justify-content: flex-start;
       align-items: center;
       /*margin-left: 30px;*/
+      &.m-flex-between{
+        justify-content: space-between;
+      }
       .m-icon{
         display: block;
-        width: 50px;
-        height: 50px;
+        width: 30px;
+        height: 30px;
       }
       .m-add{
         position: relative;
         margin-right: 30px;
         .m-edit-icon{
-          background-color: #eee;
           position: absolute;
-          bottom: -52px;
-          left: -50%;
+          bottom: -76px;
+          right: 0;
           display: flex;
           flex-flow: row;
           align-items: center;
           justify-content: flex-end;
-          border-radius: 10px;
+          background: url("/static/images/circle/icon-bg.png") no-repeat;
+          background-size: 100%;
           z-index: 1000;
+          width: 240px;
+          height: 70px;
+          padding-top: 10px;
+          box-sizing: border-box;
+          .flex-row(space-around);
           .m-icon-one{
             position: relative;
-            margin: 0 10px;
           }
           img{
             display: block;
@@ -792,6 +890,46 @@
         position: absolute;
         top: -20px;
         right: 0;
+      }
+    }
+  }
+  .m-edit-select-box{
+    ul{
+      li{
+        .flex-row(space-between);
+        padding: 30px 65px;
+        border-bottom: 1px solid #F2F2F2;
+        .m-grey{
+          color: #999;
+        }
+        .m-icon{
+          display: inline-block;
+          width: 30px;
+          height: 30px;
+          margin-right: 20px;
+          vertical-align: text-top;
+        }
+        .m-icon-more{
+          display: inline-block;
+          width: 17px;
+          height: 30px;
+          vertical-align: text-top;
+        }
+      }
+    }
+    .m-topic-box{
+      padding: 30px 65px;
+      .m-one-topic{
+        display: inline-block;
+        padding: 4px 18px;
+        font-size: 20px;
+        color: #666;
+        background-color: #EBEBEB;
+        margin-right: 20px;
+        &.active{
+          background-color: @mainColor;
+          color: #fff;
+        }
       }
     }
   }

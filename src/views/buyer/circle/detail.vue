@@ -6,28 +6,34 @@
         <div class="m-flex-start">
           <img class="m-author-img" :src="news_info.author.usheader">
           <div class="m-author-name">{{news_info.author.usname}}</div>
-          <div class="m-user-leval">{{news_info.createtime}}</div>
+          <div class="m-user-leval">{{news_info.author.usgrade}}</div>
         </div>
         <span class="m-follow" v-if="!news_info.is_own && !news_info.follow" @click.stop="followClick">关注</span>
         <span class="m-follow cancel" v-if="!news_info.is_own && news_info.follow" @click.stop="followClick">取消关注</span>
       </div>
 
       <div class="m-content">
-        <template v-for="(item,index) in news_info.netext">
-          <div v-if="item.type=='text'" v-html="item.content"></div>
-          <template v-if="item.type == 'image'" v-for="(i,j) in item.content">
-            <img class="m-circle-img" :src="i" @click="previewImage(i, item.content)">
-          </template>
-          <div class="m-video-box" v-if="item.type == 'video'" v-on:click="playVideo()">
-            <!--<img :src="news_info.video.nvthumbnail" class="m-video-img" alt="">-->
-            <div class="m-img-box">
-              <img :src="item.content.thumbnail" class="m-img">
+        <div>
+          <template v-for="(item,index) in news_info.netext">
+            <div class="m-circle-text" v-if="item.type == 'text'" >
+              <span class="m-circle-topic" v-if="news_info.toctitle">#{{news_info.toctitle}}#</span>
+              <span  v-html="item.content"></span>
             </div>
-            <video :src="item.content.video" id="videoPlay" v-show="false">您的浏览器不支持 video 视频播放</video>
-            <span class="m-video-time">{{item.content.duration}}</span>
-            <span class="m-icon-video"></span>
-          </div>
-        </template>
+            <template v-if="item.type == 'image'" v-for="(i,j) in item.content">
+              <img class="m-circle-img" :src="i" @click="previewImage(i, item.content)">
+            </template>
+            <div class="m-video-box" v-if="item.type == 'video'" v-on:click="playVideo()">
+              <!--<img :src="news_info.video.nvthumbnail" class="m-video-img" alt="">-->
+              <div class="m-img-box">
+                <img :src="item.content.thumbnail" class="m-img">
+              </div>
+              <video :src="item.content.video" id="videoPlay" v-show="false">您的浏览器不支持 video 视频播放</video>
+              <span class="m-video-time">{{item.content.duration}}</span>
+              <span class="m-icon-video"></span>
+            </div>
+          </template>
+        </div>
+
 
 <!--        <div class="m-more-link" >-->
 <!--          <span @click.stop="lookMore">查看更多></span>-->
@@ -705,6 +711,9 @@
   .m-content{
     padding: 46px 46px 20px 46px;
     text-align: left;
+    .m-circle-topic{
+      color: #006FCE;
+    }
     .m-video-box{
       position: relative;
       margin: 20px 0;

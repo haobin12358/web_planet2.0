@@ -18,7 +18,7 @@
       <section class="m-equipment-detail-content">
         <!--搜索-->
         <div class="m-selected-search">
-          <div class="m-search-input-box m-flex-start" >
+          <div class="m-search-input-box m-flex-start" @click="changeRoute('/search')">
             <span class="m-icon-search"></span>
           </div>
         </div>

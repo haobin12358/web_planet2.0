@@ -62,7 +62,7 @@
 <!--                  {{items.refuse_info}}-->
 <!--                </div>-->
 <!--              </div>-->
-              <m-circle :index="index" v-for="(item,index) in news_list" v-if="nav_list[0].active" :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
+              <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
 <!--            </template>-->
             <bottom-line v-if="bottom_show"></bottom-line>
           </div>
@@ -263,7 +263,7 @@
       },
       /*获取导航*/
       getNav(){
-        axios.get(api.items_list, { params: { ittype:10 }}).then(res => {
+        axios.get(api.items_list, { params: { ittype:10,token:localStorage.getItem('token')}}).then(res => {
           if(res.data.status == 200){
             this.nav_list = [
               {
@@ -333,7 +333,6 @@
           if(res.data.status == 200){
             this.isScroll =true;
             if(res.data.data.length >0){
-              console.log(res.data.data)
               for(let i in res.data.data){
                 if(res.data.data[i].netext)
                   res.data.data[i].netext = res.data.data[i].netext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
@@ -346,10 +345,11 @@
               this.page_info.page_num = this.page_info.page_num + 1;
               this.total_count = res.data.total_count;
             }else{
-              this.news_list = null;
+              this.news_list = [];
               this.page_info.page_num = 1;
               this.total_count = 0;
             }
+            console.log(res.data.data,this.news_list)
           }
         })
       },

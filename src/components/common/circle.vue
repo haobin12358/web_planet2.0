@@ -2,9 +2,9 @@
   <div class="m-circle-item">
     <div class="m-circle-user-box">
       <div class="m-flex-start">
-        <img :src="circle.usheader" class="m-circle-user-avator" alt="">
-        <span class="m-circle-user-name">{{circle.authername}}</span>
-        <span class="m-circle-user-level">{{circle.authergrade}}</span>
+        <img :src="circle.author.usheader" class="m-circle-user-avator" alt="">
+        <span class="m-circle-user-name">{{circle.author.usname}}</span>
+        <span class="m-circle-user-level">{{circle.author.usgrade}}</span>
       </div>
       <span class="m-circle-collect" v-if="!circle.is_own && !circle.follow" @click.stop="followClick">关注</span>
       <span class="m-circle-collect cancel" v-if="!circle.is_own && circle.follow" @click.stop="followClick">取消关注</span>
@@ -19,6 +19,7 @@
 <!--      攻略测评打赏,榜单场景内容推荐网红打卡自由主题圈子活动游记攻略测评打赏榜单场景,内容推荐网红打卡自由主题圈子活动游记攻略测评打赏榜单场景内,容推荐自由zhuzhu-->
 <!--    </div>-->
     <div class="m-one-circle-content" @click.stop="changeRoute('/circle/detail', circle)">
+      <span class="m-label">{{circle.item}}</span>
       <div class="m-video-box" v-if="circle.showtype == 'video'">
         <video src="" class="m-video"></video>
         <!--<video :src="items.video" class="m-video"></video>-->
@@ -31,15 +32,17 @@
       <div class="m-circle-img-box" v-else-if="circle.showtype == 'picture'">
         <img :src="circle.mainpic" class="m-circle-img">
       </div>
-      <p class="m-circle-text" v-else v-html="circle.netext">
-
-      </p>
+      <div class="m-circle-text" v-if="circle.netext" >
+        <span class="m-circle-topic" v-if="circle.toctitle">#{{circle.toctitle}}#</span>
+        <span  v-html="circle.netext">
+        </span>
+      </div>
     </div>
 
-<!--    <div class="m-circle-loc m-flex-start">-->
-<!--      <img src="/static/images/circle/icon-loc.png" class="m-icon-loc" alt="">-->
-<!--      <span>杭州</span>-->
-<!--    </div>-->
+    <div class="m-circle-loc m-flex-start" v-if="circle.nelocation">
+      <img src="/static/images/circle/icon-loc.png" class="m-icon-loc" alt="">
+      <span>{{circle.nelocation}}</span>
+    </div>
     <div class="m-circle-icon-box m-flex-between">
       <img src="/static/images/circle/icon-share.png" class="m-icon" @click.stop="shareCircle(circle)" alt="">
       <div class="m-flex-end">
@@ -214,6 +217,20 @@
     }
     .m-one-circle-content{
       margin-bottom: 20px;
+      width: 700px;
+      position: relative;
+      .m-label{
+        position: absolute;
+        top: -20px;
+        right: 0;
+        padding: 0 10px;
+        font-size: 20px;
+        height: 40px;
+        line-height: 40px;
+        background-color: @mainColor;
+        color: #fff;
+        z-index: 1000;
+      }
     }
     .m-video-box{
       position: relative;
@@ -248,8 +265,8 @@
       position: relative;
       background-color: #ffffff;
       .m-img {
-        max-width: 700px;
-        max-height: 360px;
+        width: 700px;
+        height: 360px;
         position: absolute;
         top: 0;
         right: 0;
@@ -266,8 +283,8 @@
       flex-wrap: wrap;
       .m-circle-img{
         display: block;
-        width: 210px;
-        height: 200px;
+        width: 700px;
+        height: 384px;
         margin: 0 10px 10px 0;
         background-color: #F2F2F2;
       }
@@ -279,7 +296,7 @@
       overflow: hidden;
       text-align: left;
       /*margin-bottom: 20px;*/
-      .m-circle-label{
+      .m-circle-topic{
         color: #006FCE;
       }
     }
