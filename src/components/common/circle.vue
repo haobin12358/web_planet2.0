@@ -61,6 +61,7 @@
         </div>
       </div>
     </div>
+    <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
   </div>
 </template>
 
@@ -71,7 +72,7 @@
         name: "circleComponent",
       data(){
           return{
-
+            show_invite:false
           }
       },
       props:{
@@ -98,7 +99,7 @@
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
                 // 点击分享
-                // this.show_invite = true;
+                this.show_invite = true;
               }
             });
 
@@ -109,7 +110,7 @@
               if (count > 0 && count <= TIME_COUNT) {
                 count --;
               } else {
-                // this.show_invite = false;
+                this.show_invite = false;
                 clearInterval(time);
               }
             }, 1000);
@@ -330,6 +331,14 @@
           }
         }
       }
+    }
+    .m-invite-course {
+      position: fixed;
+      top:0;
+      left:0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
     }
   }
 </style>

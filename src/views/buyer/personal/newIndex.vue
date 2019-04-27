@@ -62,7 +62,7 @@
               <img src="/static/images/newpersonal/icon-wallet.png" class="m-icon" alt="">
               <span>我的钱包</span>
             </div>
-            <span class="m-info">¥{{user.usbalance | money}}</span>
+            <span class="m-info">¥{{user.usbalance}}</span>
           </li>
           <li class="m-flex-between" @click="changeRoute('/personal/starProduct')">
             <div class="m-flex-start">
@@ -72,18 +72,18 @@
             <span class="m-info" v-if="user.signin">{{user.usintegral}}星币</span>
             <span class="m-btn" v-else @click.stop="userSignIn">签  到</span>
           </li>
-          <li class="m-flex-between" @click="changeRoute('/personal/couponCenter')">
+          <li class="m-flex-between" @click="changeRoute('/personal/coupon')">
             <div class="m-flex-start">
               <img src="/static/images/newpersonal/icon-coupon.png" class="m-icon" alt="">
               <span>优惠中心</span>
             </div>
           </li>
-          <li class="m-flex-between" @click="changeRoute('/activityOrder')">
-            <div class="m-flex-start">
-              <img src="/static/images/newpersonal/icon-gift.png" class="m-icon" alt="">
-              <span>我的活动</span>
-            </div>
-          </li>
+<!--          <li class="m-flex-between" @click="changeRoute('/activityOrder')">-->
+<!--            <div class="m-flex-start">-->
+<!--              <img src="/static/images/newpersonal/icon-gift.png" class="m-icon" alt="">-->
+<!--              <span>我的活动</span>-->
+<!--            </div>-->
+<!--          </li>-->
           <li class="m-flex-between" @click="goStore">
             <div class="m-flex-start">
               <img src="/static/images/newpersonal/icon-store.png" class="m-icon" alt="">

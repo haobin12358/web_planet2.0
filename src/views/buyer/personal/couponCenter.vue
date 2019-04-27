@@ -243,10 +243,11 @@
     .m-couponCenter-top{
       width: 100%;
       height: 300px;
-      background: url("/static/images/icon-integral-bg.png");
+      background: url("/static/images/newpersonal/icon-wallet-bc.png");
       background-size: 100% 100%;
       text-align: left;
       position: relative;
+      color: #fff;
       .m-couponCenter-top-p{
         padding: 30px 0 24px 63px;
       }
@@ -262,6 +263,7 @@
         box-shadow:0 3px 6px rgba(0,0,0,0.16);
         font-size: 18px;
         text-align: center;
+        color: #000;
       }
       .m-rule-popup {
         width: 700px;
@@ -358,6 +360,7 @@
           border-radius: 30px;
           box-shadow: 0 3px 6px rgba(0,0,0,0.16);
           margin-left: 50px;
+          color: #000;
           &.active {
             opacity: 0.5;
           }
@@ -369,7 +372,8 @@
         width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
-        margin: 20px 0 46px 0;
+        margin: 20px 0 20px 0;
+
       }
       .m-couponCenter-content-ul{
         /*padding: 20px 72px;*/

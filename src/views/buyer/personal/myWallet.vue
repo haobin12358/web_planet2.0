@@ -6,7 +6,7 @@
         ¥<span class="m-star-num">{{user.usbalance | money}}</span>
       </div>
       <div class="m-money-btn">
-        <span @click="makeMoney">提现</span>
+        <span @click.stop="changeRoute('/storekeeper/withDraw')">提现</span>
       </div>
       <div class="m-head-part">
         <span :class="item.name == head_name ?'active':''" v-for="(item,index) in head_list" @click="changeContent(item.name)">{{item.name}}</span>
@@ -579,10 +579,6 @@
           }
         })
       },
-      makeMoney() {
-
-      },
-
     }
   }
 </script>

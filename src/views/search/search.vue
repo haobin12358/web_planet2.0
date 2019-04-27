@@ -59,7 +59,7 @@
                       <span >{{item.usname}}</span>
                       <span class="m-user-level">{{item.usgrade}}</span>
                     </h3>
-<!--                    <p class="m-grey">{{item.fens_count}}粉丝</p>-->
+                    <p class="m-grey">{{item.fens_count}}粉丝</p>
                   </div>
                 </div>
 
@@ -70,7 +70,7 @@
             </ul>
             <bottom-line v-if="bottom_show"></bottom-line>
           </div>
-           <p v-else class="m-no-data">暂无数据</p>
+           <p v-else class="m-no-data">无法搜索到相关内容</p>
         </div>
         <div class="m-modal" v-if="show_modal">
           <div class="m-modal-state">

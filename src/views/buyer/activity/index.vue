@@ -172,7 +172,7 @@
   import navList from '../../../components/common/navlist';
   import bottomLine from '../../../components/common/bottomLine';
   import { Toast } from 'mint-ui';
-
+  import wxapi from '../../../common/js/mixins';
   export default {
     name: 'activityIndex',
     data() {
@@ -205,7 +205,8 @@
         uaid: '',
         guess: {},
         correct_time:'',
-        rulePopup:false
+        rulePopup:false,
+        secret_usid:''
       }
     },
     components: {navList,bottomLine},
@@ -225,6 +226,53 @@
       }
     },
     methods: {
+      // 分享
+      shareAct() {
+        let items = this.selecte_nav;
+        if(localStorage.getItem('token')) {
+          let options = {
+            title: items.acname,
+            desc: items.acdesc,
+            imgUrl: items.actoppic,       // 初步考虑用用户头像
+            link: location.href.split('#')[0] + '?acname=' + items.acname
+          };
+          if(!this.secret_usid){
+            this.$http.get(this.$api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
+              if(res.data.status == 200) {
+                this.secret_usid = res.data.data.secret_usid;
+                options.link += '&secret_usid=' + res.data.data.secret_usid;
+                console.log(options.link)
+              }
+            });
+          }
+
+          // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+          if(wx.updateAppMessageShareData) {
+            wx.updateAppMessageShareData(options);
+          }
+          // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+          if(wx.updateTimelineShareData) {
+            wx.updateTimelineShareData(options);
+          }
+          // 获取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）
+          if(wx.onMenuShareAppMessage) {
+            wx.onMenuShareAppMessage(options);
+          }
+          // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）
+          if(wx.onMenuShareTimeline) {
+            wx.onMenuShareTimeline(options);
+          }
+        }else {
+          // Toast('请登录后再试');
+          if(!localStorage.getItem('token')){
+            let url = location.href.split('#')[0] + '?acname=' + items.acname
+            // localStorage.setItem('login_to',url);
+            // this.$router.push('/login');
+            this.$store.state.show_login = true;
+            return false;
+          }
+        }
+      },
       // 跳转页面
       changeRoute(v,item,which) {
         if(which){
@@ -267,6 +315,7 @@
         for(let i in this.limit_list){
           clearInterval(this.limit_list[i].timer);
         }
+        this.shareAct(this.activityList[index]);
         switch (name) {
           case '限时特惠':
             this.getLimited();
@@ -278,6 +327,9 @@
             this.getTry();
             break;
           case '每日竞猜':
+            if(!this.rule){
+              this.getRule();
+            }
             this.getGuessAll();
             break;
         }
@@ -326,7 +378,7 @@
           endDate = item.tlaendtime;
           status = '结束'
         }
-        this.$router.push({ path: '/limitedTime',query:{tlaid:item.tlaid,tlatoppic:item.tlatoppic,tlaname:item.tlaname,status:status,endDate:endDate} });
+        this.$router.push({ path: '/limitedTime',query:{tlaid:item.tlaid,tlatoppic:item.tlatoppic,tlaname:item.tlaname,status:status,endDate:endDate,tlastarttime:item.tlastarttime,tlaendtime:item.tlaendtime} });
       },
       // 用户获取今天猜数字活动所有商品
       getTodayProduct() {
@@ -435,10 +487,14 @@
         this.$http.get(this.$api.activity_list + "?token=" + localStorage.getItem('token')).then(res => {
           if(res.data.status == 200){
             this.activityList = res.data.data;
+            let index = 0;
             for(let i in this.activityList){
               this.activityList[i].active = false;
+              if(this.activityList[i].acname == this.$route.query.acname){
+                index = i;
+              }
             }
-            this.navClick(0);
+            this.navClick(index);
             // this.$refs.activity.style.height = this.activityList.length * 520 + 'px';
           }
         });
@@ -615,7 +671,23 @@
         localStorage.setItem('token', this.$route.query.token);
       }
       this.getActivit();                // 获取活动list
-      this.getRule();
+      wxapi.wxRegister(location.href.split('#')[0]);
+      // localStorage.removeItem('share');
+      // localStorage.removeItem('url');
+
+      if(localStorage.getItem('token')) {
+        // 倒计时
+        const TIME_COUNT = 1;
+        let count = TIME_COUNT;
+        let time = setInterval(() => {
+          if(count > 0 && count <= TIME_COUNT) {
+            count --;
+          }else {
+            this.shareAct();
+            clearInterval(time);
+          }
+        }, 500);
+      }
     }
   }
 </script>

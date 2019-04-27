@@ -21,8 +21,8 @@
         <div class="m-selected-label">
           <div class="m-selected-label-left">
             <div class="m-selected-label-l">
-              <span>100%正品保证</span>
-              <span>假一赔十</span>
+              <span>大行星优惠码兑换</span>
+<!--              <span>假一赔十</span>-->
             </div>
             <ul class="m-selected-label-ul">
               <li>
@@ -39,14 +39,14 @@
               </li>
             </ul>
           </div>
-          <div class="m-selected-label-right" @click="changeRoute('personal/couponCenter')">
+          <div class="m-selected-label-right" @click="changeRoute('personal/coupon')">
 <!--            <span class="m-icon-gift"></span>-->
-            <span>立即领取</span>
+            <span>立即兑换</span>
           </div>
         </div>
 
-      <div class="m-selected-one" v-if="activity_img">
-        <img :src="activity_img.enpic" @click="goActivity" class="m-activity-img" alt="">
+      <div class="m-selected-one" v-if="top_img">
+        <img :src="top_img.enpic" @click="changeRoute('/activity',top_img)" class="m-activity-img" alt="">
       </div>
         <div class="m-selected-one">
           <!--商品分类-->
@@ -61,43 +61,46 @@
         </div>
 
       <div class="m-selected-activity">
-        <div class="m-row" @click="changeRoute('/activity')">
-         <div>
-           <img src="/static/images/index/icon-limit.png" class="m-img-limit" alt="">
-           <p class="m-time-box">
-             <img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">
-             <span>12:23:30</span>
-           </p>
-         </div>
-          <div>
-            <h3 class="m-limit-title">商品名称商品名称商品名称…</h3>
-            <p>
-              <span class="m-limit-price">¥123</span>
-              <s class="m-underline">¥123</s>
-            </p>
-          </div>
-          <img src="" class="m-product-img" alt="">
+        <div class="m-row" v-if="center_img" @click="changeRoute('/activity',center_img)">
+<!--         <div>-->
+<!--           <img src="/static/images/index/icon-limit.png" class="m-img-limit" alt="">-->
+<!--           <p class="m-time-box">-->
+<!--             <img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">-->
+<!--             <span>12:23:30</span>-->
+<!--           </p>-->
+<!--         </div>-->
+<!--          <div>-->
+<!--            <h3 class="m-limit-title">商品名称商品名称商品名称…</h3>-->
+<!--            <p>-->
+<!--              <span class="m-limit-price">¥123</span>-->
+<!--              <s class="m-underline">¥123</s>-->
+<!--            </p>-->
+<!--          </div>-->
+<!--          <img src="" class="m-product-img" alt="">-->
+          <img :src="center_img.enpic" class="m-center-img" alt="">
         </div>
         <div class="m-row">
-          <div class="m-col">
-            <h3 class="m-activity-name">拼团竞猜</h3>
-            <div class="m-activity-box">
-              <div>
-                <p class="m-red">¥999</p>
-                <p><s class="m-underline">¥123</s></p>
-              </div>
-              <img src="" class="m-product-img" alt="">
-            </div>
+          <div class="m-col" v-if="left_img" @click="changeRoute('/activity',left_img)">
+<!--            <h3 class="m-activity-name">拼团竞猜</h3>-->
+<!--            <div class="m-activity-box">-->
+<!--              <div>-->
+<!--                <p class="m-red">¥999</p>-->
+<!--                <p><s class="m-underline">¥123</s></p>-->
+<!--              </div>-->
+<!--              <img src="" class="m-product-img" alt="">-->
+<!--            </div>-->
+            <img :src="left_img.enpic" alt="">
           </div>
-          <div class="m-col">
-            <h3 class="m-activity-name">拼团竞猜</h3>
-            <div class="m-activity-box">
-              <div>
-                <p class="m-red">¥999</p>
-                <p><s class="m-underline">¥123</s></p>
-              </div>
-              <img src="" class="m-product-img" alt="">
-            </div>
+          <div class="m-col" v-if="right_img"  @click="changeRoute('/activity',right_img)">
+<!--            <h3 class="m-activity-name">拼团竞猜</h3>-->
+<!--            <div class="m-activity-box">-->
+<!--              <div>-->
+<!--                <p class="m-red">¥999</p>-->
+<!--                <p><s class="m-underline">¥123</s></p>-->
+<!--              </div>-->
+<!--              <img src="" class="m-product-img" alt="">-->
+<!--            </div>-->
+            <img :src="right_img.enpic" alt="">
           </div>
         </div>
       </div>
@@ -136,7 +139,10 @@
           isScroll: true,
           total_count: 0,
           bottom_show: false,
-          activity_img:null
+          top_img:null,
+          center_img:null,
+          left_img:null,
+          right_img:null
         }
       },
       mixins: [wxapi],
@@ -239,6 +245,9 @@
                 this.$router.push({ path: '/dailyGuess'})
               }else if(localStorage.getItem('share') == 'index') {
                 this.$router.push({ path: '/selected'})
+              }else if(localStorage.getItem('share') == 'acname') {
+                let params = url.split('?acname=')[1].split('&secret_usid')[0];
+                this.$router.push({ path: '/activity', query: { acname: params }})
               }
             }
             if(localStorage.getItem('href')) {
@@ -321,9 +330,6 @@
           }
 
         },
-        goActivity(){
-          window.location.href = this.activity_img.contentlink;
-        },
         /*获取轮播图*/
         getSwipe(){
           axios.get(api.list_banner_index).then(res => {
@@ -336,7 +342,20 @@
         getImg(){
           this.$http.get(api.get_entry).then(res => {
             if(res.data.status == 200){
-              this.activity_img = res.data.data;
+              if(res.data.data.length >0){
+                let arr = res.data.data;
+                for(let i in arr){
+                  if(arr[i].entype == 0){
+                    this.top_img = arr[i]
+                  }else if(arr[i].entype == 1 ){
+                    this.center_img = arr[i]
+                  }else if(arr[i].entype == 2 ){
+                    this.left_img = arr[i]
+                  }else if(arr[i].entype == 3 ){
+                    this.right_img = arr[i]
+                  }
+                }
+              }
             }
           })
         },
@@ -479,6 +498,10 @@
               }
               // this.$router.push({ path: v, query: { prid: item.prid }});
               break;
+            case '/activity':
+              if(item.contentlink)
+               window.location.href = item.contentlink;
+              break;
             default:
               this.$router.push({path:v,});
           }
@@ -602,7 +625,7 @@
           font-size: 21px;
           font-weight: bold;
           &:first-child{
-            border-right: 1px solid #333333;
+            /*border-right: 1px solid #333333;*/
             padding-left: 0;
           }
         }
@@ -706,11 +729,22 @@
     }
   }
   .m-selected-activity{
-    padding: 0 40px;
     .m-row{
       .flex-row(space-between);
       border-bottom: 1px solid #f4f4f4;
       text-align: left;
+      .m-center-img{
+        display: block;
+        width: 100%;
+        height: 120px;
+      }
+      .m-col{
+        img{
+          display: block;
+          width: 370px;
+          height: 200px;
+        }
+      }
       .m-img-limit{
         display: block;
         width: 148px;
@@ -758,7 +792,7 @@
       }
       .m-col{
         width: 49%;
-        padding: 23px 0 10px ;
+        /*padding: 23px 0 10px ;*/
         &:first-child{
           border-right: 1px solid #f4f4f4;
         }

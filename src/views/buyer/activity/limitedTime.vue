@@ -76,7 +76,7 @@
             id = this.$route.query.tlaid;
             options = {
               title: this.$route.query.tlaname,
-              desc: `活动时间：${this.brand_info.tlastarttime} - ${this.brand_info.tlaendtime}`,
+              desc: `活动时间：${this.$route.query.tlastarttime} - ${this.$route.query.tlaendtime}`,
               imgUrl: this.$route.query.tlatoppic,
               link: window.location.href.split('#')[0] + '?tlaid=' + id
             };
@@ -91,18 +91,6 @@
                 }
               }
             });
-
-            // 倒计时
-            const TIME_COUNT = 3;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.show_invite = false;
-                clearInterval(time);
-              }
-            }, 1000);
 
             // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
             if(wx.updateAppMessageShareData) {
@@ -136,8 +124,7 @@
             if(this.product_list.length == this.total_count){
               this.bottom_show = true;
             }else{
-
-                  this.getProduct()
+                this.getProduct()
             }
           }
         }

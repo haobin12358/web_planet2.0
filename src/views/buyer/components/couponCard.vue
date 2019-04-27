@@ -70,10 +70,10 @@
 <!--        </div>-->
       </div>
     </div>
-    <div class="m-no-coupon" v-if="couponList.length == 0 && !circle">
-      <span class="m-no-img"></span>
-      <p style="margin-top: -40px">暂时还没有优惠券哦~</p>
-    </div>
+<!--    <div class="m-no-coupon" v-if="couponList.length == 0 && !circle">-->
+<!--      <span class="m-no-img"></span>-->
+      <p class="m-no-data" v-if="couponList.length == 0 && !circle">暂时还没有优惠券哦~</p>
+<!--    </div>-->
   </div>
 </template>
 

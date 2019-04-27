@@ -13,10 +13,10 @@
         <p>提示：</p>
         <p>提交申请后，提现金额将在3个工作日内到微信钱包。</p>
       </div>
-      <div class="w-foot-btn">
+      <div class="w-foot-btn" @click="submitMoney">
         <span>提交申请</span>
       </div>
-      <div class="w-out">
+      <div class="w-out" v-if="show_modal">
         <div class="m-out-box">
           <img class="m-out-know-img" src="/static/images/storekeeper/store-icon-success.png" alt="">
           <div class="m-out-know-title">提交成功</div>
@@ -36,6 +36,7 @@
 
 <script type="text/ecmascript-6">
   import common from '../../../common/js/common';
+  import { Toast} from 'mint-ui';
   export default {
     data() {
       return {
@@ -48,7 +49,7 @@
         moneyNum: '',
         num_box: null,
         usidentification: '',
-
+        show_modal:false
       }
     },
     methods: {
@@ -56,19 +57,33 @@
         this.amount = null;
       },
       getUser() {
-        axios.get(api.get_agent_center + "?token=" + localStorage.getItem('token')).then(res => {
+        this.$http.get(this.$api.get_agent_center + "?token=" + localStorage.getItem('token')).then(res => {
           if (res.data.status == 200) {
             // this.user = res.data.data;
             this.moneyNum = res.data.usbalance;
           }
         })
-        axios.get(api.get_home + "?token=" + localStorage.getItem('token')).then(res => {
+        this.$http.get(this.$api.get_home + "?token=" + localStorage.getItem('token')).then(res => {
           if (res.data.status == 200) {
             // this.num_box = res.data.data;
             this.usidentification = res.data.usidentification;
           }
         })
       },
+      outBtn(){
+        this.$router.go(-1);
+      },
+      submitMoney(){
+        this.$http.post(this.$api.apply_cash + '?token=' +localStorage.getItem('token'),{
+          cncashnum:Number(this.amount)
+        }).then(res => {
+          if(res.data.status == 200){
+            this.show_modal = true;
+          }else{
+            Toast(res.data.message);
+          }
+        })
+      }
 
     },
     mounted() {

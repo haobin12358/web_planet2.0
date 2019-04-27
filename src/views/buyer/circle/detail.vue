@@ -699,6 +699,10 @@
       padding: 0 8px;
       border: 1px solid @mainColor;
       color: @mainColor;
+      &.cancel{
+        color: #c1c1c1;
+        border: 1px solid #c1c1c1;
+      }
     }
   }
   .m-circle-img{

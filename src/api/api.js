@@ -72,6 +72,7 @@ const api={
   list_user_coupon : title + 'coupon/list_user_coupon',          // 获取用户个人的优惠券
   coupon_list : title + 'coupon/list',                           // 获取优惠券列表
   coupon_fetch : title + 'coupon/fetch',                         // 领取优惠券
+  coupon_code : title +'coupon/code',      //优惠码兑换
 
   choose_category: title +'news/choose_category',//添加分类
   create_news: title + 'news/create_news',                       // 发布资讯

@@ -141,6 +141,10 @@ export default {
       localStorage.setItem('share', 'index');
       location.href = location.origin;
       this.shareRecord(params);
+    }else if(location.href.indexOf('acname') > 0) {     // 跳转到活动
+      localStorage.setItem('share', 'acname');
+      location.href = location.origin;
+      this.shareRecord(params);
     }
     // 新人不绑手机号就清除localStorage
     if(localStorage.getItem('is_new')) {
