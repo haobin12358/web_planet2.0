@@ -219,6 +219,7 @@
       margin-bottom: 20px;
       width: 700px;
       position: relative;
+      box-sizing: border-box;
       .m-label{
         position: absolute;
         top: -20px;

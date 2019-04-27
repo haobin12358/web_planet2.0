@@ -101,10 +101,10 @@
           </div>
         </div>
       </div>
-        <div class="m-selected-one">
+<!--        <div class="m-selected-one">-->
 
           <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
-        </div>
+<!--        </div>-->
       <bottom-line v-if="bottom_show"></bottom-line>
       <!--</mt-loadmore>-->
     </div>

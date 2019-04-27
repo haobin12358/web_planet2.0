@@ -391,7 +391,7 @@
             }else{
               for(let i=0;i<this.nav_list.length;i++){
                 if(this.nav_list[i].active){
-                  this.getNews(this.nav_list[i].neid);
+                  this.getNews(this.nav_list[i].itid);
                 }
               }
             }

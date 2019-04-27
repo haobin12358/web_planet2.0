@@ -86,6 +86,7 @@ const api={
   news_banner: title + 'news/banner',                            // 获取素材页轮播（店主）
   news_location: title +'news/location',        ///获取定位
   news_topic: title +'news/topic',      //获取话题、
+  news_search: title +'news/search',     //圈子搜索
 
   list_with_group: title + 'brand/list_with_group',              // 获取品牌列表
   get_one_brand: title + 'brand/get',                            // 获取一个品牌

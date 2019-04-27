@@ -142,8 +142,6 @@
         }
       },
       followClick(index){
-
-
         this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
           uclcollection:this.select_nav.value == 'follow' ?this.user_list[index].uclcollection :this.user_list[index].uclcollector,
           uclcotype:2
