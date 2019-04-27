@@ -23,7 +23,8 @@
             <span>手机号</span>
           </div>
           <div class="m-flex-end">
-            <span class="m-grey">{{user.ustelphone}}</span>
+            <span class="m-grey" v-if="!user.ustelphone">去绑定</span>
+            <span class="m-grey" v-if="user.ustelphone">{{user.ustelphone}}</span>
             <span class="m-icon-more"></span>
           </div>
         </li>
@@ -32,7 +33,7 @@
             <span>支付密码</span>
           </div>
           <div class="m-flex-end">
-           <span class="m-grey" v-if="user.uspaycode">更换密码</span>
+            <span class="m-grey" v-if="user.uspaycode">更换密码</span>
             <span class="m-grey" v-else>设置密码</span>
             <span class="m-icon-more"></span>
           </div>

@@ -7,17 +7,17 @@
 		<div class="w-codeDetail-info">
 			<div class="w-codeDetail-name">
 				<span>姓名</span>
-				<span>{{item.acaname}}</span>
+				<span class="w-codeDetail-text">{{item.acaname}}</span>
 
 			</div>
 			<div class="w-codeDetail-card">
 				<span>银行卡号</span>
-				<span>{{item.acabanksn}}</span>
+				<span class="w-codeDetail-text">{{item.acabanksn}}</span>
 
 			</div>
 			<div class="w-codeDetail-bank">
 				<span>开户行</span>
-				<span>{{item.acabankname}}</span>
+				<span class="w-codeDetail-text">{{item.acabankname}}</span>
 
 			</div>
 
@@ -25,7 +25,7 @@
 		<div class="w-codeDetail-cert">
 			<p class="w-codeDetail-cert-text">打款凭证</p>
 			<div class="w-codeDetail-cert-img" v-for="link in item.acavouchers">
-				<img src="link" alt="">
+				<img :src="link" alt="">
 			</div>
 			
 		</div>
@@ -42,7 +42,7 @@
 	export default {
     data () {
 			return {
-				index:'',
+				acaid:'',
 				item:{},
 				
 			}
@@ -50,7 +50,7 @@
 		methods:{
 			getCodeDetail(){
 				let params = {
-					acaid: this.index,
+					acaid: this.acaid,
 					token: localStorage.getItem('token'),
 				}
 				axios.get(api.act_code_get_detail,{ params: params }).then(res => {
@@ -66,7 +66,7 @@
 		},
 		mounted () {
 			common.changeTitle("购买详情");
-			this.index=this.$route.query.index;
+			this.acaid=this.$route.query.acaid;
 			this.getCodeDetail();
 			
 		},
@@ -78,28 +78,41 @@
 
 	.w-codeDetail{
 		background-color: #fff;
+		color: #000000;
 		.w-codeDetail-top{
-			height: 100px;
+			// height: 100px;
+			font-size: 28px;
+			padding: 34px 40px;
 			border-bottom: 1px solid #F2F2F2;
+			.flex-row(space-between);
 			.w-codeDetail-time{
+				display: inline-block;
 
 			}
 			.w-codeDetail-code{
+				display: inline-block;
+				font-weight: 500;
 
 			}
 		}
 		.w-codeDetail-info{
-			height: 300px;
+			// height: 300px;
+			padding: 15px 40px;
 			border-bottom: 10px solid #F4F4F4;
-			.w-codeDetail-name{
-
+			
+			div{
+				.flex-row(space-between);
+				font-size: 28px;
+				margin: 15px 0;
+				span{
+					display: inline-block;
+				}
+				.w-codeDetail-text{
+					font-weight: 400;
+				}
 			}
-			.w-codeDetail-card{
-
-			}
-			.w-codeDetail-bank{
-
-			}
+			
+			
 		}
 		.w-codeDetail-cert{
 			padding: 30px 40px;
@@ -107,6 +120,14 @@
 				text-align: left;
 				font-size: 28px;
 				font-weight:400;
+			}
+			.w-codeDetail-cert-img{
+				.flex-col(flex-start,flex-start);
+				img{
+					width: 380px;
+					height: 250px;
+					margin-top: 30px;
+				}
 			}
 
 		}

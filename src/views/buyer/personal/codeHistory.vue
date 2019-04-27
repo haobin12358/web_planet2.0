@@ -49,7 +49,7 @@
     components: {},
     methods: {
       changeRoute(v,value){
-        this.$router.push({path:v,query:{index:value}});
+        this.$router.push({path:v,query:{acaid:value}});
       },
       // 预览图片
       previewImage(index, image) {

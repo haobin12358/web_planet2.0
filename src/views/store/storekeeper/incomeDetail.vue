@@ -71,7 +71,7 @@
           <div class="m-detail-item-right">
             <!-- 暂未完成收益显示，等后端 -->
             <div class="money-text">
-              <span class="w-withdraw-again" v-if="item.cnstatus==-1" @click="withdrawAgain(item)">再次发起</span>
+              <span class="w-withdraw-again" v-if="item.cnstatus==-1" @click="changeRoute('/storekeeper/withDraw')">再次发起</span>
               <span>￥{{item.cncashnum | money}}</span>
             </div>
             <!-- <div class="money-text" :class="item.ucstatus=='预计到账'?'status':''">+{{item.uccommission | money}}</div>
@@ -150,6 +150,13 @@
       navList
     },
     methods: {
+      // 跳转其他页面的方法
+      changeRoute(v) {
+        this.$router.push(v)
+      },
+      changeRoute(v,item){
+        this.$router.push({path:v,query:{index:item}});
+      },
       // 打开 - 关闭时间选择器
       openPicker() {
         if (this.popupVisible) {

@@ -1,8 +1,8 @@
 <template>
   <div class="m-personal " >
-    <div class="m-personal-bg">
+    <!-- <div class="m-personal-bg">
       <span class="m-icon-bg"></span>
-    </div>
+    </div> -->
     <div class="m-personal-content m-serviceCenter ">
       <div class="m-personal-body">
         <div class="m-one-part">
@@ -11,7 +11,7 @@
             <div v-for="(item, index) in qa_list">
               <div class="m-serviceCenter-li" @click="openQuestion(index)">
                 <div>
-                  <img class="m-question-img" :src="item.qoicon" alt="">
+                  <!-- <img class="m-question-img" :src="item.qoicon" alt=""> -->
                   <span>{{item.qoname}}</span>
                 </div>
                 <span class="m-icon-more" :class="item.questions ? 'm-icon-unfold' : ''"></span>
@@ -25,22 +25,22 @@
 
         <div class="m-serviceCenter-foot">
           <div class="m-serviceCenter-btn">
-            <span class="m-icon-tell"></span>
-            <div>
-              <p>客服电话</p>
-              <p>15079564151</p>
-            </div>
-          </div>
-          <div class="m-serviceCenter-btn">
-            <span class="m-icon-service"></span>
+            <!-- <span class="m-icon-tell"></span> -->
             <div>
               <p>客服QQ</p>
               <p>3441362480</p>
             </div>
-<!--            <div>-->
-<!--              <p>客服邮箱</p>-->
-<!--              <p>kuahu123@163.com</p>-->
-<!--            </div>-->
+          </div>
+          <div class="m-serviceCenter-btn">
+            <!-- <span class="m-icon-service"></span> -->
+            <div>
+              <p>客服邮箱</p>
+              <p>kuahu123@163.com</p>
+            </div>
+           <!-- <div>
+             <p>客服邮箱</p>
+             <p>kuahu123@163.com</p>
+           </div> -->
           </div>
         </div>
       </div>
@@ -91,20 +91,22 @@
 <style lang="less" rel="stylesheet/less" scoped>
   @import "../../../common/css/personal";
   .m-serviceCenter{
-    margin-top: 30px;
+    // margin-top: 30px;
     .m-one-part{
       min-height: 1000px;
       .m-icon-more{
         &.m-icon-unfold{
-          background: url("/static/images/icon-unfold.png");
+          background: url("/static/images/storekeeper/store-icon-more.png");
+          transform: rotate(90deg);
           background-size: 100% 100%;
         }
       }
     }
     .m-serviceCenter-ul{
+      // padding: 0 22px 0 40px;
       .m-serviceCenter-li{
-        padding: 30px 0 19px;
-        border-bottom: 1px solid #CCCCCC;
+        padding: 30px;
+        border-bottom: 1px solid #F2F2F2;
         .flex-row(space-between);
         font-size: 30px;
         .m-question-img {
@@ -122,20 +124,26 @@
       }
     }
     .m-serviceCenter-foot{
-      padding: 10px 0;
-      border-radius: 10px;
-      box-shadow:0 5px 6px rgba(0,0,0,0.16);
-      margin-top: 44px;
+      height: 98px;
+      width: 749px;
+      position: fixed;
+      bottom: 70px;
+      // padding: 10px 0;
+      // border-radius: 10px;
+      // box-shadow:0 5px 6px rgba(0,0,0,0.16);
+      // margin-top: 44px;
+      border: 1px solid @mainColor;
       .flex-row(space-around);
-      background-color: @mainColor;
+      // background-color: @mainC;
       .m-serviceCenter-btn{
         width: 50%;
+        height: 98px;
         text-align: center;
         .flex-row(center);
-        line-height: 36px;
-        color: #fff;
+        // line-height: 36px;
+        color: @mainColor;
         &:first-child{
-          border-right: 1px solid #fff;
+          border-right: 1px solid @mainColor;
         }
         .m-icon-service{
           display: inline-block;
