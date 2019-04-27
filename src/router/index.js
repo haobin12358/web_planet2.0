@@ -97,7 +97,7 @@ export const constantRouterMap = [
   { path: '/circle/createTopic', component: () => import('../views/buyer/circle/createTopic'), hidden: true },
   { path: '/equipment', component: () => import('../views/buyer/equipment/index'), hidden: true , meta: { keepAlive: true } },
   { path: '/equipment/detail', component: () => import('../views/buyer/newProduct/detail'), hidden: true , meta: { keepAlive: true }},
-  { path: '/product', component: () => import('../views/buyer/product/product'), meta: { keepAlive: true }, hidden: true },
+  // { path: '/product', component: () => import('../views/buyer/product/product'), meta: { keepAlive: true }, hidden: true },
   { path: '/productDetail', name: 'productDetail', component: () => import('../views/buyer/newProduct/productDetail'), meta: { keepAlive: false }, hidden: true },
   { path: '/evaluate', component: () => import('../views/buyer/newProduct/evaluate'), hidden: true },
   {
@@ -123,7 +123,6 @@ export const constantRouterMap = [
     component: Layout,
     redirect: 'personal',
     children: [
-      { path: '/personal', component: () => import('../views/buyer/personal/index'), meta: { keepAlive: true }, hidden: true },
       { path: '/newPersonal', component: () => import('../views/buyer/personal/newIndex'), meta: { keepAlive: true }, hidden: true }
     ],
   },

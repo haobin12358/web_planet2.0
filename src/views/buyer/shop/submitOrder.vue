@@ -55,7 +55,7 @@
               ￥{{items.total | money}}
             </div>
           </li>
-          <li class="m-sku-num" v-if="from != 'try' && !isGuess">
+          <li class="m-sku-num" v-if="from != 'try' && !isGuess && !fromGift">
             <span>预计收益</span>
             <div class=" m-price">
               ￥{{items.preview | money}}
@@ -96,7 +96,7 @@
       </div>
       <div class="m-one-part">
         <ul class="m-order-ul">
-          <li class="m-flex-between" v-if="!isGuess && star_info.can_reduce">
+          <li class="m-flex-between" v-if="!isGuess && !fromGift && star_info.can_reduce">
             <span>星币抵扣</span>
             <div >
               <span class="m-price">可用{{star_info.reduce_integral}}星币抵扣{{star_info.reduce_mount}}元</span>
@@ -293,7 +293,10 @@
           this.isGuess = true;
           console.log(this.product_info)
         }
-        this.getStar();
+        if(!this.$route.query.gift) {
+          this.getStar();
+        }
+
       },
       methods: {
         // 付款方式picker的确认按钮
@@ -387,7 +390,6 @@
         },
         //获取可用xingb
         getStar(){
-
           let info = []
           for(let i in this.product_info){
             let skus = [];

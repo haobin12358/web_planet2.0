@@ -64,6 +64,6 @@
 
   .m-gift-box {
     min-height: 100vh;
-    background-color: #EEEEEE;
+    background-color: #fff;
   }
 </style>

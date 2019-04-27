@@ -408,7 +408,7 @@
         color: #ffffff;
         margin-left: 50px;
         padding: 11px 220px;
-        border-radius: 10px;
+        /*border-radius: 10px;*/
         background-color: @mainColor;
       }
     }
