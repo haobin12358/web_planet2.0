@@ -47,7 +47,7 @@
         <img src="/static/images/product/icon-service.png" class="m-icon" @click.stop="changeRoute('/personal/serviceCenter')" />
         <p>客服</p>
       </div>
-      <div class="m-icon-box">
+      <div class="m-icon-box" v-if="$route.query.which == 'new'">
         <img src="/static/images/product/icon-share.png" class="m-icon" @click="sendShare" />
         <p>推广</p>
       </div>
