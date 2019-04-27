@@ -110,7 +110,7 @@
               this.page_info.page_num = this.page_info.page_num + 1;
               this.total_count = res.data.total_count;
             }else{
-              this.user_list = null;
+              this.user_list = [];
               this.page_info.page_num = 1;
               this.total_count = 0;
             }

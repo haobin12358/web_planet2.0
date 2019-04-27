@@ -41,7 +41,7 @@
             <li v-for="item in history_list" @click="clickHis(item)">{{item.ushname}}</li>
           </ul>
         </div>
-        <div class="m-circle-content" v-else>
+        <div class="m-circle-content" v-else-if="isCircle">
           <div class="m-flex-between m-circle-nav">
             <nav-list :navlist="nav_list" :isScroll="true" :is-get="true" @navClick="navClick"></nav-list>
           </div>
@@ -72,6 +72,12 @@
           </div>
            <p v-else class="m-no-data">无法搜索到相关内容</p>
         </div>
+        <ul class="m-search-result-ul"  v-else="result_list">
+          <li v-for="item in result_list" @click="changeRoute(item)">
+            <span>{{item.ushname}}</span>
+            <span class="m-icon-go"></span>
+          </li>
+        </ul>
         <div class="m-modal" v-if="show_modal">
           <div class="m-modal-state">
             <ul>
@@ -95,12 +101,7 @@
 <!--            <li v-for="item in recommendList" @click="changeRoute(item, 'recommend')">{{item.itname}}</li>-->
 <!--          </ul>-->
 <!--        </div>-->
-<!--        <ul class="m-search-result-ul" v-if="result_list">-->
-<!--          <li v-for="item in result_list" @click="changeRoute(item)">-->
-<!--            <span>{{item.ushname}}</span>-->
-<!--            <span class="m-icon-go"></span>-->
-<!--          </li>-->
-<!--        </ul>-->
+
 
 
 
