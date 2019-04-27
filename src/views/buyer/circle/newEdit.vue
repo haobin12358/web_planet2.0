@@ -925,7 +925,7 @@
         font-size: 20px;
         color: #666;
         background-color: #EBEBEB;
-        margin-right: 20px;
+        margin:0 20px 20px 0;
         &.active{
           background-color: @mainColor;
           color: #fff;
