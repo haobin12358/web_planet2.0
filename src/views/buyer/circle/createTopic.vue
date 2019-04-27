@@ -49,7 +49,8 @@
         /*返回*/
         returnBack(){
           if(this.toc.tocid){
-            this.$router.push({path:'/circle/newEdit',query:{select:JSON.stringify(this.toc)}})
+            // this.$router.push({path:'/circle/newEdit',query:{select:JSON.stringify(this.toc)}})
+            this.$emit('createToc',this.toc)
           }else{
             this.createToc();
           }
@@ -61,11 +62,17 @@
         },
         //创建话题
         createToc(){
+          if(this.toc.toctitle == ''){
+            this.$emit('createToc',this.toc);
+            return false;
+          }
           this.$http.post(this.$api.news_topic + '?token=' +localStorage.getItem('token'),{
             toctitle:this.toc.toctitle
           }).then(res => {
             if(res.data.status == 200){
-              this.returnBack();
+              this.toc.tocid = res.data.data.tocid;
+              this.$emit('createToc',this.toc)
+              // this.$router.push({path:'/circle/newEdit',query:{select:JSON.stringify(this.toc)}})
             }else{
               Toast(res.data.message);
             }
@@ -92,6 +99,13 @@
 <style scoped lang="less">
   @import '../../../common/css/index';
   .m-createTopic{
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #fff;
+    z-index: 10001;
     .m-search-top{
       border-bottom: 1px solid @borderColor;
       padding: 20px 33px;

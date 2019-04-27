@@ -61,10 +61,20 @@
         <img src="/static/images/product/icon-service.png" class="m-icon" @click.stop="changeRoute('/personal/serviceCenter')" />
         <p>客服</p>
       </div>
+      <div class="m-icon-box">
+        <img src="/static/images/product/icon-share.png" class="m-icon" @click="sendShare" />
+        <p>推广</p>
+      </div>
       <div class="m-product-detail-btn">
         <span @click="buyNow">立即购买</span>
       </div>
       <!--        <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">-->
+    </div>
+    <div class="m-modal-img" v-if="show_img">
+      <div class="m-modal-state">
+        <span class="m-close" @click="show_img = false"> X</span>
+        <img :src="share_img" class="m-share-img" alt="">
+      </div>
     </div>
     <sku v-if="show_sku" :now_select="select_value" :now_num="canums" :product="product_info" @changeModal="changeModal" @sureClick="sureClick"></sku>
   </div>
@@ -151,12 +161,12 @@
             title: this.product_info.prtitle,
             desc: this.product_info.prdescription,
             imgUrl: this.product_info.prmainpic,
-            link: location.href.split('#')[0] + '?prid=' + this.$route.query.ipid
+            link: location.href.split('#')[0] + '?ipid=' + this.$route.query.ipid
           };
           axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
             if(res.data.status == 200) {
               options.link += '&secret_usid=' + res.data.data.secret_usid;
-              this.share_url = location.origin + '/?prid=' + this.$route.query.ipid +  '&secret_usid=' + res.data.data.secret_usid;
+              this.share_url = location.origin + '/?ipid=' + this.$route.query.ipid +  '&secret_usid=' + res.data.data.secret_usid;
               if(val !== 1) {
                 // 点击分享
                 this.show_invite = true;
@@ -194,7 +204,7 @@
           }
         }else {
           Toast('请登录后再试');
-          localStorage.setItem('login_to',location.href.split('#')[0] + '?prid=' + this.$route.query.prid);
+          localStorage.setItem('login_to',location.href.split('#')[0] + '?ipid=' + this.$route.query.ipid);
           // this.$router.push('/login');
           // this.$router.push('/login');
           this.$store.state.show_login = true;
@@ -323,7 +333,28 @@
           this.show_sku = true;
           this.cart_buy = 'buy';
         }
-      }
+      },
+      //推广
+      sendShare(){
+        if(this.share_img== ''){
+          axios.get(api.get_promotion,{
+            params:{
+              prid:this.product_info.prid,
+              token:localStorage.getItem('token'),
+              url:this.share_url
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              this.share_img = res.data.data;
+              this.show_img = true;
+            }
+          },error => {
+            Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
+          })
+        }else{
+          this.show_img = true;
+        }
+      },
     }
   }
 </script>

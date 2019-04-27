@@ -162,7 +162,7 @@ export const constantRouterMap = [
     path: '/circle',
     component: Layout,
     redirect: '',
-    children: [{ path: 'newEdit', component: () => import('../views/buyer/circle/newEdit'),hidden: true }
+    children: [{ path: 'newEdit', component: () => import('../views/buyer/circle/newEdit'),hidden: true , meta: { keepAlive: true }}
     ],
   },
   // 活动模块

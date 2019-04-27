@@ -118,6 +118,10 @@ export default {
       localStorage.setItem('share', 'prid');
       location.href = location.origin;
       this.shareRecord(params);
+    }else if(location.href.indexOf('ipid') > 0) {               // 星币商品详情
+      localStorage.setItem('share', 'ipid');
+      location.href = location.origin;
+      this.shareRecord(params);
     }else if(location.href.indexOf('circleid') > 0) {           // 店主版圈子右上角分享
       location.href = location.origin + '/#/circle';
       this.shareRecord(params);

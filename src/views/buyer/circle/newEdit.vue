@@ -95,7 +95,7 @@
               <img src="/static/images/circle/icon-topic.png" class="m-icon" alt="">
               <span>话题</span>
             </span>
-            <span  class="m-grey" @click="changeRoute('/circle/createTopic')">
+            <span  class="m-grey" @click="show_toc = true">
               <span>{{select_topic.toctitle || '请选择话题'}}</span>
               <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">
             </span>
@@ -146,7 +146,7 @@
 <!--        </div>-->
 <!--      </div>-->
     </div>
-
+    <create-toc @createToc="createToc" v-if="show_toc"></create-toc>
 
   </div>
 </template>
@@ -160,6 +160,7 @@
   import couponCard from '../components/couponCard'
   import wxapi from '../../../common/js/mixins'
   import wx from 'weixin-js-sdk';
+  import createToc from './createTopic';
   export default {
     name: "edit-circle",
     data() {
@@ -187,11 +188,12 @@
         select_product:[],
         nelocation:'',
         news_topic:[],
-        select_topic:{}
+        select_topic:{},
+        show_toc:false
       }
     },
     mixins: [wxapi],
-    components: { product, couponCard },
+    components: { product, couponCard ,createToc},
     // directives: {
     //   'mtblur' (el, binding, vnode) {
     //     let mtinput = el.querySelector('input')
@@ -600,7 +602,14 @@
         }else{
           this.select_topic = item;
         }
+      },
+      //点击创建
+      createToc(item){
+        this.select_topic = item;
+        this.getTopic();
+        this.show_toc = false;
       }
+
     },
     mounted() {
       common.changeTitle('发布');

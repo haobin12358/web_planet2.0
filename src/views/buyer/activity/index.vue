@@ -688,6 +688,9 @@
           }
         }, 500);
       }
+      localStorage.removeItem('share');
+      localStorage.removeItem('url');
+      localStorage.removeItem('login_to');
     }
   }
 </script>

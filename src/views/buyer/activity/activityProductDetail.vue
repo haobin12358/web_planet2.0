@@ -42,12 +42,14 @@
     <div class="m-detail-img-box">
       <img class="m-detail-img" v-for="item in product.tcdesc" :src="item" alt="">
     </div>
-    <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
-
     <div class="m-product-detail-foot">
       <div class="m-icon-box">
         <img src="/static/images/product/icon-service.png" class="m-icon" @click.stop="changeRoute('/personal/serviceCenter')" />
         <p>客服</p>
+      </div>
+      <div class="m-icon-box">
+        <img src="/static/images/product/icon-share.png" class="m-icon" @click="sendShare" />
+        <p>推广</p>
       </div>
       <div class="m-product-detail-btn">
         <span @click="buy">立即购买</span>
@@ -92,7 +94,10 @@
         canums: 1,
         cart_buy: null,
         which: '',
-        show_invite: false
+        show_invite: false,
+        show_img:false,
+        share_img:'',
+        share_url:'',
       }
     },
     mixins: [wxapi],
@@ -157,24 +162,10 @@
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
-                if(val !== 1) {
-                  // 点击分享
-                  this.show_invite = true;
-                }
+                this.share_url = options.link;
+
               }
             });
-
-            // 倒计时
-            const TIME_COUNT = 3;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.show_invite = false;
-                clearInterval(time);
-              }
-            }, 1000);
 
             // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
             if(wx.updateAppMessageShareData) {
@@ -197,6 +188,27 @@
           }
         }else {
           Toast('请在微信公众号分享');
+        }
+      },
+      //推广
+      sendShare(){
+        if(this.share_img== ''){
+          axios.get(api.get_promotion,{
+            params:{
+              prid:this.product.prid,
+              token:localStorage.getItem('token'),
+              url:this.share_url
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              this.share_img = res.data.data;
+              this.show_img = true;
+            }
+          },error => {
+            Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
+          })
+        }else{
+          this.show_img = true;
         }
       },
       // 返回上一页
@@ -445,22 +457,6 @@
           }
         }
       }
-      .m-invite-course {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1000;
-      }
-    }
-    .m-invite-course {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1000;
     }
   }
 </style>

@@ -196,6 +196,17 @@
            }else if(localStorage.getItem('share') == 'tlpid') {
              let params = url.split('?tlpid=')[1].split('&secret_usid')[0];
              this.$router.push({ path: '/limitedProductDetail', query: { tlpid: params[0]}})
+           }else if(localStorage.getItem('share') == 'ipid') {
+             let params;
+             if(url.indexOf('&secret_usid') > 0){
+               params = url.split('?ipid=')[1].split('&secret_usid')[0];
+             }else{
+               params = url.split('?ipid=')[1];
+             }
+             this.$router.push({ path: '/starProductDetail', query: { ipid: params }})
+           }else if(localStorage.getItem('share') == 'acname') {
+             let params = url.split('?acname=')[1].split('&secret_usid')[0];
+             this.$router.push({ path: '/activity', query: { acname: params }})
            }
         }
       },
@@ -235,6 +246,14 @@
                   params = url.split('?prid=')[1];
                 }
                 this.$router.push({ path: '/productDetail', query: { prid: params }})
+              }else if(localStorage.getItem('share') == 'ipid') {
+                let params;
+                if(url.indexOf('&secret_usid') > 0){
+                  params = url.split('?ipid=')[1].split('&secret_usid')[0];
+                }else{
+                  params = url.split('?ipid=')[1];
+                }
+                this.$router.push({ path: '/starProductDetail', query: { ipid: params }})
               }else if(localStorage.getItem('share') == 'activityId=new') {
                 this.$router.push({ path: '/activityProduct', query: { which: 'new' }})
               }else if(localStorage.getItem('share') == 'activityId=try') {
