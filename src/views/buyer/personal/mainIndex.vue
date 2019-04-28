@@ -96,6 +96,8 @@
         },
         //
         navClick(index){
+          this.page_info.page_num = 1;
+          this.bottom_show = false;
           if(this.nav_list[index].itname == this.select_nav.itname){
             return false;
           }
@@ -116,6 +118,7 @@
           })
         },
         myClick(){
+          this.page_info.page_num = 1;
           this.getNews('mynews');
         },
         /*获取导航*/

@@ -4,7 +4,8 @@
         <div class="m-search-input-box">
           <input type="text" v-model="toc.toctitle" maxlength="20" @input="searchInfo" @keypress="keyPress" placeholder="#请输入需要创建的话题#">
           <span class="m-icon-close" @click="clearInput"></span>
-          <span class="m-btn" @click="returnBack">创建</span>
+          <span class="m-btn" v-if="toc.toctitle" @click="returnBack">创建</span>
+          <span class="m-btn" v-else @click="goBack">返回</span>
         </div>
 
         <!--<span @click="changeRoute" v-if="searchContent">搜索</span>-->
@@ -45,6 +46,9 @@
           if(e.keyCode == 13){
               this.returnBack();
           }
+        },
+        goBack(){
+          this.$emit('createToc',this.toc)
         },
         /*返回*/
         returnBack(){

@@ -49,7 +49,17 @@
         <span class="m-more"></span>
       </div>
     </div>
-
+    <div class="m-product-detail-more" @click="changeRoute('/evaluate')">
+      <div>
+        <span class="m-label">评价</span>
+        <span class="m-start" v-for="(a, b) in star" :class="b <= product_info.ipaveragescore - 1 ?
+           'active' : ((b < product_info.ipaveragescore && b > product_info.ipaveragescore - 1) ? 'half' : '')"></span>
+      </div>
+      <div>
+        <span class="m-ft-20">查看详情</span>
+        <span class="m-more"></span>
+      </div>
+    </div>
     <div class="m-product-description" v-if="product_info.prdescription">
       {{product_info.prdescription}}
     </div>
@@ -232,7 +242,7 @@
       //改变路由
       changeRoute(v){
         if(v == '/evaluate'){
-          this.$router.push({path:v,query:{prid:this.product_info.prid}});
+          this.$router.push({path:v,query:{prid:this.product_info.ipid}});
         }else if(v == '/brandDetail'){
           this.$router.push({path:v,query:{pbid:this.product_info.pbid,pbname:this.product_info.pbname}});
         }else if(v == '/personal/serviceCenter'){

@@ -50,7 +50,7 @@
 
             <m-circle :index="index" v-for="(item,index) in result_list" v-if="select_nav.itid"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
             <!--            </template>-->
-            <ul class="m-user-list" v-if="result_list.length > 0 " >
+            <ul class="m-user-list" v-else-if="result_list.length > 0 " >
               <li v-for="(item,index) in result_list">
                 <div class="m-flex-start">
                   <img :src="item.usheader" class="m-avator" alt="">
@@ -211,7 +211,7 @@
                 kw:this.searchContent,
               }}).then(res => {
                 if(res.data.status ==200){
-                  this.result_list = res.data.data;
+                  this.result_list = [].concat(res.data.data);
                 }
               })
             }else{
@@ -317,7 +317,6 @@
           this.select_nav = arr[index];
           this.page_info.page_num = 1;
           this.bottom_show = false;
-
           this.searchInfo()
 
         },

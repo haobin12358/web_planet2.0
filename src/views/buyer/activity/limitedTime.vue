@@ -174,6 +174,7 @@
               this.endDate = res.data.tla.tlaendtime;
               this.status = '结束'
             }
+            this.timeOut();
           }
         },error => {
           Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
