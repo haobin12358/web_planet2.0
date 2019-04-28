@@ -59,17 +59,17 @@
       </div>
     </div>
 
-<!--    <div class="m-box">-->
-<!--      <div class="m-item" v-if="news_info.coupon">-->
-<!--        <div class="m-box-title">优惠领取</div>-->
-<!--        <coupon-card :couponList="news_info.coupon" @getCoupon="getCoupon"></coupon-card>-->
-<!--      </div>-->
-<!--      <div class="m-item" v-if="news_info.product">-->
-<!--        <div class="m-box-title m-margin">相关推荐</div>-->
-<!--        <product :list="news_info.product"></product>-->
-<!--      </div>-->
-<!--      -->
-<!--    </div>-->
+    <div class="m-box">
+      <div class="m-item" v-if="news_info.coupon">
+        <div class="m-box-title">优惠领取</div>
+        <coupon-card :couponList="news_info.coupon" @getCoupon="getCoupon"></coupon-card>
+      </div>
+      <div class="m-item" v-if="news_info.product">
+        <div class="m-box-title m-margin">相关推荐</div>
+        <product :list="news_info.product"></product>
+      </div>
+
+    </div>
     <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
 
     <div class="m-comment-modal" >
@@ -938,7 +938,7 @@
   z-index: 10;
 }
   .m-box {
-    margin: -100px 0 120px 0;
+    margin: 20px   0 120px 0;
     .m-item {
       text-align: left;
       .m-box-title {
