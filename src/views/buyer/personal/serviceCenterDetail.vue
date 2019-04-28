@@ -152,13 +152,11 @@
         font-size:24px;
         font-weight:300;
         color:#333333;
-        
       }
-
     }
     .m-serviceCenter-foot{
       // padding: 10px 0;
-      margin-top: 100px;
+      margin-top: 200px;
       width: 749px;
       // position: absolute;
       // top: 100px;
