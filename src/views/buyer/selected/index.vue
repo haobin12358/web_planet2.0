@@ -477,8 +477,14 @@
                   duration: 500
                 });
               let arr = [].concat(this.news_list)
-              arr[index].follow = !arr[index].follow;
-              this.news_list = [].concat(arr)
+              // arr[index].follow = !arr[index].follow;
+              //
+              for(let i in arr){
+                if(arr[i].author.usname == this.news_list[index].author.usname){
+                  arr[i].follow = !arr[i].follow;
+                }
+              }
+              this.news_list = [].concat(arr);
             }
           })
         },

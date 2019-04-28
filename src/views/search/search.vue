@@ -293,8 +293,14 @@
                   message: res.data.message,
                   duration: 500
                 });
-              let arr = [].concat(this.result_list)
-              arr[index].follow = !arr[index].follow;
+              let arr = [].concat(this.result_list);
+              // arr[index].follow = !arr[index].follow;
+              //
+              for(let i in arr){
+                if(arr[i].author.usname == this.result_list[index].author.usname){
+                  arr[i].follow = !arr[i].follow;
+                }
+              }
               this.result_list = [].concat(arr)
             }
           })

@@ -5,7 +5,7 @@
     <img :src="selecte_nav.actoppic" class="m-activity-top-img" alt="">
     <nav-list :navlist="activityList" :is-scroll="true" :is-act="true" @navClick="navClick"></nav-list>
     <mt-loadmore :top-method="loadTop" ref="loadmore">
-      <div  v-if="selecte_nav.acname == '限时特惠'">
+      <div  v-if="selecte_nav.actype == 4">
         <div class="m-one-limit" v-if="hot_list.length >0">
           <div class="m-limit-title">
             <span>爆款预售</span>
@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-      <div  v-if="selecte_nav.acname == '新人首单'">
+      <div  v-if="selecte_nav.actype == 0">
         <div class="m-one-limit">
           <div class="m-limit-center-content">
             <ul class="m-center-product-ul">
@@ -76,7 +76,7 @@
           </div>
         </div>
       </div>
-      <div  v-if="selecte_nav.acname == '试用商品'">
+      <div  v-if="selecte_nav.actype == 3">
         <div class="m-one-limit">
           <div class="m-limit-center-content">
             <ul class="m-center-product-ul">
@@ -93,7 +93,7 @@
           </div>
         </div>
       </div>
-      <div v-if="selecte_nav.acname == '每日竞猜'" class="m-guess-content">
+      <div v-if="selecte_nav.actype == 1" class="m-guess-content">
        <div class="m-guess-box">
          <span class="m-label-left" @click="changeRouteGuess">商品</span>
          <span class="m-label-right" @click="rulePopup = true">规则</span>
@@ -310,22 +310,22 @@
         arr[index].active = true;
         this.activityList = [].concat(arr);
         this.selecte_nav = this.activityList[index];
-        let name = this.selecte_nav.acname;
+        let name = this.selecte_nav.actype;
         for(let i in this.limit_list){
           clearInterval(this.limit_list[i].timer);
         }
         this.shareAct(this.activityList[index]);
         switch (name) {
-          case '限时特惠':
+          case 4:
             this.getLimited();
             break;
-          case '新人首单':
+          case 0:
             this.getNew();
             break;
-          case '试用商品':
+          case 3:
             this.getTry();
             break;
-          case '每日竞猜':
+          case 1:
             if(!this.rule){
               this.getRule();
             }
@@ -592,16 +592,16 @@
           clearInterval(this.limit_list[i].timer);
         }
         switch (name) {
-          case '限时特惠':
+          case 4:
             this.getLimited();
             break;
-          case '新人首单':
+          case 0:
             this.getNew();
             break;
-          case '试用商品':
+          case 3:
             this.getTry();
             break;
-          case '每日竞猜':
+          case 1:
             this.getGuessAll();
             break;
         }
