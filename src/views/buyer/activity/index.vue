@@ -241,7 +241,6 @@
               if(res.data.status == 200) {
                 this.secret_usid = res.data.data.secret_usid;
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
-                console.log(options.link)
               }
             });
           }

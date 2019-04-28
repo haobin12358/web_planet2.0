@@ -102,7 +102,7 @@ export default {
       localStorage.setItem('share', 'fmfpid');
       location.href = location.origin;
       this.shareRecord(params);
-    }else if(location.href.indexOf('tlpid') > 0) {             // 新人首单
+    }else if(location.href.indexOf('tlpid') > 0) {             // 限时活动
       localStorage.setItem('share', 'tlpid');
       location.href = location.origin;
       this.shareRecord(params);
