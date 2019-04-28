@@ -16,8 +16,8 @@
           </div>
         </div>
         <div class="w-otherque">
-          <div class="w-otherque-title">别的？</div>
-
+          <div class="w-otherque-title">别的{{question.qo.qoname}}？</div>
+          <p class="w-otherque-question" v-for="(item,index) in question.qo.other" @click="getQuestionByClick(item.quid)">{{item.ququest}}</p>
         </div>
 
         <div class="m-serviceCenter-foot">
@@ -63,6 +63,18 @@
       getQuestion() {
         let params = {
           quid: this.$route.query.quid,
+          token: localStorage.getItem('token')
+        };
+        axios.get(api.get_answer, { params: params }).then(res => {
+          if(res.data.status == 200) {
+            this.question = res.data.data;
+          }
+        })
+      },
+
+      getQuestionByClick(quid) {
+        let params = {
+          quid: quid,
           token: localStorage.getItem('token')
         };
         axios.get(api.get_answer, { params: params }).then(res => {
@@ -133,17 +145,26 @@
         font-size: 24px;
         font-weight: 400;
         color: #000000;
-
+      }
+      .w-otherque-question{
+        display: inline-block;
+        padding-top: 30px;
+        font-size:24px;
+        font-weight:300;
+        color:#333333;
+        
       }
 
     }
     .m-serviceCenter-foot{
       // padding: 10px 0;
+      margin-top: 100px;
       width: 749px;
-      position: fixed;
-      bottom: 70px;
+      // position: absolute;
+      // top: 100px;
       height: 98px;
       border: 1px solid @mainColor;
+      background-color: #fff;
       // border-radius: 10px;
       // box-shadow:0 5px 6px rgba(0,0,0,0.16);
       // margin-top: 44px;
