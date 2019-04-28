@@ -24,7 +24,7 @@
         </ul>
       </div>
       <div class="m-mainIndex-edit m-flex-between">
-        <div class="m-flex-start">
+        <div class="m-flex-start" @click="myClick">
           <img src="/static/images/circle/icon-edit.png" class="m-edit-icon" alt="">
           <span>我发布的</span>
         </div>
@@ -115,6 +115,9 @@
             }
           })
         },
+        myClick(){
+          this.getNews('mynews');
+        },
         /*获取导航*/
         getNav(){
           this.$http.get(this.$api.items_list, { params: { ittype:10,token:localStorage.getItem('token')}}).then(res => {
@@ -135,13 +138,13 @@
           })
         },
         /*获取资讯列表*/
-        getNews() {
+        getNews(itid) {
           this.$http.get(api.get_all_news,{
             params:{
               token:localStorage.getItem('token'),
               page_num:this.page_info.page_num,
               page_size: this.page_info.page_size,
-              itid: this.select_nav.itid,
+              itid: itid || this.select_nav.itid,
               nestatus:'usual',
               homepage:true
             }
