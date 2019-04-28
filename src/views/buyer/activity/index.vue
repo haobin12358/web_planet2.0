@@ -234,7 +234,7 @@
             title: items.acname,
             desc: items.acdesc,
             imgUrl: items.actoppic,       // 初步考虑用用户头像
-            link: location.href.split('#')[0] + '?acname=' + items.acname
+            link: location.href.split('#')[0] + '?actype=' + items.actype
           };
           if(!this.secret_usid){
             this.$http.get(this.$api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
@@ -264,7 +264,7 @@
         }else {
           // Toast('请登录后再试');
           if(!localStorage.getItem('token')){
-            let url = location.href.split('#')[0] + '?acname=' + items.acname
+            let url = location.href.split('#')[0] + '?actype=' + items.actype
             // localStorage.setItem('login_to',url);
             // this.$router.push('/login');
             this.$store.state.show_login = true;
@@ -489,7 +489,7 @@
             let index = 0;
             for(let i in this.activityList){
               this.activityList[i].active = false;
-              if(this.activityList[i].acname == this.$route.query.acname){
+              if(this.activityList[i].actype == this.$route.query.actype){
                 index = i;
               }
             }
