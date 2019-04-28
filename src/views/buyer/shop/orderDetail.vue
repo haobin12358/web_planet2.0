@@ -102,7 +102,7 @@
           </p>
         </div>
         <div class="m-total-money">
-          共{{totalProductNum}}件商品 合计：<span class="w-price" v-if="order_info.omfrom = 80">{{order_info.omtruemount}}星币</span><span class="w-price" v-else>￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）
+          共{{totalProductNum}}件商品 合计：<span class="w-price" v-if="order_info.omfrom == 80">{{order_info.omtruemount}}星币</span><span class="w-price" v-else>￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）
           <p class="m-back-btn">
             <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && order_info.omfrom != 80">全部退款</span>
           </p>
@@ -335,6 +335,7 @@
         }).then(res => {
           if(res.data.status == 200) {
             this.order_info = res.data.data;
+            console.log(this.order_info,res.data.data)
             if(res.data.data.omstatus >= 20){
               this.getLogistic();
             }
@@ -448,6 +449,7 @@
       // 请求微信支付参数
       payBtn() {
         let items = this.order_info;
+        console.log(items)
         let params = { omid: items.omid, omclient: '0', opaytype: '0' };
         if(items.omfrom == 80){
           this.omtruemount = items.omtruemount;

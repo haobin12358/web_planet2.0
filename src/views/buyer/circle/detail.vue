@@ -1,5 +1,5 @@
 <template>
-  <div class="m-circle-detail">
+  <div class="m-circle-detail" @touchmove="touchMove">
     <div class="m-circle-content" v-if="news_info">
 <!--      <h3 class="m-circle-title">{{news_info.netitle}}</h3>-->
       <div class="m-author-box">
@@ -46,7 +46,7 @@
               <img src="/static/images/circle/icon-like.png" v-else class="m-icon" alt="">
               <span :class="news_info.is_favorite == 1?'active':''">{{news_info.favoritnumber}}</span>
             </div>
-            <div class="m-circle-icon-one" >
+            <div class="m-circle-icon-one"  @click="showComment">
               <img src="/static/images/circle/icon-comment.png" class="m-icon" alt="">
               <span>{{news_info.commentnumber}}</span>
             </div>
@@ -76,7 +76,7 @@
       <div class="m-modal-state">
         <div class="m-modal-content">
            <h3 class="m-no-data" v-if="!comment_count">成为第一个评论的人吧</h3>
-          <div class="m-scroll" v-else ref="comment" @touchmove="touchMove">
+          <div class="m-scroll" v-else ref="comment" >
             <ul class="m-comment-ul">
               <li v-for="(items,index) in comment_list">
                 <img :src="items.user.usheader" class="m-user-img" alt="">
@@ -98,7 +98,7 @@
                     <p class="m-user-comment" @touchstart="gtouchstart(items,index)" @touchmove="gtouchmove()" @touchend="gtouchend(items,index)" @click.stop="commentClick(items,index)">{{items.nctext}}</p>
 
                   </div>
-                  <div class="m-comment-content" >
+                  <div class="m-comment-content" v-if="items.reply.length > 0">
                     <p v-for="(item,i) in items.reply" @click.stop="commentClick(item,index)" @touchstart="gtouchstart(item,index,i)" @touchmove="gtouchmove()" @touchend="gtouchend(item,index,i)">
                       <span class="m-user-name m-mr">{{item.commentuser}}:</span>
                       <span class="m-comment-back" v-if="item.replieduser">回复</span>
@@ -110,7 +110,7 @@
                 </div>
               </li>
             </ul>
-            <!--<bottom-line v-if="bottom_show"></bottom-line>-->
+            <bottom-line v-if="bottom_show"></bottom-line>
           </div>
           <p v-if="show_comment" class="m-comment-input">
             <input type="text" v-model="comment_content" placeholder="请输入评论">
@@ -132,21 +132,21 @@
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
 
-  var scroll = (function (className) {
-    var scrollTop;
-    return {
-      afterOpen: function () {
-        scrollTop = document.scrollingElement.scrollTop || document.body.scrollTop;
-        document.body.classList.add(className);
-        document.body.style.top = -scrollTop + 'px';
-      },
-      beforeClose: function () {
-        document.body.classList.remove(className);
-        document.scrollingElement.scrollTop = scrollTop;
-        document.body.scrollTop = scrollTop;
-      }
-    };
-  })('scroll');
+  // var scroll = (function (className) {
+  //   var scrollTop;
+  //   return {
+  //     afterOpen: function () {
+  //       scrollTop = document.scrollingElement.scrollTop || document.body.scrollTop;
+  //       document.body.classList.add(className);
+  //       document.body.style.top = -scrollTop + 'px';
+  //     },
+  //     beforeClose: function () {
+  //       document.body.classList.remove(className);
+  //       document.scrollingElement.scrollTop = scrollTop;
+  //       document.body.scrollTop = scrollTop;
+  //     }
+  //   };
+  // })('scroll');
   export default {
     name: "detail",
     data() {
@@ -324,6 +324,11 @@
         let vdo = document.getElementById("videoPlay");
         vdo.play();
       },
+      showComment(){
+        this.show_comment = !this.show_comment;
+        this.comment_one = null;
+        this.comment_index = null;
+      },
       /*跳转路由*/
       changeRoute(v,params,value){
         if(params == 'shtype'){
@@ -341,13 +346,13 @@
         }
         this[v] = bool;
         if(bool){
-          scroll.afterOpen();
+          // scroll.afterOpen();
         }else{
-          scroll.beforeClose();
+          // scroll.beforeClose();
           this.comment_one = null;
         }
         if(v == 'show_modal' && !i ) {
-          this.getComment();
+          // this.getComment();
         }
         if(v == 'show_modal' && !bool && i == 0) {
           this.getNewsDetail();
@@ -425,6 +430,7 @@
         }).then(res => {
           if(res.data.status == 200){
             this.isScroll =true;
+            this.news_info.commentnumber = res.data.total_count;
             if(res.data.data.length >0){
               if(this.page_info.page_num >1){
                 this.comment_list =  this.comment_list.concat(res.data.data);
@@ -782,6 +788,7 @@
   /*background-color: rgba(0,0,0,0.2);*/
   /*z-index: 101;*/
   /*transition: opacity .5s;*/
+  padding-bottom: 100px;
   .m-modal-state{
     background-color: #fff;
     /*position: absolute;*/
