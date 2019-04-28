@@ -204,9 +204,9 @@
                params = url.split('?ipid=')[1];
              }
              this.$router.push({ path: '/starProductDetail', query: { ipid: params }})
-           }else if(localStorage.getItem('share') == 'acname') {
-             let params = url.split('?acname=')[1].split('&secret_usid')[0];
-             this.$router.push({ path: '/activity', query: { acname: params }})
+           }else if(localStorage.getItem('share') == 'actype') {
+             let params = url.split('?actype=')[1].split('&secret_usid')[0];
+             this.$router.push({ path: '/activity', query: { actype: params }})
            }
         }
       },
@@ -264,9 +264,9 @@
                 this.$router.push({ path: '/dailyGuess'})
               }else if(localStorage.getItem('share') == 'index') {
                 this.$router.push({ path: '/selected'})
-              }else if(localStorage.getItem('share') == 'acname') {
-                let params = url.split('?acname=')[1].split('&secret_usid')[0];
-                this.$router.push({ path: '/activity', query: { acname: params }})
+              }else if(localStorage.getItem('share') == 'actype') {
+                let params = url.split('?actype=')[1].split('&secret_usid')[0];
+                this.$router.push({ path: '/activity', query: { actype: params }})
               }
             }
             if(localStorage.getItem('href')) {
@@ -477,8 +477,14 @@
                   duration: 500
                 });
               let arr = [].concat(this.news_list)
-              arr[index].follow = !arr[index].follow;
-              this.news_list = [].concat(arr)
+              // arr[index].follow = !arr[index].follow;
+              //
+              for(let i in arr){
+                if(arr[i].author.usname == this.news_list[index].author.usname){
+                  arr[i].follow = !arr[i].follow;
+                }
+              }
+              this.news_list = [].concat(arr);
             }
           })
         },

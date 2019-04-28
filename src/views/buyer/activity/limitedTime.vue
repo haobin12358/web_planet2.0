@@ -2,9 +2,9 @@
   <div class="m-limitedTime"  @touchmove="touchMove">
 
     <div class="m-limit-title">
-      <span>{{$route.query.tlaname}}</span>
+      <span>{{tlaname}}</span>
       <div class="m-flex-end">
-        <span class="m-active" v-if="show_time">距离{{$route.query.status}}</span>
+        <span class="m-active" v-if="show_time">距离{{status}}</span>
         <span class="m-active" v-else>已结束</span>
         <span class="m-activity-time" v-if="show_time"><img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">{{show_time}}</span>
       </div>
@@ -37,7 +37,14 @@
         isScroll: true,
         total_count: 0,
         timer:'',
-        show_time:''
+        show_time:'',
+        tlaname:'',
+        tlastarttime:'',
+        tlaendtime:'',
+        tlatoppic:'',
+        status:'',
+        endDate:''
+
       }
     },
     components:{ navList, product, bottomLine },
@@ -49,7 +56,7 @@
       localStorage.removeItem('share');
       localStorage.removeItem('url');
       localStorage.removeItem('login_to');
-      if(common.isWeixin()) {
+      // if(common.isWeixin()) {
         if(localStorage.getItem('token')) {
           // 倒计时
           const TIME_COUNT = 1;
@@ -62,33 +69,29 @@
               clearInterval(time);
             }
           }, 300);
-        }
+        // }
       }
     },
     methods: {
       // 分享商品
       shareList(val) {
-        if(common.isWeixin()) {
           if(localStorage.getItem('token')) {
             let options = {};
             let title = '',id = '';
 
             id = this.$route.query.tlaid;
             options = {
-              title: this.$route.query.tlaname,
-              desc: `活动时间：${this.$route.query.tlastarttime} - ${this.$route.query.tlaendtime}`,
-              imgUrl: this.$route.query.tlatoppic,
+              title: this.tlaname,
+              desc: `活动时间：${this.tlastarttime} - ${this.tlaendtime}`,
+              imgUrl: this.tlatoppic,
               link: window.location.href.split('#')[0] + '?tlaid=' + id
             };
 
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid
+
                 console.log(options.link)
-                if(val !== 1) {
-                  // 点击分享
-                  this.show_invite = true;
-                }
               }
             });
 
@@ -111,7 +114,7 @@
           }else {
             // Toast('请登录后再试');
           }
-        }
+
       },
       //滚动加载更多
       touchMove(e){
@@ -159,6 +162,18 @@
             }
             this.isScroll = true;
             this.total_count = res.data.total_count;
+
+            this.tlaname = res.data.tla.tlaname;
+            this.tlastarttime = res.data.tlatlastarttime;
+            this.tlaendtime = res.data.tla.tlaendtime;
+            // this.tlatoppic = this.product_list[0].tlatoppic;
+            if(res.data.tla.duration_start){
+              this.endDate = res.data.tla.tlastarttime;
+              this.status = '开始'
+            }else if(res.data.tla.duration_end){
+              this.endDate = res.data.tla.tlaendtime;
+              this.status = '结束'
+            }
           }
         },error => {
           Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
@@ -170,12 +185,12 @@
         let that = this;
 
 
-          if(this.$route.query.endDate){
+          if(this.endDate){
             if(this.timer){
               clearInterval(this.timer);
             }
             let endDate;
-            endDate = new Date(this.$route.query.endDate);
+            endDate = new Date(this.endDate);
             this.timer = setInterval(function () {
               let now = new Date();
               let leftTime = endDate.getTime()-now.getTime();
@@ -216,7 +231,7 @@
   .m-limitedTime{
     .m-limit-title{
       .flex-row(space-between);
-      padding: 5px 0 5px 20px;
+      padding: 20px 0 20px 20px;
       border-bottom: 1px solid #F2F2F2;
       font-weight: 600;
       font-size: 28px;

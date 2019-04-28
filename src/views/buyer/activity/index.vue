@@ -5,7 +5,7 @@
     <img :src="selecte_nav.actoppic" class="m-activity-top-img" alt="">
     <nav-list :navlist="activityList" :is-scroll="true" :is-act="true" @navClick="navClick"></nav-list>
     <mt-loadmore :top-method="loadTop" ref="loadmore">
-      <div  v-if="selecte_nav.acname == '限时特惠'">
+      <div  v-if="selecte_nav.actype == 4">
         <div class="m-one-limit" v-if="hot_list.length >0">
           <div class="m-limit-title">
             <span>爆款预售</span>
@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-      <div  v-if="selecte_nav.acname == '新人首单'">
+      <div  v-if="selecte_nav.actype == 0">
         <div class="m-one-limit">
           <div class="m-limit-center-content">
             <ul class="m-center-product-ul">
@@ -76,7 +76,7 @@
           </div>
         </div>
       </div>
-      <div  v-if="selecte_nav.acname == '试用商品'">
+      <div  v-if="selecte_nav.actype == 3">
         <div class="m-one-limit">
           <div class="m-limit-center-content">
             <ul class="m-center-product-ul">
@@ -93,7 +93,7 @@
           </div>
         </div>
       </div>
-      <div v-if="selecte_nav.acname == '每日竞猜'" class="m-guess-content">
+      <div v-if="selecte_nav.actype == 1" class="m-guess-content">
        <div class="m-guess-box">
          <span class="m-label-left" @click="changeRouteGuess">商品</span>
          <span class="m-label-right" @click="rulePopup = true">规则</span>
@@ -234,14 +234,13 @@
             title: items.acname,
             desc: items.acdesc,
             imgUrl: items.actoppic,       // 初步考虑用用户头像
-            link: location.href.split('#')[0] + '?acname=' + items.acname
+            link: location.href.split('#')[0] + '?actype=' + items.actype
           };
           if(!this.secret_usid){
             this.$http.get(this.$api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 this.secret_usid = res.data.data.secret_usid;
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
-                console.log(options.link)
               }
             });
           }
@@ -265,7 +264,7 @@
         }else {
           // Toast('请登录后再试');
           if(!localStorage.getItem('token')){
-            let url = location.href.split('#')[0] + '?acname=' + items.acname
+            let url = location.href.split('#')[0] + '?actype=' + items.actype
             // localStorage.setItem('login_to',url);
             // this.$router.push('/login');
             this.$store.state.show_login = true;
@@ -311,22 +310,22 @@
         arr[index].active = true;
         this.activityList = [].concat(arr);
         this.selecte_nav = this.activityList[index];
-        let name = this.selecte_nav.acname;
+        let name = this.selecte_nav.actype;
         for(let i in this.limit_list){
           clearInterval(this.limit_list[i].timer);
         }
         this.shareAct(this.activityList[index]);
         switch (name) {
-          case '限时特惠':
+          case 4:
             this.getLimited();
             break;
-          case '新人首单':
+          case 0:
             this.getNew();
             break;
-          case '试用商品':
+          case 3:
             this.getTry();
             break;
-          case '每日竞猜':
+          case 1:
             if(!this.rule){
               this.getRule();
             }
@@ -490,7 +489,7 @@
             let index = 0;
             for(let i in this.activityList){
               this.activityList[i].active = false;
-              if(this.activityList[i].acname == this.$route.query.acname){
+              if(this.activityList[i].actype == this.$route.query.actype){
                 index = i;
               }
             }
@@ -593,16 +592,16 @@
           clearInterval(this.limit_list[i].timer);
         }
         switch (name) {
-          case '限时特惠':
+          case 4:
             this.getLimited();
             break;
-          case '新人首单':
+          case 0:
             this.getNew();
             break;
-          case '试用商品':
+          case 3:
             this.getTry();
             break;
-          case '每日竞猜':
+          case 1:
             this.getGuessAll();
             break;
         }

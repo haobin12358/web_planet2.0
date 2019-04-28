@@ -197,7 +197,7 @@
       },
       // 分享商品
       shareProduct(val) {
-        if(common.isWeixin()) {
+
           if(localStorage.getItem('token')) {
             let options = {};
               options = {
@@ -210,6 +210,7 @@
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
                 this.share_url = options.link;
+
               }
             });
 
@@ -236,9 +237,7 @@
             // this.$router.push('/login');
             this.$store.state.show_login = true;
           }
-        }else {
-          Toast('请在微信公众号分享');
-        }
+
       },
       //推广
       sendShare(){

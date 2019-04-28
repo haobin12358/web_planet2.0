@@ -102,7 +102,7 @@ export default {
       localStorage.setItem('share', 'fmfpid');
       location.href = location.origin;
       this.shareRecord(params);
-    }else if(location.href.indexOf('tlpid') > 0) {             // 新人首单
+    }else if(location.href.indexOf('tlpid') > 0) {             // 限时活动
       localStorage.setItem('share', 'tlpid');
       location.href = location.origin;
       this.shareRecord(params);
@@ -145,8 +145,8 @@ export default {
       localStorage.setItem('share', 'index');
       location.href = location.origin;
       this.shareRecord(params);
-    }else if(location.href.indexOf('acname') > 0) {     // 跳转到活动
-      localStorage.setItem('share', 'acname');
+    }else if(location.href.indexOf('actype') > 0) {     // 跳转到活动
+      localStorage.setItem('share', 'actype');
       location.href = location.origin;
       this.shareRecord(params);
     }
