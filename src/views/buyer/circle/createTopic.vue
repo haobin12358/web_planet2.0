@@ -110,6 +110,7 @@
     min-height: 100vh;
     background-color: #fff;
     z-index: 10001;
+    font-size: 28px;
     .m-search-top{
       border-bottom: 1px solid @borderColor;
       padding: 20px 33px;
@@ -143,9 +144,11 @@
         .m-btn{
           position: absolute;
           right:0;
-          top:8.5px;
+          top:5px;
+          height: 40px;
+          line-height: 40px;
           border-left: 1px solid #C1C1C1;
-          padding: 0 30px;
+          padding: 0 20px;
           color: @mainColor;
         }
       }

@@ -71,17 +71,17 @@
       <div class="m-edit-select-box">
         <ul>
           <li>
-            <span>
+            <span class="m-flex-start">
               <img src="/static/images/circle/icon-label.png" class="m-icon" alt="">
               <span>标签</span>
             </span>
-            <span @click="circlePopup = true" class="m-grey">
+            <span @click="circlePopup = true" class="m-grey m-flex-end">
               <span>{{circle}}</span>
               <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">
             </span>
           </li>
           <li>
-            <span>
+            <span class="m-flex-start">
               <img src="/static/images/circle/icon-loc.png" class="m-icon" alt="">
               <span>定位</span>
             </span>
@@ -91,11 +91,11 @@
             </span>
           </li>
           <li>
-            <span>
+            <span class="m-flex-start">
               <img src="/static/images/circle/icon-topic.png" class="m-icon" alt="">
               <span>话题</span>
             </span>
-            <span  class="m-grey" @click="show_toc = true">
+            <span  class="m-grey m-flex-end" @click="show_toc = true">
               <span>{{select_topic.toctitle || '请选择话题'}}</span>
               <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="">
             </span>

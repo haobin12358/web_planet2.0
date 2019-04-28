@@ -98,7 +98,7 @@
         <ul class="m-order-ul">
           <li class="m-flex-between" v-if="!isGuess && !fromGift && star_info.can_reduce">
             <span>星币抵扣</span>
-            <div >
+            <div class="m-flex-end">
               <span class="m-price">可用{{star_info.reduce_integral}}星币抵扣{{star_info.reduce_mount}}元</span>
               <img src="/static/images/order/icon-radio-active.png" class="m-radio" v-if="show_star" @click="changeStar" alt="">
               <img src="/static/images/order/icon-radio.png" class="m-radio" v-else @click="changeStar"  alt="">

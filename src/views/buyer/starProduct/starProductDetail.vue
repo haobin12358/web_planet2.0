@@ -52,8 +52,8 @@
     <div class="m-product-detail-more" @click="changeRoute('/evaluate')">
       <div>
         <span class="m-label">评价</span>
-        <span class="m-start" v-for="(a, b) in star" :class="b <= product_info.ipaveragescore - 1 ?
-           'active' : ((b < product_info.ipaveragescore && b > product_info.ipaveragescore - 1) ? 'half' : '')"></span>
+        <span class="m-start" v-for="(a, b) in star" :class="b <= product_info.fiveaveragescore - 1 ?
+           'active' : ((b < product_info.fiveaveragescore && b > product_info.fiveaveragescore - 1) ? 'half' : '')"></span>
       </div>
       <div>
         <span class="m-ft-20">查看详情</span>

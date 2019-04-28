@@ -209,7 +209,7 @@
           background-color: transparent;
           border: none;
           padding-left: 40px;
-          font-size: 21px;
+          font-size: 24px;
         }
         .m-icon-close{
           position: absolute;
@@ -223,9 +223,11 @@
         .m-btn{
           position: absolute;
           right:0;
-          top:8.5px;
+          top:5px;
+          height: 40px;
+          line-height: 40px;
           border-left: 1px solid #C1C1C1;
-          padding: 0 30px;
+          padding: 0 20px;
           color: @mainColor;
         }
       }
