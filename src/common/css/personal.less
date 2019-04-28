@@ -25,9 +25,11 @@
   .m-personal-content{
     // padding: 0 25px;
     text-align: left;
-    position: absolute;
-    top:0;
-    left: 0;
+    // position: absolute;
+    // top:0;
+    // left: 0;
+    .flex-row(center);
+    
     .m-set-box{
       padding: 30px 25px  30px 0;
       &:after{
@@ -112,7 +114,7 @@
       }
     }
     &.m-setUp{
-      padding: 80px 0 0 25px ;
+      // padding: 80px 0 0 25px ;
       .m-set-box{
         padding: 20px 25px 0 0;
       }
@@ -130,7 +132,7 @@
 
     }
     &.m-address{
-      padding: 0 0 140px 25px;
+      // padding: 0 0 140px 25px;
     }
     &.m-addAddress{
      .m-one-part{
@@ -224,13 +226,13 @@
           }
         }
         .m-edit-ul{
-          margin-bottom: 50px;
+          // margin-bottom: 50px;
           li{
             .flex-row(space-between);
             font-size: 30px;
             padding: 20px ;
             line-height: 50px;
-            border-bottom: 1px solid #ccc;
+            border-bottom: 10px solid #F4F4F4;
               &.m-no-border{
                   border-bottom: none;
               }
@@ -276,8 +278,10 @@
               flex-flow: column;
               align-items: center;
               font-size: 24px;
+              padding: 30px 24px 30px 40px;
               .m-left{
-                width: 630px;
+                width: 100%;
+                font-size: 28px;
               }
               .m-address-name {
                 display: flex;
@@ -291,12 +295,12 @@
               .m-address-p{
                 text-align: left;
                 color: #999;
-                padding-left: 20px;
+                // padding-left: 20px;
                 line-height: 32px;
                 margin: 30px 0;
               }
               .m-address-edit-box{
-                width: 630px;
+                width: 100%;
                 margin-bottom: 10px;
                 .flex-row(space-between);
                 font-size: 18px;
@@ -309,6 +313,8 @@
           }
           &.m-addAddress-ul{
             li{
+              padding: 30px 40px;
+              border-bottom: 1px solid #F2F2F2;
               justify-content: flex-start;
                 &.m-default-address{
                   justify-content: space-between;
@@ -329,6 +335,7 @@
           }
           .m-addAddress-input{
             width: 380px;
+            height: 45px;
             text-align: left;
             font-size: 30px;
           }
@@ -362,23 +369,23 @@
     top: 750px;
     left: 260px;
   }
-  .m-foot-btn-save {
-    position: absolute;
-    top: 900px;
-    left: 25px;
-    span{
-      color: #ffffff;
-      display: inline-block;
-      width: 700px;
-      height: 106px;
-      line-height: 106px;
-      background-color: @mainColor;
-      font-size: 38px;
-      font-weight: bold;
-      border-radius: 10px;
-      box-shadow: 0 5px 6px rgba(0,0,0,0.16);
-    }
-  }
+  // .m-foot-btn-save {
+  //   position: absolute;
+  //   top: 900px;
+  //   left: 25px;
+  //   span{
+  //     color: #ffffff;
+  //     display: inline-block;
+  //     width: 700px;
+  //     height: 106px;
+  //     line-height: 106px;
+  //     background-color: @mainColor;
+  //     font-size: 38px;
+  //     font-weight: bold;
+  //     border-radius: 10px;
+  //     box-shadow: 0 5px 6px rgba(0,0,0,0.16);
+  //   }
+  // }
   .m-foot-btn{
     position: fixed;
     bottom: 140px;

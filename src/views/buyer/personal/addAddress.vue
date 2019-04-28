@@ -1,10 +1,10 @@
 <template>
   <div class="m-personal ">
-    <div class="m-personal-bg">
+    <!-- <div class="m-personal-bg">
       <span class="m-icon-bg"></span>
-    </div>
+    </div> -->
     <div class="m-personal-content m-setUp m-addAddress">
-      <div class="m-personal-info">
+      <!-- <div class="m-personal-info">
         <img class="m-personal-head-portrait" :src="user.usheader" alt="">
         <div class="m-personal-info-box">
           <div class="m-personal-info-text">
@@ -17,14 +17,14 @@
 
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="m-personal-body">
         <div class="m-one-part">
           <ul class="m-edit-ul m-addAddress-ul">
             <li>
               <div>
-                <span class="m-border"></span>
-                <span class="m-label"><span class="m-must">*</span> 收件人</span>
+                <!-- <span class="m-border"></span> -->
+                <span class="m-label">收件人</span>
               </div>
               <div>
                 <input type="text" class="m-addAddress-input" v-model="address.uaname">
@@ -32,8 +32,8 @@
             </li>
             <li>
               <div>
-                <span class="m-border"></span>
-                <span class="m-label"><span class="m-must">*</span> 手机号</span>
+                <!-- <span class="m-border"></span> -->
+                <span class="m-label">手机号</span>
               </div>
               <div>
                 <input type="text" class="m-addAddress-input" v-model="address.uaphone" maxlength="11">
@@ -41,8 +41,8 @@
             </li>
             <li class="m-default-address" @click="addressPopup = true">
               <div>
-                <span class="m-border"></span>
-                <span class="m-label"><span class="m-must">*</span> 省市区</span>
+                <!-- <span class="m-border"></span> -->
+                <span class="m-label">省市区</span>
               </div>
               <div>
                 <div class="m-address-text">{{addressText}}</div>
@@ -51,8 +51,8 @@
             </li>
             <li>
               <div>
-                <span class="m-border"></span>
-                <span class="m-label"><span class="m-must">*</span> 详细地址</span>
+                <!-- <span class="m-border"></span> -->
+                <span class="m-label">详细地址</span>
               </div>
               <div>
                 <input type="text" class="m-addAddress-input" v-model="address.uatext">
@@ -60,7 +60,7 @@
             </li>
             <li>
               <div>
-                <span class="m-border"></span>
+                <!-- <span class="m-border"></span> -->
                 <span class="m-label">邮政编码</span>
               </div>
               <div>
@@ -69,7 +69,7 @@
             </li>
             <li class="m-no-border m-default-address">
               <div>
-                <span class="m-border"></span>
+                <!-- <span class="m-border"></span> -->
                 <span>设为默认地址</span>
               </div>
               <div>
@@ -274,18 +274,21 @@
     }
   }
   .m-foot-btn-save {
+    padding-top: 100px;
+    background-color: #fff;
     span{
       text-align: center;
       display: inline-block;
-      width: 610px;
-      height: 106px;
-      line-height: 106px;
-      background-color: @mainColor;
-      font-size: 38px;
-      font-weight: bold;
-      border-radius: 10px;
-      box-shadow: 0 5px 6px rgba(0,0,0,0.16);
-      margin-top: 50px;
+      width: 750px;
+      height: 98px;
+      line-height: 98px;
+      background:linear-gradient(313deg,@mainColor 0%,@subColor 100%);
+      font-size: 30px;
+      font-weight: 500;
+      color: #fff
+      // border-radius: 10px;
+      // box-shadow: 0 5px 6px rgba(0,0,0,0.16);
+      // margin-top: 50px;
     }
   }
 </style>
