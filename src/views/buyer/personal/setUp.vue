@@ -6,7 +6,7 @@
 				<span class="w-setting-right" @click="openPicker('birthdayPicker')">{{birthday}}</span>
 
 			</div>
-			<div class="w-setting-item">
+			<div class="w-setting-item"  @click="changeRoute('/personal/addressManagement')">
 				<span>地址管理</span>
 				<span class="w-setting-icon-more"></span>
 

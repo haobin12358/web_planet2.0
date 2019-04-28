@@ -1,12 +1,12 @@
 <template>
   <div class="m-personal " >
-    <div class="m-personal-bg">
+    <!-- <div class="m-personal-bg">
       <span class="m-icon-bg"></span>
-    </div>
+    </div> -->
 
-    <div class="m-personal-content m-setUp m-address">
+    <div class="m-personal-content">
       <div class="m-no-coupon" v-if="addressList.length == 0">
-        <span class="m-no-img m-address-no-img"></span>
+        <!-- <span class="m-no-img m-address-no-img"></span> -->
         <p>暂无地址哦,<span class="m-red" @click="changeRoute('/personal/addAddress')">去新增地址</span>吧~</p>
       </div>
       <!--<p class="m-set-box">
@@ -20,7 +20,7 @@
              <div class="m-left">
                <div class="m-address-name">
                  <div>
-                   <span class="m-border"></span>
+                   <!-- <span class="m-border"></span> -->
                    <span>收货人：{{item.uaname}}</span>
                  </div>
                  <span>{{item.uaphone}}</span>
@@ -134,7 +134,7 @@
 <style lang="less" rel="stylesheet/less" scoped>
   @import "../../../common/css/personal";
   .m-personal {
-    background-color: #EEEEEE;
+    background-color: #fff;
     min-height: 100vh;
   }
   .m-address{
@@ -142,22 +142,27 @@
     .m-no-coupon{
       margin-top: 350px;
       margin-left: 105px;
+      .flex-row(center);
     }
   }
   .m-address-btn{
+    // position: fixed;
+    // bottom: 0;
     text-align: center;
-    margin-top: 153px;
+    padding-top: 100px;
+    background-color: #fff;
+    // margin-top: 153px;
     span{
       color: #ffffff;
       display: inline-block;
-      width: 700px;
-      height: 106px;
-      line-height: 106px;
-      background-color: @mainColor;
-      font-size: 38px;
-      font-weight: bold;
-      border-radius: 10px;
-      box-shadow:0 5px 6px rgba(0,0,0,0.16);
+      width: 750px;
+      height: 98px;
+      line-height: 98px;
+      background:linear-gradient(304deg,@mainColor 0%,@subColor 100%);
+      font-size: 30px;
+      font-weight: 500;
+      // border-radius: 10px;
+      // box-shadow:0 5px 6px rgba(0,0,0,0.16);
     }
   }
 </style>

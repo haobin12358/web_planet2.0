@@ -1,7 +1,7 @@
 <template>
     <div class="m-new-personal">
       <div class="m-personal-item m-personal-head m-flex-start">
-        <img src="" class="m-person-avator" alt="">
+        <img :src="user.usheader" class="m-person-avator" alt="">
         <div class="m-person-head-text">
           <div class="m-flex-end">
             <img src="/static/images/newpersonal/icon-code-small.png" class="m-person-code" alt="" @click="changeRoute('/personal/code')">

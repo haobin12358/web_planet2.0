@@ -15,6 +15,10 @@
             <p class="m-serviceCenter-answer-content m-ft-24">{{question.qacontent}}</p>
           </div>
         </div>
+        <div class="w-otherque">
+          <div class="w-otherque-title">别的？</div>
+
+        </div>
 
         <div class="m-serviceCenter-foot">
           <div class="m-serviceCenter-btn">
@@ -122,6 +126,16 @@
           font-weight:300;
         }
       }
+    }
+    .w-otherque{
+      padding: 35px 40px;
+      .w-otherque-title{
+        font-size: 24px;
+        font-weight: 400;
+        color: #000000;
+
+      }
+
     }
     .m-serviceCenter-foot{
       // padding: 10px 0;
