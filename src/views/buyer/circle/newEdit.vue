@@ -223,7 +223,12 @@
       },
       // 获取圈子所在的标签
       getNav() {
-        axios.get(api.items_list + "?ittype=10").then(res => {
+        axios.get(api.items_list ,{
+          params:{
+            ittype:10,
+            token:localStorage.getItem('token')
+          }
+      } ).then(res => {
           if(res.data.status == 200){
             let option = {};
             this.options = [];

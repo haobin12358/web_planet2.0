@@ -9,6 +9,7 @@
           <img :src="product.prmainpic"  v-else alt="">
           <div v-if="select_value">
             <p v-if="isAct &&  select_value.tlsprice" class="m-price">¥{{select_value.tlsprice | money}}</p>
+            <p class="m-price" v-else-if="product.ipprice">{{select_value.skuprice}}星币</p>
             <p class="m-price" v-else>￥{{select_value.skuprice | money}}</p>
             <p class="m-underline">价格：<s>¥{{product.prlineprice && (product.prlineprice | money)}}</s></p>
             <!--<span class="m-red" v-if="select_value.skustock">￥{{select_value.skuprice}}</span>-->
@@ -151,7 +152,7 @@
           if(v == -1 && this.num ==1){
             return false;
           }
-          this.num = this.num + v;
+          this.num = Number(this.num) + Number(v);
         },
         //判断一个数组里面是否包含另外一个数组
         contrastArr(aa,bb){

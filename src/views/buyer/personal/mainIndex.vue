@@ -28,36 +28,22 @@
           <img src="/static/images/circle/icon-edit.png" class="m-edit-icon" alt="">
           <span>我发布的</span>
         </div>
-<!--        <div class="m-position-relative" @click="labelShow = !labelShow">-->
-<!--          <span class="m-label">全部</span>-->
-<!--          <img src="/static/images/circle/icon-up-more.png" class="m-up-more" alt="">-->
-<!--          <div class="m-scroll" v-show="labelShow">-->
-<!--            <ul class="m-label-ul">-->
-<!--              <li>-->
-<!--                全部-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                游记-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                自由主题-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                全部-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                游记-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                自由主题-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
+        <div class="m-position-relative" @click="labelShow = !labelShow">
+          <span class="m-label">{{select_nav.itname}}</span>
+          <img src="/static/images/circle/icon-up-more.png" class="m-up-more" alt="">
+          <div class="m-scroll" v-show="labelShow">
+            <ul class="m-label-ul">
+              <li :class="select_nav.itid == item.itid ? 'active':''" v-for="(item,index) in nav_list" @click.stop="navClick(index)">
+                {{item.itname}}
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="m-mainIndex-content">
-        <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
+        <m-circle :index="index" v-for="(item,index) in news_list" v-if="news_list.length > 0"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
         <bottom-line v-if="bottom_show"></bottom-line>
+        <p class="m-no-data" v-else>该标签下暂无发布的内容</p>
       </div>
     </div>
 </template>
@@ -81,6 +67,19 @@
             total_count: 0,
             bottom_show: false,
             person_info:null,
+            nav_list:[
+              {
+                itdesc: "我是描述",
+                itid: "",
+                itname: "全部",
+                itrecommend: true,
+                itsort: null,
+                ittype: 10,
+                active: true,
+                psid: ""
+              }
+            ],
+            select_nav:{}
           }
       },
       components:{
@@ -89,11 +88,21 @@
       },
       mounted(){
           this.getInfo();
-          this.getNews();
+          this.getNav();
       },
       methods:{
         changeRoute(v,param){
           this.$router.push({path:v,query:{index:param}})
+        },
+        //
+        navClick(index){
+          if(this.nav_list[index].itname == this.select_nav.itname){
+            return false;
+          }
+          this.select_nav = this.nav_list[index];
+          this.getNews();
+          this.labelShow = false;
+
         },
         getInfo(){
           this.$http.get(api.get_home_top,{
@@ -106,6 +115,25 @@
             }
           })
         },
+        /*获取导航*/
+        getNav(){
+          this.$http.get(this.$api.items_list, { params: { ittype:10,token:localStorage.getItem('token')}}).then(res => {
+            if(res.data.status == 200){
+              if(res.data.data.length == 0){
+                this.nav_list = this.nav_list.concat([])
+              }else{
+                let arr = this.nav_list.concat(res.data.data);
+                for(let i=0;i<arr.length;i++){
+                  arr[i].active = false;
+                }
+               arr[0].active = true;
+                this.nav_list = [].concat(arr);
+              }
+              this.select_nav = this.nav_list[0];
+              this.getNews();
+            }
+          })
+        },
         /*获取资讯列表*/
         getNews() {
           this.$http.get(api.get_all_news,{
@@ -113,8 +141,9 @@
               token:localStorage.getItem('token'),
               page_num:this.page_info.page_num,
               page_size: this.page_info.page_size,
-              itid:'mynews',
+              itid: this.select_nav.itid,
               nestatus:'usual',
+              homepage:true
             }
           }).then(res => {
             if(res.data.status == 200){
@@ -307,18 +336,22 @@
           right: -30px;
           font-size: 24px;
           transition: height 0.1s ease-out;
+          z-index: 10002;
           .m-label-ul{
             overflow-y: scroll;
             overflow-x: hidden;
             li{
               padding: 15px 0;
+              &.active{
+                color: @mainColor;
+              }
             }
           }
         }
       }
     }
     .m-mainIndex-content{
-      padding: 0 33px;
+      padding: 0 0;
       background-color: #fff;
 
     }

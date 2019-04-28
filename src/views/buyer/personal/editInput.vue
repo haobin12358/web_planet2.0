@@ -227,12 +227,13 @@
 <style lang="less" rel="stylesheet/less" scoped>
   @import "../../../common/css/personal";
   .m-editInput{
-    font-size: 24px;
+    font-size: 28px;
     .m-edit-input {
       display: inline-block;
       width: 290px;
       height: 42px;
       line-height: 42px;
+      font-size: 28px;
     }
     .m-editInput-alert{
       padding: 33px 55px;
