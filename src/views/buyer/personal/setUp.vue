@@ -11,9 +11,9 @@
 				<span class="w-setting-icon-more"></span>
 
 			</div>
-			<div class="w-setting-item">
+			<div class="w-setting-item" @click="clearCache">
 				<span>清除缓存</span>
-				<span class="w-setting-icon-more" @click="clearCache"></span>
+				<span class="w-setting-icon-more"></span>
 				<!-- 暂不现实缓存大小 -->
 
 			</div>

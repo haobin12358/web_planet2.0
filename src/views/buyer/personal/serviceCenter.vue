@@ -126,12 +126,12 @@
     .m-serviceCenter-foot{
       height: 98px;
       width: 749px;
-      position: fixed;
-      bottom: 70px;
+      // position: fixed;
+      // bottom: 70px;
       // padding: 10px 0;
       // border-radius: 10px;
       // box-shadow:0 5px 6px rgba(0,0,0,0.16);
-      // margin-top: 44px;
+      margin-top: 200px;
       border: 1px solid @mainColor;
       .flex-row(space-around);
       // background-color: @mainC;
