@@ -260,7 +260,7 @@
               }else if(localStorage.getItem('share') == 'activityId=guess') {
                 this.$router.push({ path: '/guessProduct', query: { which: 'guess' }})
               }else if(localStorage.getItem('share') == 'uaid') {
-                this.$router.push({ path: '/dailyGuess'})
+                this.$router.push({ path: '/guessProductDetail'})
               }else if(localStorage.getItem('share') == 'index') {
                 this.$router.push({ path: '/selected'})
               }else if(localStorage.getItem('share') == 'actype') {
@@ -523,8 +523,11 @@
               // this.$router.push({ path: v, query: { prid: item.prid }});
               break;
             case '/activity':
-              if(item.contentlink)
-               window.location.href = item.contentlink;
+              if(item.contentlink){
+                let params = item.contentlink.split('?actype=')[1].split('&secret_usid')[0];
+                this.$router.push({ path: '/activity', query: { actype: params }})
+                // location.href = item.contentlink;
+              }
               break;
             default:
               this.$router.push({path:v,});

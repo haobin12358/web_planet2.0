@@ -699,7 +699,7 @@
         }, 500);
       }
       if(localStorage.getItem('secret_usid') == '/#/'){
-        localStorage.removeItem('secret_usid')
+        localStorage.removeItem('secret_usid');
       }
       localStorage.removeItem('share');
       localStorage.removeItem('url');
