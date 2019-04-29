@@ -457,17 +457,17 @@
                 Toast('今日未开奖');
               }
             }
-            if(date && localStorage.getItem('tipDate') != this.today) {
-              this.record = res.data.data;
-              if(res.data.data.result == 'uncorrect') {
-                this.failPopup = true;        // 猜错啦
-              }else if(res.data.data.result == 'correct') {
-                this.successPopup = true;     // 猜对啦
-              }else if(res.data.data.result == 'not_open') {
-                this.nonePopup = true;
-                Toast('昨日未开奖');
-              }
-            }
+            // if(date && localStorage.getItem('tipDate') != this.today) {
+            //   this.record = res.data.data;
+            //   if(res.data.data.result == 'uncorrect') {
+            //     this.failPopup = true;        // 猜错啦
+            //   }else if(res.data.data.result == 'correct') {
+            //     this.successPopup = true;     // 猜对啦
+            //   }else if(res.data.data.result == 'not_open') {
+            //     this.nonePopup = true;
+            //     Toast('昨日未开奖');
+            //   }
+            // }
           }
           if(res.data.status == 404) {
             if(localStorage.getItem('yesterday')) {
@@ -503,9 +503,9 @@
         localStorage.removeItem('uaid');
         if(localStorage.getItem('token')) {
           this.getGuess();                   // 获取今日参与记录
-          if(localStorage.getItem('tipDate') != this.today) {
-            this.getGuess(this.today);         // 获取昨日参与记录
-          }
+          // if(localStorage.getItem('tipDate') != this.today) {
+          //   this.getGuess(this.today);         // 获取昨日参与记录
+          // }
         }
         this.getTime();                    // 获取当前时间
         this.getTodayProduct();
