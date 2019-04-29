@@ -55,6 +55,12 @@
         <span @click="buy">立即购买</span>
       </div>
     </div>
+    <div class="m-modal-img" v-if="show_img">
+      <div class="m-modal-state">
+        <span class="m-close" @click="show_img = false"> X</span>
+        <img :src="share_img" class="m-share-img" alt="">
+      </div>
+    </div>
   </div>
 </template>
 
@@ -462,6 +468,38 @@
           &:first-child{
             margin-right: -6px;
           }
+        }
+      }
+    }
+    .m-modal-img{
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      left:0;
+      right: 0;
+      background-color: rgba(0,0,0,0.4);
+      .m-modal-state{
+        position: absolute;
+        left: 50%;
+        margin-left: -250px;
+        top:50%;
+        margin-top: -350px;
+        width: 500px;
+        height: 700px;
+        background-color: #fff;
+        border-radius: 10px;
+        .m-close{
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          font-size: 40px;
+        }
+        .m-share-img{
+          display: block;
+          width: 500px;
+          height: 700px;
         }
       }
     }

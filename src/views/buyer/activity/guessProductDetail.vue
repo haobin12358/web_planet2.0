@@ -47,6 +47,12 @@
         <span @click="buy">立即购买</span>
       </div>
     </div>
+    <div class="m-modal-img" v-if="show_img">
+      <div class="m-modal-state">
+        <span class="m-close" @click="show_img = false"> X</span>
+        <img :src="share_img" class="m-share-img" alt="">
+      </div>
+    </div>
   </div>
 </template>
 
