@@ -120,7 +120,7 @@
                 <span class="m-time-bg">{{correct_time[2]}}</span>
              </span>
              </p>
-             <div class="m-num-box">
+             <div class="m-num-box" v-if="hour || (!hour && submit)">
                <input ref="pwd" type="tel" maxlength="6" v-model="msg" v-if="hour && !submit" class="guess-num" unselectable="on"  autofocus />
                <ul class="m-input-box" @click="focus">
                  <li :class="msg.length == 0?'psd-blink':''" class="m-guess-num-input"><span v-if="msg.length > 0">{{msg[0]}}</span><s></s></li>

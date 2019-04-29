@@ -757,7 +757,7 @@
   }
   .m-selected-activity{
     .m-row{
-      .flex-row(space-between);
+      .flex-row(center);
       border-bottom: 1px solid #f4f4f4;
       text-align: left;
       .m-center-img{
@@ -768,7 +768,7 @@
       .m-col{
         img{
           display: block;
-          width: 370px;
+          width: 375px;
           height: 200px;
         }
       }
@@ -818,11 +818,11 @@
         margin-left: 20px;
       }
       .m-col{
-        width: 49%;
+        /*width: 49%;*/
         /*padding: 23px 0 10px ;*/
-        &:first-child{
-          border-right: 1px solid #f4f4f4;
-        }
+        /*&:first-child{*/
+        /*  border-right: 1px solid #f4f4f4;*/
+        /*}*/
         .m-activity-name{
           font-size: 32px;
           font-weight: 600;
