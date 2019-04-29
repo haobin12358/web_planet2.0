@@ -430,7 +430,7 @@
         }).then(res => {
           if(res.data.status == 200){
             this.isScroll =true;
-            this.news_info.commentnumber = res.data.total_count;
+
             if(res.data.data.length >0){
               if(this.page_info.page_num >1){
                 this.comment_list =  this.comment_list.concat(res.data.data);
@@ -479,6 +479,7 @@
             if(this.page_info.page_num >1){
               this.page_info.page_num = this.page_info.page_num -1
             }
+            this.news_info.commentnumber += 1;
             this.getComment();
             this.comment_content = '';
             // this.comment_one.comment = false;
