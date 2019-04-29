@@ -204,7 +204,7 @@
                 title: this.product.prtitle,
                 desc: this.product.prdescription,
                 imgUrl: this.product.prmainpic,
-                link: window.location.href.split('#')[0] + '?tlpid=' + this.$route.query.tlpid
+                link: location.href.split('#')[0] + '?tlpid=' + this.$route.query.tlpid
               };
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
@@ -213,7 +213,17 @@
 
               }
             });
-
+            // 倒计时
+            const TIME_COUNT = 3;
+            let count = TIME_COUNT;
+            let time = setInterval(() => {
+              if (count > 0 && count <= TIME_COUNT) {
+                count --;
+              } else {
+                this.show_invite = false;
+                clearInterval(time);
+              }
+            }, 1000);
             // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
             if(wx.updateAppMessageShareData) {
               wx.updateAppMessageShareData(options);

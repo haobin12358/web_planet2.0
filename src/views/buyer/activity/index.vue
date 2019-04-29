@@ -172,6 +172,7 @@
   import navList from '../../../components/common/navlist';
   import bottomLine from '../../../components/common/bottomLine';
   import { Toast } from 'mint-ui';
+  import wx from 'weixin-js-sdk';
   import wxapi from '../../../common/js/mixins';
   export default {
     name: 'activityIndex',
@@ -236,15 +237,25 @@
             imgUrl: items.actoppic,       // 初步考虑用用户头像
             link: location.href.split('#')[0] + '?actype=' + items.actype
           };
-          if(!this.secret_usid){
+          // if(!this.secret_usid){
             this.$http.get(this.$api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 this.secret_usid = res.data.data.secret_usid;
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
               }
             });
-          }
-
+          // }
+          // 倒计时
+          const TIME_COUNT = 3;
+          let count = TIME_COUNT;
+          let time = setInterval(() => {
+            if (count > 0 && count <= TIME_COUNT) {
+              count --;
+            } else {
+              this.show_invite = false;
+              clearInterval(time);
+            }
+          }, 1000);
           // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
           if(wx.updateAppMessageShareData) {
             wx.updateAppMessageShareData(options);
@@ -263,13 +274,13 @@
           }
         }else {
           // Toast('请登录后再试');
-          if(!localStorage.getItem('token')){
-            let url = location.href.split('#')[0] + '?actype=' + items.actype
-            // localStorage.setItem('login_to',url);
-            // this.$router.push('/login');
-            this.$store.state.show_login = true;
-            return false;
-          }
+          // if(!localStorage.getItem('token')){
+          //   let url = location.href.split('#')[0] + '?actype=' + items.actype
+          //   // localStorage.setItem('login_to',url);
+          //   // this.$router.push('/login');
+          //   this.$store.state.show_login = true;
+          //   return false;
+          // }
         }
       },
       // 跳转页面
@@ -686,6 +697,9 @@
             clearInterval(time);
           }
         }, 500);
+      }
+      if(localStorage.getItem('secret_usid') == '/#/'){
+        localStorage.removeItem('secret_usid')
       }
       localStorage.removeItem('share');
       localStorage.removeItem('url');

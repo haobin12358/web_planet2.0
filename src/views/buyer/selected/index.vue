@@ -157,7 +157,6 @@
         }
         wxapi.wxRegister(location.href.split('#')[0]);
         // localStorage.removeItem('share');
-        // localStorage.removeItem('url');
         if(!localStorage.getItem('token')){
           localStorage.removeItem('is_new');
         }
@@ -174,7 +173,7 @@
             }
           }, 500);
         }
-        if(localStorage.getItem('share') && localStorage.getItem('url') && localStorage.getItem('login_to')) {
+        if(localStorage.getItem('share') && localStorage.getItem('url')) {
           let url = localStorage.getItem('url');
            if(localStorage.getItem('share') == 'fmfpid') {
             let params = url.split('?fmfpid=')[1].split('&secret_usid')[0].split('&which=');
@@ -203,7 +202,7 @@
              }else{
                params = url.split('?ipid=')[1];
              }
-             this.$router.push({ path: '/starProductDetail', query: { ipid: params }})
+             this.$router.push({ path: '/personal/starProductDetail', query: { ipid: params }})
            }else if(localStorage.getItem('share') == 'actype') {
              let params = url.split('?actype=')[1].split('&secret_usid')[0];
              this.$router.push({ path: '/activity', query: { actype: params }})
@@ -253,7 +252,7 @@
                 }else{
                   params = url.split('?ipid=')[1];
                 }
-                this.$router.push({ path: '/starProductDetail', query: { ipid: params }})
+                this.$router.push({ path: '/personal/starProductDetail', query: { ipid: params }})
               }else if(localStorage.getItem('share') == 'activityId=new') {
                 this.$router.push({ path: '/activityProduct', query: { which: 'new' }})
               }else if(localStorage.getItem('share') == 'activityId=try') {

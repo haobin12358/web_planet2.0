@@ -140,7 +140,6 @@
       },
       // 分享商品
       shareProduct(val) {
-        if(common.isWeixin()) {
           if(localStorage.getItem('token')) {
             let options = {};
             let which = this.$route.query.which;
@@ -149,24 +148,34 @@
                 title: this.product.prtitle,
                 desc: this.product.prdescription,
                 imgUrl: this.product.prmainpic,
-                link: window.location.href.split('#')[0] + '?fmfpid=' + this.$route.query.fmfpid + '&which=new'
+                link:location.href.split('#')[0] + '?fmfpid=' + this.$route.query.fmfpid + '&which=new'
               };
             }else if(which == "try") {
               options = {
                 title: this.product.tctitle,
                 desc: this.product.tcdescription,
                 imgUrl: this.product.tcmainpic,
-                link: window.location.href.split('#')[0] + '?tcid=' + this.$route.query.tcid + '&which=try'
+                link: location.href.split('#')[0] + '?tcid=' + this.$route.query.tcid + '&which=try'
               };
             }
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
                 this.share_url = options.link;
-
+                console.log(options.link)
               }
             });
-
+            // 倒计时
+            const TIME_COUNT = 3;
+            let count = TIME_COUNT;
+            let time = setInterval(() => {
+              if (count > 0 && count <= TIME_COUNT) {
+                count --;
+              } else {
+                this.show_invite = false;
+                clearInterval(time);
+              }
+            }, 1000);
             // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
             if(wx.updateAppMessageShareData) {
               wx.updateAppMessageShareData(options);
@@ -184,11 +193,9 @@
               wx.onMenuShareTimeline(options);
             }
           }else {
-            Toast('请登录后再试');
+            // Toast('请登录后再试');
           }
-        }else {
-          Toast('请在微信公众号分享');
-        }
+
       },
       //推广
       sendShare(){

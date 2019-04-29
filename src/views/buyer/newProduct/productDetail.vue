@@ -178,7 +178,9 @@
         wxapi.wxRegister(location.href.split('#')[0]);
         this.getInfo();
         this.getUser();
-
+        if(localStorage.getItem('secret_usid') == '/#/'){
+          localStorage.removeItem('secret_usid')
+        }
         localStorage.removeItem('share');
         localStorage.removeItem('url');
         if(localStorage.getItem('token')) {

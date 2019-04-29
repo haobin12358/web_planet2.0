@@ -80,7 +80,7 @@ export default {
         // localStorage.setItem('location',location.href);
         // location.href = location.origin +'/login';
     }
-    let url = location.href.split('&from')[0];
+    let url =location.href.indexOf('&from') > 0? location.href.split('&from')[0]:location.href;
     if(!localStorage.getItem('url')) {
       if(url.indexOf('&secret_usid') > 0) {
         localStorage.setItem('url', url);

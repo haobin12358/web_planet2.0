@@ -165,7 +165,7 @@ export const constantRouterMap = [
     ],
   },
   // 活动模块
-  { path: '/activity', component: () => import('../views/buyer/activity/index'), meta: { keepAlive: true }, hidden: true},
+  { path: '/activity', component: () => import('../views/buyer/activity/index'), hidden: true},
   { path: '/newcomer', component: () => import('../views/buyer/activity/newcomer'), hidden: true },            // 新人尝鲜礼包
   { path: '/limitedTime', component: () => import('../views/buyer/activity/limitedTime'), hidden: true },            // 限时活动
   { path: '/dailyGuess', component: () => import('../views/buyer/activity/dailyGuess'), hidden: true },        // 每日竞猜

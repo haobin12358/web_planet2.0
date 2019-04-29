@@ -94,7 +94,17 @@
                 console.log(options.link)
               }
             });
-
+            // 倒计时
+            const TIME_COUNT = 3;
+            let count = TIME_COUNT;
+            let time = setInterval(() => {
+              if (count > 0 && count <= TIME_COUNT) {
+                count --;
+              } else {
+                this.show_invite = false;
+                clearInterval(time);
+              }
+            }, 1000);
             // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
             if(wx.updateAppMessageShareData) {
               wx.updateAppMessageShareData(options);
@@ -164,7 +174,7 @@
             this.total_count = res.data.total_count;
 
             this.tlaname = res.data.tla.tlaname;
-            this.tlastarttime = res.data.tlatlastarttime;
+            this.tlastarttime = res.data.tla.tlatlastarttime;
             this.tlaendtime = res.data.tla.tlaendtime;
             // this.tlatoppic = this.product_list[0].tlatoppic;
             if(res.data.tla.duration_start){
