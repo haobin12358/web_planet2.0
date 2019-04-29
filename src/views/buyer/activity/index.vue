@@ -111,8 +111,8 @@
 
            <h3 class="m-guess-title">竞猜每日大盘 赢取户外装备</h3>
            <img src="/static/images/newActivity/guess-text.png" class="m-guess-text-image" alt="">
-           <template v-if="hour && !submit">
-             <p class="m-guess-time" >
+           <template >
+             <p class="m-guess-time" v-if="hour && !submit">
                <span>距离本期竞猜结束还有</span>
                <span class="m-main-color">
                 <span class="m-time-bg">{{correct_time[0]}}</span>:
@@ -121,7 +121,7 @@
              </span>
              </p>
              <div class="m-num-box">
-               <input ref="pwd" type="tel" maxlength="6" v-model="msg" class="guess-num" unselectable="on" autofocus />
+               <input ref="pwd" type="tel" maxlength="6" v-model="msg" v-if="hour && !submit" class="guess-num" unselectable="on"  autofocus />
                <ul class="m-input-box" @click="focus">
                  <li :class="msg.length == 0?'psd-blink':''" class="m-guess-num-input"><span v-if="msg.length > 0">{{msg[0]}}</span><s></s></li>
                  <li :class="msg.length == 1?'psd-blink':''" class="m-guess-num-input"><span v-if="msg.length > 1">{{msg[1]}}</span><s></s></li>
@@ -132,11 +132,14 @@
                  <li :class="msg.length == 5?'psd-blink':''" class="m-guess-num-input"><span v-if="msg.length > 5">{{msg[5]}}</span><s></s></li>
                </ul>
              </div>
-             <div class="m-guess-btn" v-if="!submit">
+             <div class="m-guess-btn" v-if="hour && !submit">
                <span @click=submitResult>确认竞猜</span>
              </div>
              <div class="m-guess-result" v-else>
-               <p class="m-flex-center">
+               <p class="m-flex-center m-no-time" v-if="hour">
+                 <span>还未到开盘时间，请耐心等待</span>
+               </p>
+               <p class="m-flex-center" v-if="!hour && record.correct_num">
                  <span>本期大盘指数：</span>
                  <span class="m-guess-result-num">{{record.correct_num.cnnum}}</span>
                </p>
@@ -147,15 +150,18 @@
                <p class="m-mr20" v-if="failPopup">
                  很遗憾， 上次竞猜失败，请再接再厉吧！
                </p>
+               <p class="m-mr20" v-if="nonePopup">
+                 本期未参与/昨日未开奖
+               </p>
                <p v-if="successPopup">
                  <span class="m-guess-result-btn" @click="changeRouteGuess">前往选购</span>
                </p>
-               <p v-if="failPopup">
+               <p v-if="failPopup ||( hour && submit)">
                  <span class="m-guess-result-btn" >我知道了</span>
                </p>
              </div>
            </template>
-           <p class="m-guess-time" v-else>
+           <p class="m-guess-time" v-if="!hour && !submit">
              <span>本期竞猜活动已结束，请明天15：00点再参与！</span>
            </p>
 
@@ -207,7 +213,8 @@
         guess: {},
         correct_time:'',
         rulePopup:false,
-        secret_usid:''
+        secret_usid:'',
+        nonePopup:false
       }
     },
     components: {navList,bottomLine},
@@ -436,9 +443,19 @@
         };
         this.$http.get(this.$api.get_guess_num, { params: params }).then(res => {
           if(res.data.status == 200) {
+
             if(!date && res.data.data) {
               this.msg = res.data.data.gnnum;
               this.submit = true;
+              this.record = res.data.data;
+              if(res.data.data.result == 'uncorrect') {
+                this.failPopup = true;        // 猜错啦
+              }else if(res.data.data.result == 'correct') {
+                this.successPopup = true;     // 猜对啦
+              }else if(res.data.data.result == 'not_open') {
+                this.nonePopup = true;
+                Toast('今日未开奖');
+              }
             }
             if(date && localStorage.getItem('tipDate') != this.today) {
               this.record = res.data.data;
@@ -447,6 +464,7 @@
               }else if(res.data.data.result == 'correct') {
                 this.successPopup = true;     // 猜对啦
               }else if(res.data.data.result == 'not_open') {
+                this.nonePopup = true;
                 Toast('昨日未开奖');
               }
             }
@@ -619,7 +637,9 @@
         this.$refs.loadmore.onTopLoaded();
       },
       focus() {
-        this.$refs.pwd.focus();
+        if(!this.submit){
+          this.$refs.pwd.focus();
+        }
       },
       // 倒计时
       timeOut() {
@@ -1039,6 +1059,10 @@
              font-weight: 600;
              font-size: 48px;
              color: @mainColor;
+           }
+           .m-no-time{
+             margin: 70px 0;
+             font-size: 28px;
            }
            .m-main-color{
              color: @mainColor;
