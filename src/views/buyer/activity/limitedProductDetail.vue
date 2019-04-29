@@ -620,7 +620,7 @@
             /*border-radius: 10px 0 0 10px;*/
           }
           &.cancel{
-            background-color: #a4a4a4;
+            background: #a4a4a4;
           }
         }
       }

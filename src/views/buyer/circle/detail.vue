@@ -338,12 +338,12 @@
         }
       },
       changeModal(v,bool,i){
-        if(v == 'show_modal' && bool && !localStorage.getItem('token')){
-          let url = location.href.split('#')[0] + '?neid=' + this.$route.query.neid;
-          localStorage.setItem('login_to',url);
-          this.$store.state.show_login = true;
-          return false;
-        }
+        // if(v == 'show_modal' && bool && !localStorage.getItem('token')){
+        //   let url = location.href.split('#')[0] + '?neid=' + this.$route.query.neid;
+        //   localStorage.setItem('login_to',url);
+        //   this.$store.state.show_login = true;
+        //   return false;
+        // }
         this[v] = bool;
         if(bool){
           // scroll.afterOpen();
