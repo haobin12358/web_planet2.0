@@ -699,6 +699,7 @@
       .img-box {
         position: relative;
         margin-right: 10px;
+        margin-bottom: 10px;
         .circle-img {
           display: inline-block;
           width: 186px;
@@ -932,6 +933,7 @@
           width: 17px;
           height: 30px;
           vertical-align: text-top;
+          margin-left: 20px;
         }
       }
     }

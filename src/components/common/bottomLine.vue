@@ -1,9 +1,10 @@
 <template>
-  <div class="m-line">
-    <div class="m-line-name m-bottom">
-      <span>The End</span>
-      <!--<span>OUTFIT</span>-->
-    </div>
+  <div>
+<!--   class="m-line"  -->
+<!--    <div class="m-line-name m-bottom">-->
+<!--      <span>The End</span>-->
+<!--      &lt;!&ndash;<span>OUTFIT</span>&ndash;&gt;-->
+<!--    </div>-->
   </div>
 </template>
 

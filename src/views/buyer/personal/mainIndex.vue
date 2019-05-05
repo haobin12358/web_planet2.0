@@ -41,9 +41,10 @@
         </div>
       </div>
       <div class="m-mainIndex-content">
-        <m-circle :index="index" v-for="(item,index) in news_list" v-if="news_list.length > 0"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
-        <bottom-line v-if="bottom_show"></bottom-line>
+        <m-circle :index="index" v-for="(item,index) in news_list" v-if="news_list.length > 0"  :is-my="true" @deleteCircle="deleteCircle" :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
         <p class="m-no-data" v-else>该标签下暂无发布的内容</p>
+        <bottom-line v-if="bottom_show"></bottom-line>
+
       </div>
     </div>
 </template>
@@ -52,7 +53,7 @@
   import mCircle from '../../../components/common/circle';
   import bottomLine from '../../../components/common/bottomLine';
   import api from '../../../api/api';
-  import { Toast } from 'mint-ui';
+  import { Toast,MessageBox } from 'mint-ui';
     export default {
         name: "mainIndex",
       data(){
@@ -254,7 +255,24 @@
               this.news_list = [].concat(arr)
             }
           })
-        }
+        },
+        // 删除圈子
+        deleteCircle(index) {
+          let that = this;
+          MessageBox.confirm('你确定要删除这条圈子吗?').then(action => {
+            if(action){
+              this.$http.post(api.del_news + '?token='+localStorage.getItem('token'),{
+                neid: [that.news_list[index].neid]
+              }).then(res => {
+                if(res.data.status == 200) {
+                  Toast('删除成功');
+                  // this.$router.go(-1);
+                  that.news_list.splice(index,1);
+                }
+              })
+            }
+          });
+        },
       }
     }
 </script>

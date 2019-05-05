@@ -59,6 +59,9 @@
           <img src="/static/images/circle/icon-collect-active.png" v-if="circle.collected" class="m-icon" alt="">
           <img src="/static/images/circle/icon-collect.png" v-else class="m-icon" alt="">
         </div>
+        <div class="m-circle-icon-one" v-if="isMy && circle.is_own" @click.stop="deleteCircle">
+          <img src="/static/images/circle/icon-delete.png"  class="m-icon" alt="">
+        </div>
       </div>
     </div>
     <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
@@ -83,6 +86,10 @@
         index:{
             type:Number,
           default: 0
+        },
+        isMy:{
+            type:Boolean,
+          default:false
         }
       },
       methods:{
@@ -169,6 +176,9 @@
         },
         followClick(){
           this.$emit('followClick',this.index)
+        },
+        deleteCircle(){
+          this.$emit('deleteCircle',this.index)
         }
       }
     }
@@ -287,7 +297,7 @@
         display: block;
         width: 700px;
         height: 384px;
-        margin: 0 10px 10px 0;
+        /*margin: 0 10px 10px 0;*/
         background-color: #F2F2F2;
       }
     }
@@ -295,6 +305,7 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
+      text-overflow: ellipsis;
       overflow: hidden;
       text-align: left;
       &.m-first{

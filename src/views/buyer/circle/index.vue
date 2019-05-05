@@ -466,17 +466,18 @@
         .m-add-nav-label{
           display: block;
           padding: 0 30px;
+          margin-left: 30px;
           border-left: 1px solid #EFEFEF;
           font-size: 30px;
           color: #C1C1C1;
         }
       }
       .m-scroll-l{
-        width: 700px;
+        width: 640px;
         overflow-x: auto;
         overflow-y: hidden;
         margin: 20px 0 0;
-        padding: 0 28px;
+        padding: 0 68px 0 28px;
         .m-circle-nav{
           width: 101%;
           overflow-y: hidden;
@@ -484,6 +485,7 @@
           display: inline;
           white-space: nowrap;
           overflow-x: scroll;
+          padding-right: 62px;
           li{
             display: inline-block;
             padding: 5px;
