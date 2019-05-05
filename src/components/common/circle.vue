@@ -32,7 +32,7 @@
       <div class="m-circle-img-box" v-else-if="circle.showtype == 'picture'">
         <img :src="circle.mainpic" class="m-circle-img">
       </div>
-      <div class="m-circle-text" v-if="circle.netext" >
+      <div class="m-circle-text" v-if="circle.netext" :class="circle.showtype == 'text'?'m-first':''">
         <span class="m-circle-topic" v-if="circle.toctitle">#{{circle.toctitle}}#</span>
         <span  v-html="circle.netext">
         </span>
@@ -297,6 +297,9 @@
       -webkit-line-clamp: 3;
       overflow: hidden;
       text-align: left;
+      &.m-first{
+        padding-top: 30px;
+      }
       /*margin-bottom: 20px;*/
       .m-circle-topic{
         color: #006FCE;

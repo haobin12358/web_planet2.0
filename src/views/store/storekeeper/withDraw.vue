@@ -154,8 +154,8 @@
       }
 
       .w-foot-btn {
-        position: absolute;
-        bottom: 50px;
+        position: fixed;
+        bottom: 0;
 
         // left: 25px;
         span {
