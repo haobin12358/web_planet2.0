@@ -30,7 +30,10 @@
         <span class="m-icon-video"></span>
       </div>
       <div class="m-circle-img-box" v-else-if="circle.showtype == 'picture'">
-        <img :src="circle.mainpic" class="m-circle-img">
+        <div class="m-circle-img" :style="{backgroundImage:'url('+circle.mainpic+')'}">
+<!--          <img :src="circle.mainpic" >-->
+        </div>
+
       </div>
       <div class="m-circle-text" v-if="circle.netext" :class="circle.showtype == 'text'?'m-first':''">
         <span class="m-circle-topic" v-if="circle.toctitle">#{{circle.toctitle}}#</span>
@@ -298,7 +301,14 @@
         width: 700px;
         height: 384px;
         /*margin: 0 10px 10px 0;*/
-        background-color: #F2F2F2;
+        /*background-color: #F2F2F2;*/
+        overflow:hidden;
+
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size:cover;
+        -moz-background-size:cover;
+        background-size:cover;
       }
     }
     .m-circle-text{

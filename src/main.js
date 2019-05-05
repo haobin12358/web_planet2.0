@@ -200,6 +200,7 @@ router.beforeEach((to,from,next) => {
     MessageBox.confirm('检测到系统更新，为了更好的体验，请点击确定清除缓存').then(() => {
       localStorage.clear();
       localStorage.setItem('wx_url',window.location.href);
+      localStorage.setItem('version',store.state.version);
       // this.$store.state.show_login = true;
       // this.$router.go(0);
       next('/');
