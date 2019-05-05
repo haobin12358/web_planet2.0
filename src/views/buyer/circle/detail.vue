@@ -35,9 +35,7 @@
         </div>
 
 
-<!--        <div class="m-more-link" >-->
-<!--          <span @click.stop="lookMore">查看更多></span>-->
-<!--        </div>-->
+
         <div class="m-circle-icon-box m-flex-between">
           <img src="/static/images/circle/icon-share.png" class="m-icon" @click.stop="shareCircle" alt="">
           <div class="m-flex-end">
@@ -55,6 +53,10 @@
               <img src="/static/images/circle/icon-collect.png" v-else class="m-icon" alt="">
             </div>
           </div>
+        </div>
+        <div class="m-more-link" >
+          <span @click.stop="lookMore">查看更多</span>
+          <img src="/static/images/circle/icon-circle-more.png" @click.stop="lookMore" class="m-icon-more" alt="">
         </div>
       </div>
     </div>
@@ -774,10 +776,16 @@
 
   }
   .m-more-link{
-    padding: 20px 0;
-    font-size: 28px;
-    color: #409EFF;
-    text-decoration: underline;
+    padding-top: 30px ;
+    font-size: 24px;
+    color: @mainColor;
+    .flex-row(flex-end);
+    .m-icon-more{
+      display: inline-block;
+      width: 12px;
+      height: 21px;
+      margin-left: 10px;
+    }
   }
 }
 .m-comment-modal{

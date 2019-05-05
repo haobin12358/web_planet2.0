@@ -251,19 +251,19 @@
           height: 60px;
         }
         .m-footer-icon-bc{
-          /*width: 90px;*/
-          /*height: 90px;*/
-          /*background-color: #fff;*/
-          /*border-radius: 50%;*/
-          /*box-shadow:0px 3px 6px rgba(0,0,0,0.16);*/
+          width: 90px;
+          height: 90px;
+          background-color: #fff;
+          border-radius: 50%;
+          box-shadow:0px 3px 6px rgba(0,0,0,0.16);
           display: flex;
           flex-flow: row;
           align-items: center;
           justify-content: center;
           .m-footer-icon{
             display: inline-block;
-            width: 90px;
-            height: 90px;
+            width: 60px;
+            height: 60px;
           }
         }
         .active{

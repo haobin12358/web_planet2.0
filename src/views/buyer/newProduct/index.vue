@@ -150,14 +150,15 @@
         if(item){
           let params;
           let url = item.contentlink;
-          if(url.indexOf('prid') > 0){
-            if(url.indexOf('&secret_usid') > 0){
-              params = url.split('?prid=')[1].split('&secret_usid')[0];
-            }else{
-              params = url.split('?prid=')[1];
-            }
-            this.$router.push({ path: '/productDetail', query: { prid: params }})
-          }
+          window.location.href=url;
+          // if(url.indexOf('prid') > 0){
+          //   if(url.indexOf('&secret_usid') > 0){
+          //     params = url.split('?prid=')[1].split('&secret_usid')[0];
+          //   }else{
+          //     params = url.split('?prid=')[1];
+          //   }
+          //   this.$router.push({ path: '/productDetail', query: { prid: params }})
+          // }
         }else{
            this.$router.push(v)
         }
