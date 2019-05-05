@@ -17,7 +17,8 @@
           <li v-for="(item,index) in nav_list" :class="item.active?'active':''" @click="navClick(index)">{{item.itname}}</li>
         </ul>
       </div>
-      <product :list="product_list"></product>
+      <product v-if="product_list.length >0 " :list="product_list"></product>
+      <p class="m-no-data" v-else>该场景下无数据</p>
       <bottom-line v-if="bottom_show"></bottom-line>
       <span class="m-icon-top" @click="returnTop"></span>
     </div>
@@ -285,7 +286,7 @@
         line-height: 53px;
         background-color: #ccc;
         margin-right: 30px;
-        border-radius: 10px;
+        /*border-radius: 10px;*/
         &.active{
           background-color: @mainColor;
           color: #fff;

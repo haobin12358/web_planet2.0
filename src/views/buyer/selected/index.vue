@@ -52,9 +52,9 @@
           <!--商品分类-->
           <div class="m-scroll " v-if="icon_list">
             <ul class="m-equipment-icon-ul">
-              <li v-for="(item,index) in icon_list" @click="changeRoute('equipment/detail',item)">
-                <img :src="item.pcpic" alt="">
-                <span class="m-name">{{item.pcname}}</span>
+              <li v-for="(item,index) in icon_list" @click="changeRoute('/scene',item)">
+                <img :src="item.pspic" alt="">
+                <span class="m-name">{{item.psname}}</span>
               </li>
             </ul>
           </div>
@@ -377,9 +377,9 @@
             }
           })
         },
-        //获取装备信息
+        //获取场景信息
         getCategory(){
-          axios.get(api.category_list).then(res => {
+          axios.get(api.scene_list).then(res => {
             if(res.data.status == 200){
               this.icon_list = [].concat(res.data.data);
             }
@@ -506,9 +506,9 @@
         /*查看更多*/
         changeRoute(v, item) {
           switch(v) {
-            case 'equipment/detail':
+            case '/scene':
               if(item){
-                this.$router.push({path:v,query:{pcid:item.pcid}});
+                this.$router.push({path:v,query:{psid:item.psid}});
               }else{
                 this.$router.push({path:v});
               }
@@ -746,6 +746,7 @@
         display: block;
         width: 80px;
         height: 80px;
+        margin-bottom: 10px;
         /*box-shadow:5px 5px 6px rgba(0,0,0,0.16);*/
       }
       .m-name{
