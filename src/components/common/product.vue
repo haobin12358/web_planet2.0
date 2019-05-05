@@ -3,8 +3,8 @@
     <img :src="product.prmainpic" class="m-product-img" alt="">
     <h3 class="m-product-title">【{{product.brand.pbname}}】{{product.prtitle}}</h3>
     <div class="m-flex-between ">
-      <span class="m-can-price">{{product.prprice}}</span>
-      <s class="m-line-price">{{product.prlineprice || product.prprice}}</s>
+      <span class="m-can-price">¥{{product.prprice}}</span>
+      <s class="m-line-price">¥{{product.prlineprice || product.prprice}}</s>
     </div>
   </div>
 </template>

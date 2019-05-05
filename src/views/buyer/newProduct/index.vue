@@ -4,8 +4,8 @@
       <!--轮播图-->
       <div class="m-newProduct-swipe">
         <mt-swipe :auto="3000" v-if="swipe_list">
-          <mt-swipe-item v-for="item in swipe_list" :key="item.ibid">
-            <img :src="item.ibpic" class="img" @click="changeRoute('/productDetail', item)">
+          <mt-swipe-item v-for="item in swipe_list" :key="item.hibid">
+            <img :src="item.hibpic" class="img" @click="changeRoute('/productDetail', item)">
           </mt-swipe-item>
         </mt-swipe>
       </div>
@@ -146,8 +146,22 @@
         }
       },
       // 页面跳转
-      changeRoute(v){
-        this.$router.push(v)
+      changeRoute(v,item){
+        if(item){
+          let params;
+          let url = item.contentlink;
+          if(url.indexOf('prid') > 0){
+            if(url.indexOf('&secret_usid') > 0){
+              params = url.split('?prid=')[1].split('&secret_usid')[0];
+            }else{
+              params = url.split('?prid=')[1];
+            }
+            this.$router.push({ path: '/productDetail', query: { prid: params }})
+          }
+        }else{
+           this.$router.push(v)
+        }
+
       },
       //导航切换
       navClick(index){
@@ -242,7 +256,7 @@
     .m-product-head{
       width: 100%;
       position: relative;
-      height: 250px;
+      /*height: 250px;*/
       .m-selected-search{
         position: absolute;
         top:10px;

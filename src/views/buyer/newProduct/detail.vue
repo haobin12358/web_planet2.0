@@ -150,7 +150,7 @@
       padding: 0;
       box-sizing: border-box;
       .m-search-input-box{
-        height: 60px;
+        /*height: 60px;*/
       }
     }
     .m-equipment-h3{

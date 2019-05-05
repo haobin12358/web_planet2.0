@@ -516,10 +516,10 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      padding: 0 0 0 50px;
+      padding: 0 0 0 0;
       /*padding: 26px 0 98px;*/
       background-color: #fff;
-      .flex-row(space-between);
+      .flex-row(space-around);
       .m-icon-box{
         .flex-col(center);
         width: 80px;
@@ -537,7 +537,7 @@
         span{
           color: #ffffff;
           display: inline-block;
-          width: 620px;
+          width: 580px;
           text-align: center;
           font-size: 30px;
           background:linear-gradient(313deg,@mainColor 0%,@subColor 100%);

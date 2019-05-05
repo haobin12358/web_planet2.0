@@ -126,11 +126,20 @@
             }
           }, 1000);
         }
-        axios.get(api.get_inforcode + "?ustelphone=" + this.ustelphone).then(res => {
-          if(res.data.status == 200) {
-            Toast(res.data.message);
-          }
-        });
+        if(this.from == 'password'){
+          axios.get(api.get_inforcode + "?ustelphone=" + this.ustelphone +'&token=' +localStorage.getItem('token')).then(res => {
+            if(res.data.status == 200) {
+              Toast(res.data.message);
+            }
+          });
+        }else{
+          axios.get(api.get_inforcode + "?ustelphone=" + this.ustelphone ).then(res => {
+            if(res.data.status == 200) {
+              Toast(res.data.message);
+            }
+          });
+        }
+
       },
       // 保存信息
       saveUser() {

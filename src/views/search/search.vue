@@ -1,5 +1,5 @@
 <template>
-    <div class="m-search">
+    <div class="m-search" @touchmove="touchMove">
       <div class="m-flex-between m-search-top">
         <div class="m-search-input-box">
           <input type="text" v-model="searchContent" maxlength="20" @input="searchInfo" @keypress="keyPress" :placeholder="placeholder">
@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="m-search-content" v-else>
-        <div class="m-search-one" v-if="!result_list.length && history_list">
+        <div class="m-search-one" v-if="!searchContent && history_list">
           <p class="m-ft-22 m-flex-between">
             <span>历史记录</span>
             <span @click="clearHistory">清除</span>
@@ -47,10 +47,10 @@
           </div>
 
           <div class="m-circle-body" v-if="result_list.length >0 ">
-
             <m-circle :index="index" v-for="(item,index) in result_list" v-if="select_nav.itid"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
             <!--            </template>-->
-            <ul class="m-user-list" v-else-if="result_list.length > 0 " >
+
+            <ul class="m-user-list" v-if="select_nav.itid == ''">
               <li v-for="(item,index) in result_list">
                 <div class="m-flex-start">
                   <img :src="item.usheader" class="m-avator" alt="">
@@ -116,6 +116,7 @@
   import navList from '../../components/common/navlist';
   import bottomLine from '../../components/common/bottomLine';
   import mCircle from '../../components/common/circle';
+  import common from '../../common/js/common'
     export default {
         data(){
           return{
@@ -209,20 +210,52 @@
                 token:localStorage.getItem('token'),
                 itid:this.select_nav.itid,
                 kw:this.searchContent,
+                page_num: this.page_info.page_num,
+                page_size: this.page_info.page_size
               }}).then(res => {
                 if(res.data.status ==200){
-                  this.result_list = [].concat(res.data.data);
+                  this.isScroll = true;
+                  if(res.data.data.length > 0){
+                    if(this.page_info.page_num >1){
+                      this.result_list = this.result_list.concat(res.data.data);
+                    }else{
+                      this.result_list = [].concat(res.data.data);
+                    }
+                    this.page_info.page_num += 1;
+                    this.total_count = res.data.total_count;
+                  }else{
+                    this.result_list = [];
+                    this.page_info.page_num = 1;
+                    this.total_count = 0;
+                  }
+
+                  // console.log(this.result_list)
                 }
               })
             }else{
               axios.get(api.guess_search,{
                 params:{
                   kw:this.searchContent,
-                  shtype:this.$route.query.shtype || 'product'
+                  shtype:this.$route.query.shtype || 'product',
+                  page_num: this.page_info.page_num,
+                  page_size: this.page_info.page_size
                 }
               }).then(res => {
                 if(res.data.status ==200){
-                  this.result_list = res.data.data;
+                  this.isScroll = true;
+                  if(res.data.data.length > 0){
+                    if(this.page_info.page_num >1){
+                      this.result_list = this.result_list.concat(res.data.data);
+                    }else{
+                      this.result_list = [].concat(res.data.data);
+                    }
+                    this.page_info.page_num += 1;
+                    this.total_count = res.data.total_count;
+                  }else{
+                    this.result_list = [];
+                    this.page_info.page_num = 1;
+                    this.total_count = 0;
+                  }
                 }
               })
             }
