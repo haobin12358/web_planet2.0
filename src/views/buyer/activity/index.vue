@@ -24,7 +24,7 @@
              <ul>
                <li v-for="(item,index) in hot_list" @click="changeRoute('/productDetail',item)">
                  <img :src="item.prmainpic" class="m-hot-product-img" alt="">
-                 <p>{{item.prtitle}}</p>
+                 <p class="m-hot-title">{{item.prtitle}}</p>
                  <p class="m-num">¥{{item.prprice | money}}</p>
                </li>
              </ul>
@@ -44,7 +44,10 @@
           <div class="m-limit-center-content">
             <ul class="m-center-product-ul">
               <li v-for="(item,i) in items.product_list" @click="changeRoute('/limitedProductDetail',item)">
-                <img :src="item.prmainpic" class="m-product-img" alt="">
+                <div class="m-product-img" :style="{backgroundImage:'url(' + item.prmainpic +')'}">
+
+                </div>
+<!--                <img :src="item.prmainpic" class="m-product-img" alt="">-->
                 <p class="m-product-name">{{item.prtitle}}</p>
                 <p class="m-flex-between">
                   <span class="m-num">¥{{item.tlpprice}}</span>
@@ -64,7 +67,10 @@
           <div class="m-limit-center-content">
             <ul class="m-center-product-ul">
               <li v-for="(item,index) in new_list" @click="changeRoute('/activityProductDetail',item,'new')">
-                <img :src="item.prmainpic" class="m-product-img" alt="">
+                <div class="m-product-img" :style="{backgroundImage:'url(' + item.prmainpic +')'}">
+
+                </div>
+<!--                <img :src="item.prmainpic" class="m-product-img" alt="">-->
                 <p class="m-product-name">{{item.prtitle}}</p>
                 <p class="m-flex-between">
                   <span class="m-num">¥{{item.prprice | money}}</span>
@@ -81,7 +87,10 @@
           <div class="m-limit-center-content">
             <ul class="m-center-product-ul">
               <li v-for="(item,index) in try_list" @click="changeRoute('/activityProductDetail',item,'try')">
-                <img :src="item.tcmainpic" class="m-product-img" alt="">
+                <div class="m-product-img" :style="{backgroundImage:'url(' + item.prmainpic +')'}">
+
+                </div>
+<!--                <img :src="item.tcmainpic" class="m-product-img" alt="">-->
                 <p class="m-product-name">{{item.tctitle}}</p>
                 <p class="m-flex-between">
                   <span class="m-num">{{item.zh_remarks}}</span>
@@ -794,6 +803,15 @@
         }
         .m-hot-right{
           overflow: hidden;
+          .m-hot-title{
+            white-space: normal;
+            overflow: hidden; // 超出的文本隐藏
+            word-break: break-word;  // 英文换行
+            text-overflow: ellipsis;    // 溢出用省略号显示
+            display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+            -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+            -webkit-line-clamp: 2;
+          }
           ul{
             .flex-row(flex-start);
             overflow-x: auto;
@@ -891,6 +909,13 @@
                 display: block;
                 width: 320px;
                 height: 450px;
+                overflow:hidden;
+
+                background-position: center center;
+                background-repeat: no-repeat;
+                -webkit-background-size:cover;
+                -moz-background-size:cover;
+                background-size:cover;
               }
               .m-product-name{
                 width: 320px;

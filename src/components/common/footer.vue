@@ -230,7 +230,7 @@
     left:0;
     bottom: 0;
     width: 100%;
-    height: 90px;
+    height: 100px;
     background-color: #FAFAFA;
     z-index: 1001;
     ul{

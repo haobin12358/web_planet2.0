@@ -203,9 +203,9 @@
             background:rgba(255,255,255,1);
             line-height: 63px;
             margin: 0 35px 20px 0;
-            /*&:nth-child(3n){
+            &:nth-child(3n){
               margin-right: 0;
-            }*/
+            }
             img{
               display: block;
               width: 100%;

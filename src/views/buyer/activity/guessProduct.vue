@@ -10,7 +10,10 @@
         <span class="m-down-price" v-if="item.skudiscount">
           直降{{item.skudiscount}}元
         </span>
-        <img class="m-product-img" :src="item.prmainpic">
+        <div class="m-product-img" :style="{backgroundImage:'url(' + item.prmainpic +')'}">
+
+        </div>
+<!--        <img class="m-product-img" :src="item.prmainpic">-->
         <div class="m-product-name"><span class="m-product-tag">【{{title}}】</span>{{item.prtitle}}</div>
         <div class="m-product-price" v-if="item.prprice"><span class="m-price-time">￥{{item.prprice | money}}</span></div>
       </div>
@@ -238,6 +241,13 @@
           width: 340px;
           height: 453px;
           display: block;
+          overflow:hidden;
+
+          background-position: center center;
+          background-repeat: no-repeat;
+          -webkit-background-size:cover;
+          -moz-background-size:cover;
+          background-size:cover;
         }
         .m-product-name{
           font-size: 24px;

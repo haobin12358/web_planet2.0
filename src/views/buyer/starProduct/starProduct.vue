@@ -54,7 +54,10 @@
       </div>
       <div class="m-product-list" v-if=" product_list.length >0 ">
         <div class="m-one-product"  v-for="(item,index) in product_list" @click="changeRoute('/personal/starProductDetail',item)">
-          <img :src="item.prmainpic" class="m-product-img" alt="">
+<!--          <img :src="item.prmainpic" class="m-product-img" alt="">-->
+          <div class="m-product-img" :style="{backgroundImage:'url(' + item.prmainpic +')'}">
+
+          </div>
           <h3 class="m-product-title">【{{item.pbname}}】{{item.prtitle}}</h3>
           <div class="m-flex-end ">
             <img src="/static/images/newpersonal/icon-star-can.png" v-if="integral.balance >= item.ipprice" class="m-icon" alt="">
@@ -278,7 +281,13 @@
           display: block;
           width: 340px;
           height: 450px;
-          background-color: #9fd0bf;
+          overflow:hidden;
+
+          background-position: center center;
+          background-repeat: no-repeat;
+          -webkit-background-size:cover;
+          -moz-background-size:cover;
+          background-size:cover;
         }
         .m-product-title{
           white-space: normal;
