@@ -1,7 +1,12 @@
 <template>
   <ul class="m-recommend">
     <li @click="changeRoute(item)" v-for="(item,index) in list">
-      <img :src="item.prmainpic" class="m-one-product-img" alt="">
+<!--      <div class="m-one-product-img">-->
+      <div class="m-one-product-img" :style="{backgroundImage:'url('+item.prmainpic+')'}">
+<!--        <img :src="item.prmainpic"  width="330" height="440" border="0" alt="">-->
+      </div>
+<!--      </div>-->
+
       <div class="m-one-product-text">
         <!--<h3>【{{item.brand.pbname}}】{{item.prtitle}} </h3>-->
         <h3>
@@ -85,6 +90,22 @@
         display: block;
         width: 330px;
         height: 440px;
+        /*padding-bottom: 100%;*/
+        overflow:hidden;
+
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size:cover;
+        -moz-background-size:cover;
+        background-size:cover;
+        /*background-color: #fff;*/
+        /*.flex-row(center);
+        img{*/
+        /*  width: auto;*/
+        /*  height: auto;*/
+        /*  max-width: 100%;*/
+        /*  max-height: 100%;*/
+        /*}*/
         /*background-color: #edb3b1;*/
         /*border-radius: 10px;*/
       }

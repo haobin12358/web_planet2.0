@@ -13,7 +13,7 @@
         <div class="m-swipe">
           <mt-swipe :auto="3000" v-if="swipe_list">
             <mt-swipe-item v-for="item in swipe_list" :key="item.ibid">
-              <img :src="item.ibpic" class="img" @click="changeRoute('/productDetail', item)">
+              <img :src="item.ibpic" class="img" @click="changeRouteImg('/productDetail', item)">
             </mt-swipe-item>
           </mt-swipe>
         </div>
@@ -46,7 +46,7 @@
         </div>
 
       <div class="m-selected-one" v-if="top_img">
-        <img :src="top_img.enpic" @click="changeRoute('/activity',top_img)" class="m-activity-img" alt="">
+        <img :src="top_img.enpic" @click="changeRouteImg('/activity',top_img)" class="m-activity-img" alt="">
       </div>
         <div class="m-selected-one">
           <!--商品分类-->
@@ -61,7 +61,7 @@
         </div>
 
       <div class="m-selected-activity">
-        <div class="m-row" v-if="center_img" @click="changeRoute('/activity',center_img)">
+        <div class="m-row" v-if="center_img" @click="changeRouteImg('/activity',center_img)">
 <!--         <div>-->
 <!--           <img src="/static/images/index/icon-limit.png" class="m-img-limit" alt="">-->
 <!--           <p class="m-time-box">-->
@@ -80,7 +80,7 @@
           <img :src="center_img.enpic" class="m-center-img" alt="">
         </div>
         <div class="m-row">
-          <div class="m-col" v-if="left_img" @click="changeRoute('/activity',left_img)">
+          <div class="m-col" v-if="left_img" @click="changeRouteImg('/activity',left_img)">
 <!--            <h3 class="m-activity-name">拼团竞猜</h3>-->
 <!--            <div class="m-activity-box">-->
 <!--              <div>-->
@@ -91,7 +91,7 @@
 <!--            </div>-->
             <img :src="left_img.enpic" alt="">
           </div>
-          <div class="m-col" v-if="right_img"  @click="changeRoute('/activity',right_img)">
+          <div class="m-col" v-if="right_img"  @click="changeRouteImg('/activity',right_img)">
 <!--            <h3 class="m-activity-name">拼团竞猜</h3>-->
 <!--            <div class="m-activity-box">-->
 <!--              <div>-->
@@ -501,6 +501,11 @@
                     this.getNews();
               }
             }
+          }
+        },
+        changeRouteImg(v,item){
+          if(item.contentlink){
+            location.href = item.contentlink;
           }
         },
         /*查看更多*/
