@@ -644,7 +644,7 @@
     text-align: left;
     font-size: 21px;
     .m-editCircle-content{
-      padding: 40px 0 0 0;
+      padding: 20px 0 0 0;
     }
     .m-one{
       /*border-radius: 30px;*/
@@ -652,6 +652,9 @@
       /*margin: 0 50px 40px 50px;*/
       padding: 31px 50px 31px 50px;
       border-bottom: 1px solid #eee;
+      &:first-child{
+        padding: 0 50px 31px;
+      }
       .m-edit-btn{
         display: block;
         width: 160px;
@@ -668,7 +671,7 @@
       input{
         border: none;
         width: 100%;
-        color: #999;
+        /*color: #999;*/
         font-size: 24px;
       }
     }
@@ -695,6 +698,7 @@
       flex-wrap: wrap;
       .img-box {
         position: relative;
+        margin-right: 10px;
         .circle-img {
           display: inline-block;
           width: 186px;
