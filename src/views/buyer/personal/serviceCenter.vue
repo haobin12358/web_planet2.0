@@ -118,6 +118,7 @@
       .m-serviceCenter-li-ul{
         p{
           margin-left: 70px;
+          margin-right: 50px;
           padding-top: 25px;
         }
 
