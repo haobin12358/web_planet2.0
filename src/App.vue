@@ -214,7 +214,7 @@ export default {
                 }else {
                   this.$store.state.show_login = false;
                   if(localStorage.getItem('wx_url')){
-                    localStorage.setItem('url', localStorage.getItem('wx_url').split('&from')[0]);
+                    localStorage.setItem('url', localStorage.getItem('wx_url').indexOf('&from') > 0 ?localStorage.getItem('wx_url').split('&from')[0]:localStorage.getItem('wx_url'));
                     if(localStorage.getItem('wx_url').indexOf('fmfpid') > 0) {             // 新人首单
                       localStorage.setItem('share', 'fmfpid');
                     }else if(localStorage.getItem('wx_url').indexOf('tcid') > 0) {               // 试用商品
@@ -246,7 +246,7 @@ export default {
                 }
                 window.localStorage.setItem("openid", res.data.data.user.openid);
                 if(localStorage.getItem('wx_url')){
-                  localStorage.setItem('url', localStorage.getItem('wx_url').split('&from')[0]);
+                  localStorage.setItem('url', localStorage.getItem('wx_url').indexOf('&from') > 0 ?localStorage.getItem('wx_url').split('&from')[0]:localStorage.getItem('wx_url'));
                   if(localStorage.getItem('wx_url').indexOf('fmfpid') > 0) {             // 新人首单
                     localStorage.setItem('share', 'fmfpid');
                   }else if(localStorage.getItem('wx_url').indexOf('tcid') > 0) {               // 试用商品
