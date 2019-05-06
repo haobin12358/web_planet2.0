@@ -327,8 +327,8 @@
           .flex-row(flex-end);
           .m-icon-star{
             display: inline-block;
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             margin-right: 4px;
           }
         }
