@@ -218,7 +218,7 @@
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
-                this.share_url = location.origin + '/?prid=' + this.$route.query.prid +  '&secret_usid=' + res.data.data.secret_usid;
+                this.share_url = options.link;
                 if(val !== 1) {
                   // 点击分享
                   this.show_invite = true;

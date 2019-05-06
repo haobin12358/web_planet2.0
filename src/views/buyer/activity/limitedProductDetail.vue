@@ -171,7 +171,7 @@
       localStorage.removeItem('share');
       localStorage.removeItem('url');
       localStorage.removeItem('login_to');
-      if(common.isWeixin()) {
+      // if(common.isWeixin()) {
         if(localStorage.getItem('token')) {
           // 倒计时
           const TIME_COUNT = 1;
@@ -184,7 +184,7 @@
               clearInterval(time);
             }
           }, 300);
-        }
+        // }
       }
       let time = setInterval(() => {
         this.can_buy = this.nowInDateBetwen(this.product.tlastarttime,this.product.tlaendtime);
