@@ -295,6 +295,8 @@
           width: 340px;
           font-size: 24px;
           text-align: left;
+          height: 66px;
+          line-height: 33px;
           // display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
           // overflow: hidden; // 超出的文本隐藏
           // word-break: break-word;  // 英文换行
