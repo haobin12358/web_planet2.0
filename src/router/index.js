@@ -148,6 +148,7 @@ export const constantRouterMap = [
   { path: '/personal/couponCenter', component: () => import('../views/buyer/personal/couponCenter'), hidden: true },
   //个人主页
   { path: '/personal/mainIndex', component: () => import('../views/buyer/personal/mainIndex'), hidden: true },
+  { path: '/personal/otherMain', component: () => import('../views/buyer/personal/otherMain'), hidden: true },
   { path: '/collect', component: () => import('../views/buyer/personal/collect'), hidden: true },
   { path: '/personal/starProduct', component: () => import('../views/buyer/starProduct/starProduct'), hidden: true },  ///星币商城
   { path: '/personal/orderStar', component: () => import('../views/buyer/starProduct/orderStar'), hidden: true },  ///星币商城下单

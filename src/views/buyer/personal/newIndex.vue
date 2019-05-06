@@ -132,10 +132,42 @@
       },
       mounted() {
         common.changeTitle('我的');
-        this.getUser();             // 获取个人信息
+        // while (localStorage.getItem('token')){
+        //   this.getUser();             // 获取个人信息
+        // }倒计时
+        const TIME_COUNT = 1;
+        let count = TIME_COUNT;
+        let time = setInterval(() => {
+          if(localStorage.getItem('token')){
+            this.getUser();
+            clearInterval(time);
+          }
+          if(count > 0 && count <= TIME_COUNT) {
+            count --;
+          }else {
+            this.getUser();
+            clearInterval(time);
+          }
+        }, 300);
       },
       activated() {
-        this.getUser();             // 获取个人信息
+        // while (localStorage.getItem('token')){
+        //   this.getUser();             // 获取个人信息
+        // }
+        const TIME_COUNT = 1;
+        let count = TIME_COUNT;
+        let time = setInterval(() => {
+          if(localStorage.getItem('token')){
+            this.getUser();
+            clearInterval(time);
+          }
+          if(count > 0 && count <= TIME_COUNT) {
+            count --;
+          }else {
+            this.getUser();
+            clearInterval(time);
+          }
+        }, 300);
         if(localStorage.getItem('back')) {
           localStorage.removeItem('back');
           this.$router.push('/personal/afterSales')

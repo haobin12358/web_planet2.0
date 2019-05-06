@@ -121,10 +121,11 @@
         myClick(){
           this.page_info.page_num = 1;
           this.getNews('mynews');
+          this.select_nav = {}
         },
         /*获取导航*/
         getNav(){
-          this.$http.get(this.$api.items_list, { params: { ittype:10,token:localStorage.getItem('token')}}).then(res => {
+          this.$http.get(this.$api.items_list, { params: { ittype:10,token:localStorage.getItem('token'),option:2}}).then(res => {
             if(res.data.status == 200){
               if(res.data.data.length == 0){
                 this.nav_list = this.nav_list.concat([])

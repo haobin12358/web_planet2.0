@@ -244,7 +244,7 @@
         line-height: 40px;
         background-color: @mainColor;
         color: #fff;
-        z-index: 1000;
+        z-index: 100;
       }
     }
     .m-video-box{
@@ -362,7 +362,7 @@
       left:0;
       width: 100%;
       height: 100%;
-      z-index: 10;
+      z-index: 103;
     }
   }
 </style>

@@ -150,7 +150,7 @@
         if(item){
           let params;
           let url = item.contentlink;
-          window.location.href=url;
+          this.dealUrl(url);
           // if(url.indexOf('prid') > 0){
           //   if(url.indexOf('&secret_usid') > 0){
           //     params = url.split('?prid=')[1].split('&secret_usid')[0];
@@ -163,6 +163,58 @@
            this.$router.push(v)
         }
 
+      },
+      dealUrl(url){
+        if(localStorage.getItem('share') == 'mbjid' || url.indexOf('mbjid') > 0) {
+          let params = url.split('?mbjid=')[1].split('&secret_usid')[0];
+          this.$router.push({ path: '/pandora', query: { mbjid: params }})
+        }else if(localStorage.getItem('share') == 'fmfpid' || url.indexOf('fmfpid') > 0) {
+          let params = url.split('?fmfpid=')[1].split('&secret_usid')[0].split('&which=');
+          this.$router.push({ path: '/activityProductDetail', query: { fmfpid: params[0], which: params[1] }})
+        }else if(localStorage.getItem('share') == 'tlpid' || url.indexOf('tlpid') > 0) {
+          let params = url.split('?tlpid=')[1].split('&secret_usid')[0];
+          this.$router.push({ path: '/limitedProductDetail', query: { tlpid: params[0]}})
+        }else if(localStorage.getItem('share') == 'tcid' || url.indexOf('tcid') > 0) {
+          let params = url.split('?tcid=')[1].split('&secret_usid')[0].split('&which=');
+          this.$router.push({ path: '/activityProductDetail', query: { tcid: params[0], which: params[1] }})
+        }else if(localStorage.getItem('share') == 'neid' || url.indexOf('neid') > 0) {
+          let params = url.split('?neid=')[1].split('&secret_usid')[0];
+          this.$router.push({ path: '/circle/detail', query: { neid: params }})
+        }else if(localStorage.getItem('share') == 'tlaid' || url.indexOf('tlaid') > 0) {
+          let params = url.split('?tlaid=')[1].split('&secret_usid')[0];
+          this.$router.push({ path: '/limitedTime', query: { tlaid: params }})
+        }else if(localStorage.getItem('share') == 'prid' || url.indexOf('prid') > 0) {
+          let params;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?prid=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?prid=')[1];
+          }
+          this.$router.push({ path: '/productDetail', query: { prid: params }})
+        }else if(localStorage.getItem('share') == 'ipid' || url.indexOf('ipid') > 0) {
+          let params;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?ipid=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?ipid=')[1];
+          }
+          this.$router.push({ path: '/personal/starProductDetail', query: { ipid: params }})
+        }else if(localStorage.getItem('share') == 'activityId=new' || url.indexOf('activityId=new') > 0) {
+          this.$router.push({ path: '/activityProduct', query: { which: 'new' }})
+        }else if(localStorage.getItem('share') == 'activityId=try' || url.indexOf('activityId=try') > 0) {
+          this.$router.push({ path: '/activityProduct', query: { which: 'try' }})
+        }else if(localStorage.getItem('share') == 'activityId=guess' || url.indexOf('activityId=guess') > 0) {
+          this.$router.push({ path: '/guessProduct', query: { which: 'guess' }})
+        }else if(localStorage.getItem('share') == 'uaid' || url.indexOf('uaid') > 0) {
+          this.$router.push({ path: '/guessProductDetail'})
+        }else if(localStorage.getItem('share') == 'index' || url.indexOf('index') > 0) {
+          this.$router.push({ path: '/selected'})
+        }else if(localStorage.getItem('share') == 'actype' || url.indexOf('actype') > 0) {
+          let params = url.split('?actype=')[1].split('&secret_usid')[0];
+          this.$router.push({ path: '/activity', query: { actype: params }})
+        }else{
+          location.href = url;
+        }
       },
       //导航切换
       navClick(index){

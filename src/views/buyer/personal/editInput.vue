@@ -250,7 +250,7 @@
     }
     .m-get-code{
       /*margin-right: -20px;*/
-      width: 110px;
+      /*width: 110px;*/
       white-space: nowrap;
       display: inline-block;
       padding: 4px 15px;

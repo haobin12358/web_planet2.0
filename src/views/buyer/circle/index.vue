@@ -248,18 +248,18 @@
         this.select_nav = arr[index];
         this.page_info.page_num = 1;
         this.bottom_show = false;
-        if(arr[index].itid == 'mynews') {
-          if(localStorage.getItem('token')) {
-            this.getNews(this.nav_list[index].itid)
-          }else {
-            this.news_list = [];
-            Toast('未登录');
-            // this.$router.push('/login');
-            this.$store.state.show_login = false;
-          }
-        }else {
+        // if(arr[index].itid == 'mynews') {
+        //   if(localStorage.getItem('token')) {
+        //     this.getNews(this.nav_list[index].itid)
+        //   }else {
+        //     this.news_list = [];
+        //     Toast('未登录');
+        //     // this.$router.push('/login');
+        //     this.$store.state.show_login = false;
+        //   }
+        // }else {
           this.getNews(this.nav_list[index].itid)
-        }
+        // }
       },
       /*获取导航*/
       getNav(){
@@ -314,7 +314,7 @@
                 this.navClick(0);
               }
             }
-            this.changeList()      // 把"我发布的"放在最后
+            // this.changeList()      // 把"我发布的"放在最后
           }
         })
       },

@@ -667,7 +667,7 @@
         background:linear-gradient(90deg,@subColor 0%,@mainColor 100%);
         text-align: center;
         font-weight: 500;
-        z-index: 10001;
+        z-index: 102;
       }
     }
     .m-input{

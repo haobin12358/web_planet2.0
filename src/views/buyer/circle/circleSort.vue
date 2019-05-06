@@ -13,16 +13,14 @@
        <ul class="m-sort-ul">
          <li v-for="(item,index) in my_label" :class="item.active?'active':''">
            <span>{{item.itname}}</span>
-           <img src="/static/images/circle/icon-circle-close.png" v-if="isEdit " @click="deleteClick(index)" class="m-circle-close" alt="">
+           <img src="/static/images/circle/icon-circle-close.png" v-if="isEdit && item.itid != 'mynews'" @click="deleteClick(index)" class="m-circle-close" alt="">
          </li>
        </ul>
      </section>
       <section>
         <div class="m-sort-title">
           <span>添加分类</span>
-
         </div>
-
         <ul class="m-sort-ul m-cancel">
           <li v-for="(item,index) in all_label">
             <span @click="addClick(index)"> {{item.itname}}</span>
