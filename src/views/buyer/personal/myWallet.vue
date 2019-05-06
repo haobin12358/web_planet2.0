@@ -37,7 +37,8 @@
                     <div>
                       <p class="m-flex-between">
                         <span class="m-product-name">{{item.prtitle}}</span>
-                        <span class="m-price" v-if="item.tlsprice">￥{{item.tlsprice | money}}</span>
+                        <span class="m-price" v-if="item.tlsprice && items.omfrom != 80">￥{{item.tlsprice | money}}</span>
+                        <span class="m-price" v-else-if="items.omfrom == 80">{{item.skuprice}}币</span>
                         <span class="m-price" v-else>￥{{item.skuprice | money}}</span>
                       </p>
                       <p class="m-flex-between">
@@ -59,7 +60,7 @@
                   </div>
                   <div>
                     <!--<li v-if="items.omstatus==10" @click.stop="changeRoute('/selectBack',items)">退款</li>-->
-                    <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund" @click.stop="changeRoute('/selectBack',items)">退款</li>
+                    <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund && items.omfrom !=80" @click.stop="changeRoute('/selectBack',items)">退款</li>
                     <li @click.stop="changeRoute('/logisticsInformation',items)" v-if="items.omstatus==20
                 || items.omstatus == 30 || items.omstatus == 25">查看物流</li>
                     <!--<li v-if=" items.omstatus == -40">删除订单</li>-->
@@ -74,6 +75,34 @@
           </template>
         </div>
         <bottom-line v-if="bottom_show"></bottom-line>
+        <div class="m-modal-pwd" v-if="show_modal ">
+          <div class="m-modal-state" @click.self="show_modal = false">
+            <div class="m-one">
+              <img src="/static/images/product/icon-close.png" class="m-close" @click="show_modal = false" alt="">
+              <h3>请输入星币支付密码</h3>
+            </div>
+            <div class="m-one">
+              <img src="/static/images/newpersonal/icon-star-can.png" class="m-icon" alt="">
+              <span class="m-star-num">{{omtruemount}}</span>
+            </div>
+            <div class="m-one m-flex-between">
+              <span>星币余额</span>
+              <span >{{usintegral}}币</span>
+            </div>
+            <div >
+              <input ref="pwd" type="tel" maxlength="6" v-model="msg" class="pwd" unselectable="on" autofocus />
+              <ul class="m-input-box" @click="focus">
+                <li :class="msg.length == 0?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 0"></i><s></s></li>
+                <li :class="msg.length == 1?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 1"></i><s></s></li>
+                <li :class="msg.length == 2?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 2"></i><s></s></li>
+                <li :class="msg.length == 3?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 3"></i><s></s></li>
+                <li :class="msg.length == 4?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 4"></i><s></s></li>
+                <li :class="msg.length == 5?'psd-blink':''" class="m-setPwd-input"><i v-if="msg.length > 5"></i><s></s></li>
+              </ul>
+              <p class="m-forget" @click="changeRoute('/personal/editInput', 'forget')">忘记密码？</p>
+            </div>
+          </div>
+        </div>
       </mt-loadmore>
 <!--      <div class="m-activity-order-list">-->
 <!--        <div class="m-one-order">-->
@@ -199,6 +228,8 @@
         bottom_show: false,
         text: '',
         toast: false,
+        msg:'',
+        show_modal:false
       }
     },
     components:{navList,bottomLine},
@@ -206,6 +237,17 @@
       this.initYear();
       this.getUser();
       this.getOrderNum();             // 获取各状态的订单数量
+    },
+    watch: {
+      msg(curVal) {
+        if(/[^\d]/g.test(curVal)) {
+          this.msg = this.msg.replace(/[^\d]/g, '');
+        }
+        if(this.msg.length == 6){
+          // this.submitOrder();
+          this.payOrder();
+        }
+      },
     },
     methods:{
       // 跳转页面
@@ -421,11 +463,43 @@
       // 请求微信支付参数
       payBtn(items) {
         let params = { omid: items.omid, omclient: '0', opaytype: '0' };
-        this.$http.post(this.$api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
-          if(res.data.status == 200) {
-            this.wxPay(res.data.data.args, items.omid);
+        if(items.omfrom_zh == '星币商城'){
+          this.omtruemount = items.omtruemount;
+          this.omid = items.omid;
+          this.usintegral = items.usintegral;
+          this.show_modal = true;
+        }else{
+          axios.post(api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
+            if(res.data.status == 200) {
+
+              this.wxPay(res.data.data.args, items.omid);
+
+            }
+          });
+        }
+
+      },
+      payOrder(){
+        this.$http.post(this.$api.order_pay + '?token=' +localStorage.getItem('token'),{
+          omid:this.omid,
+          omclient:0,
+          opaytype:30,
+          uspaycode:this.msg,
+          omtruemount: this.omtruemount
+        }).then(res => {
+          Toast(res.data.message);
+          this.msg = '';
+          if(res.data.status == 200){
+            // this.$router.push("/orderList");
+            this.$router.push({ path: '/orderDetail', query: { omid: this.omid }});
+            this.show_modal = false;
+          }else if(res.data.message == '请输入正确的支付密码'){
+            this.show_modal = true;
           }
-        });
+        })
+      },
+      focus() {
+        this.$refs.pwd.focus();
       },
       // 调起微信支付
       wxPay(data, omid) {

@@ -28,7 +28,8 @@
                   <div>
                     <p class="m-flex-between">
                       <span class="m-product-name">{{item.prtitle}}</span>
-                      <span class="m-price" v-if="item.tlsprice">￥{{item.tlsprice | money}}</span>
+                      <span class="m-price" v-if="item.tlsprice && item.omfrom != 80">￥{{item.tlsprice | money}}</span>
+                      <span class="m-price" v-else-if="item.omfrom == 80">{{item.tlsprice}}币</span>
                       <span class="m-price" v-else>￥{{item.skuprice | money}}</span>
                     </p>
                     <p class="m-flex-between">

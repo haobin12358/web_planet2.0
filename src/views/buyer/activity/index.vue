@@ -368,8 +368,8 @@
           let that = this;
           let timer = setInterval(function () {
             let now = new Date();
-            let date = now.getFullYear() + '-'
-              + ((now.getMonth()+1) >9?(now.getMonth()+1):'0'+(now.getMonth()+1)) +'-'
+            let date = now.getFullYear() + '/'
+              + ((now.getMonth()+1) >9?(now.getMonth()+1):'0'+(now.getMonth()+1)) +'/'
               + now.getDate()+ ' ' + '15:00:00'
             let endDate = new Date(date);
 
@@ -664,9 +664,9 @@
               let now = new Date();
               let endDate;
               if(arr[i].duration_start){
-                endDate = new Date(arr[i].tlastarttime);
+                endDate = new Date(arr[i].tlastarttime.replace(/-/g, "/"));
               }else if(arr[i].duration_end){
-                endDate = new Date(arr[i].tlaendtime);
+                endDate = new Date(arr[i].tlaendtime.replace(/-/g, "/"));
               }
 
               let leftTime = endDate.getTime()-now.getTime();

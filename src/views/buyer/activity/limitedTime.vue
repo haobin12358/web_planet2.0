@@ -199,7 +199,7 @@
               clearInterval(this.timer);
             }
             let endDate;
-            endDate = new Date(this.endDate);
+            endDate = new Date(this.endDate.replace(/-/g, "/"));
             this.timer = setInterval(function () {
               let now = new Date();
               let leftTime = endDate.getTime()-now.getTime();

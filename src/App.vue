@@ -324,13 +324,14 @@ export default {
           // const url = window.location.origin + '/#/login';
           let url = window.location.href;
           if(url.indexOf('?') != -1){
+
             localStorage.setItem('wx_url',url);
             // url = window.location.origin + '/#/selected';
           }else if(url.indexOf('code') != -1){
 
           }
           url = window.location.origin + '/#/selected';
-          axios.get('https://test.bigxingxing.com/api/v1/user/wx_auth',{
+          axios.get('https://www.bigxingxing.com/api/v1/user/wx_auth',{
             params:{
               url:encodeURIComponent(url),
               scope:'snsapi_userinfo'
@@ -369,7 +370,7 @@ export default {
           }
 
           // snsapi_userinfo
-          axios.get('https://test.bigxingxing.com/api/v1/user/wx_auth',{
+          axios.get('https://www.bigxingxing.com/api/v1/user/wx_auth',{
             params:{
               url:encodeURIComponent(url),
               scope:'snsapi_base'
