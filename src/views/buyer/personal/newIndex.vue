@@ -69,7 +69,7 @@
               <img src="/static/images/newpersonal/icon-star.png" class="m-icon" alt="">
               <span>星币商城</span>
             </div>
-            <span class="m-info" v-if="user.signin">{{user.usintegral}}星币</span>
+            <span class="m-info" v-if="user.signin"><img src="/static/images/newpersonal/icon-star-can.png" class="m-icon-star" alt="">{{user.usintegral}}</span>
             <span class="m-btn" v-else @click.stop="userSignIn">签  到</span>
           </li>
           <li class="m-flex-between" @click="changeRoute('/personal/coupon')">
@@ -324,6 +324,13 @@
         }
         .m-info{
           color: #C1C1C1;
+          .flex-row(flex-end);
+          .m-icon-star{
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            margin-right: 4px;
+          }
         }
         .m-red{
           color: #C70000;

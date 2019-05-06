@@ -151,6 +151,7 @@ const api={
   integral_pay_preview: title +'order/integral_pay_preview',  ///可抵用星币数
 
   get_entry: title +'index/get_entry',  //h获取首页活动图
+  get_self_news: title +'news/get_self_news',//获取其它用户主页
 
 };
 

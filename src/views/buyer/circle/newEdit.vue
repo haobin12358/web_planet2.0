@@ -226,7 +226,8 @@
         axios.get(api.items_list ,{
           params:{
             ittype:10,
-            token:localStorage.getItem('token')
+            token:localStorage.getItem('token'),
+            option:3
           }
       } ).then(res => {
           if(res.data.status == 200){

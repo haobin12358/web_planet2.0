@@ -68,7 +68,9 @@
       getInfo(){
         this.$http.get(api.get_home_top,{
           params:{
-            token: localStorage.getItem('token')
+            token: localStorage.getItem('token'),
+            neid:this.$route.query.neid,
+            usid:this.$route.query.usid
           }
         }).then(res => {
           if(res.data.status == 200){
@@ -79,13 +81,13 @@
 
       /*获取资讯列表*/
       getNews() {
-        this.$http.get(api.get_all_news,{
+        this.$http.get(api.get_self_news,{
           params:{
             token:localStorage.getItem('token'),
             page_num:this.page_info.page_num,
             page_size: this.page_info.page_size,
-            nestatus:'usual',
-            homepage:true
+            neid:this.$route.query.neid,
+            usid:this.$route.query.usid,
           }
         }).then(res => {
           if(res.data.status == 200){

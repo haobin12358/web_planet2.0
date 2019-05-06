@@ -563,7 +563,7 @@
               this.page_info.page_num = this.page_info.page_num + 1;
               this.total_count = res.data.total_count;
             }else{
-              this.history_list = null;
+              this.history_list = [];
               this.page_info.page_num = 1;
               this.total_count = 0;
             }
