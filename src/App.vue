@@ -311,11 +311,11 @@ export default {
     },
     // 获取微信参数
     login() {
-      let params = {
-        url: window.location.href.split('#')[0],
-        // url: window.location.href,
-        app_from: window.location.origin.substr(8, window.location.origin.length)
-      };
+      // let params = {
+      //   url: window.location.href.split('#')[0],
+      //   // url: window.location.href,
+      //   app_from: window.location.origin.substr(8, window.location.origin.length)
+      // };
       // axios.get(api.get_wxconfig, { params: params }).then((res) => {
       //   if(res.data.status == 200){
           localStorage.setItem('login_not_silent','not_silent');
@@ -324,10 +324,11 @@ export default {
           let url = window.location.href;
           if(url.indexOf('?') != -1){
             localStorage.setItem('wx_url',url);
-            url = window.location.origin + '/#/selected';
+            // url = window.location.origin + '/#/selected';
           }else if(url.indexOf('code') != -1){
-            url = window.location.origin + '/#/selected';
+
           }
+          url = window.location.origin + '/#/selected';
           axios.get('https://test.bigxingxing.com/api/v1/user/wx_auth',{
             params:{
               url:encodeURIComponent(url),
@@ -348,11 +349,11 @@ export default {
     },
     // 获取微信参数
     login_new() {
-      let params = {
-        url: window.location.href.split('#')[0],
-        // url: window.location.href,
-        app_from: window.location.origin.substr(8, window.location.origin.length)
-      };
+      // let params = {
+      //   url: window.location.href.split('#')[0],
+      //   // url: window.location.href,
+      //   app_from: window.location.origin.substr(8, window.location.origin.length)
+      // };
       // axios.get(api.get_wxconfig, { params: params }).then((res) => {
       //   if(res.data.status == 200){
       //     const id = res.data.data.appId;
@@ -361,8 +362,11 @@ export default {
           let url = window.location.href;
           if(url.indexOf('?') != -1){
             localStorage.setItem('wx_url',url);
-            // url = window.location.origin + '/#/selected';
           }
+          if(url.indexOf('code') > -1){
+            url = window.location.origin + '/#' + window.location.href.split('#')[1]
+          }
+
           // snsapi_userinfo
           axios.get('https://test.bigxingxing.com/api/v1/user/wx_auth',{
             params:{
