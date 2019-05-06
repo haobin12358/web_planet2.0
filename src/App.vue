@@ -333,7 +333,7 @@ export default {
 
           }
           url = window.location.origin + '/#/selected';
-          axios.get('https://www.bigxingxing.com/api/v1/user/wx_auth',{
+          axios.get('https://www.bigxingxing.com/api/v2/user/wx_auth',{
             params:{
               url:encodeURIComponent(url),
               scope:'snsapi_userinfo'
@@ -372,7 +372,7 @@ export default {
           }
 
           // snsapi_userinfo
-          axios.get('https://www.bigxingxing.com/api/v1/user/wx_auth',{
+          axios.get('https://www.bigxingxing.com/api/v2/user/wx_auth',{
             params:{
               url:encodeURIComponent(url),
               scope:'snsapi_base'
