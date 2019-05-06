@@ -147,7 +147,7 @@
         color: #000000;
       }
       .w-otherque-question{
-        display: inline-block;
+        // display: inline-block;
         padding-top: 30px;
         font-size:24px;
         font-weight:300;
