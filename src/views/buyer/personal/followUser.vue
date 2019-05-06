@@ -4,9 +4,9 @@
       <ul class="m-user-list" v-if="user_list.length > 0 ">
         <li v-for="(item,index) in user_list">
           <div class="m-flex-start">
-            <img :src="item.usheader" class="m-avator" alt="">
+            <img :src="item.usheader" class="m-avator" alt="" @click="changeRoute('/personal/otherMain',item)">
             <div>
-              <h3 class="m-user-name">
+              <h3 class="m-user-name" @click="changeRoute('/personal/otherMain',item)">
                 <span >{{item.usname}}</span>
                 <span class="m-user-level">{{item.uslevel_zn}}</span>
               </h3>
@@ -78,6 +78,10 @@
       this.navClick(this.$route.query.index || 0)
     },
     methods:{
+      changeRoute(v,item){
+        console.log(item)
+        this.$router.push({path:v,query:{usid:item.usid}})
+      },
       navClick(index){
         let arr = [].concat(this.nav_list);
         for(let i=0;i<arr.length;i++){

@@ -9,7 +9,7 @@
           <img :src="product.prmainpic"  v-else alt="">
           <div v-if="select_value">
             <p v-if="isAct &&  select_value.tlsprice" class="m-price">¥{{select_value.tlsprice | money}}</p>
-            <p class="m-price" v-else-if="product.ipprice">{{select_value.skuprice}}星币</p>
+            <p class="m-price m-flex-start" v-else-if="product.ipprice"><img src="/static/images/newpersonal/icon-star-can.png" class="m-icon-star" alt="">{{select_value.skuprice}}</p>
             <p class="m-price" v-else>￥{{select_value.skuprice | money}}</p>
             <p class="m-underline">价格：<s>¥{{product.prlineprice && (product.prlineprice | money)}}</s></p>
             <!--<span class="m-red" v-if="select_value.skustock">￥{{select_value.skuprice}}</span>-->
@@ -17,7 +17,7 @@
           </div>
           <div v-else>
             <p class="m-price" v-if="product.price_range">￥{{product.price_range | money }}</p>
-            <p class="m-price" v-else-if="product.ipprice">{{product.ipprice}}星币</p>
+            <p class="m-price m-flex-start" v-else-if="product.ipprice"><img src="/static/images/newpersonal/icon-star-can.png" class="m-icon-star" alt="">{{product.ipprice}}</p>
             <p class="m-price" v-else>￥{{product.prprice && (product.prprice | money)}}</p>
             <p class="m-underline">价格：<s>¥{{product.prlineprice && (product.prlineprice | money)}}</s></p>
           </div>
@@ -272,6 +272,7 @@
     /*background-color: rgba(0,0,0,0.2);*/
     z-index: 1001;
     transition: opacity .5s;
+
     .m-sku-state{
       background-color: #fff;
       position: absolute;
@@ -315,6 +316,12 @@
             width: 180px;
             height: 180px;
             margin-right: 30px;
+          }
+          .m-icon-star{
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
           }
           .m-price{
             color: #E22300;

@@ -52,7 +52,7 @@
 
             <ul class="m-user-list" v-if="select_nav.itid == ''">
               <li v-for="(item,index) in result_list">
-                <div class="m-flex-start">
+                <div class="m-flex-start" @click="changeRouteUser('/personal/otherMain',item)">
                   <img :src="item.usheader" class="m-avator" alt="">
                   <div>
                     <h3 class="m-user-name">
@@ -62,7 +62,6 @@
                     <p class="m-grey">{{item.fens_count}}粉丝</p>
                   </div>
                 </div>
-
                 <img src="/static/images/newpersonal/icon-follow.png" v-if="item.follow_status == 'mutualfollowed'" class="m-user-icon" alt="" @click="cancelClick(index)">
                 <img src="/static/images/newpersonal/icon-together.png" v-else-if="item.follow_status == 'followed'" class="m-user-icon" alt="" @click="cancelClick(index)">
                 <span class="m-follow-btn" v-else-if="item.follow_status == 'unfollowed'" @click="followClickUser(index)">关注</span>
@@ -274,6 +273,9 @@
             this.$router.push({path:'/searchProduct',query:{kw: this.searchContent}})
           }
 
+        },
+        changeRouteUser(v,item){
+          this.$router.push({path:v,query:{usid:item.usid}})
         },
         /*清楚历史*/
         clearHistory(){

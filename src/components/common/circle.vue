@@ -1,7 +1,7 @@
 <template>
   <div class="m-circle-item">
     <div class="m-circle-user-box">
-      <div class="m-flex-start">
+      <div class="m-flex-start" @click="changeRoute('/personal/otherMain',circle)">
         <img :src="circle.author.usheader" class="m-circle-user-avator" alt="">
         <span class="m-circle-user-name">{{circle.author.usname}}</span>
         <span class="m-circle-user-level">{{circle.author.usgrade}}</span>
@@ -164,6 +164,10 @@
               sessionStorage.setItem('circleFrom', 'buyer');
               return false;
             }
+          }
+          if(v == '/personal/otherMain'){
+            this.$router.push({path:v,query:{neid:params.neid}})
+            return false;
           }
           if(params == 'shtype'){
             this.$router.push({path:v,query:{shtype:value}})

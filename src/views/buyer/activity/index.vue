@@ -44,10 +44,10 @@
           <div class="m-limit-center-content">
             <ul class="m-center-product-ul">
               <li v-for="(item,i) in items.product_list" @click="changeRoute('/limitedProductDetail',item)">
-                <div class="m-product-img" :style="{backgroundImage:'url(' + item.prmainpic +')'}">
+                <div class="m-product-img" v-if="index == limit_list.length -1" :style="{backgroundImage:'url(' + item.prmainpic +')'}">
 
                 </div>
-<!--                <img :src="item.prmainpic" class="m-product-img" alt="">-->
+                <img :src="item.prmainpic" v-else class="m-product-img" alt="">
                 <p class="m-product-name">{{item.prtitle}}</p>
                 <p class="m-flex-between">
                   <span class="m-num">¥{{item.tlpprice}}</span>
@@ -804,13 +804,14 @@
         .m-hot-right{
           overflow: hidden;
           .m-hot-title{
-            white-space: normal;
-            overflow: hidden; // 超出的文本隐藏
-            word-break: break-word;  // 英文换行
+            width: 180px;
+            height: 28px;
+            line-height: 28px;
+            font-size: 20px;
+            overflow: hidden;
             text-overflow: ellipsis;    // 溢出用省略号显示
-            display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
-            -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
-            -webkit-line-clamp: 2;
+            white-space:nowrap;
+            text-align: left;
           }
           ul{
             .flex-row(flex-start);
@@ -826,6 +827,7 @@
                 display: block;
                 width: 180px;
                 height: 180px;
+                margin-bottom: 10px;
               }
               .m-num{
                 font-weight: 600;
@@ -862,6 +864,7 @@
               display: block;
               width: 150px;
               height: 150px;
+              margin-bottom: 10px;
             }
             .m-product-name{
               width: 150px;
