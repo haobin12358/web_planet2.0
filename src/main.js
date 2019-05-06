@@ -203,7 +203,7 @@ router.beforeEach((to,from,next) => {
       localStorage.setItem('version',store.state.version);
       // this.$store.state.show_login = true;
       // this.$router.go(0);
-      next('/');
+      next();
     }).catch(() => {
       next();
     });
@@ -213,7 +213,7 @@ router.beforeEach((to,from,next) => {
     next();
   }
 
-})
+});
 
 /* eslint-disable no-new */
 new Vue({

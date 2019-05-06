@@ -35,7 +35,7 @@
   import axios from 'axios';
   import api from './api/api';
   import common from './common/js/common';
-  import {Toast} from 'mint-ui';
+  import {Toast,MessageBox} from 'mint-ui';
   String.prototype.endWith=function(endStr){
     let d=this.length-endStr.length;
     return (d>=0&&this.lastIndexOf(endStr)==d);
@@ -67,6 +67,7 @@ export default {
     //   }, 500);
     // });
     // 将邀请人的usid保存，等注册的时候使用
+
     if((location.href.indexOf('editInput') > 0 && localStorage.getItem('is_new'))){
       this.$store.state.show_login = false;
     }
@@ -162,7 +163,7 @@ export default {
   watch:{
     showLogin(curval,oldval){
       if(curval){
-        this.login_new();
+        this.login();
       }
     }
   },
@@ -241,9 +242,10 @@ export default {
                 localStorage.removeItem('toLogin');
                 if(res.data.data.token){
                   window.localStorage.setItem("token", res.data.data.token);
-                }else if(this.$store.state.show_login){
-                  this.login();
                 }
+                // else if(this.$store.state.show_login){
+                //   this.login();
+                // }
                 window.localStorage.setItem("openid", res.data.data.user.openid);
                 if(localStorage.getItem('wx_url')){
                   localStorage.setItem('url', localStorage.getItem('wx_url').indexOf('&from') > 0 ?localStorage.getItem('wx_url').split('&from')[0]:localStorage.getItem('wx_url'));

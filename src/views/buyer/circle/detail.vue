@@ -170,14 +170,18 @@
         show_comment:false,
         show_invite:false,
         timeOutEvent:null,
-        show_more:false
+        show_more:false,
+        get_comment:false
       }
     },
     mixins: [wxapi],
     components: { bottomLine, couponCard, product },
     mounted() {
       this.getNewsDetail();
-      this.getComment();
+      if(localStorage.getItem('token')){
+        this.getComment();
+      }
+
       // 从圈子首页点击单条的评论图标
       sessionStorage.setItem('neid', this.$route.query.neid);
       if(sessionStorage.getItem('showComments') == 'show') {
@@ -328,6 +332,9 @@
       },
       showComment(){
         this.show_comment = !this.show_comment;
+        if(!this.get_comment){
+          this.getComment();
+        }
         this.comment_one = null;
         this.comment_index = null;
       },
@@ -432,7 +439,7 @@
         }).then(res => {
           if(res.data.status == 200){
             this.isScroll =true;
-
+            this.get_comment = true;
             if(res.data.data.length >0){
               if(this.page_info.page_num >1){
                 this.comment_list =  this.comment_list.concat(res.data.data);
