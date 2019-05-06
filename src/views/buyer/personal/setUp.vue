@@ -19,7 +19,7 @@
 			</div>
 			<div class="w-setting-item">
 				<span>当前版本</span>
-				<span class="w-setting-right">2.0</span>
+				<span class="w-setting-right">{{$store.state.version}}</span>
 
 			</div>
 

@@ -96,16 +96,16 @@
             active: false,
             psid: ""
           },
-          {
-            itdesc: "我是描述",
-            itid: "mynews",
-            itname: "我发布的",
-            itrecommend: true,
-            itsort: null,
-            ittype: 10,
-            active: false,
-            psid: ""
-          }
+          // {
+          //   itdesc: "我是描述",
+          //   itid: "mynews",
+          //   itname: "我发布的",
+          //   itrecommend: true,
+          //   itsort: null,
+          //   ittype: 10,
+          //   active: false,
+          //   psid: ""
+          // }
         ],
         news_list: null,
         page_info: {
@@ -276,16 +276,16 @@
                 active: false,
                 psid: ""
               },
-              {
-                itdesc: "我是描述",
-                itid: "mynews",
-                itname: "我发布的",
-                itrecommend: true,
-                itsort: null,
-                ittype: 10,
-                active: false,
-                psid: ""
-              }
+              // {
+              //   itdesc: "我是描述",
+              //   itid: "mynews",
+              //   itname: "我发布的",
+              //   itrecommend: true,
+              //   itsort: null,
+              //   ittype: 10,
+              //   active: false,
+              //   psid: ""
+              // }
             ];
             if(res.data.data.length == 0){
               this.nav_list = this.nav_list.concat([])

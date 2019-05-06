@@ -11,23 +11,23 @@
       <router-view :key="key" v-if="isRouterAlive && $route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view :key="key" v-if="isRouterAlive && !$route.meta.keepAlive"></router-view>
-    <div class="m-login-modal" v-if="$store.state.show_login" >
-      <div class="m-modal-state">
-        <h3 class="m-modal-head">微信登录</h3>
-        <div class="m-logo-box">
-          <img src="/static/images/logo.jpg" alt="">
-          <span>大行星商城申请获取以下权限：</span>
-        </div>
-        <div class="m-text">
-          <span class="m-dot"></span>
-          <span class="m-t">获得你的公开信息(昵称、头像、地区及性别)</span>
-        </div>
-        <div class="m-btn-box">
-          <span @click.stop="cancelLogin">拒绝</span>
-          <span class="active" @click.stop="login">允许</span>
-        </div>
-      </div>
-    </div>
+<!--    <div class="m-login-modal" v-if="$store.state.show_login" >-->
+<!--      <div class="m-modal-state">-->
+<!--        <h3 class="m-modal-head">微信登录</h3>-->
+<!--        <div class="m-logo-box">-->
+<!--          <img src="/static/images/logo.jpg" alt="">-->
+<!--          <span>大行星商城申请获取以下权限：</span>-->
+<!--        </div>-->
+<!--        <div class="m-text">-->
+<!--          <span class="m-dot"></span>-->
+<!--          <span class="m-t">获得你的公开信息(昵称、头像、地区及性别)</span>-->
+<!--        </div>-->
+<!--        <div class="m-btn-box">-->
+<!--          <span @click.stop="cancelLogin">拒绝</span>-->
+<!--          <span class="active" @click.stop="login">允许</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -55,6 +55,9 @@ export default {
   computed:{
     key(){
       return this.$route.path + Math.random();
+    },
+    showLogin(){
+      return this.$store.state.show_login
     }
   },
   created() {
@@ -155,6 +158,13 @@ export default {
       localStorage.clear()
     }
   },
+  watch:{
+    showLogin(curval,oldval){
+      if(curval){
+        this.login_new();
+      }
+    }
+  },
   mounted() {
     console.log('v 0.7.5');
     // let token = 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTU1MDk4Nzc4MSwiZXhwIjoxNTUxNTkyNTgxfQ.eyJ1c2VybmFtZSI6Ilx1NTNlYVx1NjYyZlx1NmNhMVx1NjcwOVx1NTk4Mlx1Njc5YyIsImlkIjoiNTE4NjZlZjYtMTI3NS0xMWU5LWI4YjItMDAxNjNlMDhkMzBmIiwibW9kZWwiOiJVc2VyIiwibGV2ZWwiOjJ9.BHLdRBzIWQRl7xuMyi2vBh6HP_fUR1kVOHBmQMTFiTg';
@@ -230,6 +240,8 @@ export default {
                 localStorage.removeItem('toLogin');
                 if(res.data.data.token){
                   window.localStorage.setItem("token", res.data.data.token);
+                }else if(this.$store.state.show_login){
+                  this.login();
                 }
                 window.localStorage.setItem("openid", res.data.data.user.openid);
                 if(localStorage.getItem('wx_url')){
@@ -304,10 +316,10 @@ export default {
         // url: window.location.href,
         app_from: window.location.origin.substr(8, window.location.origin.length)
       };
-      axios.get(api.get_wxconfig, { params: params }).then((res) => {
-        if(res.data.status == 200){
+      // axios.get(api.get_wxconfig, { params: params }).then((res) => {
+      //   if(res.data.status == 200){
           localStorage.setItem('login_not_silent','not_silent');
-          const id = res.data.data.appId;
+          // const id = res.data.data.appId;
           // const url = window.location.origin + '/#/login';
           let url = window.location.href;
           if(url.indexOf('?') != -1){
@@ -329,10 +341,10 @@ export default {
           // snsapi_userinfo
           // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
           //   + id + '&redirect_uri='+ encodeURIComponent(url) + '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
-        }
-      }).catch((error) => {
-        console.log(error ,'1111');
-      });
+      //   }
+      // }).catch((error) => {
+      //   console.log(error ,'1111');
+      // });
     },
     // 获取微信参数
     login_new() {
@@ -341,9 +353,9 @@ export default {
         // url: window.location.href,
         app_from: window.location.origin.substr(8, window.location.origin.length)
       };
-      axios.get(api.get_wxconfig, { params: params }).then((res) => {
-        if(res.data.status == 200){
-          const id = res.data.data.appId;
+      // axios.get(api.get_wxconfig, { params: params }).then((res) => {
+      //   if(res.data.status == 200){
+      //     const id = res.data.data.appId;
           // const url = window.location.origin + '/#/login';
           localStorage.setItem('login_silent','silent');
           let url = window.location.href;
@@ -364,10 +376,10 @@ export default {
           })
           // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
           //   + id + '&redirect_uri='+ encodeURIComponent(url) + '&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
-        }
-      }).catch((error) => {
-        console.log(error ,'1111');
-      });
+        // }
+      // }).catch((error) => {
+      //   console.log(error ,'1111');
+      // });
     },
   }
 }

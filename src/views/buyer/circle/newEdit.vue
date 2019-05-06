@@ -653,10 +653,12 @@
       padding: 31px 50px 31px 50px;
       border-bottom: 1px solid #eee;
       &:first-child{
-        padding: 0 50px 31px;
+        padding: 40px 50px 31px;
       }
       .m-edit-btn{
-        display: block;
+        position: fixed;
+        top: 20px;
+        right:50px;
         width: 160px;
         height: 50px;
         color: #fff;
@@ -665,6 +667,7 @@
         background:linear-gradient(90deg,@subColor 0%,@mainColor 100%);
         text-align: center;
         font-weight: 500;
+        z-index: 10001;
       }
     }
     .m-input{

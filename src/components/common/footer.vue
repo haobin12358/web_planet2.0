@@ -262,8 +262,8 @@
           justify-content: center;
           .m-footer-icon{
             display: inline-block;
-            width: 60px;
-            height: 60px;
+            width: 54px;
+            height: 54px;
           }
         }
         .active{
