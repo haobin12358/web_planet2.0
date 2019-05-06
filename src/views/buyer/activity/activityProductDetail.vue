@@ -123,7 +123,7 @@
       localStorage.removeItem('share');
       localStorage.removeItem('url');
       localStorage.removeItem('login_to');
-      if(common.isWeixin()) {
+      // if(common.isWeixin()) {
         if(localStorage.getItem('token')) {
           // 倒计时
           const TIME_COUNT = 1;
@@ -137,7 +137,7 @@
             }
           }, 300);
         }
-      }
+      // }
     },
     methods: {
       //改变路由
