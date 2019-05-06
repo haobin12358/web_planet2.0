@@ -431,7 +431,8 @@
       margin: 10px 0 100px 0;
       .m-detail-img {
         width: 750px;
-        margin-bottom: -5px;
+        margin-bottom: -10px;
+        /*border: none;*/
       }
     }
     .m-product-detail-foot{
