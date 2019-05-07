@@ -10,7 +10,7 @@ let store= new Vuex.Store({
     now: null,
     token: '',
     show_login:false,
-    version:'2.0.0',
+    version:'2.0.1',
     shop_num: -1,
     tabbar_store: [
       /*{

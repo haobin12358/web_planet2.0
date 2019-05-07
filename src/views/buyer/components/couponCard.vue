@@ -27,7 +27,8 @@
             <div>
               <p class="m-flex-start">
                 <img src="/static/images/coupon/coupon-card.png" class="m-icon" alt="">
-                <span>{{item.covalidstarttime | time}}—{{item.covalidendtime | time}}</span>
+                <span v-if="item.covalidstarttime && item.covalidendtime">{{item.covalidstarttime | time}}—{{item.covalidendtime | time}}</span>
+               <span v-else>无限制</span>
               </p>
               <p class="m-flex-start">
                 <img src="/static/images/coupon/coupon-time.png" class="m-icon" alt="">

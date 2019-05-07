@@ -13,7 +13,7 @@
 <!--            <div @click="rulePopup = false">取消</div>-->
             规则
           </div>
-          <div class="m-rule-text">{{integral.rule}}</div>
+          <div class="m-rule-text" v-html="integral.rule"></div>
         </mt-popup>
         <div class="m-head-part">
           <span @click="changeRoute('/personal/starDetail',0)">获取记录</span>
@@ -141,6 +141,7 @@
           }).then(res => {
             if(res.data.status == 200){
               this.integral= res.data.data.integral;
+              this.integral.rule = this.integral.rule.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
               if(res.data.data.product.length >0){
                 this.page_info.page_num =   this.page_info.page_num +1;
               }else{

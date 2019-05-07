@@ -89,7 +89,8 @@
 
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
-                options.link += '&secret_usid=' + res.data.data.secret_usid
+                options.link += '&secret_usid=' + res.data.data.secret_usid;
+                console.log(options.link)
               }
             });
             // 倒计时
@@ -174,7 +175,7 @@
             this.tlaname = res.data.tla.tlaname;
             this.tlastarttime = res.data.tla.tlastarttime;
             this.tlaendtime = res.data.tla.tlaendtime;
-            // this.tlatoppic = this.product_list[0].tlatoppic;
+            this.tlatoppic = res.data.tla.tlatoppic;
             if(res.data.tla.duration_start){
               this.endDate = res.data.tla.tlastarttime;
               this.status = '开始'

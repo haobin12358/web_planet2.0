@@ -210,7 +210,7 @@
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
                 this.share_url = options.link;
-
+                console.log(this.share_url)
               }
             });
             // 倒计时
