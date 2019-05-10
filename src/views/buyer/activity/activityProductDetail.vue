@@ -21,7 +21,7 @@
         <div class="m-text-time" v-if="product.zh_deadline">（<span class="m-time-bold">{{product.zh_deadline}}</span>）</div>
       </div>
       <div class="m-text-row">
-        <div class="m-text-courier m-flex-between">
+        <div class="m-text-info m-flex-between">
           <span>快递：{{product.tcfreight}} 元</span>
           <span>月销：{{product.month_sale_value}}</span>
         </div>
@@ -417,6 +417,10 @@
         }
       }
       .m-text-courier {
+        color: #999999;
+        font-size:24px;
+      }
+      .m-text-info{
         color: #999999;
         font-size:24px;
         width: 100%;

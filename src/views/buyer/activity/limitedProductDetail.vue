@@ -34,7 +34,7 @@
       </div>
       <div class="m-info-list">
         <span>快递：{{product.prfreight | money}} 元</span>
-        <span>月销：{{product.month_sale_value}}</span>
+        <span>月销：{{product.prsalesvalue}}</span>
         <span >{{product.brand.pbname}}</span>
         <!--          <div @click="changeRoute('/brandDetail')">-->
         <!--            <span class="m-brand-name">{{product_info.brand.pbname}}</span>-->

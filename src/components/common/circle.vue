@@ -37,7 +37,7 @@
       </div>
       <div class="m-circle-text" v-if="circle.netext" :class="circle.showtype == 'text'?'m-first':''">
         <p class="m-circle-topic" v-if="circle.toctitle">#{{circle.toctitle}}#</p>
-        <p  v-html="circle.netext">
+        <p class="m-circle-desc"  v-html="circle.netext">
         </p>
       </div>
     </div>
@@ -253,6 +253,7 @@
     }
     .m-video-box{
       position: relative;
+      margin-bottom: 20px;
       .m-video{
         display: block;
         width: 700px;
@@ -316,14 +317,21 @@
       }
     }
     .m-circle-text{
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
-      text-overflow: ellipsis;
-      overflow: hidden;
       text-align: left;
       &.m-first{
         padding-top: 30px;
+      }
+      .m-circle-desc{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
+        /*max-height: 96px;*/
+        line-height: 32px;
+        word-break: break-word;
       }
       /*margin-bottom: 20px;*/
       .m-circle-topic{
