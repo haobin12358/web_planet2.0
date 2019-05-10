@@ -1,6 +1,14 @@
 <template>
   <div class="m-activity-product-detail">
-
+    <div class="m-member-swipe" v-if="product.images">
+      <mt-swipe :auto="3000">
+        <mt-swipe-item class="product-swipe" v-for="(item, index) in product.images" v-bind:key="item.piid">
+          <img class="product-img" :src="item.pipic" @click="previewImage(index, product.images)">
+        </mt-swipe-item>
+      </mt-swipe>
+      <!--      <span class="m-icon-back" @click="changeBack"></span>-->
+      <!--      <span class="m-icon-gray-share" @click="shareProduct"></span>-->
+    </div>
     <!--商品详情的文字信息-->
     <div class="m-detail-text">
       <div class="m-text-row">
@@ -381,7 +389,7 @@
       margin: 5px 0 100px 0;
       .m-detail-img {
         width: 750px;
-        margin-bottom: -5px;
+        margin-bottom: -10px;
       }
     }
     .m-product-detail-foot{
