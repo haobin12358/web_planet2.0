@@ -36,9 +36,9 @@
 
       </div>
       <div class="m-circle-text" v-if="circle.netext" :class="circle.showtype == 'text'?'m-first':''">
-        <span class="m-circle-topic" v-if="circle.toctitle">#{{circle.toctitle}}#</span>
-        <span  v-html="circle.netext">
-        </span>
+        <p class="m-circle-topic" v-if="circle.toctitle">#{{circle.toctitle}}#</p>
+        <p  v-html="circle.netext">
+        </p>
       </div>
     </div>
 
@@ -328,6 +328,7 @@
       /*margin-bottom: 20px;*/
       .m-circle-topic{
         color: #006FCE;
+        font-size: 32px;
       }
     }
     .m-circle-loc{

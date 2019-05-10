@@ -173,7 +173,7 @@
           this.$router.push({ path: '/activityProductDetail', query: { fmfpid: params[0], which: params[1] }})
         }else if(localStorage.getItem('share') == 'tlpid' || url.indexOf('tlpid') > 0) {
           let params = url.split('?tlpid=')[1].split('&secret_usid')[0];
-          this.$router.push({ path: '/limitedProductDetail', query: { tlpid: params[0]}})
+          this.$router.push({ path: '/limitedProductDetail', query: { tlpid: params}})
         }else if(localStorage.getItem('share') == 'tcid' || url.indexOf('tcid') > 0) {
           let params = url.split('?tcid=')[1].split('&secret_usid')[0].split('&which=');
           this.$router.push({ path: '/activityProductDetail', query: { tcid: params[0], which: params[1] }})

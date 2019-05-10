@@ -1,5 +1,5 @@
 <template>
-    <div class="m-product">
+    <div class="m-product" @touchmove="touchMove">
       <div class="m-selected-search left">
         <div class="m-search-input-box" @click="changeRoute('/search')" >
           <span class="m-icon-search"></span>
