@@ -30,7 +30,7 @@
           <p>可提现余额</p>
         </li>
         <li>
-          <p class="m-num">¥{{num_box.usbalance-num_box.uscash}}</p>
+          <p class="m-num">¥{{num_box.uswithdrawal}}</p>
           <p>提现中余额</p>
         </li>
         <li @click="changeRoute('/storekeeper/group')">
