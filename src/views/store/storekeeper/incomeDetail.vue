@@ -172,7 +172,7 @@
       // 时间选择器的确认按钮
       timeDone() {
         this.now = this.timeValue[0] + "-" + this.timeValue[1];
-        // this.getIncomeList(); // 获取店主收益详情
+        this.getIncomeList(); // 获取店主收益详情
         this.popupVisible = false;
       },
       // navList的点击事件
