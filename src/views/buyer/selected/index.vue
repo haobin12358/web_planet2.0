@@ -160,23 +160,23 @@
         if(!localStorage.getItem('token')){
           localStorage.removeItem('is_new');
         }
-        if(localStorage.getItem('token')) {
-          // 倒计时
-          const TIME_COUNT = 1;
-          let count = TIME_COUNT;
-          let time = setInterval(() => {
-            if(count > 0 && count <= TIME_COUNT) {
-              count --;
-            }else {
-              this.shareCode();
-              clearInterval(time);
-            }
-          }, 500);
-        }
-        if(localStorage.getItem('share') && localStorage.getItem('url')) {
-          let url = localStorage.getItem('url');
-          this.dealUrl(url);
-        }
+        // if(localStorage.getItem('token')) {
+        //   // 倒计时
+        //   const TIME_COUNT = 1;
+        //   let count = TIME_COUNT;
+        //   let time = setInterval(() => {
+        //     if(count > 0 && count <= TIME_COUNT) {
+        //       count --;
+        //     }else {
+        //       this.shareCode();
+        //       clearInterval(time);
+        //     }
+        //   }, 500);
+        // }
+        // if(localStorage.getItem('share') && localStorage.getItem('url')) {
+        //   let url = localStorage.getItem('url');
+        //   this.dealUrl(url);
+        // }
       },
       activated() {
         // 倒计时
@@ -236,7 +236,7 @@
         }
       },
       methods: {
-        dealUrl(url){
+        dealUrl(url,name){
           if(localStorage.getItem('share') == 'mbjid' || url.indexOf('mbjid') > 0) {
             let params ;
             if(url.indexOf('&secret_usid') > 0){
@@ -282,7 +282,12 @@
             }else{
               params = url.split('?prid=')[1];
             }
-            this.$router.push({ path: '/productDetail', query: { prid: params }})
+            if(localStorage.getItem('share') == 'gift' || url.indexOf('&from=gift')){
+              this.$router.push({ path: '/gift', query: { prid: params.split('&from')[0] }})
+            }else{
+              this.$router.push({ path: '/productDetail', query: { prid: params }})
+            }
+
           }else if(localStorage.getItem('share') == 'ipid' || url.indexOf('ipid') > 0) {
             let params;
             if(url.indexOf('&secret_usid') > 0){
@@ -309,6 +314,8 @@
               params = url.split('?actype=')[1];
             }
             this.$router.push({ path: '/activity', query: { actype: params }})
+          }else if(name){
+            location.href = url
           }
         },
         // 分享
@@ -504,7 +511,7 @@
           if(item.contentlink){
             // location.href = item.contentlink;
             let url = item.contentlink;
-            this.dealUrl(url);
+            this.dealUrl(url,'change');
           }
         },
         /*查看更多*/
@@ -541,58 +548,58 @@
         loadTop(){
           this.reload();
         },
-        // 倒计时
-        timeOut() {
-          let arr = [].concat(this.scene_list);
-          for(let i in arr) {
-            let arr_int = [];
-            if(arr[i].countdown) {
-              if(arr[i].countdown.substr(0, 1) > -1) {
-                arr[i].hour = 0;
-                arr[i].min = 0;
-                arr[i].sec = 0;
-                arr_int = arr[i].countdown.split(':');
-                arr[i].hour = arr_int[0];
-                arr[i].min = arr_int[1];
-                arr[i].sec = arr_int[2];
-                let TIME_OUT = Number(arr[i].min) * 60 + Number(arr[i].sec);
-                let count = TIME_OUT;
-                if(arr[i].time_interVal){
-                  clearInterval(arr[i].time_interVal);
-                }
-                arr[i].time_interVal  = setInterval(() => {
-                  if(count > 0 && count <= TIME_OUT) {
-                    count --;
-                    arr[i].sec --;
-                    if(this.scene_list[i].sec < 10 && this.scene_list[i].sec > -1) {
-                      arr[i].sec = '0' + arr[i].sec;
-                    }
-                    if(this.scene_list[i].sec == -1) {
-                      arr[i].sec = 59;
-                      if(this.scene_list[i].min > 0) {
-                        arr[i].min -= 1;
-                      }
-                      if(this.scene_list[i].min < 10) {
-                        if(this.scene_list[i].min !== '00') {
-                          arr[i].min = '0' + arr[i].min;
-                        }else {
-                          arr[i].countdown = null;
-                        }
-                      }
-                    }
-                    this.scene_list = [].concat(arr);
-                  }else {
-                    this.scene_list[i].countdown = null;
-                    clearInterval(arr[i].time_interVal);
-                  }
-                }, 1000);
-                console.log(this.scene_list)
-              }else {
-                this.scene_list[i].countdown = null
-              }
-            }
-          }
-        },
+        // // 倒计时
+        // timeOut() {
+        //   let arr = [].concat(this.scene_list);
+        //   for(let i in arr) {
+        //     let arr_int = [];
+        //     if(arr[i].countdown) {
+        //       if(arr[i].countdown.substr(0, 1) > -1) {
+        //         arr[i].hour = 0;
+        //         arr[i].min = 0;
+        //         arr[i].sec = 0;
+        //         arr_int = arr[i].countdown.split(':');
+        //         arr[i].hour = arr_int[0];
+        //         arr[i].min = arr_int[1];
+        //         arr[i].sec = arr_int[2];
+        //         let TIME_OUT = Number(arr[i].min) * 60 + Number(arr[i].sec);
+        //         let count = TIME_OUT;
+        //         if(arr[i].time_interVal){
+        //           clearInterval(arr[i].time_interVal);
+        //         }
+        //         arr[i].time_interVal  = setInterval(() => {
+        //           if(count > 0 && count <= TIME_OUT) {
+        //             count --;
+        //             arr[i].sec --;
+        //             if(this.scene_list[i].sec < 10 && this.scene_list[i].sec > -1) {
+        //               arr[i].sec = '0' + arr[i].sec;
+        //             }
+        //             if(this.scene_list[i].sec == -1) {
+        //               arr[i].sec = 59;
+        //               if(this.scene_list[i].min > 0) {
+        //                 arr[i].min -= 1;
+        //               }
+        //               if(this.scene_list[i].min < 10) {
+        //                 if(this.scene_list[i].min !== '00') {
+        //                   arr[i].min = '0' + arr[i].min;
+        //                 }else {
+        //                   arr[i].countdown = null;
+        //                 }
+        //               }
+        //             }
+        //             this.scene_list = [].concat(arr);
+        //           }else {
+        //             this.scene_list[i].countdown = null;
+        //             clearInterval(arr[i].time_interVal);
+        //           }
+        //         }, 1000);
+        //         console.log(this.scene_list)
+        //       }else {
+        //         this.scene_list[i].countdown = null
+        //       }
+        //     }
+        //   }
+        // },
       }
     }
 </script>

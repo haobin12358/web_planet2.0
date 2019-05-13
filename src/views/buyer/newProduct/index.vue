@@ -192,7 +192,11 @@
           }else{
             params = url.split('?prid=')[1];
           }
-          this.$router.push({ path: '/productDetail', query: { prid: params }})
+          if(localStorage.getItem('share') == 'gift' || url.indexOf('&from=gift')){
+            this.$router.push({ path: '/gift', query: { prid: params.split('&from')[0] }})
+          }else{
+            this.$router.push({ path: '/productDetail', query: { prid: params }})
+          }
         }else if(localStorage.getItem('share') == 'ipid' || url.indexOf('ipid') > 0) {
           let params;
           if(url.indexOf('&secret_usid') > 0){
