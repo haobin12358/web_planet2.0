@@ -6,9 +6,9 @@ Vue.use(Router)
 
 
 export const constantRouterMap = [
-  { path: '/login', component: () => import('../views/login/login'), hidden: true },
-  { path: '/register', component: () => import('../views/login/register'),hidden: true  },
-  { path: '/forget', component: () => import('../views/login/forget'),hidden: true  },
+  // { path: '/login', component: () => import('../views/login/login'), hidden: true },
+  // { path: '/register', component: () => import('../views/login/register'),hidden: true  },
+  // { path: '/forget', component: () => import('../views/login/forget'),hidden: true  },
   { path: '/first', component: () => import('../views/login/first'), hidden: true },
   { path: '/search', component: () => import('../views/search/search'), hidden: true },
   // 店主版 - 素材
@@ -18,7 +18,7 @@ export const constantRouterMap = [
     redirect: 'material/circle',
     children: [
       { path: '/material', component: () => import('../views/store/material/index'), hidden: true },
-      { path: '/material/circle', component: () => import('../views/store/material/circle'), meta: { keepAlive: true }, hidden: true }
+      { path: '/material/circle', component: () => import('../views/store/material/circle'), meta: { keepAlive: true },name:'/material/circle', hidden: true }
     ],
   },
   // 店主版 - 会员
@@ -47,14 +47,6 @@ export const constantRouterMap = [
   { path: '/storekeeper/IDCardApprove', component: () => import('../views/store/storekeeper/IDCardApprove'), hidden: true },
   // 店主版 - 店主 - 收益详情
   { path: '/storekeeper/incomeDetail', component: () => import('../views/store/storekeeper/incomeDetail'), hidden: true },
-  // 店主版 - 店主 - 商品管理
-  { path: '/storekeeper/productManagement', component: () => import('../views/store/storekeeper/productManagement'), hidden: true },
-  // 店主版 - 店主 - 添加商品
-  { path: '/storekeeper/addProduct', component: () => import('../views/store/storekeeper/addProduct'), hidden: true },
-  // 店主版 - 店主 - 订单管理
-  { path: '/storekeeper/orderManagement', component: () => import('../views/store/storekeeper/orderManagement'), hidden: true },
-  // 店主版 - 店主 - 订单管理 - 发货
-  { path: '/storekeeper/delivery', component: () => import('../views/store/storekeeper/delivery'), hidden: true },
   // 店主版 - 店主 - 活动管理
   { path: '/storekeeper/activityManagement', component: () => import('../views/store/storekeeper/activityManagement'), hidden: true },
   // 店主版 - 店主 - 粉丝管理
@@ -68,12 +60,11 @@ export const constantRouterMap = [
   // 店主版 - 店主 - 提现
   { path: '/storekeeper/withDraw', component: () => import('../views/store/storekeeper/withDraw.vue'), hidden: true },
 
-
   {
     path: '/',
     component: Layout,
     redirect: 'selected',
-    children: [{ path: '/selected', component: () => import('../views/buyer/selected/index'), meta: { keepAlive: true }, hidden: true }
+    children: [{ path: '/selected', component: () => import('../views/buyer/selected/index'), meta: { keepAlive: true },name:'/selected', hidden: true }
     ],
   },
   { path: '/gift', component: () => import('../views/buyer/selected/gift'), hidden: true },
@@ -87,16 +78,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: 'circle',
     children: [
-      { path: '/circle', component: () => import('../views/buyer/circle/index'), meta: { keepAlive: true }, hidden: true }
+      { path: '/circle', component: () => import('../views/buyer/circle/index'),  meta: { keepAlive: true },name:'/circle', hidden: true }
     ],
   },
   { path: '/circle/detail', component: () => import('../views/buyer/circle/detail'), hidden: true },
-  { path: '/circle/editCircle', component: () => import('../views/buyer/circle/editCircle'), hidden: true },
-  // { path: '/circle/newEdit', component: () => import('../views/buyer/circle/newEdit'), hidden: true },
   { path: '/circle/circleSort', component: () => import('../views/buyer/circle/circleSort'), hidden: true },
   { path: '/circle/createTopic', component: () => import('../views/buyer/circle/createTopic'), hidden: true },
-  { path: '/equipment', component: () => import('../views/buyer/equipment/index'), hidden: true , meta: { keepAlive: true } },
-  { path: '/equipment/detail', component: () => import('../views/buyer/newProduct/detail'), hidden: true , meta: { keepAlive: true }},
+  { path: '/equipment/detail', component: () => import('../views/buyer/newProduct/detail'), hidden: true , meta: { keepAlive: true },name:'/equipment/detail'},
   // { path: '/product', component: () => import('../views/buyer/product/product'), meta: { keepAlive: true }, hidden: true },
   { path: '/productDetail', name: 'productDetail', component: () => import('../views/buyer/newProduct/productDetail'), meta: { keepAlive: false }, hidden: true },
   { path: '/evaluate', component: () => import('../views/buyer/newProduct/evaluate'), hidden: true },
@@ -105,7 +93,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: 'newProduct',
     children: [
-      { path: '/newProduct', component: () => import('../views/buyer/newProduct/index'), meta: { keepAlive: false }, hidden: true }
+      { path: '/newProduct', component: () => import('../views/buyer/newProduct/index'),meta: { keepAlive: true},name:'newProduct' , hidden: true}
     ],
   },
   { path: '/searchProduct', component: () => import('../views/buyer/newProduct/search'), hidden: true },
@@ -123,7 +111,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: 'personal',
     children: [
-      { path: '/newPersonal', component: () => import('../views/buyer/personal/newIndex'), meta: { keepAlive: true }, hidden: true }
+      { path: '/newPersonal', component: () => import('../views/buyer/personal/newIndex'), meta: { keepAlive: true },name:'newPersonal', hidden: true }
     ],
   },
   { path: '/personal/code', component: () => import('../views/buyer/personal/code'), hidden: true },
@@ -155,26 +143,24 @@ export const constantRouterMap = [
   { path: '/personal/starDetail', component: () => import('../views/buyer/starProduct/starDetail'), hidden: true },  ///星币商城记录
   { path: '/personal/starProductDetail', component: () => import('../views/buyer/starProduct/starProductDetail'), hidden: true },  ///星币商品详情
   { path: '/personal/setPwd', component: () => import('../views/buyer/personal/setPwd'), hidden: true },  ///设置密码
-  { path: '/personal/myWallet', component: () => import('../views/buyer/personal/myWallet'), hidden: true ,meta: { keepAlive: true }},  ///设置密码
+  { path: '/personal/myWallet', component: () => import('../views/buyer/personal/myWallet'), hidden: true ,meta: { keepAlive: true },name:'myWallet'},  ///设置密码
   { path: '/personal/followUser', component: () => import('../views/buyer/personal/followUser'), hidden: true },  ///关注
 
   {
     path: '/circle',
     component: Layout,
     redirect: '',
-    children: [{ path: 'newEdit', component: () => import('../views/buyer/circle/newEdit'),hidden: true , meta: { keepAlive: true }}
+    children: [{ path: 'newEdit', component: () => import('../views/buyer/circle/newEdit'),hidden: true , meta: { keepAlive: true },name:'newEdit'}
     ],
   },
   // 活动模块
   { path: '/activity', component: () => import('../views/buyer/activity/index'), hidden: true},
-  { path: '/newcomer', component: () => import('../views/buyer/activity/newcomer'), hidden: true },            // 新人尝鲜礼包
   { path: '/limitedTime', component: () => import('../views/buyer/activity/limitedTime'), hidden: true },            // 限时活动
   { path: '/dailyGuess', component: () => import('../views/buyer/activity/dailyGuess'), hidden: true },        // 每日竞猜
   { path: '/guessProduct', component: () => import('../views/buyer/activity/guessProduct'), hidden: true },    // 每日竞猜的商品列表
   { path: '/guessProductDetail', component: () => import('../views/buyer/activity/guessProductDetail'), hidden: true },    // 每日竞猜的商品详情
   { path: '/pandora', component: () => import('../views/buyer/activity/pandora'), hidden: true },              // 魔法礼盒
-  { path: '/freeTrial', component: () => import('../views/buyer/activity/freeTrial'), hidden: true },          // 免费试用
-  { path: '/activityProduct', component: () => import('../views/buyer/activity/activityProduct'), hidden: true },      // 免费试用 - 商品
+  // { path: '/activityProduct', component: () => import('../views/buyer/activity/activityProduct'), hidden: true },      // 免费试用 - 商品
   { path: '/activityProductDetail', component: () => import('../views/buyer/activity/activityProductDetail'), hidden: true },        // 免费试用 - 商品详情
   { path: '/activityOrder', component: () => import('../views/buyer/activity/activityOrder'), meta: { keepAlive: false }, hidden: true },        // 活动订单
   { path: '/limitedProductDetail', component: () => import('../views/buyer/activity/limitedProductDetail'), hidden: true },        // 免费试用 - 商品详情
@@ -185,6 +171,12 @@ export const constantRouterMap = [
 
 export default new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes: constantRouterMap
 })

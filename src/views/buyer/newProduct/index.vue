@@ -72,21 +72,6 @@
   import {Toast} from 'mint-ui';
   import bottomLine from '../../../components/common/bottomLine';
   import shopIcon from './compoments/shopIcon';
-  var scroll = (function (className) {
-    var scrollTop;
-    return {
-      afterOpen: function () {
-        scrollTop = document.scrollingElement.scrollTop || document.body.scrollTop;
-        document.body.classList.add(className);
-        document.body.style.top = -scrollTop + 'px';
-      },
-      beforeClose: function () {
-        document.body.classList.remove(className);
-        document.scrollingElement.scrollTop = scrollTop;
-        document.body.scrollTop = scrollTop;
-      }
-    };
-  })('scroll');
   export default {
     data(){
       return{
@@ -106,7 +91,9 @@
         bottom_show:false,
         category_list:null,
         temp: [],
-        swipe_list:[]
+        swipe_list:[],
+        scrollTop:0,
+        index:0
       }
     },
     components:{
@@ -121,8 +108,23 @@
       this.getSwipe();
     },
     activated() {
-      this.getCategory();
-      this.getSwipe();
+      // this.getCategory();
+      // this.getSwipe();
+
+
+    },
+    //离开时记录位置
+    beforeRouteLeave (to, from, next) {
+     if(to.name == 'productDetail'){
+       sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
+     }
+      next();
+    },
+//进入该页面时，用之前保存的滚动位置赋值
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        document.body.scrollTop = document.documentElement.scrollTop = Number(sessionStorage.getItem('scrollTop'));
+      })
     },
     methods:{
       //滚动加载更多
@@ -199,10 +201,6 @@
             params = url.split('?ipid=')[1];
           }
           this.$router.push({ path: '/personal/starProductDetail', query: { ipid: params }})
-        }else if(localStorage.getItem('share') == 'activityId=new' || url.indexOf('activityId=new') > 0) {
-          this.$router.push({ path: '/activityProduct', query: { which: 'new' }})
-        }else if(localStorage.getItem('share') == 'activityId=try' || url.indexOf('activityId=try') > 0) {
-          this.$router.push({ path: '/activityProduct', query: { which: 'try' }})
         }else if(localStorage.getItem('share') == 'activityId=guess' || url.indexOf('activityId=guess') > 0) {
           this.$router.push({ path: '/guessProduct', query: { which: 'guess' }})
         }else if(localStorage.getItem('share') == 'uaid' || url.indexOf('uaid') > 0) {
@@ -226,16 +224,8 @@
         this.nav_list = [].concat(arr);
         this.page_info.page_num = 1;
         this.bottom_show = false;
+        this.index = index;
         this.getProduct(this.nav_list[index].pcid);
-      },
-      //显示隐藏模态框
-      changeModal(v,bool) {
-        this[v] = bool;
-        if(bool){
-          scroll.afterOpen();
-        }else{
-          scroll.beforeClose();
-        }
       },
       //获取商品列表
       getProduct(id){
@@ -278,8 +268,12 @@
             for(let i in this.nav_list){
               this.nav_list[i].active = false;
             }
-            this.nav_list[0].active = true;
-            this.getProduct(this.nav_list[0].pcid)
+            let _index = 0;
+            if(this.index){
+              _index = this.index;
+            }
+            this.nav_list[_index].active = true;
+            this.getProduct(this.nav_list[_index].pcid)
           }
         });
       },

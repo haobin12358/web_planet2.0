@@ -113,11 +113,11 @@
     components: { sku },
     beforeDestroy() {
       this.which = this.$route.query.which;
-      if(this.which == "new") {
-        this.$router.push('/activityProduct?which=new');
-      }else if(this.which == "try") {
-        this.$router.push('/activityProduct?which=try');
-      }
+      // if(this.which == "new") {
+      //   this.$router.push('/activityProduct?which=new');
+      // }else if(this.which == "try") {
+      //   this.$router.push('/activityProduct?which=try');
+      // }
     },
     mounted() {
       common.changeTitle('活动商品详情');
