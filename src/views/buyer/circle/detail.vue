@@ -16,7 +16,7 @@
         <div>
           <template v-for="(item,index) in news_info.netext">
             <div class="m-circle-text" v-if="item.type == 'text'" >
-              <span class="m-circle-topic" v-if="news_info.toctitle">#{{news_info.toctitle}}#</span>
+              <span class="m-circle-topic" v-if="news_info.toctitle && index == text_index">#{{news_info.toctitle}}#</span>
               <span  v-html="item.content"></span>
             </div>
             <template v-if="item.type == 'image'" v-for="(i,j) in item.content">
@@ -171,7 +171,8 @@
         show_invite:false,
         timeOutEvent:null,
         show_more:false,
-        get_comment:false
+        get_comment:false,
+        text_index:-1
       }
     },
     mixins: [wxapi],
@@ -379,11 +380,16 @@
         }).then(res => {
           if(res.data.status == 200){
             this.news_info = res.data.data;
+            let text_index = -1;
             for(let i in this.news_info.netext){
               if(this.news_info.netext[i].type == 'text'){
+                if(text_index == -1){
+                  text_index = i;
+                }
                 this.news_info.netext[i].content = this.news_info.netext[i].content.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
               }
             }
+            this.text_index = text_index;
             if(res.data.data.commentnumber > 99) {
               this.news_info.commentnumber = "99+";
             }
