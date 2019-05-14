@@ -120,10 +120,31 @@
     },
     mounted(){
       common.changeTitle('商城');
-      this.getProduct(1,'sale_value|asc');
+      if(this.$store.state.second_scroll >0 ||  this.$store.state.second_change){
+        for(let a in this.$store.state.second_data){
+          this._data[a] = this.$store.state.second_data[a]
+        }
+        document.documentElement.scrollTop =this.$store.state.second_scroll;
+      }else{
+
+        this.getProduct(1,'sale_value|asc');            // 获取商品
+      }
+
     },
     activated() {
-      this.getProduct(1,'sale_value|asc');
+      // this.getProduct(1,'sale_value|asc');
+    },
+    //离开时记录位置
+    beforeRouteLeave (to, from, next) {
+      if(to.path.indexOf('Detail') > -1){
+        this.$store.state.second_scroll = document.documentElement.scrollTop || document.body.scrollTop;
+        this.$store.state.second_data = this._data;
+        this.$store.state.second_change = true;
+      }else{
+        this.$store.state.second_scroll = 0;
+        this.$store.state.second_change = false;
+      }
+      next();
     },
     methods:{
       //滚动加载更多

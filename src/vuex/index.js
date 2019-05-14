@@ -69,7 +69,10 @@ let store= new Vuex.Store({
     isChange:false,
     activity_data:null,
     activity_change:false,
-    activity_scroll:0
+    activity_scroll:0,
+    second_data:null,
+    second_change:false,
+    second_scroll:0
   },
   mutations: {
     add(state,route) {
