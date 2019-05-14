@@ -207,7 +207,7 @@
             }
             clearInterval(time);
           }
-        }, 100);
+        }, 300);
 
         this.getSwipe();
         this.getCategory();

@@ -109,24 +109,25 @@
       common.changeTitle('购买礼包');
       this.getProductDetail();              // 获取商品详情
       this.getUser();
-      // wxapi.wxRegister(location.href.split('#')[0]);
-      // localStorage.removeItem('share');
-      // localStorage.removeItem('url');
-      // if(common.isWeixin()) {
-      //   if(localStorage.getItem('token')) {
-      //     // 倒计时
-      //     const TIME_COUNT = 1;
-      //     let count = TIME_COUNT;
-      //     let time = setInterval(() => {
-      //       if(count > 0 && count <= TIME_COUNT) {
-      //         count --;
-      //       }else {
-      //         this.shareProduct(1);
-      //         clearInterval(time);
-      //       }
-      //     }, 100);
-      //   }
-      // }
+      localStorage.removeItem('share');
+      localStorage.removeItem('url');
+      localStorage.removeItem('login_to');
+      wxapi.wxRegister(location.href.split('#')[0]);
+      if(common.isWeixin()) {
+        if(localStorage.getItem('token')) {
+          // 倒计时
+          const TIME_COUNT = 1;
+          let count = TIME_COUNT;
+          let time = setInterval(() => {
+            if(count > 0 && count <= TIME_COUNT) {
+              count --;
+            }else {
+              this.shareProduct(1);
+              clearInterval(time);
+            }
+          }, 300);
+        }
+      }
     },
     methods: {
       // 分享商品
@@ -138,7 +139,7 @@
               title: this.product.prtitle,
               desc: this.product.prdescription,
               imgUrl: this.product.prmainpic,
-              link: window.location.href.split('#')[0] + '?prid=' + this.product.tcid
+              link: window.location.href.split('#')[0] + '?prid=' + this.product.tcid+'&from=gift'
             };
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
