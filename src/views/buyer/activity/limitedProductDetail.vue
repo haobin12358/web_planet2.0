@@ -22,8 +22,8 @@
             <img src="/static/images/newActivity/limit-label.png" class="m-activity-label" alt="">
           </p>
           <p class="m-marking-price m-flex-between">
-            <span>价格：<s>{{product.prlineprice}}</s></span>
-            <span>市场价：<s>￥{{product.prprice | money}}</s></span>
+            <span>价格：<s>{{product.prprice| money}}</s></span>
+            <span>市场价：<s>￥{{product.prlineprice | money }}</s></span>
           </p>
         </div>
       </div>
