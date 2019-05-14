@@ -23,6 +23,7 @@
         <div class="m-text-info m-flex-between">
           <span>快递：{{product.prfreight}} 元</span>
           <span>月销：{{product.prsalesvalue}}</span>
+          <span >预计赚：￥{{product.profict}}</span>
         </div>
       </div>
     </div>

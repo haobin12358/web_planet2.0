@@ -57,13 +57,25 @@
     },
     mounted(){
       common.changeTitle('装备单类');
-      this.head_src = this.$route.query.head;
-      this.head_name = this.$route.query.name;
-      this.getCategory();
+      if(this.$store.state.scrollTop >0 ||  this.$store.state.isChange){
+        for(let a in this.$store.state.all_data){
+          this._data[a] = this.$store.state.all_data[a]
+        }
+        document.documentElement.scrollTop =this.$store.state.scrollTop;
+      }else{
+        this.getCategory();
+      }
+
     },
-    beforeRouteEnter (to, from, next){
-      if(from.query.last_pcid){
-        to.query.pcid  = from.query.last_pcid
+    //离开时记录位置
+    beforeRouteLeave (to, from, next) {
+      if(to.path.indexOf('searchProduct') > -1){
+        this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        this.$store.state.all_data = this._data;
+        this.$store.state.isChange = true;
+      }else{
+        this.$store.state.scrollTop = 0;
+        this.$store.state.isChange = false;
       }
       next();
     },
@@ -133,6 +145,7 @@
         arr[index].active = true;
         this.icon_list = [].concat(arr);
         this.getCategoryList(this.icon_list[index].pcid);
+        document.documentElement.scrollTop =0;
       }
     }
   }
@@ -160,7 +173,7 @@
       margin-top: -35px;
     }
     .m-side-scroll{
-      position: absolute;
+      position: fixed;
       width: 150px;
       overflow-y: auto;
       background-color: #fff;

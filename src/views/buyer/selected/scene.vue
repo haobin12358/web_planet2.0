@@ -52,7 +52,27 @@
     },
     mounted(){
         common.changeTitle('场景推荐');
+      if(this.$store.state.isChange){
+        for(let a in this.$store.state.all_data){
+          this._data[a] = this.$store.state.all_data[a]
+        }
+        document.documentElement.scrollTop =this.$store.state.scrollTop;
+      }else{
         this.getScene();
+      }
+
+    },
+    //离开时记录位置
+    beforeRouteLeave (to, from, next) {
+      if(to.path.indexOf('Detail') > -1){
+        this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        this.$store.state.all_data = this._data;
+        this.$store.state.isChange = true;
+      }else{
+        this.$store.state.scrollTop = 0;
+        this.$store.state.isChange = false;
+      }
+      next();
     },
     methods: {
       //获取场景

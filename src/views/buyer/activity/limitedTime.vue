@@ -48,9 +48,30 @@
       }
     },
     components:{ navList, product, bottomLine },
+    //离开时记录位置
+    beforeRouteLeave (to, from, next) {
+      if(to.path.indexOf('Detail') > -1){
+        this.$store.state.activity_scroll = document.documentElement.scrollTop || document.body.scrollTop;
+        this.$store.state.activity_data = this._data;
+        this.$store.state.activity_change = true;
+      }else{
+        this.$store.state.activity_scroll = 0;
+        this.$store.state.activity_change = false;
+      }
+      next();
+    },
     mounted() {
       common.changeTitle('限时特惠');
-      this.getProduct();
+      if(this.$store.state.activity_scroll >0 ||  this.$store.state.activity_change){
+        for(let a in this.$store.state.activity_data){
+          this._data[a] = this.$store.state.activity_data[a]
+        }
+        document.documentElement.scrollTop =this.$store.state.activity_scroll;
+      }else{
+
+        this.getProduct();            // 获取商品
+      }
+
       this.timeOut();
       wxapi.wxRegister(location.href.split('#')[0]);
       localStorage.removeItem('share');
