@@ -151,7 +151,25 @@
           }
         },
       components:{ navList,mCircle,bottomLine},
+      //离开时记录位置
+      beforeRouteLeave (to, from, next) {
+        if(to.path.indexOf('detail') > -1){
+          this.$store.state.second_scroll = document.documentElement.scrollTop || document.body.scrollTop;
+          this.$store.state.second_data = this._data;
+          this.$store.state.second_change = true;
+        }else{
+          this.$store.state.second_scroll = 0;
+          this.$store.state.second_change = false;
+        }
+        next();
+      },
       mounted(){
+        if(this.$store.state.second_scroll >0 ||  this.$store.state.second_change){
+          for(let a in this.$store.state.second_data){
+            this._data[a] = this.$store.state.second_data[a]
+          }
+          document.documentElement.scrollTop =this.$store.state.second_scroll;
+        }else{
           this.historySearch();
           // 在圈子的搜索时才显示推荐圈子
           if(this.$route.query.shtype == 'news') {
@@ -162,6 +180,8 @@
           }else {
             this.placeholder = '商品搜索关键词(商品名/品牌名)'
           }
+        }
+
       },
       methods:{
         // 获取圈子所在的标签

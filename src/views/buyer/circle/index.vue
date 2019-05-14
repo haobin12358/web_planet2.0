@@ -139,7 +139,7 @@
     },
     //离开时记录位置
     beforeRouteLeave (to, from, next) {
-      if(to.path == '/circle/detail'){
+      if(to.path == '/circle/detail' || to.path == '/search'){
         // sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
         this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         this.$store.state.all_data = this._data;
