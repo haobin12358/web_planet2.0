@@ -172,7 +172,13 @@
       // 时间选择器的确认按钮
       timeDone() {
         this.now = this.timeValue[0] + "-" + this.timeValue[1];
-        this.getIncomeList(); // 获取店主收益详情
+        if(this.nav_list[0].active){
+          this.getIncomeList(); // 如果收益详情选项卡激活，变更时间时获取店主收益详情
+        }
+        if (this.nav_list[1].active) {
+          this.getWithdrawHistory(); // 如果提现历史选项卡激活，变更时间时获取店主收益详情
+        }
+        
         this.popupVisible = false;
       },
       // navList的点击事件
