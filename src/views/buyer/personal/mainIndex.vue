@@ -87,9 +87,28 @@
         mCircle,
         bottomLine
       },
+      //离开时记录位置
+      beforeRouteLeave (to, from, next) {
+        if(to.path == '/circle/detail'){
+          // sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
+          this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+          this.$store.state.all_data = this._data;
+        }else{
+          this.$store.state.scrollTop = 0;
+        }
+        next();
+      },
       mounted(){
+        //  判断是否需要记住浏览位置
+        if(this.$store.state.scrollTop >0 ){
+          for(let a in this.$store.state.all_data){
+            this._data[a] = this.$store.state.all_data[a]
+          }
+          document.documentElement.scrollTop =this.$store.state.scrollTop;
+        }else{
           this.getInfo();
           this.getNav();
+        }
       },
       methods:{
         changeRoute(v,param){

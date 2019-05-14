@@ -160,23 +160,16 @@
         if(!localStorage.getItem('token')){
           localStorage.removeItem('is_new');
         }
-        // if(localStorage.getItem('token')) {
-        //   // 倒计时
-        //   const TIME_COUNT = 1;
-        //   let count = TIME_COUNT;
-        //   let time = setInterval(() => {
-        //     if(count > 0 && count <= TIME_COUNT) {
-        //       count --;
-        //     }else {
-        //       this.shareCode();
-        //       clearInterval(time);
-        //     }
-        //   }, 500);
-        // }
-        // if(localStorage.getItem('share') && localStorage.getItem('url')) {
-        //   let url = localStorage.getItem('url');
-        //   this.dealUrl(url);
-        // }
+        if(this.$store.state.scrollTop >0 ){
+          for(let a in this.$store.state.all_data){
+            this._data[a] = this.$store.state.all_data[a]
+          }
+        }else{
+          this.getSwipe();
+          this.getCategory();
+          this.getImg();
+          this.getNews();
+        }
       },
       activated() {
         // 倒计时
@@ -209,10 +202,7 @@
           }
         }, 300);
 
-        this.getSwipe();
-        this.getCategory();
-        this.getImg();
-        this.getNews();
+
         if(sessionStorage.getItem('shop')) {
           this.$router.push('/shop');
           sessionStorage.removeItem('shop');
@@ -234,6 +224,17 @@
             }
           }, 300);
         }
+      },
+      //离开时记录位置
+      beforeRouteLeave (to, from, next) {
+        if(to.path == '/circle/detail'){
+          // sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
+          this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+          this.$store.state.all_data = this._data;
+        }else{
+          this.$store.state.scrollTop = 0;
+        }
+        next();
       },
       methods: {
         dealUrl(url,name){
