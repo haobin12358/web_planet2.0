@@ -128,6 +128,31 @@
         localStorage.setItem('circleIndex', 0);
       }
       wxapi.wxRegister(location.href.split('#')[0]);
+      if(this.$store.state.scrollTop > 0){
+        this.select_nav = this.$store.state.select_nav;
+        this.nav_list = this.$store.state.nav_list;
+        this.news_list = this.$store.state.news_list;
+        this.page_info = this.$store.state.page_info;
+        this.total_page = this.$store.state.total_page;
+        document.documentElement.scrollTop =this.$store.state.scrollTop;
+      }else{
+        this.getNav();
+      }
+    },
+    //离开时记录位置
+    beforeRouteLeave (to, from, next) {
+      if(to.path == '/circle/detail'){
+        // sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
+        this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        this.$store.state.page_info = this.page_info;
+        this.$store.state.total_page = this.total_page;
+        this.$store.state.select_nav = this.select_nav;
+        this.$store.state.news_list = this.news_list;
+        this.$store.state.nav_list = this.nav_list;
+      }else{
+        this.$store.state.scrollTop = 0;
+      }
+      next();
     },
     activated() {
 
@@ -138,8 +163,9 @@
       //     this.$store.state.show_login = true;
       //   }
       //
+
       // }
-      this.getNav();
+
       if(sessionStorage.getItem('circleProduct')) {
         this.$router.push('/shop');
         sessionStorage.removeItem('circleProduct')

@@ -64,7 +64,14 @@ let store= new Vuex.Store({
       }
     ],
     // tabbar_select:'素材'
-    tabbar_select:'首页'
+    tabbar_select:'首页',
+    product_list:null,
+    scrollTop:0,
+    page_info:{},
+    total_page:0,
+    nav_list:[],
+    news_list:null,
+    select_nav:null
   },
   mutations: {
     add(state,route) {

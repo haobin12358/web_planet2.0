@@ -104,8 +104,17 @@
     },
     mounted(){
       common.changeTitle('商城');
-      this.getCategory();
-      this.getSwipe();
+      if(this.$store.state.scrollTop > 0){
+        this.product_list = this.$store.state.product_list;
+        this.page_info = this.$store.state.page_info;
+        this.total_page = this.$store.state.total_page;
+        this.nav_list = this.$store.state.nav_list
+        document.documentElement.scrollTop =this.$store.state.scrollTop;
+      }else{
+        this.getCategory();
+        this.getSwipe();
+      }
+
     },
     activated() {
       // this.getCategory();
@@ -116,16 +125,23 @@
     //离开时记录位置
     beforeRouteLeave (to, from, next) {
      if(to.name == 'productDetail'){
-       sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
+       // sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
+       this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+       this.$store.state.page_info = this.page_info;
+       this.$store.state.total_page = this.total_page;
+       this.$store.state.product_list = this.product_list;
+       this.$store.state.nav_list = this.nav_list;
+     }else{
+       this.$store.state.scrollTop = 0;
      }
       next();
     },
 //进入该页面时，用之前保存的滚动位置赋值
-    beforeRouteEnter (to, from, next) {
-      next(vm => {
-        document.body.scrollTop = document.documentElement.scrollTop = Number(sessionStorage.getItem('scrollTop'));
-      })
-    },
+//     beforeRouteEnter (to, from, next) {
+//       next(vm => {
+//         document.body.scrollTop = document.documentElement.scrollTop = Number(sessionStorage.getItem('scrollTop'));
+//       })
+//     },
     methods:{
       //滚动加载更多
       touchMove(e){

@@ -177,6 +177,11 @@
     },
     mixins: [wxapi],
     components: { bottomLine, couponCard, product },
+    //进入该页面时，用之前保存的滚动位置赋值
+    beforeRouteEnter (to, from, next) {
+      console.log(to,from)
+      next()
+    },
     mounted() {
       this.getNewsDetail();
       if(localStorage.getItem('token')){
@@ -223,20 +228,22 @@
       this.changeModal('show_modal',false, 1);
       sessionStorage.removeItem('neid');
 
-      if(this.$route.path == '/productDetail') {
-        // sessionStorage.setItem('shop', true);
-      }else {
-        if(sessionStorage.getItem('circleFrom') == 'buyer') {
-          if(this.$route.name == 'productDetail') {
-            sessionStorage.setItem('circleProduct', true)
-          }else {
-            this.$router.push('/circle');
-          }
-        }else if(sessionStorage.getItem('circleFrom') == 'store') {
-          this.$router.push('/material/circle');
-        }
-        sessionStorage.removeItem('circleFrom');
-      }
+      // console.log(this.$route)
+      //
+      // if(this.$route.path == '/productDetail') {
+      //   // sessionStorage.setItem('shop', true);
+      // }else {
+      //   if(sessionStorage.getItem('circleFrom') == 'buyer') {
+      //     if(this.$route.name == 'productDetail') {
+      //       sessionStorage.setItem('circleProduct', true)
+      //     }else {
+      //       this.$router.push('/circle');
+      //     }
+      //   }else if(sessionStorage.getItem('circleFrom') == 'store') {
+      //     this.$router.push('/material/circle');
+      //   }
+      //   sessionStorage.removeItem('circleFrom');
+      // }
     },
     methods: {
       // 删除圈子
