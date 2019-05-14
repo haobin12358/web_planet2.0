@@ -47,7 +47,15 @@
     components: {},
     mounted() {
       common.changeTitle('活动商品');
-      this.getProduct();               // 获取商品
+      if(this.$store.state.scrollTop >0 ||  this.$store.state.isChange){
+        for(let a in this.$store.state.all_data){
+          this._data[a] = this.$store.state.all_data[a]
+        }
+        document.documentElement.scrollTop =this.$store.state.scrollTop;
+      }else{
+        this.getProduct();               // 获取商品
+      }
+
       // 倒计时
       const TIME_COUNT = 1;
       let count = TIME_COUNT;
@@ -62,6 +70,18 @@
       wxapi.wxRegister(location.href.split('#')[0]);
       localStorage.removeItem('share');
       localStorage.removeItem('url');
+    },
+    //离开时记录位置
+    beforeRouteLeave (to, from, next) {
+      if(to.path.indexOf('Detail') > -1){
+        this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        this.$store.state.all_data = this._data;
+        this.$store.state.isChange = true;
+      }else{
+        this.$store.state.scrollTop = 0;
+        this.$store.state.isChange = false;
+      }
+      next();
     },
     methods: {
       // 跳转页面

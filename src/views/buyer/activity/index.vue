@@ -242,6 +242,19 @@
         clearInterval(this.limit_list[i].timer);
       }
     },
+    //离开时记录位置
+    beforeRouteLeave (to, from, next) {
+      if(to.path != '/selected' && to.path != '/guessProduct' ){
+        this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        this.$store.state.all_data = this._data;
+        this.$store.state.isChange = true;
+      }else{
+        this.$store.state.scrollTop = 0;
+        this.$store.state.isChange = false;
+      }
+
+      next();
+    },
     methods: {
       // 分享
       shareAct() {
@@ -709,7 +722,14 @@
       if(this.$route.query.token) {
         localStorage.setItem('token', this.$route.query.token);
       }
-      this.getActivit();                // 获取活动list
+      if(this.$store.state.scrollTop >0 ||  this.$store.state.isChange ){
+        for(let a in this.$store.state.all_data){
+          this._data[a] = this.$store.state.all_data[a]
+        }
+        document.documentElement.scrollTop =this.$store.state.scrollTop;
+      }else{
+        this.getActivit();                // 获取活动list
+      }
       wxapi.wxRegister(location.href.split('#')[0]);
       // localStorage.removeItem('share');
       // localStorage.removeItem('url');

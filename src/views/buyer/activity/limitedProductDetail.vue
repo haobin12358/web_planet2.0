@@ -17,13 +17,20 @@
 
       <div class="m-flex-between">
         <div>
-          <p class="m-flex-start">
-            <span class="m-activity-price" v-if="product.tlpprice">￥{{product.tlpprice | money}}</span>
-            <img src="/static/images/newActivity/limit-label.png" class="m-activity-label" alt="">
-          </p>
+          <div class="m-flex-between">
+            <p class="m-flex-start">
+              <span class="m-activity-price" v-if="product.tlpprice">￥{{product.tlpprice | money}}</span>
+              <img src="/static/images/newActivity/limit-label.png" class="m-activity-label" alt="">
+            </p>
+            <h3 v-if="product.profict">
+              <span class="m-profict-title">预计赚：</span>
+              <span class="m-red">￥{{product.profict}}</span>
+            </h3>
+          </div>
+
           <p class="m-marking-price m-flex-between">
-            <span>价格：<s>{{product.prlineprice}}</s></span>
-            <span>市场价：<s>￥{{product.prprice | money}}</s></span>
+            <span>价格：<s>{{product.prprice| money}}</s></span>
+            <span>市场价：<s>￥{{product.prlineprice | money }}</s></span>
           </p>
         </div>
       </div>

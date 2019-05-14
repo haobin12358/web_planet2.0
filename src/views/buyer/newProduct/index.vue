@@ -104,8 +104,16 @@
     },
     mounted(){
       common.changeTitle('商城');
-      this.getCategory();
-      this.getSwipe();
+      if(this.$store.state.scrollTop > 0 || this.$store.state.isChange ){
+        for(let a in this.$store.state.all_data){
+          this._data[a] = this.$store.state.all_data[a]
+        }
+        document.documentElement.scrollTop =this.$store.state.scrollTop;
+      }else{
+        this.getCategory();
+        this.getSwipe();
+      }
+
     },
     activated() {
       // this.getCategory();
@@ -115,17 +123,23 @@
     },
     //离开时记录位置
     beforeRouteLeave (to, from, next) {
-     if(to.name == 'productDetail'){
-       sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
+     if(to.path.indexOf('Detail') > -1){
+       // sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
+       this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+       this.$store.state.all_data = this._data;
+       this.$store.state.isChange = true;
+     }else{
+       this.$store.state.scrollTop = 0;
+       this.$store.state.isChange = false;
      }
       next();
     },
 //进入该页面时，用之前保存的滚动位置赋值
-    beforeRouteEnter (to, from, next) {
-      next(vm => {
-        document.body.scrollTop = document.documentElement.scrollTop = Number(sessionStorage.getItem('scrollTop'));
-      })
-    },
+//     beforeRouteEnter (to, from, next) {
+//       next(vm => {
+//         document.body.scrollTop = document.documentElement.scrollTop = Number(sessionStorage.getItem('scrollTop'));
+//       })
+//     },
     methods:{
       //滚动加载更多
       touchMove(e){
@@ -192,7 +206,11 @@
           }else{
             params = url.split('?prid=')[1];
           }
-          this.$router.push({ path: '/productDetail', query: { prid: params }})
+          if(localStorage.getItem('share') == 'gift' || url.indexOf('&from=gift')){
+            this.$router.push({ path: '/gift', query: { prid: params.split('&from')[0] }})
+          }else{
+            this.$router.push({ path: '/productDetail', query: { prid: params }})
+          }
         }else if(localStorage.getItem('share') == 'ipid' || url.indexOf('ipid') > 0) {
           let params;
           if(url.indexOf('&secret_usid') > 0){
