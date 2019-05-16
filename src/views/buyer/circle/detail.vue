@@ -59,7 +59,7 @@
             <span @click.stop="changeOut">我要参加</span>
             <img src="/static/images/circle/icon-circle-more.png" @click.stop="changeOut" class="m-icon-more" alt="">
           </template>
-          <template>
+          <template v-else>
             <span @click.stop="lookMore">查看更多</span>
             <img src="/static/images/circle/icon-circle-more.png" @click.stop="lookMore" class="m-icon-more" alt="">
           </template>
@@ -641,7 +641,7 @@
       },
       //我要参加
       changeOut(){
-        location.href = '';
+        location.href = 'http://mp.weixin.qq.com/s?__biz=Mzg4MTAxNzkzNg==&mid=2247484151&idx=1&sn=18301836b157e08c21259dbfed9762a8&chksm=cf6d17c8f81a9ededacc207a20962cb33565f2bf9452780cb4e976a62d3d4c3f6f8dd121e4e9&token=2012798514&lang=zh_CN#rd';
       },
       //  关注
       followClick(){
