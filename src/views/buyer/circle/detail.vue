@@ -55,8 +55,15 @@
           </div>
         </div>
         <div class="m-more-link" >
-          <span @click.stop="lookMore">查看更多</span>
-          <img src="/static/images/circle/icon-circle-more.png" @click.stop="lookMore" class="m-icon-more" alt="">
+          <template v-if="news_info.toctitle == '别老翻我朋友圈 喜欢就跟我告白'">
+            <span @click.stop="changeOut">我要参加</span>
+            <img src="/static/images/circle/icon-circle-more.png" @click.stop="changeOut" class="m-icon-more" alt="">
+          </template>
+          <template>
+            <span @click.stop="lookMore">查看更多</span>
+            <img src="/static/images/circle/icon-circle-more.png" @click.stop="lookMore" class="m-icon-more" alt="">
+          </template>
+
         </div>
       </div>
     </div>
@@ -619,6 +626,7 @@
           });
         }
       },
+      //查看更多
       lookMore(){
         if(localStorage.getItem('token')){
           window.router.push('/circle');
@@ -630,6 +638,10 @@
           // window.router.push('/login');
           this.$store.state.show_login = true;
         }
+      },
+      //我要参加
+      changeOut(){
+        location.href = '';
       },
       //  关注
       followClick(){

@@ -2,7 +2,7 @@
 // const title = 'https://www.bigxingxing.com/api/v1/'; //正式
 let title = '';
 if(location.origin.indexOf('localhost') != -1){
-   title = 'https://pre2.bigxingxing.com/api/v2/'; //测试
+   title = 'https://play.bigxingxing.com/api/v2/'; //测试
 }else{
    title = `${location.origin}/api/v2/`
 }
