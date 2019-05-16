@@ -59,7 +59,7 @@
             <span @click.stop="changeOut">我要参加</span>
             <img src="/static/images/circle/icon-circle-more.png" @click.stop="changeOut" class="m-icon-more" alt="">
           </template>
-          <template v-else>
+          <template >
             <span @click.stop="lookMore">查看更多</span>
             <img src="/static/images/circle/icon-circle-more.png" @click.stop="lookMore" class="m-icon-more" alt="">
           </template>
