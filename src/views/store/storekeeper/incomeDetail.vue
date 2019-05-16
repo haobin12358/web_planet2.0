@@ -44,7 +44,8 @@
       <div v-if="detailList.length != 0 && nav_list[0].active">
         <div class="m-detail-item" v-for="item in detailList">
           <div class="m-detail-item-left">
-            <img class="m-product-img" :src="item.skupic">
+            <img class="m-product-img" v-if="item.skupic" :src="item.skupic">
+            <img class="m-product-img" v-else src="/static/images/logo.jpg">
           </div>
           <div class="m-detail-item-middle">
             <div class="m-product-name">{{item.prtitle}}</div>
