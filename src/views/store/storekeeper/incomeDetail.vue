@@ -225,7 +225,7 @@
           token: localStorage.getItem('token'),
           page_size: '10',
           page_num: '1',
-          mouth: this.now.split('-')[1],
+          month: this.now.split('-')[1],
           year: this.now.split('-')[0]
         };
         axios.get(api.get_cash_notes, {

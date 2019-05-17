@@ -469,7 +469,7 @@
           this.usintegral = items.usintegral;
           this.show_modal = true;
         }else{
-          axios.post(api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
+          this.$http.post(this.$api.order_pay + '?token='+ localStorage.getItem('token'), params).then(res => {
             if(res.data.status == 200) {
 
               this.wxPay(res.data.data.args, items.omid);
@@ -613,6 +613,7 @@
         this.now = this.timeValue[0] + "-" + this.timeValue[1];
         // this.getIncomeList();         // 获取店主收益详情
         this.popupVisible = false;
+        this.getHistory();
       },
     //  获取历史记录
       getHistory(){
