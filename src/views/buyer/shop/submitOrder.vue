@@ -624,7 +624,7 @@
                 // this.giftPopup = true;
 
                 if(this.act){
-                  this.$router.push("/activityOrder");
+                  this.$router.push("/personal/myWallet");
                 }else{
                   this.$router.push("/orderList?which=2");
                 }
@@ -660,21 +660,21 @@
                   if(that.fromGift) {
                     this.$router.push("/orderList?which=2");
                   }else if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
-                    that.$router.push('/activityOrder');
+                    that.$router.push('/personal/myWallet');
                   }else {     // 去待发货页
                     that.$router.push("/orderList?which=2");
                   }
                 }else if(res.err_msg == "get_brand_wcpay_request:cancel" ){   // 支付过程中用户取消
                   Toast('支付已取消');
                   if(that.from == 'new' || that.from == 'try' || that.isGuess ||that.act) {
-                    that.$router.push('/activityOrder');
+                    that.$router.push('/personal/myWallet');
                   }else {     // 去待付款页
                     that.$router.push("/orderList?which=1");
                   }
                 }else if(res.err_msg == "get_brand_wcpay_request:fail" ){     // 支付失败
                   Toast('支付失败');
                   if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
-                    that.$router.push('/activityOrder');
+                    that.$router.push('/personal/myWallet');
                   }else{     // 去待付款页
                     that.$router.push("/orderList?which=1");
                   }

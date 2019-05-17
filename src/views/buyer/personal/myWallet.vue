@@ -400,11 +400,11 @@
             // res.data.data[0].active = true;
             this.nav_list = [].concat(res.data.data);
 
-            if(localStorage.getItem('activityOrderNo')) {
-              this.navClick(localStorage.getItem('activityOrderNo'));         // 导航点击
-            }else {
+            // if(localStorage.getItem('activityOrderNo')) {
+            //   this.navClick(localStorage.getItem('activityOrderNo'));         // 导航点击
+            // }else {
               this.navClick(0);                // 导航点击
-            }
+            // }
           }
         })
       },
