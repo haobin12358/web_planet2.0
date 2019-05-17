@@ -266,6 +266,7 @@
           let product = {};
           product.pb = this.product.brand;
           product.cart = [];
+          console.log(this.product)
           product.cart.push({ product: { prtitle: this.product.prtitle, prfreight: this.product.prfreight, gnaaid: this.product.gnaaid },
             sku: this.select_value, canums: "1", prid: this.product.prid});
           let arr = [];

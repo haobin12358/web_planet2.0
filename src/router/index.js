@@ -145,7 +145,7 @@ export const constantRouterMap = [
   { path: '/personal/setPwd', component: () => import('../views/buyer/personal/setPwd'), hidden: true },  ///设置密码
   { path: '/personal/myWallet', component: () => import('../views/buyer/personal/myWallet'), hidden: true ,meta: { keepAlive: true },name:'myWallet'},  ///设置密码
   { path: '/personal/followUser', component: () => import('../views/buyer/personal/followUser'), hidden: true },  ///关注
-
+  { path: '/personal/myMessage', component: () => import('../views/buyer/personal/myMessage'), hidden: true },  ///我的信息
   {
     path: '/circle',
     component: Layout,
