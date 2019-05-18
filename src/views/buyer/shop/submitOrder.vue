@@ -512,50 +512,57 @@
         },
         // 每日竞猜的提交订单
         submitGuessOrder() {
+          console.log(this.product_info)
           if(!this.uaid) {
             Toast("请先选择收货地址");
             return false
           }
-          let gnid = '';
-          let date = new Date();
-          date.setTime(date.getTime());
-          date = date.getFullYear().toString() + (date.getMonth()+1).toString() + date.getDate().toString();
-          let param = { token: localStorage.getItem('token'), date: date };
-          axios.get(api.get_guess_num, { params: param }).then(res => {
-            if(res.data.status == 200) {
-              if(res.data.data.result == 'uncorrect') {
-                Toast('昨日猜错啦');
-                this.from = 'try';
-                this.submitOrder();
-                return false
-              }else if(res.data.data.result == 'correct') {
-                Toast('昨日猜对啦');
-                gnid = res.data.data.gnid;
-              }else if(res.data.data.result == 'not_open') {
-                Toast('昨日未开奖');
-                this.from = 'try';
-                this.submitOrder();
-                return false
-              }
-              let params = {
-                gnid: gnid,
-                skuid: this.product_info[0].cart[0].sku.skuid,
-                omclient: 0,
-                uaid: this.uaid,
-                opaytype: 0
-              };
-              axios.post(api.recv_award + '?token='+ localStorage.getItem('token'), params).then(res => {
-                if(res.data.status == 200) {
-                  localStorage.setItem('activityOrderNo', 1);
-                  if(common.isWeixin()) {
-                    this.wxPay(res.data.data.args);
-                  }else {
-                    Toast('请在活动订单页查看详情');
-                  }
-                }
-              });
-            }
-          });
+          this.submitOrder();
+          // let gnid = '';
+          // let date = new Date();
+          // date.setTime(date.getTime());
+          // date = date.getFullYear().toString() + (date.getMonth()+1).toString() + date.getDate().toString();
+          // let param = { token: localStorage.getItem('token'), date: date };
+          // axios.get(api.get_guess_num, { params: param }).then(res => {
+          //   if(res.data.status == 200) {
+          //     if(res.data.data.result == 'uncorrect') {
+          //       Toast('今日猜错啦');
+          //       this.from = 'try';
+          //       this.submitOrder();
+          //       return false
+          //     }else if(res.data.data.result == 'correct') {
+          //       Toast('今日猜对啦');
+          //       gnid = res.data.data.gnid;
+          //     }else if(res.data.data.result == 'not_open') {
+          //       Toast('今日未开奖');
+          //       this.from = 'try';
+          //       this.submitOrder();
+          //       return false
+          //     }else{
+          //       Toast('今日未参与');
+          //       this.from = 'try';
+          //       this.submitOrder();
+          //       return false;
+          //     }
+          //     let params = {
+          //       gnid: gnid,
+          //       skuid: this.product_info[0].cart[0].sku.skuid,
+          //       omclient: 0,
+          //       uaid: this.uaid,
+          //       opaytype: 0
+          //     };
+          //     axios.post(api.recv_award + '?token='+ localStorage.getItem('token'), params).then(res => {
+          //       if(res.data.status == 200) {
+          //         localStorage.setItem('activityOrderNo', 1);
+          //         if(common.isWeixin()) {
+          //           this.wxPay(res.data.data.args);
+          //         }else {
+          //           Toast('请在活动订单页查看详情');
+          //         }
+          //       }
+          //     });
+          //   }
+          // });
         },
         // 购物车或直接购买时创建订单并调起支付
         submitOrder() {
@@ -623,11 +630,11 @@
                 // Toast(res.data.message);
                 // this.giftPopup = true;
 
-                if(this.act){
-                  this.$router.push("/personal/myWallet");
-                }else{
+                // if(this.act){
+                //   this.$router.push("/personal/myWallet");
+                // }else{
                   this.$router.push("/orderList?which=2");
-                }
+                // }
 
                 // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
                 sessionStorage.setItem('use', 'used');
@@ -660,21 +667,24 @@
                   if(that.fromGift) {
                     this.$router.push("/orderList?which=2");
                   }else if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
-                    that.$router.push('/personal/myWallet');
+                    // that.$router.push('/personal/myWallet');
+                    that.$router.push("/orderList?which=2");
                   }else {     // 去待发货页
                     that.$router.push("/orderList?which=2");
                   }
                 }else if(res.err_msg == "get_brand_wcpay_request:cancel" ){   // 支付过程中用户取消
                   Toast('支付已取消');
                   if(that.from == 'new' || that.from == 'try' || that.isGuess ||that.act) {
-                    that.$router.push('/personal/myWallet');
+                    // that.$router.push('/personal/myWallet');
+                    that.$router.push("/orderList?which=1");
                   }else {     // 去待付款页
                     that.$router.push("/orderList?which=1");
                   }
                 }else if(res.err_msg == "get_brand_wcpay_request:fail" ){     // 支付失败
                   Toast('支付失败');
                   if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
-                    that.$router.push('/personal/myWallet');
+                    // that.$router.push('/personal/myWallet');
+                    that.$router.push("/orderList?which=1");
                   }else{     // 去待付款页
                     that.$router.push("/orderList?which=1");
                   }

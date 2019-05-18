@@ -35,7 +35,9 @@
                     <div>
                       <p class="m-flex-between">
                         <span class="m-product-name">{{item.prtitle}}</span>
-                        <span class="w-price" >￥{{item.skuprice | money}}</span>
+                        <span class="m-price" v-if="item.tlsprice && items.omfrom != 80">￥{{item.tlsprice | money}}</span>
+                        <span class="m-price" v-else-if="items.omfrom == 80">{{item.skuprice}}币</span>
+                        <span class="m-price" v-else>￥{{item.skuprice | money}}</span>
                       </p>
                       <p class="m-flex-between">
                         <span class="m-product-label">
@@ -49,7 +51,8 @@
                     </div>
                   </div>
                 </template>
-                <div class="m-total-money">共{{items.order_part.length}}件商品 合计：<span v-if="items.omfrom_zh == '星币商城'">{{items.omtruemount}}星币</span><span class="w-price" v-else>￥{{items.omtruemount | money}}</span></div>
+                <p class="m-end-time" v-if="items.deposit_expires">押金返还时间：{{items.deposit_expires}}</p>
+                <div class="m-total-money" v-else>共{{items.order_part.length}}件商品 合计：<span v-if="items.omfrom_zh == '星币商城'">{{items.omtruemount}}星币</span><span class="w-price" v-else>￥{{items.omtruemount | money}}</span></div>
                 <ul class="m-order-btn-ul" v-if="!items.ominrefund">
                   <div class="duration-box">
                     <div v-if="items.duration">支付倒计时<span class="duration-text">{{items.min}}:{{items.sec}}</span></div>
@@ -63,7 +66,7 @@
                     <li v-if="items.omstatus==0" @click.stop="cancelOrder(items)">取消订单</li>
                     <li class="active" v-if="items.omstatus==20" @click.stop="orderConfirm(items)">确认收货</li>
                     <li class="active" v-if="items.omstatus==0" @click.stop="payBtn(items)">立即付款</li>
-                    <li class="active" v-if="items.omstatus==25" @click.stop="changeRoute('/addComment', items)">评价</li>
+                    <li class="active" v-if="items.omstatus==25 && indexTemp != 3" @click.stop="changeRoute('/addComment', items)">评价</li>
                   </div>
                 </ul>
               </div>
