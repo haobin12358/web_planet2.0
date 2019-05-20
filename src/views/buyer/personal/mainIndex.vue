@@ -63,7 +63,7 @@
             news_list: null,
             page_info: {
               page_num: 1,
-              page_size: 10
+              page_size: 5
             },
             isScroll: true,
             total_count: 0,
@@ -209,7 +209,12 @@
               if(this.news_list.length == this.total_count){
                 this.bottom_show = true;
               }else{
+                if(this.select_nav.itid){
                   this.getNews();
+                }else{
+                  this.getNews( 'mynews');
+                }
+
               }
             }
           }
