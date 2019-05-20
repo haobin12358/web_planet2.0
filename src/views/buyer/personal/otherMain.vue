@@ -1,6 +1,6 @@
 <template>
-  <div class="m-mainIndex">
-    <div class="m-mainIndex-head m-flex-around" v-if="person_info">
+  <div class="m-mainIndex" @touchmove="touchMove">
+    <div class="m-mainIndex-head m-flex-around" v-if="person_info" >
       <div class="m-left">
         <img :src="person_info.usheader"  class="m-avator" alt="">
         <p class="m-user-name">{{person_info.usname}}</p>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import common from '../../../common/js/common';
   import mCircle from '../../../components/common/circle';
   import bottomLine from '../../../components/common/bottomLine';
   import api from '../../../api/api';
@@ -207,7 +208,11 @@
                 duration: 500
               });
             let arr = [].concat(this.news_list)
-            arr[index].follow = !arr[index].follow;
+            for(let i in arr){
+              if(arr[i].author.usname == this.news_list[index].author.usname){
+                arr[i].follow = !arr[i].follow;
+              }
+            }
             this.news_list = [].concat(arr)
           }
         })
