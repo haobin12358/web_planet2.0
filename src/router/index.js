@@ -146,6 +146,7 @@ export const constantRouterMap = [
   { path: '/personal/myWallet', component: () => import('../views/buyer/personal/myWallet'), hidden: true ,meta: { keepAlive: true },name:'myWallet'},  ///设置密码
   { path: '/personal/followUser', component: () => import('../views/buyer/personal/followUser'), hidden: true },  ///关注
   { path: '/personal/myMessage', component: () => import('../views/buyer/personal/myMessage'), hidden: true },  ///我的信息
+  { path: '/personal/messageDetail', component: () => import('../views/buyer/personal/messageDetail'), hidden: true },  ///我的信息详情
   {
     path: '/circle',
     component: Layout,

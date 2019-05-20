@@ -9,9 +9,9 @@
           <h3>供应商沟通</h3>
         </div>
         <div class="m-shop-product" data-type="0">
-          <div class="m-product-info"  @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="skip">
+          <div class="m-product-info"    @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="skip">
             <img src="/static/images/logo.jpg" class="m-avator-img" alt="">
-            <div class="m-text-info">
+            <div class="m-text-info"  @click="changeRoute('/personal/messageDetail')">
               <h3 class="m-flex-between">
                 <span class="m-user-name">123123</span>
                 <span class="m-grey">4-01</span>
@@ -24,7 +24,6 @@
         </div>
       </template>
       <div class="m-in-message" v-if="nav_list[1].active" >
-
         <div class="m-one-message">
           <div class="m-flex-between">
             <div class="m-flex-between">
@@ -112,20 +111,9 @@
 
     methods: {
       changeRoute(v, item){
-        if(item) {
-          if(v == "brandDetail") {
-            this.$router.push({ path: '/brandDetail', query: { pbid: item.pb.pbid, pbname: item.pb.pbname }});
-          }else if(v == "product") {
-            if(item.cafrom == 4){
-              this.$router.push({ path: '/limitedProductDetail', query: { tlpid: item.contentid }});
-            }else{
-              this.$router.push({ path: '/productDetail', query: { prid: item.prid }});
-            }
-
-          }
-        }else {
+          console.log(v)
           this.$router.push(v);
-        }
+
       },
 
       // 获取购物车信息
