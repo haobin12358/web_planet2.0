@@ -706,6 +706,7 @@
       text-align: left;
       color: #000;
       font-size: 28px;
+      max-width: 360px;
     }
     .m-user-leval{
       display: inline-block;

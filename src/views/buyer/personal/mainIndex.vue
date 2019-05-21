@@ -1,5 +1,5 @@
 <template>
-    <div class="m-mainIndex">
+    <div class="m-mainIndex"  @touchmove="touchMove">
       <div class="m-mainIndex-head m-flex-around" v-if="person_info">
         <div class="m-left">
           <img :src="person_info.usheader"  class="m-avator" alt="">
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+  import common from '../../../common/js/common';
   import mCircle from '../../../components/common/circle';
   import bottomLine from '../../../components/common/bottomLine';
   import api from '../../../api/api';
@@ -62,7 +63,7 @@
             news_list: null,
             page_info: {
               page_num: 1,
-              page_size: 10
+              page_size: 5
             },
             isScroll: true,
             total_count: 0,
@@ -208,9 +209,11 @@
               if(this.news_list.length == this.total_count){
                 this.bottom_show = true;
               }else{
-
-                    this.getNews();
-
+                if(this.select_nav.itid){
+                  this.getNews();
+                }else{
+                  this.getNews( 'mynews');
+                }
 
               }
             }
@@ -273,7 +276,11 @@
                   duration: 500
                 });
               let arr = [].concat(this.news_list)
-              arr[index].follow = !arr[index].follow;
+              for(let i in arr){
+                if(arr[i].author.usname == this.news_list[index].author.usname){
+                  arr[i].follow = !arr[i].follow;
+                }
+              }
               this.news_list = [].concat(arr)
             }
           })

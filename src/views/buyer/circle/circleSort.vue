@@ -127,6 +127,16 @@
       background-color: #EBEBEB;
       color: #000;
       margin: 0 20px 17px 0;
+      span{
+        display: inline-block;
+        width: 150px;
+        height: 60px;
+        line-height: 60px;
+        margin: 0 20px 17px 0;
+        overflow: hidden; // 超出的文本隐藏
+        text-overflow: ellipsis;    // 溢出用省略号显示
+        white-space:nowrap;
+      }
       &:nth-child(4n){
         margin-right: 0;
       }
@@ -137,8 +147,8 @@
         position: absolute;
         width: 20px;
         height: 20px;
-        top: -10px;
-        right: -10px;
+        top: -5px;
+        right: -5px;
       }
     }
     &.m-cancel{

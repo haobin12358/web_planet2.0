@@ -586,6 +586,7 @@
               params.activation_code = this.code;
             }
           }else if(this.show_star){
+            //组合支付   点击星币抵扣
             params.opaytype = 40;
           }else{
             params.opaytype = 0;

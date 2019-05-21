@@ -104,7 +104,7 @@
         <div class="m-total-money">
           共{{totalProductNum}}件商品 合计：<span class="w-price" v-if="order_info.omfrom == 80">{{order_info.omtruemount}}星币</span><span class="w-price" v-else>￥{{order_info.omtruemount | money}}</span>（含运费{{order_info.omfreight | money}}）
           <p class="m-back-btn">
-            <span class="active" @click="changeRoute('/selectBack', item)" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && order_info.omfrom != 80">全部退款</span>
+            <span class="active" @click="changeRoute('/selectBack', 'order')" v-if="(order_info.omstatus == 10 || order_info.omstatus == 20 || order_info.omstatus == 25 || order_info.omstatus == 26) && order_info.omfrom != 80">全部退款</span>
           </p>
         </div>
       </div>
@@ -237,10 +237,11 @@
     computed:{
       totalProductNum: function(){
         let num_product = 0;
-        this.order_info.order_part.forEach(item => {
-          // console.log(item.prtitle);
-          num_product=num_product+item.opnum;
-        });
+        if(this.order_info.order_part)
+          this.order_info.order_part.forEach(item => {
+            // console.log(item.prtitle);
+            num_product=num_product+item.opnum;
+          });
         // for(let item of this.order_info.order_part){
         //   console.log(item.prtitle);
         //   num_product=num_product+item.opnum;
@@ -265,6 +266,7 @@
               }
               break;
             case '/selectBack':
+
               if(item != 'order') {
                 let arr = [] ;
                 arr.push(item);
