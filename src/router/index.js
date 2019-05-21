@@ -165,9 +165,13 @@ export const constantRouterMap = [
   { path: '/activityProductDetail', component: () => import('../views/buyer/activity/activityProductDetail'), hidden: true },        // 免费试用 - 商品详情
   { path: '/activityOrder', component: () => import('../views/buyer/activity/activityOrder'), meta: { keepAlive: false }, hidden: true },        // 活动订单
   { path: '/limitedProductDetail', component: () => import('../views/buyer/activity/limitedProductDetail'), hidden: true },        // 免费试用 - 商品详情
+  { path: '/magicBox', component: () => import('../views/buyer/activity/magicBox.vue'), hidden: true}, //魔术礼盒
+  { path: '/openMagicBox', component: () => import('../views/buyer/activity/openMagicBox.vue'), hidden:true},
 
 
   { path: '/systemfix', component: () => import('../views/systemfix'), hidden: true },
+  { path: '/testpage', component: ()=> import('../views/testpage'),hidden:true},
+  { path: '/testcomp', component: ()=> import('../components/common/productDetail'),hidden:true},
 ];
 
 export default new Router({

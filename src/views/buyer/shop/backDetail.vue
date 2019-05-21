@@ -155,7 +155,10 @@
               // document.getElementsByClassName("m-alert")[0].innerHTML="退款关闭"
               // this.getOrderInfo();            // 获取订单详情
               // this.$router.push('/personal/afterSales');
-              this.$router.go(-3);  //撤销申请后回到orderList页面
+              // if(localStorage.getItem('back')) {
+              localStorage.removeItem('back'); //清除发起退款时存在localStorage中的back数据
+              // }
+              this.$router.push('/orderList');  //撤销申请后回到orderList页面
             }
           });
         }).catch(() => {

@@ -131,7 +131,8 @@
     components: { picker},
     mounted(){
       if(localStorage.getItem('back')) {
-        location.href = location.origin + '/#/personal';
+        location.href = location.origin + '/#/orderList';
+        localStorage.removeItem('back');
         return false
       }
       if(this.$route.query.allOrder) {
