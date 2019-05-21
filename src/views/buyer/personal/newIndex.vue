@@ -168,10 +168,10 @@
         //     clearInterval(time);
         //   }
         // }, 300);
-        if(localStorage.getItem('back')) {
-          localStorage.removeItem('back');
-          this.$router.push('/personal/afterSales')
-        }
+        // if(localStorage.getItem('back')) {
+        //   localStorage.removeItem('back');
+        //   this.$router.push('/personal/afterSales')
+        // }
         if(sessionStorage.getItem('shop')) {
           this.$router.push('/shop');
           sessionStorage.removeItem('shop')
