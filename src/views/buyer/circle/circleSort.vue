@@ -127,6 +127,9 @@
       background-color: #EBEBEB;
       color: #000;
       margin: 0 20px 17px 0;
+      overflow: hidden; // 超出的文本隐藏
+      text-overflow: ellipsis;    // 溢出用省略号显示
+      white-space:nowrap;
       &:nth-child(4n){
         margin-right: 0;
       }
