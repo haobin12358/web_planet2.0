@@ -44,7 +44,8 @@
       height: 100%;
       left: 0;
       top: 0;
-      background-color: black;
+      background: url('./static/images/activity/mb-bg.png') no-repeat;
+      background-size: 100% 100%;
       z-index: -1;
     }
 

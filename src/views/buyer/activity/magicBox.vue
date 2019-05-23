@@ -34,6 +34,20 @@
 			<span class="w-mb-rule-title">规则</span>
 			<span class="w-mb-rule-text">通过分享点击进入，点击自由选择ABC档…</span>
 		</div>
+		<div class="w-mb-record">
+			<span class="w-mb-record-title">拆盒记录</span>
+			<!-- <span class="w-mb-record-text">12345</span> -->
+			<ul class="w-mb-record-ul">
+				<li class="w-mb-record-li">
+					<span class="w-mb-record-avatar"></span>
+					<span class="w-mb-record-text">居居拆盒并分享，减少5元，当前155元</span>
+				</li>
+				<li class="w-mb-record-li">
+					<span class="w-mb-record-avatar"></span>
+					<span class="w-mb-record-text">居居拆盒并分享，减少5元，当前155元</span>
+				</li>
+			</ul>
+		</div>
 		<div class="w-mb-product-img">
 			<img>
 		</div>
@@ -175,6 +189,38 @@ export default {
 			.w-mb-rule-text{
 				flex: 1;
 				text-align: left;
+			}
+		}
+		.w-mb-record{
+			padding: 15px 24px;
+			.flex-row(flex-start,flex-start);
+			.w-mb-record-title{
+				display: inline-block;
+				margin: 15px 25px 0 0;
+				color: #666666;
+			}
+			.w-mb-record-ul{
+				.w-mb-record-li{
+					padding-bottom: 22px;
+					.flex-row(flex-start);
+					.w-mb-record-avatar{
+						display: inline-block;
+						width: 60px;
+						height: 60px;
+						border-radius: 30px;
+						margin-right: 10px;
+						border: 2px solid @mainColor;
+						background-color: @subColor;
+
+					}
+					.w-mb-record-text{
+						display: inline-block;
+						height: 60px;
+						line-height: 60px;
+
+					}
+				}
+
 			}
 		}
 	}
