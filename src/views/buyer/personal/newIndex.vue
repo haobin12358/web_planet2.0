@@ -190,10 +190,12 @@
             this.$router.push(v);
           }
         },
+        //显示登录
         showLogin(){
           this.$store.state.show_login = true;
           return false;
         },
+        //去往我的店主
         goStore() {
           axios.get(api.get_home + "?token=" + localStorage.getItem('token')).then(res => {
             if(res.data.status == 200) {

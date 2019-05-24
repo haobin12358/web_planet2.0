@@ -408,6 +408,7 @@
         localStorage.setItem('guess', JSON.stringify(this.guess));
         this.$router.push({ path: '/guessProduct',query:{which:'guess'} });
       },
+      //跳转限时活动
       changeRouteLimit(v,item){
         let endDate,status;
         if(item.duration_start){
@@ -710,6 +711,7 @@
         }
 
       },
+      //判断时间是否《10
       checkTime(i) {
         if (i < 10) {
           i = "0" + i;

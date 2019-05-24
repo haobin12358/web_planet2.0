@@ -13,7 +13,8 @@
         <template v-for="(items,index) in order_list">
           <div class="m-one-part"  @click.stop="changeRoute('/orderDetail',items)">
             <div class="m-order-store-tile" >
-              <div @click.stop="changeRoute('/brandDetail',items)">
+<!--              @click.stop="changeRoute('/brandDetail',items)"-->
+              <div >
                 <span class="m-icon-store"></span>
                 <span class="m-store-name">{{items.pbname}}</span>
                 <span class="m-icon-more"></span>
@@ -142,12 +143,15 @@
         this.getOrderNum();             // 获取各状态的订单数量
       },
       methods: {
+        //切换路由
         changeRoute(v, item) {
           switch (v){
-            case '/brandDetail':
-              this.$router.push({ path: v, query: { pbid: item.pbid, pbname: item.pbname }});
-              break;
+            // case '/brandDetail':
+            //   //去往品牌详情页面
+            //   this.$router.push({ path: v, query: { pbid: item.pbid, pbname: item.pbname }});
+            //   break;
             case '/orderDetail':
+              //去往活动订单详情页面
               this.$router.push({ path: v, query: { omid: item.omid , from: "activityProduct" }});
               break;
             case '/logisticsInformation':
@@ -167,7 +171,7 @@
         // 导航点击
         navClick(index) {
           this.indexTemp = index;
-          localStorage.setItem('activityOrderNo', index);
+          // localStorage.setItem('activityOrderNo', index);
           this.page_info.page_num = 1;
           this.total_count = 0;
           this.bottom_show = false;
@@ -182,6 +186,7 @@
           this.nav_list = [].concat(arr);
           this.page_info.page_num = 1;
           this.omfrom = arr[index].omfrom;
+          //清除页面的定时器
           for(let i = 0; i < this.order_list.length; i ++) {
             if(this.order_list[i].time_interVal){
               clearInterval(this.order_list[i].time_interVal);
@@ -401,6 +406,7 @@
 
           });
         },
+        //星币支付下单
         payOrder(){
           this.$http.post(this.$api.order_pay + '?token=' +localStorage.getItem('token'),{
             omid:this.omid,
@@ -420,6 +426,7 @@
             }
           })
         },
+        //点击密码输入框，input获取焦点
         focus() {
           this.$refs.pwd.focus();
         },

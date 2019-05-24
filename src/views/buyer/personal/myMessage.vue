@@ -106,18 +106,16 @@
     components: { navList, bottomLine },
     mounted(){
       common.changeTitle('消息');
-      this.getCart();
+      this.getMessage();
     },
 
     methods: {
       changeRoute(v, item){
-          console.log(v)
           this.$router.push(v);
 
       },
-
-      // 获取购物车信息
-      getCart(){
+      // 获取message信息
+      getMessage(){
         axios.get(api.cart_list,{
           params:{
             token:localStorage.getItem('token'),
@@ -166,7 +164,7 @@
             if(this.message_list.length == this.total_count){
               this.bottom_show = true;
             }else{
-              this.getCart();
+              this.getMessage();
             }
           }
 
@@ -178,7 +176,6 @@
         this.show_sku = false;
         this.updateCart(item,num)
       },
-
 
       /*删除*/
       DestroyCart(item) {
@@ -197,7 +194,7 @@
               if(res.data.status == 200){
                 this.page_info.page_num = 1;
                 this.total_count = 1;
-                this.getCart();
+                this.getMessage();
                 this.allRadio = false;
               }
             });
@@ -208,6 +205,7 @@
           Toast("请先选择商品");
         }
       },
+      //点击以后重置滑动事件相关
       skip(){
         if( this.checkSlide() ){
           this.restSlide();

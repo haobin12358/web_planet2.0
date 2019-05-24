@@ -114,10 +114,11 @@
         }
       },
       methods:{
+        //  路由改变
         changeRoute(v,param){
           this.$router.push({path:v,query:{index:param}})
         },
-        //
+        //导航点击
         navClick(index){
           this.page_info.page_num = 1;
           this.bottom_show = false;
@@ -129,6 +130,7 @@
           this.labelShow = false;
 
         },
+        //获取个人信息
         getInfo(){
           this.$http.get(api.get_home_top,{
             params:{
@@ -140,6 +142,7 @@
             }
           })
         },
+        //我发布的点击
         myClick(){
           this.page_info.page_num = 1;
           this.getNews('mynews');
@@ -276,6 +279,7 @@
                   duration: 500
                 });
               let arr = [].concat(this.news_list)
+              //判断当前列表中这个用户，同时改变状态
               for(let i in arr){
                 if(arr[i].author.usname == this.news_list[index].author.usname){
                   arr[i].follow = !arr[i].follow;

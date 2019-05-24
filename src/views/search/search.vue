@@ -427,6 +427,7 @@
             this.show_modal = true;
           }
         },
+        //关注用户
         followClickUser(index){
           this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
             uclcollection:this.result_list[index].usid,
