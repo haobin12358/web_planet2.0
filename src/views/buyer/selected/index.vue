@@ -1,15 +1,5 @@
 <template>
     <div class="m-selected"  @touchmove="touchMove">
-      <!--<mt-loadmore :top-method="loadTop" ref="loadmore">-->
-        <!--搜索-->
-<!--        <div class="m-selected-search">-->
-<!--          <span class="m-icon-home"></span>-->
-<!--          <div class="m-search-input-box" @click="changeRoute('/search')">-->
-<!--            <span class="m-icon-search"></span>-->
-<!--            <span class="m-search-text">商品搜索</span>-->
-<!--          </div>-->
-<!--        </div>-->
-        <!--轮播图-->
         <div class="m-swipe">
           <mt-swipe :auto="3000" v-if="swipe_list">
             <mt-swipe-item v-for="item in swipe_list" :key="item.ibid">
@@ -237,6 +227,7 @@
         next();
       },
       methods: {
+        //处理各个图片点击跳转路由
         dealUrl(url,name){
           if(localStorage.getItem('share') == 'mbjid' || url.indexOf('mbjid') > 0) {
             let params ;
@@ -549,58 +540,7 @@
         loadTop(){
           this.reload();
         },
-        // // 倒计时
-        // timeOut() {
-        //   let arr = [].concat(this.scene_list);
-        //   for(let i in arr) {
-        //     let arr_int = [];
-        //     if(arr[i].countdown) {
-        //       if(arr[i].countdown.substr(0, 1) > -1) {
-        //         arr[i].hour = 0;
-        //         arr[i].min = 0;
-        //         arr[i].sec = 0;
-        //         arr_int = arr[i].countdown.split(':');
-        //         arr[i].hour = arr_int[0];
-        //         arr[i].min = arr_int[1];
-        //         arr[i].sec = arr_int[2];
-        //         let TIME_OUT = Number(arr[i].min) * 60 + Number(arr[i].sec);
-        //         let count = TIME_OUT;
-        //         if(arr[i].time_interVal){
-        //           clearInterval(arr[i].time_interVal);
-        //         }
-        //         arr[i].time_interVal  = setInterval(() => {
-        //           if(count > 0 && count <= TIME_OUT) {
-        //             count --;
-        //             arr[i].sec --;
-        //             if(this.scene_list[i].sec < 10 && this.scene_list[i].sec > -1) {
-        //               arr[i].sec = '0' + arr[i].sec;
-        //             }
-        //             if(this.scene_list[i].sec == -1) {
-        //               arr[i].sec = 59;
-        //               if(this.scene_list[i].min > 0) {
-        //                 arr[i].min -= 1;
-        //               }
-        //               if(this.scene_list[i].min < 10) {
-        //                 if(this.scene_list[i].min !== '00') {
-        //                   arr[i].min = '0' + arr[i].min;
-        //                 }else {
-        //                   arr[i].countdown = null;
-        //                 }
-        //               }
-        //             }
-        //             this.scene_list = [].concat(arr);
-        //           }else {
-        //             this.scene_list[i].countdown = null;
-        //             clearInterval(arr[i].time_interVal);
-        //           }
-        //         }, 1000);
-        //         console.log(this.scene_list)
-        //       }else {
-        //         this.scene_list[i].countdown = null
-        //       }
-        //     }
-        //   }
-        // },
+
       }
     }
 </script>
@@ -614,36 +554,6 @@
     /*padding: 0 33px;*/
     /*margin: auto;*/
   }
-  /*.m-selected-scene-ul{*/
-    /*li{*/
-      /*position: relative;*/
-      /*.m-hot{*/
-        /*position: absolute;*/
-        /*top:-34px;*/
-        /*left: -10px;*/
-        /*width: 68px;*/
-        /*height: 68px;*/
-      /*}*/
-      /*.m-time-box{*/
-        /*position: absolute;*/
-        /*bottom: 0;*/
-        /*left: 0;*/
-        /*text-align: center;*/
-        /*width: 100%;*/
-        /*height: 33px;*/
-        /*line-height: 33px;*/
-        /*background-color: #F15A24;*/
-        /*color: #fff;*/
-        /*font-size: 24px;*/
-        /*.m-time{*/
-          /*display: inline-block;*/
-          /*width: 24px;*/
-          /*height: 24px;*/
-          /*vertical-align: text-top;*/
-        /*}*/
-      /*}*/
-    /*}*/
-  /*}*/
   .m-selected-label{
     width: 750px;
     padding: 30px 33px;

@@ -82,6 +82,7 @@
             let options = {};
             let which = this.$route.query.which;
             if(which == "new") {
+              //新人首单
               options = {
                 title: item.tctitle,
                 desc: item.tctitle,
@@ -89,6 +90,7 @@
                 link: window.location.href.split('#')[0] + '?fmfpid=' + item.fmfpid + '&which=new'
               };
             }else if(which == "try") {
+              //使用
               options = {
                 title: item.tctitle,
                 desc: item.tcdescription,

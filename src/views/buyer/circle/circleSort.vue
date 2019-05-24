@@ -41,9 +41,11 @@
           }
       },
       mounted(){
+         // 获取我的分类
          this.getMy();
       },
       methods:{
+        //
         changeRoute(){
           this.doSelect('关闭');
         },
@@ -74,6 +76,7 @@
             }
           })
         },
+        //删除我的分类
         doSelect(item){
           let arr = [];
           for(let i in this.my_label){

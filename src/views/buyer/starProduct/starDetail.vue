@@ -118,6 +118,7 @@ import bottomLine from '../../../components/common/bottomLine';
             }
           }
         },
+        //初始化年份月份选择
         initYear(){
           let _date = new Date();
           let year = _date.getFullYear();
@@ -138,6 +139,7 @@ import bottomLine from '../../../components/common/bottomLine';
           }
           this.now = `${year}-${month}`
         },
+        //导航点击
         navClick(index){
           for(let i in this.nav_list){
             this.nav_list[i].active = false;
@@ -167,6 +169,7 @@ import bottomLine from '../../../components/common/bottomLine';
           this.page_info.page_num = 1;
           this.getInfo();
         },
+        //获取用户信息
         getInfo(){
           let start = this.page_info.page_num;
           this.$http.get(this.$api.get_user_integral,{

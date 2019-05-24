@@ -479,6 +479,7 @@
         }
 
       },
+      //星币商城支付
       payOrder(){
         this.$http.post(this.$api.order_pay + '?token=' +localStorage.getItem('token'),{
           omid:this.omid,

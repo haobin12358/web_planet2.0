@@ -180,6 +180,7 @@
         }
 
       },
+      //处理顶部轮播图重定向地址
       dealUrl(url){
         if(localStorage.getItem('share') == 'mbjid' || url.indexOf('mbjid') > 0) {
           let params = url.split('?mbjid=')[1].split('&secret_usid')[0];

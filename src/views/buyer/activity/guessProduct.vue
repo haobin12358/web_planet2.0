@@ -63,7 +63,7 @@
         if(count > 0 && count <= TIME_COUNT) {
           count --;
         }else {
-          this.shareIndex();               // 分享后点击进入首页
+          this.shareIndex();               // 分享后点击进入活动
           clearInterval(time);
         }
       }, 300);
@@ -88,70 +88,6 @@
       changeRoute(v, item) {
         localStorage.setItem('guessproduct', JSON.stringify(item));
         this.$router.push({ path: v ,query:{which:'guess'}});
-      },
-      // 商品分享按钮
-      productShare(item) {
-        if(common.isWeixin()) {
-          if(localStorage.getItem('token')) {
-            let options = {};
-            let which = this.$route.query.which;
-            if(which == "new") {
-              options = {
-                title: item.prtitle,
-                desc: item.prtitle,
-                imgUrl: item.tcmainpic,
-                link: window.location.href.split('#')[0] + '?fmfpid=' + item.fmfpid + '&which=new'
-              };
-            }else if(which == "try") {
-              options = {
-                title: item.tctitle,
-                desc: item.tcdescription,
-                imgUrl: item.tcmainpic,
-                link: window.location.href.split('#')[0] + '?tcid=' + item.tcid + '&which=try'
-              };
-            }
-            axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
-              if(res.data.status == 200) {
-                options.link += '&secret_usid=' + res.data.data.secret_usid;
-                // 点击分享
-                this.show_invite = true;
-              }
-            });
-
-            // 倒计时
-            const TIME_COUNT = 3;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.show_invite = false;
-                clearInterval(time);
-              }
-            }, 1000);
-
-            // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
-            if(wx.updateAppMessageShareData) {
-              wx.updateAppMessageShareData(options);
-            }
-            // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
-            if(wx.updateTimelineShareData) {
-              wx.updateTimelineShareData(options);
-            }
-            // 获取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）
-            if(wx.onMenuShareAppMessage) {
-              wx.onMenuShareAppMessage(options);
-            }
-            // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）
-            if(wx.onMenuShareTimeline) {
-              wx.onMenuShareTimeline(options);
-            }
-          }else {
-            Toast('请登录后再试');
-          }
-        }else {
-          Toast('请在微信公众号分享');
-        }
       },
       // 分享后点击进入首页
       shareIndex() {

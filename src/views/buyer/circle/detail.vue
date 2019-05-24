@@ -345,6 +345,7 @@
         let vdo = document.getElementById("videoPlay");
         vdo.play();
       },
+      //显示评论
       showComment(){
         this.show_comment = !this.show_comment;
         if(!this.get_comment){
@@ -361,6 +362,7 @@
           this.$router.push({path:v})
         }
       },
+      //
       changeModal(v,bool,i){
         // if(v == 'show_modal' && bool && !localStorage.getItem('token')){
         //   let url = location.href.split('#')[0] + '?neid=' + this.$route.query.neid;
@@ -577,6 +579,7 @@
 
         }
       },
+      //记录手指初始
       gtouchstart(item,index,i){
         let that = this;
         this.timeOutEvent = setTimeout(function(){

@@ -297,12 +297,15 @@
       focus() {
         this.$refs.pwd.focus();
       },
+      //关闭支付 并跳转
       closeModel(){
         this.show_modal = false;
         this.msg = '';
         // localStorage.setItem('activityOrderNo',)
-        this.$router.push("/personal/myWallet");
+        // this.$router.push("/personal/myWallet");
+        this.$router.push("/orderList");
       },
+      //发起支付
       payOrder(){
         this.$http.post(this.$api.order_pay + '?token=' +localStorage.getItem('token'),{
           omid:this.omid,
