@@ -24,6 +24,7 @@
         <span>点击任意一个帮好友拆盒</span>
       </div>
     </div>
+    <div></div>
   </div>
 </template>
 
@@ -169,22 +170,31 @@
           display: inline-block;
           width: 130px;
           height: 130px;
-          background: url('./static/images/activity/mb-a.png') no-repeat;
+          background: url('./static/images/activity/mb-a-on.png') no-repeat;
           background-size: 100% 100%;
+          &.off{
+            background: url('./static/images/activity/mb-a-off.png') no-repeat;
+          }
         }
         .w-openmb-choice-b{
           display: inline-block;
           width: 130px;
           height: 130px;
-          background: url('./static/images/activity/mb-b.png') no-repeat;
+          background: url('./static/images/activity/mb-b-off.png') no-repeat;
           background-size: 100% 100%;
+          &.off{
+            background: url('./static/images/activity/mb-b-off.png') no-repeat;
+          }
         }
         .w-openmb-choice-c{
           display: inline-block;
           width: 130px;
           height: 130px;
-          background: url('./static/images/activity/mb-c.png') no-repeat;
+          background: url('./static/images/activity/mb-c-on.png') no-repeat;
           background-size: 100% 100%;
+          &.off{
+            background: url('./static/images/activity/mb-c-off.png') no-repeat;
+          }
         }
       }
       .w-openmb-tips{
