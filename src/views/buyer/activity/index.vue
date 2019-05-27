@@ -177,6 +177,18 @@
          </div>
        </div>
       </div>
+
+<!--      <div>-->
+<!--        <div class="m-one-item">-->
+<!--          <h3 class="m-item-title">正在拼团</h3>-->
+<!--          <div class="m-one-group">-->
+<!--            <img src="" class="m-one-group-img" alt="">-->
+<!--            <div>-->
+<!--              <p class=""></p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
       <bottom-line v-if="bottom_show"></bottom-line>
     </mt-loadmore>
   </div>
