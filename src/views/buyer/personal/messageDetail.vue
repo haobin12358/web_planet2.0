@@ -20,7 +20,7 @@
       <div class="m-messageDetail-footer">
         <img src="/static/images/circle/icon-pic.png" class="m-icon-img" alt="">
         <input type="text" class="m-input" placeholder="发消息...">
-        <span class="m-send" @click="websocketsend">发送</span>
+        <span class="m-send" >发送</span>
       </div>
     </div>
 </template>
@@ -39,52 +39,21 @@
       },
       created(){
         //页面刚进入时开启长连接
-        this.initWebSocket()
+        this.$socket.emit('connect', 1);       //触发socket连接
       },
       destroyed: function() {
-        //页面销毁时关闭长连接
-        if(this.websock.readyState === this.websock.OPEN)
-          this.websocketclose();
+
       },
+      sockets: {
+        new_message(data) {
+          console.log(data);
+          // this.id = this.$socket.id;
+          // this.$socket.emit('login', id);      //监听connect事件
+        },
+      },
+
       methods: {
-        initWebSocket(){ //初始化websocket
 
-          // const wsuri = process.env.WS_API + "/websocket/threadsocket";//ws地址
-          const wsuri = 'wss://pre2.bigxingxing.com:';
-          this.websock = new WebSocket(wsuri);
-          this.websock.onopen = this.websocketonopen;
-
-          this.websock.onerror = this.websocketonerror;
-
-          this.websock.onmessage = this.websocketonmessage;
-          this.websock.onclose = this.websocketclose;
-          console.log(this.websock.onopen,'sdsd')
-        },
-
-        websocketonopen() {
-          console.log("WebSocket连接成功");
-          this.websocketsend('1232')
-        },
-        websocketonerror(e) { //错误
-          console.log("WebSocket连接发生错误");
-        },
-        websocketonmessage(e){ //数据接收
-          const redata = JSON.parse(e.data);
-          //注意：长连接我们是后台直接1秒推送一条数据，
-          //但是点击某个列表时，会发送给后台一个标识，后台根据此标识返回相对应的数据，
-          //这个时候数据就只能从一个出口出，所以让后台加了一个键，例如键为1时，是每隔1秒推送的数据，为2时是发送标识后再推送的数据，以作区分
-          console.log(redata.value);
-        },
-
-        websocketsend(agentData){//数据发送
-          this.websock.send(agentData);
-          console.log(agentData)
-        },
-
-        websocketclose(e){ //关闭
-          console.log(e,'sdsd')
-          // console.log("connection closed (" + e.code + ")");
-        },
       },
 
     }

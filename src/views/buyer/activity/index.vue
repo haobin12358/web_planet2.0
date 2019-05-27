@@ -180,11 +180,118 @@
 
 <!--      <div>-->
 <!--        <div class="m-one-item">-->
-<!--          <h3 class="m-item-title">正在拼团</h3>-->
+<!--          <h3 class="m-item-title m-flex-between">-->
+<!--            <span>正在拼团</span>-->
+<!--            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>-->
+<!--          </h3>-->
 <!--          <div class="m-one-group">-->
 <!--            <img src="" class="m-one-group-img" alt="">-->
-<!--            <div>-->
-<!--              <p class=""></p>-->
+<!--            <div class="m-product-info">-->
+<!--              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>-->
+<!--              <p>押金 ¥ 100.0</p>-->
+<!--              <div class="m-flex-start">-->
+<!--                <span class="m-one-num active">8</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="m-user-box">-->
+<!--              <div class="m-avator-box">-->
+<!--                <span  class="m-avator active">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--              </div>-->
+<!--              <p class="m-main-color">我发起的</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="m-one-group">-->
+<!--            <img src="" class="m-one-group-img" alt="">-->
+<!--            <div class="m-product-info">-->
+<!--              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>-->
+<!--              <p>押金 ¥ 100.0</p>-->
+<!--              <div class="m-flex-start">-->
+<!--                <span class="m-one-num active">8</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="m-user-box">-->
+<!--              <div class="m-avator-box">-->
+<!--                <span  class="m-avator active">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--              </div>-->
+<!--              <p class="m-main-color">我发起的</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="m-one-item">-->
+<!--          <h3 class="m-item-title m-flex-between">-->
+<!--            <span>正在拼团</span>-->
+<!--            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>-->
+<!--          </h3>-->
+<!--          <div class="m-one-group">-->
+<!--            <img src="" class="m-one-group-img" alt="">-->
+<!--            <div class="m-product-info">-->
+<!--              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>-->
+<!--              <p>押金 ¥ 100.0</p>-->
+<!--              <div class="m-flex-start">-->
+<!--                <span class="m-one-num active">8</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="m-user-box">-->
+<!--              <div class="m-avator-box">-->
+<!--                <span  class="m-avator active">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--              </div>-->
+<!--              <p class="m-group-btn">我发起的</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="m-one-group">-->
+<!--            <img src="" class="m-one-group-img" alt="">-->
+<!--            <div class="m-product-info">-->
+<!--              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>-->
+<!--              <p>押金 ¥ 100.0</p>-->
+<!--              <div class="m-flex-start">-->
+<!--                <span class="m-one-num active">8</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="m-user-box">-->
+<!--              <div class="m-avator-box">-->
+<!--                <span  class="m-avator active">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--              </div>-->
+<!--              <p class="m-main-color">我发起的</p>-->
 <!--            </div>-->
 <!--          </div>-->
 <!--        </div>-->
@@ -1139,6 +1246,120 @@
            }
          }
        }
+      }
+    }
+    .m-one-item{
+      text-align: left;
+      border-bottom: 10px solid #F4F4F4;
+      .m-item-title{
+        font-size: 28px;
+        font-weight: 600;
+        padding: 20px 24px 0;
+        .m-grey{
+          color: #C1C1C1;
+          font-size: 24px;
+          .flex-row(flex-end);
+        }
+        .m-icon-more{
+          display: inline-block;
+          width: 12px;
+          height: 21px;
+          margin-left: 10px;
+        }
+      }
+      .m-one-group{
+        padding: 17px 24px;
+        border-bottom: 1px solid #F2F2F2;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: flex-start;
+        .m-main-color{
+          color: @mainColor;
+        }
+        .m-group-btn{
+          color: @mainColor;
+          display: inline-block;
+          width: 150px;
+          height: 40px;
+          border: 1px solid @mainColor;
+          text-align: center;
+        }
+        .m-one-group-img{
+          display: block;
+          width: 120px;
+          height: 120px;
+          margin-right: 20px;
+        }
+        .m-product-info{
+          height: 120px;
+          .flex-col(space-between,flex-start);
+          .m-product-title{
+            font-size: 28px;
+            font-weight: 400;
+            width: 380px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .m-one-num{
+            display: block;
+            background: #F4F4F4;
+            border: 1px solid #c1c1c1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            color: #C1C1C1;
+            font-weight: 600;
+            font-size: 28px;
+            margin-right: 10px;
+            &.active{
+              background: linear-gradient(180deg,@mainColor 0%,@subColor 100%);
+              color: #fff;
+              border: 1px solid transparent;
+            }
+          }
+        }
+        .m-user-box{
+          margin-left: 20px;
+          .flex-col(space-between,flex-end);
+          height: 120px;
+          text-align: right;
+          width: 150px;
+          .m-avator-box{
+            position: relative;
+            height: 60px;
+            .m-avator{
+              position: absolute;
+              right: 0;
+              top: 0;
+              width: 60px;
+              height: 60px;
+              background-color: #F4F4F4;
+              border: 1px solid #c1c1c1;
+              border-radius: 50%;
+              &:nth-child(2){
+                right: 40px;
+                z-index: 1;
+              }
+              &:first-child{
+                right: 80px;
+                z-index: 2;
+              }
+              &.active{
+                border: 1px solid @mainColor;
+              }
+              img{
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                display: inline-block;
+              }
+            }
+          }
+        }
       }
     }
     .m-rule-popup {
