@@ -103,6 +103,20 @@ body{
   float: right;
 }
 
+//超出省略
+.line-camp(@clamp:2){
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: @clamp;
+  -webkit-box-orient:vertical;
+}
+
+//文字两端对齐
+.align-last{
+  text-align-last: justify;
+}
 .m-red{
   color: @mainColor;
 }
