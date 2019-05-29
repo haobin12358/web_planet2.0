@@ -253,7 +253,9 @@ export default {
 			}
 		}
 		.w-mb-bottom{
-			
+			width: 100%;
+			position: absolute;
+			bottom: 0;
 			.w-mb-bottom-info{
 				height: 98px;
 				line-height: 98px;
