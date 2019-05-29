@@ -161,6 +161,23 @@ axios.interceptors.response.use(data => {// 响应成功关闭loading
 //引入微信
 import 'weixin-js-sdk';
 
+
+//
+import VueSocketio from 'vue-socket.io';
+
+import socketio from 'socket.io-client';
+
+Vue.use(new VueSocketio({
+  debug: true,
+  connection: 'https://pre2.bigxingxing.com:', //注意端口 如果跟后端的端口不匹配是要报跨域的脚手架上面配置的反向代理也要看看是不是只有在发送请求的时候才起效以及反向代理的
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  }
+}));
+
+
 //过滤器
 Vue.filter('money', function(val) {
   val = val.toString().replace(/\$|\,/g,'');

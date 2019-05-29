@@ -20,7 +20,7 @@
       <div class="m-messageDetail-footer">
         <img src="/static/images/circle/icon-pic.png" class="m-icon-img" alt="">
         <input type="text" class="m-input" placeholder="发消息...">
-        <span class="m-send">发送</span>
+        <span class="m-send" >发送</span>
       </div>
     </div>
 </template>
@@ -31,11 +31,29 @@
         name: "messageDetail",
       data(){
           return{
-
+            websock:null
           }
       },
       mounted(){
         common.changeTitle('消息');
+      },
+      created(){
+        //页面刚进入时开启长连接
+        this.$socket.emit('connect', 1);       //触发socket连接
+      },
+      destroyed: function() {
+
+      },
+      sockets: {
+        new_message(data) {
+          console.log(data);
+          // this.id = this.$socket.id;
+          // this.$socket.emit('login', id);      //监听connect事件
+        },
+      },
+
+      methods: {
+
       },
 
     }
