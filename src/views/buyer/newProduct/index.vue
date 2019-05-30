@@ -14,9 +14,9 @@
           <span class="m-icon-search"></span>
           <span class="m-search-text">{{$route.query.kw}}</span>
         </div>
-        <!--        <span class="m-icon-upload" @click="changeRoute('/circle/newEdit')"></span>-->
       </div>
     </div>
+<!--     装备-->
     <div class="m-product-nav">
       <img src="/static/images/product/icon-product-sort.png" class="m-icon-sort" alt="">
         <span v-for="(item,index) in nav_list" class="m-nav-one" :class="item.active?'active':''" @click="navClick(index)">
@@ -27,39 +27,11 @@
         <img src="/static/images/newpersonal/icon-more.png" class="m-icon" alt="">
       </span>
     </div>
-    
+<!--    商品列表-->
     <product :list="product_list"></product>
     <bottom-line v-if="bottom_show"></bottom-line>
+<!--    购物车图标-->
     <shop-icon></shop-icon>
-    <!--<div class="m-modal-select" v-if="show_modal" @click="changeModal('show_modal',false)">-->
-<!--    <div class="m-modal-select" v-if="show_modal">-->
-<!--      <div class="m-modal-state">-->
-<!--        <div class="m-state-content">-->
-<!--          <template v-for="(items,index) in category_list">-->
-<!--            <div class="m-one-select" v-if="items.subs">-->
-<!--              <p >{{items.pcname}}</p>-->
-<!--              <div class="m-sku-list">-->
-<!--                <span class="m-one-sku" :class="item.active?'active':''" v-for="(item,i) in items.subs" @click.stop="categoryClick(index,i)">{{item.pcname}}</span>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          &lt;!&ndash;<div class="m-one-select">&ndash;&gt;-->
-<!--          &lt;!&ndash;<p>防风衣/运动外套</p>&ndash;&gt;-->
-<!--          &lt;!&ndash;<div class="m-sku-list">&ndash;&gt;-->
-<!--          &lt;!&ndash;<input type="text" placeholder="最低价">&ndash;&gt;-->
-<!--          &lt;!&ndash;<span class="m-grey">——</span>&ndash;&gt;-->
-<!--          &lt;!&ndash;<input type="text" placeholder="最低价">&ndash;&gt;-->
-<!--          &lt;!&ndash;</div>&ndash;&gt;-->
-<!--          &lt;!&ndash;</div>&ndash;&gt;-->
-<!--        </div>-->
-<!--        <div class="m-state-foot">-->
-<!--          <div class="m-product-detail-btn">-->
-<!--            <span @click="resetPrid">重 置</span>-->
-<!--            <span class="active" @click="searchProduct">确 定</span>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
   </div>
 </template>
 
@@ -67,8 +39,6 @@
   import product from '../components/product';
   import navList from '../../../components/common/navlist';
   import common from '../../../common/js/common';
-  import axios from 'axios';
-  import api from '../../../api/api'
   import {Toast} from 'mint-ui';
   import bottomLine from '../../../components/common/bottomLine';
   import shopIcon from './compoments/shopIcon';
@@ -115,12 +85,6 @@
       }
 
     },
-    activated() {
-      // this.getCategory();
-      // this.getSwipe();
-
-
-    },
     //离开时记录位置
     beforeRouteLeave (to, from, next) {
      if(to.path.indexOf('Detail') > -1){
@@ -134,12 +98,6 @@
      }
       next();
     },
-//进入该页面时，用之前保存的滚动位置赋值
-//     beforeRouteEnter (to, from, next) {
-//       next(vm => {
-//         document.body.scrollTop = document.documentElement.scrollTop = Number(sessionStorage.getItem('scrollTop'));
-//       })
-//     },
     methods:{
       //滚动加载更多
       touchMove(e){
@@ -167,14 +125,6 @@
           let params;
           let url = item.contentlink;
           this.dealUrl(url);
-          // if(url.indexOf('prid') > 0){
-          //   if(url.indexOf('&secret_usid') > 0){
-          //     params = url.split('?prid=')[1].split('&secret_usid')[0];
-          //   }else{
-          //     params = url.split('?prid=')[1];
-          //   }
-          //   this.$router.push({ path: '/productDetail', query: { prid: params }})
-          // }
         }else{
            this.$router.push(v)
         }
@@ -250,7 +200,7 @@
       getProduct(id){
         let start = this.page_info.page_num;
         let _kw = this.$route.query.kw || '';
-        axios.get(api.product_list,{
+        this.$http.get(this.$api.product_list,{
           params:{
             pcid:id,
             page_size:this.page_info.page_size,
@@ -281,7 +231,7 @@
       },
       //获取装备信息
       getCategory(){
-        axios.get(api.category_list + '?deep=1').then(res => {
+        this.$http.get(this.$api.category_list + '?deep=1').then(res => {
           if(res.data.status == 200){
             this.nav_list = res.data.data.slice(0,4);
             for(let i in this.nav_list){
@@ -373,84 +323,6 @@
     .m-nav-list{
       padding: 0 75px;
       box-shadow:none;
-    }
-    .m-modal-select{
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background-color: rgba(0,0,0,0.2);
-      z-index: 1001;
-      transition: opacity .5s;
-      .m-modal-state{
-        width: 563px;
-        position: absolute;
-        top:0;
-        right: 0;
-        height: 100vh;
-        background-color: #fff;
-        .m-state-content{
-          margin-top: 50px;
-          padding: 26px 30px;
-          text-align: left;
-          height: 75%;
-          overflow-y: auto;
-          .m-one-select{
-            padding: 21px 0;
-            border-bottom: 1px solid #ccc;
-            &:last-child{
-              border-bottom: none;
-            }
-            input{
-              display: inline-block;
-              width: 200px;
-              height: 40px;
-              background-color: #e9e9e9;
-              border-radius: 30px;
-              text-align: center;
-              margin: 20px 10px;
-            }
-            .m-one-sku{
-              display: inline-block;
-              padding: 6px 34px;
-              background-color: #E9E9E9;
-              border-radius: 10px;
-              margin-right: 20px;
-              margin-top: 20px;
-              &.active {
-                color: #ffffff;
-                background-color: @mainColor;
-              }
-            }
-          }
-        }
-        .m-state-foot{
-          position: absolute;
-          bottom: 100px;
-          right: 36px;
-          .m-product-detail-btn{
-            display: inline-block;
-            height: 62px;
-            line-height: 62px;
-            span{
-              color: #ffffff;
-              display: inline-block;
-              width: 171px;
-              text-align: center;
-              background-color: @subColor;
-              margin: 0;
-              border-top-left-radius: 30px;
-              border-bottom-left-radius: 30px;
-              &.active{
-                background-color: @mainColor;
-                margin-left: -8px;
-                border-radius: 0 30px 30px 0;
-              }
-            }
-          }
-        }
-      }
     }
     input::-webkit-input-placeholder{
       color: #999;
