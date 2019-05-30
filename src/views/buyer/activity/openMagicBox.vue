@@ -1,6 +1,6 @@
 <template>
   <div class="w-openmb">
-    <div class="w-openmb-bg"></div>
+    <!-- <div class="w-openmb-bg"></div> -->
     <div class="w-openmb-headbtn">
       <span class="w-openmb-headbtn-left">商品</span>
       <span class="w-openmb-headbtn-right">规则</span>
@@ -24,11 +24,28 @@
         <span>点击任意一个帮好友拆盒</span>
       </div>
     </div>
+    <div class="w-openmb-popup" v-if="false">
+      <div class="w-openmb-popup-box">
+        <span class="w-openmb-popup-text">您为您的好友减少了<span class="w-openmb-popup-num">5元</span>购买金额！</span>
+        <span class="w-openmb-popup-btn">告诉好友</span>
+      </div>
+    </div>
+    <!-- <mt-popup v-model="popupVisible"></mt-popup> -->
   </div>
 </template>
 
 <script>
+  import {
+    Popup
+  } from 'mint-ui';
   export default {
+    data() {
+      return {
+        popupVisible: true,
+
+      }
+    },
+
 
   }
 
@@ -38,19 +55,23 @@
   @import "../../../common/css/index";
 
   .w-openmb {
-    .w-openmb-bg {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      top: 0;
-      background: url('./static/images/activity/mb-bg.png') no-repeat;
-      background-size: 100% 100%;
-      z-index: -1;
-    }
+    width: 100%;
+    height: 100%;
+
+    //   position: fixed;
+    //   width: 100%;
+    //   height: 100%;
+    //   left: 0;
+    //   top: 0;
+    background: url('./static/images/activity/mb-bg.png') no-repeat;
+    background-size: 100% 100%;
+    //   z-index: -1;
+
 
     .w-openmb-headbtn {
-      margin-top: 30px;
+      width: 100%;
+      padding-top: 30px;
+      background-color: rgba(0, 0, 0, 0);
       .flex-row(space-between);
 
       .w-openmb-headbtn-left {
@@ -82,7 +103,7 @@
     .w-openmb-product {
       width: 550px;
       height: 844px;
-      margin: 130px 100px 0;
+      margin: 130px 100px 600px;
       background-color: #fff;
       position: relative;
 
@@ -165,35 +186,86 @@
         //   width: 42px;
         //   height: 0;
         // }
-        .w-openmb-choice-a{
+        .w-openmb-choice-a {
           display: inline-block;
           width: 130px;
           height: 130px;
-          background: url('./static/images/activity/mb-a.png') no-repeat;
+          background: url('./static/images/activity/mb-a-on.png') no-repeat;
           background-size: 100% 100%;
+
+          &.off {
+            background: url('./static/images/activity/mb-a-off.png') no-repeat;
+          }
         }
-        .w-openmb-choice-b{
+
+        .w-openmb-choice-b {
           display: inline-block;
           width: 130px;
           height: 130px;
-          background: url('./static/images/activity/mb-b.png') no-repeat;
+          background: url('./static/images/activity/mb-b-off.png') no-repeat;
           background-size: 100% 100%;
+
+          &.off {
+            background: url('./static/images/activity/mb-b-off.png') no-repeat;
+          }
         }
-        .w-openmb-choice-c{
+
+        .w-openmb-choice-c {
           display: inline-block;
           width: 130px;
           height: 130px;
-          background: url('./static/images/activity/mb-c.png') no-repeat;
+          background: url('./static/images/activity/mb-c-on.png') no-repeat;
           background-size: 100% 100%;
+
+          &.off {
+            background: url('./static/images/activity/mb-c-off.png') no-repeat;
+          }
         }
       }
-      .w-openmb-tips{
+
+      .w-openmb-tips {
         width: 550px;
         position: absolute;
         bottom: 0;
-        font-size:24px;
-        font-weight:300;
+        font-size: 24px;
+        font-weight: 300;
         color: @mainColor;
+      }
+    }
+
+    .w-openmb-popup {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.16);
+      .flex-col(center, center);
+      .w-openmb-popup-box {
+        width: 450px;
+        height: 165px;
+        padding: 91px 85px 44px;
+        background-color: #fff;
+        .flex-col(space-between);
+        .w-openmb-popup-text {
+          display: inline-block;
+          width: 450px;
+          font-size: 28px;
+
+          .w-openmb-popup-num {
+            color: @mainColor;
+          }
+        }
+
+        .w-openmb-popup-btn {
+          display: inline-block;
+          width: 230px;
+          height: 60px;
+          line-height: 60px;
+          font-size: 28px;
+          color: @mainColor;
+          border: 1px solid @mainColor;
+        }
       }
     }
   }

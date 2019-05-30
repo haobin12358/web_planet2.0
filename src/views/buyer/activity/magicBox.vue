@@ -5,8 +5,12 @@
 		</div>
 		<div class="w-mb-cost">
 			<div class="w-mb-deposit">
-				押金 ¥100
-				<span class="w-mb-gift"></span>
+				<span class="w-mb-deposit-lowest">押金<span class="w-mb-deposit-lowest-small">（最低价）</span>¥100</span>
+				<span class="w-mb-deposit-now">当前 ¥100</span>
+				<!-- <span class="w-mb-gift"></span> -->
+			</div>
+			<div class="w-mb-price-bought">
+				可购价 ¥ 150
 			</div>
 			<div class="w-mb-price-box">
 				<span class="w-mb-price">价格 <span class="w-mb-price-line">¥290</span></span>
@@ -50,6 +54,17 @@
 		</div>
 		<div class="w-mb-product-img">
 			<img>
+		</div>
+		<div class="w-mb-bottom">
+			<div class="w-mb-bottom-info">
+				继续分享获取更多优惠
+			</div>
+			<div class="w-mb-bottom-btn">
+				<span>分享帮拆</span>
+				<span>支付差价</span>
+			</div>
+			
+			
 		</div>
 	<sku v-if="show_sku" :now_select="select_value" :now_num="canums" :product="product_info" @changeModal="changeModal" @sureClick="sureClick"></sku>
 	</div>
@@ -99,10 +114,19 @@ export default {
 			
 			.w-mb-deposit{
 				width: 100%;
-				.flex-row(flex-start);
+				.flex-row(space-between,flex-end);
 				font-size: 40px;
 				font-weight: 600;
-				color: #E22300;
+				
+				.w-mb-deposit-lowest{
+					color: #E22300;
+					.w-mb-deposit-lowest-small{
+						font-size: 24px;
+					}
+				}
+				.w-mb-deposit-now{
+					color: @mainColor;
+				}
 				.w-mb-gift{
 					display: inline-block;
 					width: 40px;
@@ -111,6 +135,11 @@ export default {
 					background: url("./static/images/activity/mb-gift.png") no-repeat;
 					background-size: 100% 100%;
 				}
+			}
+			.w-mb-price-bought{
+				text-align: left;
+				padding: 10px 0;
+				color: #000;
 			}
 			.w-mb-price-box{
 				width:100%;
@@ -222,6 +251,32 @@ export default {
 				}
 
 			}
+		}
+		.w-mb-bottom{
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			.w-mb-bottom-info{
+				height: 98px;
+				line-height: 98px;
+				color:@mainColor;
+				font-size:30px;
+				font-weight:500;
+			}
+			.w-mb-bottom-btn{
+				display: flex;
+				span{
+				display: inline-block;
+				height: 98px;
+				line-height: 98px;
+				font-size:30px;
+				font-weight:500;
+				color: #fff;
+				flex:1;
+				background:linear-gradient(313deg,@mainColor 0%,@subColor 100%);
+			}
+			}
+			
 		}
 	}
 </style>
