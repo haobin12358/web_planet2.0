@@ -201,7 +201,7 @@
             }
             this.$router.push({ path: '/pandora', query: { mbjid: params }});
           }else if(localStorage.getItem('share') == 'fmfpid' || url.indexOf('fmfpid') > 0) {
-            //活动详情
+            //活动商品详情
             let params = url.split('?fmfpid=')[1].split('&secret_usid')[0].split('&which=');
             this.$router.push({ path: '/activityProductDetail', query: { fmfpid: params[0], which: params[1] }})
           }else if(localStorage.getItem('share') == 'tlpid' || url.indexOf('tlpid') > 0) {
@@ -248,7 +248,6 @@
             }else{
               this.$router.push({ path: '/productDetail', query: { prid: params }})
             }
-
           }else if(localStorage.getItem('share') == 'ipid' || url.indexOf('ipid') > 0) {
             //星币商城商品详情
             let params;
