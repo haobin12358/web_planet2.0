@@ -30,7 +30,6 @@
             </ul>
           </div>
           <div class="m-selected-label-right" @click="changeRoute('personal/coupon')">
-<!--            <span class="m-icon-gift"></span>-->
             <span>立即兑换</span>
           </div>
         </div>
@@ -39,7 +38,7 @@
         <img :src="top_img.enpic" @click="changeRouteImg('/activity',top_img)" class="m-activity-img" alt="">
       </div>
         <div class="m-selected-one">
-          <!--商品分类-->
+          <!--场景分类-->
           <div class="m-scroll " v-if="icon_list">
             <ul class="m-equipment-icon-ul">
               <li v-for="(item,index) in icon_list" @click="changeRoute('/scene',item)">
@@ -52,52 +51,19 @@
 
       <div class="m-selected-activity">
         <div class="m-row" v-if="center_img" @click="changeRouteImg('/activity',center_img)">
-<!--         <div>-->
-<!--           <img src="/static/images/index/icon-limit.png" class="m-img-limit" alt="">-->
-<!--           <p class="m-time-box">-->
-<!--             <img src="/static/images/index/icon-time.png" class="m-icon-time" alt="">-->
-<!--             <span>12:23:30</span>-->
-<!--           </p>-->
-<!--         </div>-->
-<!--          <div>-->
-<!--            <h3 class="m-limit-title">商品名称商品名称商品名称…</h3>-->
-<!--            <p>-->
-<!--              <span class="m-limit-price">¥123</span>-->
-<!--              <s class="m-underline">¥123</s>-->
-<!--            </p>-->
-<!--          </div>-->
-<!--          <img src="" class="m-product-img" alt="">-->
           <img :src="center_img.enpic" class="m-center-img" alt="">
         </div>
         <div class="m-row">
           <div class="m-col" v-if="left_img" @click="changeRouteImg('/activity',left_img)">
-<!--            <h3 class="m-activity-name">拼团竞猜</h3>-->
-<!--            <div class="m-activity-box">-->
-<!--              <div>-->
-<!--                <p class="m-red">¥999</p>-->
-<!--                <p><s class="m-underline">¥123</s></p>-->
-<!--              </div>-->
-<!--              <img src="" class="m-product-img" alt="">-->
-<!--            </div>-->
             <img :src="left_img.enpic" alt="">
           </div>
           <div class="m-col" v-if="right_img"  @click="changeRouteImg('/activity',right_img)">
-<!--            <h3 class="m-activity-name">拼团竞猜</h3>-->
-<!--            <div class="m-activity-box">-->
-<!--              <div>-->
-<!--                <p class="m-red">¥999</p>-->
-<!--                <p><s class="m-underline">¥123</s></p>-->
-<!--              </div>-->
-<!--              <img src="" class="m-product-img" alt="">-->
-<!--            </div>-->
             <img :src="right_img.enpic" alt="">
           </div>
         </div>
       </div>
-<!--        <div class="m-selected-one">-->
 
-          <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
-<!--        </div>-->
+      <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
       <bottom-line v-if="bottom_show"></bottom-line>
       <!--</mt-loadmore>-->
     </div>
@@ -105,10 +71,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import product from '../components/product';
   import common from '../../../common/js/common';
-  import axios from 'axios';
-  import api from '../../../api/api';
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
   import bottomLine from '../../../components/common/bottomLine';
@@ -136,7 +99,7 @@
         }
       },
       mixins: [wxapi],
-      components: { product,bottomLine,mCircle},
+      components: { bottomLine,mCircle},
       inject:['reload'],
       mounted() {
         common.changeTitle('首页');
@@ -160,8 +123,7 @@
           this.getImg();
           this.getNews();
         }
-      },
-      activated() {
+
         // 倒计时
         const TIME_COUNT = 1;
         let count = TIME_COUNT;
@@ -171,7 +133,7 @@
           }else {
             if(localStorage.getItem('share') && localStorage.getItem('url')) {
               let url = localStorage.getItem('url');
-                this.dealUrl(url);
+              this.dealUrl(url);
             }
             if(localStorage.getItem('href')) {
               // 倒计时
@@ -191,7 +153,6 @@
             clearInterval(time);
           }
         }, 300);
-
 
         if(sessionStorage.getItem('shop')) {
           this.$router.push('/shop');
@@ -215,11 +176,12 @@
           }, 300);
         }
       },
-      //离开时记录位置
+      //离开时记录页面滚动位置
       beforeRouteLeave (to, from, next) {
         if(to.path == '/circle/detail'){
           // sessionStorage.setItem('scrollTop',document.documentElement.scrollTop || document.body.scrollTop)
           this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+          //赋值页面所有的变量值
           this.$store.state.all_data = this._data;
         }else{
           this.$store.state.scrollTop = 0;
@@ -230,17 +192,20 @@
         //处理各个图片点击跳转路由
         dealUrl(url,name){
           if(localStorage.getItem('share') == 'mbjid' || url.indexOf('mbjid') > 0) {
+            //魔术礼盒
             let params ;
             if(url.indexOf('&secret_usid') > 0){
               params = url.split('?mbjid=')[1].split('&secret_usid')[0];
             }else{
               params = url.split('?mbjid=')[1];
             }
-            this.$router.push({ path: '/pandora', query: { mbjid: params }})
+            this.$router.push({ path: '/pandora', query: { mbjid: params }});
           }else if(localStorage.getItem('share') == 'fmfpid' || url.indexOf('fmfpid') > 0) {
+            //活动详情
             let params = url.split('?fmfpid=')[1].split('&secret_usid')[0].split('&which=');
             this.$router.push({ path: '/activityProductDetail', query: { fmfpid: params[0], which: params[1] }})
           }else if(localStorage.getItem('share') == 'tlpid' || url.indexOf('tlpid') > 0) {
+            //限时活动商品详情
             let params ;
             if(url.indexOf('&secret_usid') > 0){
               params = url.split('?tlpid=')[1].split('&secret_usid')[0];
@@ -249,9 +214,11 @@
             }
             this.$router.push({ path: '/limitedProductDetail', query: { tlpid: params}})
           }else if(localStorage.getItem('share') == 'tcid' || url.indexOf('tcid') > 0) {
+            //新人，试用活动商品详情
             let params = url.split('?tcid=')[1].split('&secret_usid')[0].split('&which=');
             this.$router.push({ path: '/activityProductDetail', query: { tcid: params[0], which: params[1] }})
           }else if(localStorage.getItem('share') == 'neid' || url.indexOf('neid') > 0) {
+            //圈子详情
             let params ;
             if(url.indexOf('&secret_usid') > 0){
               params = url.split('?neid=')[1].split('&secret_usid')[0];
@@ -260,6 +227,7 @@
             }
             this.$router.push({ path: '/circle/detail', query: { neid: params }})
           }else if(localStorage.getItem('share') == 'tlaid' || url.indexOf('tlaid') > 0) {
+            //单一限时活动页面
             let params ;
             if(url.indexOf('&secret_usid') > 0){
               params = url.split('?tlaid=')[1].split('&secret_usid')[0];
@@ -268,6 +236,7 @@
             }
             this.$router.push({ path: '/limitedTime', query: { tlaid: params }})
           }else if(localStorage.getItem('share') == 'prid' || url.indexOf('prid') > 0) {
+            //商品详情，开店大礼包
             let params;
             if(url.indexOf('&secret_usid') > 0){
               params = url.split('?prid=')[1].split('&secret_usid')[0];
@@ -281,6 +250,7 @@
             }
 
           }else if(localStorage.getItem('share') == 'ipid' || url.indexOf('ipid') > 0) {
+            //星币商城商品详情
             let params;
             if(url.indexOf('&secret_usid') > 0){
               params = url.split('?ipid=')[1].split('&secret_usid')[0];
@@ -289,16 +259,22 @@
             }
             this.$router.push({ path: '/personal/starProductDetail', query: { ipid: params }})
           }else if(localStorage.getItem('share') == 'activityId=new' || url.indexOf('activityId=new') > 0) {
+            //新人首单
             this.$router.push({ path: '/activityProduct', query: { which: 'new' }})
           }else if(localStorage.getItem('share') == 'activityId=try' || url.indexOf('activityId=try') > 0) {
+            //试用商品
             this.$router.push({ path: '/activityProduct', query: { which: 'try' }})
           }else if(localStorage.getItem('share') == 'activityId=guess' || url.indexOf('activityId=guess') > 0) {
+            //竞猜商品
             this.$router.push({ path: '/guessProduct', query: { which: 'guess' }})
           }else if(localStorage.getItem('share') == 'uaid' || url.indexOf('uaid') > 0) {
+            //竞猜商品详情
             this.$router.push({ path: '/guessProductDetail'})
           }else if(localStorage.getItem('share') == 'index' || url.indexOf('index') > 0) {
+            //首页
             this.$router.push({ path: '/selected'})
           }else if(localStorage.getItem('share') == 'actype' || url.indexOf('actype') > 0) {
+            //活动首页
             let params;
             if(url.indexOf('&secret_usid') > 0){
               params = url.split('?actype=')[1].split('&secret_usid')[0];
@@ -320,7 +296,7 @@
               imgUrl: this.swipe_list[0].ibpic,
               link:  location.href.split('#')[0]+'?page=index'
             };
-            axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
+            this.$http.get(this.$api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
               }
@@ -346,7 +322,7 @@
         },
         /*获取轮播图*/
         getSwipe(){
-          axios.get(api.list_banner_index).then(res => {
+          this.$http.get(this.$api.list_banner_index).then(res => {
             if(res.data.status == 200){
               this.swipe_list = res.data.data;
             }
@@ -354,7 +330,7 @@
         },
         //获取首页活动图
         getImg(){
-          this.$http.get(api.get_entry).then(res => {
+          this.$http.get(this.$api.get_entry).then(res => {
             if(res.data.status == 200){
               if(res.data.data.length >0){
                 let arr = res.data.data;
@@ -375,7 +351,7 @@
         },
         //获取场景信息
         getCategory(){
-          axios.get(api.scene_list).then(res => {
+          this.$http.get(this.$api.scene_list).then(res => {
             if(res.data.status == 200){
               this.icon_list = [].concat(res.data.data);
             }
@@ -383,7 +359,7 @@
         },
         /*获取资讯列表*/
         getNews() {
-          axios.get(api.get_all_news,{
+          this.$http.get(this.$api.get_all_news,{
             params:{
               token:localStorage.getItem('token'),
               page_num:this.page_info.page_num,
@@ -396,6 +372,7 @@
             if(res.data.status == 200){
               this.isScroll =true;
               if(res.data.data.length >0){
+                //处理圈子详情中的换行和空格
                 for(let i in res.data.data){
                   if(res.data.data[i].netext)
                     res.data.data[i].netext = res.data.data[i].netext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
@@ -417,14 +394,7 @@
         },
         /*点赞*/
         likeClick(i){
-          // if(!localStorage.getItem('token')){
-          //   Toast('请登录后再试');
-          //   let url = location.href.split('#')[0] + '?neid=' + this.news_list[i].neid
-          //   localStorage.setItem('login_to',url);
-          //   this.$router.push('/login');
-          //   return false;
-          // }
-          axios.post(api.favorite_news + '?token='+localStorage.getItem('token'),{
+          this.$http.post(this.$api.favorite_news + '?token='+localStorage.getItem('token'),{
             neid:this.news_list[i].neid,
             tftype:1
           }).then(res => {
@@ -442,7 +412,7 @@
         },
         //  收藏
         clickCollect(index){
-          this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+          this.$http.post(this.$api.collection_collect+'?token=' +localStorage.getItem('token'),{
             uclcollection:this.news_list[index].neid,
             uclcotype:1
           }).then(res => {
@@ -452,7 +422,7 @@
                   message: res.data.message,
                   duration: 500
                 });
-              let arr = [].concat(this.news_list)
+              let arr = [].concat(this.news_list);
               arr[index].collected = !arr[index].collected;
               // arr.splice(index,1);
               this.news_list = [].concat(arr)
@@ -461,7 +431,7 @@
         },
         //  关注
         followClick(index){
-          this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+          this.$http.post(this.$api.collection_collect+'?token=' +localStorage.getItem('token'),{
             uclcollection:this.news_list[index].neid,
             uclcotype:2
           }).then(res => {
@@ -471,7 +441,7 @@
                   message: res.data.message,
                   duration: 500
                 });
-              let arr = [].concat(this.news_list)
+              let arr = [].concat(this.news_list);
               // arr[index].follow = !arr[index].follow;
               //
               for(let i in arr){
@@ -510,26 +480,11 @@
         changeRoute(v, item) {
           switch(v) {
             case '/scene':
+              //场景
               if(item){
                 this.$router.push({path:v,query:{psid:item.psid}});
               }else{
                 this.$router.push({path:v});
-              }
-              break;
-            case '/brandDetail':
-              this.$router.push({ path: v, query: { pbid: item.pbid,pbname: item.pbname }});
-              break;
-            case '/productDetail':
-              if(item.contentlink) {
-                window.location.href = item.contentlink;
-              }
-              // this.$router.push({ path: v, query: { prid: item.prid }});
-              break;
-            case '/activity':
-              if(item.contentlink){
-                let params = item.contentlink.split('?actype=')[1].split('&secret_usid')[0];
-                this.$router.push({ path: '/activity', query: { actype: params }})
-                // location.href = item.contentlink;
               }
               break;
             default:
@@ -559,8 +514,6 @@
     padding: 30px 33px;
     margin: 20px auto;
     height: 60px;
-    /*border-radius: 50px;*/
-    /*box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);*/
     box-sizing: border-box;
     .flex-row(space-between);
     color: #000;
@@ -574,7 +527,6 @@
           font-size: 21px;
           font-weight: bold;
           &:first-child{
-            /*border-right: 1px solid #333333;*/
             padding-left: 0;
           }
         }
@@ -598,28 +550,17 @@
     .m-selected-label-right{
       width: 160px;
       height: 50px;
-      /*border-radius: 50px;*/
-      /*box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);*/
       background:linear-gradient(270deg,@mainColor 0%,@subColor 100%);
       font-size: 28px;
       color: #fff;
       line-height: 50px;
       text-align: center;
       font-weight: 600;
-      .m-icon-gift{
-        display: inline-block;
-        width: 27px;
-        height: 31px;
-        background: url("/static/images/icon-gift.png") no-repeat;
-        background-size: 100% 100%;
-        vertical-align: text-bottom;
-      }
     }
   }
   .m-selected-title{
     font-size: 36px;
     font-weight: bold;
-    /*padding: 0 33px;*/
     margin: 40px 33px -20px 33px;
     .m-scenes-text {
       flex: 1;
@@ -654,13 +595,11 @@
     .flex-row(flex-start);
     margin-top: 20px;
     li{
-      /*margin-right: 10px;*/
       font-size: 21px;
       line-height: 24px;
       letter-spacing: -0.4px;
       position: relative;
       width: 120px;
-      /*height: 180px;*/
       box-shadow: none;
       margin: 0 15px 10px 0;
       .flex-col(center);
@@ -669,7 +608,6 @@
         width: 80px;
         height: 80px;
         margin-bottom: 10px;
-        /*box-shadow:5px 5px 6px rgba(0,0,0,0.16);*/
       }
       .m-name{
         display: block;
@@ -695,71 +633,7 @@
           height: 200px;
         }
       }
-      .m-img-limit{
-        display: block;
-        width: 148px;
-        height: 36px;
-        margin-bottom: 18px;
-      }
-      .m-time-box{
-        color: #fff;
-        .flex-row(center);
-        font-size: 20px;
-        background-color: @mainColor;
-        margin: 0 10px  18px 0;
-      }
-      .m-icon-time{
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
 
-      }
-      .m-limit-title{
-        width: 302px;
-        height: 33px;
-        line-height: 33px;
-        overflow: hidden; // 超出的文本隐藏
-        text-overflow: ellipsis;    // 溢出用省略号显示
-        white-space:nowrap;
-        font-weight: 400;
-        margin-bottom: 6px;
-      }
-      .m-limit-price{
-        font-weight: 600;
-        font-size: 32px;
-        margin-right: 15px;
-      }
-      .m-underline{
-        color: #B4B4B4;
-        font-size: 20px;
-      }
-      .m-product-img{
-        display: block;
-        width: 180px;
-        height: 120px;
-        margin-left: 20px;
-      }
-      .m-col{
-        /*width: 49%;*/
-        /*padding: 23px 0 10px ;*/
-        /*&:first-child{*/
-        /*  border-right: 1px solid #f4f4f4;*/
-        /*}*/
-        .m-activity-name{
-          font-size: 32px;
-          font-weight: 600;
-        }
-        .m-activity-box{
-          .flex-row(space-between,flex-end);
-          .m-red{
-            color: #E22300;
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 20px;
-          }
-        }
-      }
     }
   }
 
