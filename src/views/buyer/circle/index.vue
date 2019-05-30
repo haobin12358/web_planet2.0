@@ -17,53 +17,7 @@
 
         <!--<mt-loadmore :top-method="loadTop" ref="loadmore">-->
           <div class="m-circle-body">
-<!--            <template v-for="(items,index) in news_list">-->
-<!--              <div class="m-video-one" @click="changeRoute('/circle/detail',items)">-->
-<!--                <template v-if="select_nav.itid == 'mynews'">-->
-<!--                  <span class="m-mark-label active" v-if="items.nestatus == 'refuse'">未通过</span>-->
-<!--                  <span class="m-mark-label" v-else-if="items.nestatus == 'usual'">审核通过</span>-->
-<!--                  <span class="m-mark-label" v-else>审核中</span>-->
-<!--                </template>-->
-
-<!--                <h3>{{items.netitle}}</h3>-->
-<!--                <div class="m-video-box" v-if="items.showtype == 'video'">-->
-<!--                  <video src="" class="m-video"></video>-->
-<!--                  &lt;!&ndash;<video :src="items.video" class="m-video"></video>&ndash;&gt;-->
-<!--                  <div class="m-img-box">-->
-<!--                    <img :src="items.videothumbnail" class="m-img">-->
-<!--                  </div>-->
-<!--                  <span class="m-video-time">{{items.videoduration}}</span>-->
-<!--                  <span class="m-icon-video"></span>-->
-<!--                </div>-->
-<!--                <div class="m-img-box" v-else-if="items.showtype == 'picture'">-->
-<!--                  <img :src="items.mainpic" class="m-img">-->
-<!--                </div>-->
-<!--                <p class="m-text" v-else v-html="items.netext">-->
-
-<!--                </p>-->
-<!--                <ul class="m-video-icon-ul">-->
-<!--                  <li @click.stop="likeClick(index)">-->
-<!--                    <span class="m-icon-like " :class="items.is_favorite?'active':''"></span>-->
-<!--                    <span>{{items.favoritnumber}}</span>-->
-<!--                  </li>-->
-<!--                  <li class="m-border" @click.stop="changeRoute('/circle/detail', items, 'comments')">-->
-<!--                    <span class="m-icon-comment"></span>-->
-<!--                    <span>{{items.commentnumber}}</span>-->
-<!--                  </li>-->
-<!--                  <li>-->
-<!--                    <span class="m-icon-transmit" @click.stop="shareCircle(items)"></span>-->
-<!--                  </li>-->
-<!--                  <li class="m-border">-->
-<!--                    <span class="m-icon-collect" :class="items.collected ? 'active':''" @click.stop="clickCollect(items)"></span>-->
-<!--                  </li>-->
-<!--                </ul>-->
-<!--                <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">-->
-<!--                <div class="m-refuse-reason" v-if="select_nav.itid == 'mynews' && items.nestatus == 'refuse'">-->
-<!--                  {{items.refuse_info}}-->
-<!--                </div>-->
-<!--              </div>-->
               <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
-<!--            </template>-->
             <bottom-line v-if="bottom_show"></bottom-line>
           </div>
           <!--</mt-loadmore>-->
@@ -74,8 +28,6 @@
 <script type="text/ecmascript-6">
   import navList from '../../../components/common/navlist';
   import common from '../../../common/js/common';
-  import axios from 'axios';
-  import api from '../../../api/api';
   import { Toast } from 'mint-ui';
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
@@ -95,17 +47,7 @@
             ittype: 10,
             active: false,
             psid: ""
-          },
-          // {
-          //   itdesc: "我是描述",
-          //   itid: "mynews",
-          //   itname: "我发布的",
-          //   itrecommend: true,
-          //   itsort: null,
-          //   ittype: 10,
-          //   active: false,
-          //   psid: ""
-          // }
+          }
         ],
         news_list: null,
         page_info: {
@@ -136,6 +78,10 @@
       }else{
         this.getNav();
       }
+      if(sessionStorage.getItem('circleProduct')) {
+        this.$router.push('/shop');
+        sessionStorage.removeItem('circleProduct')
+      }
     },
     //离开时记录位置
     beforeRouteLeave (to, from, next) {
@@ -150,23 +96,6 @@
       }
       next();
     },
-    activated() {
-
-      // if(localStorage.getItem('login_to') && !localStorage.getItem('toLogin')){
-      //   localStorage.setItem('toLogin', 'toLogin');
-      //   // this.$router.push('/login');
-      //   if(!localStorage.getItem('token')){
-      //     this.$store.state.show_login = true;
-      //   }
-      //
-
-      // }
-
-      if(sessionStorage.getItem('circleProduct')) {
-        this.$router.push('/shop');
-        sessionStorage.removeItem('circleProduct')
-      }
-    },
     // 引入keepAlive后代替beforeDestroy
     deactivated() {
       if(this.$route.path == '/circle/detail') {
@@ -177,12 +106,6 @@
       }
     },
     methods: {
-      // 把"我发布的"放在最后
-      changeList() {
-        let my = this.nav_list[1];
-        this.nav_list.splice(1, 1);
-        this.nav_list.push(my)
-      },
       // 分享圈子
       shareCircle(items) {
         if(localStorage.getItem('token')) {
@@ -192,7 +115,7 @@
             imgUrl: items.usheader,       // 初步考虑用用户头像
             link: location.href.split('#')[0] + '?neid=' + items.neid
           };
-          axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
+          this.$http.get(this.$api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
             if(res.data.status == 200) {
               options.link += '&secret_usid=' + res.data.data.secret_usid;
               // 点击分享
@@ -270,22 +193,11 @@
         this.select_nav = arr[index];
         this.page_info.page_num = 1;
         this.bottom_show = false;
-        // if(arr[index].itid == 'mynews') {
-        //   if(localStorage.getItem('token')) {
-        //     this.getNews(this.nav_list[index].itid)
-        //   }else {
-        //     this.news_list = [];
-        //     Toast('未登录');
-        //     // this.$router.push('/login');
-        //     this.$store.state.show_login = false;
-        //   }
-        // }else {
-          this.getNews(this.nav_list[index].itid)
-        // }
+        this.getNews(this.nav_list[index].itid)
       },
       /*获取导航*/
       getNav(){
-        axios.get(api.items_list, { params: { ittype:10,token:localStorage.getItem('token')}}).then(res => {
+        this.$http.get(this.$api.items_list, { params: { ittype:10,token:localStorage.getItem('token')}}).then(res => {
           if(res.data.status == 200){
             this.nav_list = [
               {
@@ -297,17 +209,7 @@
                 ittype: 10,
                 active: false,
                 psid: ""
-              },
-              // {
-              //   itdesc: "我是描述",
-              //   itid: "mynews",
-              //   itname: "我发布的",
-              //   itrecommend: true,
-              //   itsort: null,
-              //   ittype: 10,
-              //   active: false,
-              //   psid: ""
-              // }
+              }
             ];
             if(res.data.data.length == 0){
               this.nav_list = this.nav_list.concat([])
@@ -336,13 +238,12 @@
                 this.navClick(0);
               }
             }
-            // this.changeList()      // 把"我发布的"放在最后
           }
         })
       },
       /*获取资讯列表*/
       getNews(itid) {
-        axios.get(api.get_all_news,{
+        this.$http.get(this.$api.get_all_news,{
           params:{
             token:localStorage.getItem('token'),
             page_num:this.page_info.page_num,
@@ -371,20 +272,12 @@
               this.page_info.page_num = 1;
               this.total_count = 0;
             }
-            console.log(res.data.data,this.news_list)
           }
         })
       },
       /*点赞*/
       likeClick(i){
-        // if(!localStorage.getItem('token')){
-        //   Toast('请登录后再试');
-        //   let url = location.href.split('#')[0] + '?neid=' + this.news_list[i].neid
-        //   localStorage.setItem('login_to',url);
-        //   this.$router.push('/login');
-        //   return false;
-        // }
-        axios.post(api.favorite_news + '?token='+localStorage.getItem('token'),{
+        this.$http.post(this.$api.favorite_news + '?token='+localStorage.getItem('token'),{
           neid:this.news_list[i].neid,
           tftype:1
         }).then(res => {
@@ -432,7 +325,7 @@
       },
       //  收藏
       clickCollect(index){
-        this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+        this.$http.post(this.$api.collection_collect+'?token=' +localStorage.getItem('token'),{
           uclcollection:this.news_list[index].neid,
           uclcotype:1
         }).then(res => {
@@ -451,7 +344,7 @@
       },
       //  关注
       followClick(index){
-        this.$http.post(api.collection_collect+'?token=' +localStorage.getItem('token'),{
+        this.$http.post(this.$api.collection_collect+'?token=' +localStorage.getItem('token'),{
           uclcollection:this.news_list[index].neid,
           uclcotype:2
         }).then(res => {
@@ -524,183 +417,6 @@
         margin-bottom: 20px;
         padding-bottom: 20px;
         background-color: #fff;
-        .m-video-one{
-          position: relative;
-          /*width: 700px;*/
-          /*border-radius: 10px;*/
-          /*box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.16);*/
-          margin-bottom: 30px;
-          background-color: #fff;
-          padding-bottom: 26px;
-          .m-mark-label{
-            position: absolute;
-            top:10px;
-            right:0;
-            height: 33px;
-            line-height: 33px;
-            padding: 0 25px;
-            background-color: #E9E9E9;
-            border-radius: 10px  0   0  10px;
-            box-shadow: 3px 5px 6px 0 rgba(0, 0, 0, 0.16);
-            font-size: 18px;
-            color: #999999;
-            &.active{
-              color: #C70000;
-            }
-          }
-          h3{
-            font-size: 28px;
-            font-weight: bold;
-            text-align: left;
-            padding: 10px 20px;
-          }
-          .m-video-box{
-            position: relative;
-            .m-video{
-              display: block;
-              width: 700px;
-              height: 360px;
-              position: absolute;
-              top:0;
-              left: 0;
-            }
-            .m-icon-video{
-              display: block;
-              width: 109px;
-              height: 109px;
-              position: absolute;
-              top: 125px;
-              left: 298px;
-              background: url("/static/images/icon-video.png") no-repeat;
-              background-size: 100% 100%;
-            }
-            .m-video-time{
-              position: absolute;
-              bottom: 4px;
-              right: 40px;
-              color: #fff;
-            }
-          }
-          .m-img-box {
-            width: 700px;
-            height: 360px;
-            position: relative;
-            background-color: #ffffff;
-            .m-img {
-              max-width: 700px;
-              max-height: 360px;
-              position: absolute;
-              top: 0;
-              right: 0;
-              bottom: 0;
-              left: 0;
-              margin: auto;
-            }
-          }
-          .m-text{
-            width: 630px;
-            text-align: left;
-            padding: 10px 22px;
-            /*text-indent: 2em;*/
-            overflow: hidden; // 超出的文本隐藏
-            text-overflow: ellipsis;    // 溢出用省略号显示
-            display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
-            -webkit-box-orient: vertical; // 从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
-            -webkit-line-clamp: 2; // 这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
-          }
-
-          .m-video-like{
-            position: absolute;
-            top: 161px;
-            right:16px;
-            color: #fff;
-            height: 27px;
-            line-height: 27px;
-            .m-like-icon{
-              display: inline-block;
-              width: 28px;
-              height: 27px;
-              background: url("/static/images/icon-collect.png") no-repeat;
-              background-size: 100% 100%;
-              vertical-align: text-bottom;
-              margin-right: 10px;
-              &.active{
-                background: url("/static/images/icon-collect-active.png") no-repeat;
-                background-size: 100% 100%;
-              }
-            }
-          }
-          .m-video-icon-ul{
-            .flex-row(space-around);
-            margin: 18px 0 0;
-            color: #999;
-            li{
-              width: 33.3%;
-              text-align: center;
-            }
-            .m-border{
-              border-left: 1px solid #999999;
-              border-right: 1px solid #999999;
-              &:last-child{
-                border-right: none;
-              }
-            }
-            .m-icon-like{
-              display: inline-block;
-              width: 24px;
-              height: 24px;
-              background: url("/static/images/icon-like.png") no-repeat;
-              background-size: 100% 100%;
-              margin-right: 10px;
-              &.active{
-                background: url("/static/images/icon-like-active.png") no-repeat;
-                background-size: 100% 100%;
-              }
-            }
-            .m-icon-comment{
-              display: inline-block;
-              width: 27px;
-              height: 21px;
-              background: url("/static/images/icon-comment.png") no-repeat;
-              background-size: 100% 100%;
-              margin-right: 10px;
-            }
-            .m-icon-transmit{
-              display: inline-block;
-              width: 23px;
-              height: 20px;
-              background: url("/static/images/icon-transmit.png") no-repeat;
-              background-size: 100% 100%;
-            }
-            .m-icon-collect{
-              display: inline-block;
-              width: 23px;
-              height: 20px;
-              background: url("/static/images/circle/icon-collect.png") no-repeat;
-              background-size: 100% 100%;
-              &.active{
-                background: url("/static/images/icon-circle-collect-active.png") no-repeat;
-                background-size: 100% 100%;
-              }
-            }
-          }
-          .m-invite-course {
-            position: fixed;
-            top:0;
-            left:0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-          }
-          .m-refuse-reason{
-            padding: 14px 0;
-            border-top: 1px solid #CCCCCC;
-            text-align: left;
-            margin: 30px 20px 0 20px;
-            color: #C70000;
-            font-size: 18px;
-          }
-        }
       }
     }
   }
