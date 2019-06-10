@@ -17,9 +17,9 @@
           <p>粉丝</p>
         </li>
         <li class="m-num-line"></li>
-        <li >
-          <p class="m-num">{{person_info.collected}}</p>
-          <p>喜欢</p>
+        <li @click="changeRoute('/personal/messageDetail')">
+          <img src="" class="m-message-icon" alt="">
+          <p>私信</p>
         </li>
       </ul>
     </div>
@@ -75,6 +75,7 @@
       next();
     },
     mounted(){
+      common.changeTitle('他人主页');
       //  判断是否需要记住浏览位置
       if(this.$store.state.scrollTop >0 ||this.$store.state.isChange  ){
         for(let a in this.$store.state.all_data){
@@ -87,6 +88,11 @@
       }
     },
     methods:{
+      //改变路由
+      changeRoute(v){
+        this.$router.push({path:v,query:{}});
+      },
+      //获取个人信息
       getInfo(){
         this.$http.get(api.get_home_top,{
           params:{
@@ -269,6 +275,11 @@
         }
         .m-num{
           font-size: 40px;
+        }
+        .m-message-icon{
+          display: inline-block;
+          width: 40px;
+          height: 40px;
         }
       }
     }

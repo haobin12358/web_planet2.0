@@ -24,16 +24,17 @@
         </div>
       </template>
       <div class="m-in-message" v-if="nav_list[1].active" >
-        <div class="m-one-message">
+        <div class="m-one-message" v-for="(item,index) in  message_list">
           <div class="m-flex-between">
             <div class="m-flex-between">
-              <img src="/static/images/logo.jpg" class="m-avator-img" alt="">
-              <span>zhannei </span>
+              <img src="/static/images/logo.jpg" v-if="item.pmhead == ''" class="m-avator-img" alt="">
+              <img :src="item.pmhead " v-else class="m-avator-img" alt="">
+              <span>{{item.pmname}} </span>
             </div>
-            <span class="m-grey">4-01</span>
+            <span class="m-grey">{{item.createtime}}</span>
           </div>
-          <div class="m-one-message-content">
-            sdsdfdf
+          <div class="m-one-message-content" v-html="item.pmtext">
+
           </div>
         </div>
       </div>
@@ -75,7 +76,6 @@
         },
         isScroll:true,
         total_count:0,
-        total_number:0,
         bottom_show:false,
         show_sku:false,
         select_value:null,
@@ -93,12 +93,14 @@
           {
             name:'私信',
             value:'',
-            active:true
+            active:true,
+            count:0
           },
           {
             name:'站内信',
             value:'',
-            active:false
+            active:false,
+            count:0
           }
         ],
       }
@@ -106,17 +108,42 @@
     components: { navList, bottomLine },
     mounted(){
       common.changeTitle('消息');
-      this.getMessage();
+
+
     },
+    created(){
+      this.setSession();
 
+
+    },
+    sockets: {
+      message_list(data){
+        if(data){
+          this.nav_list[1].count = 1;
+          this.nav_list = [].concat(this.nav_list);
+        }
+        console.log(data,'message')
+      }
+    },
     methods: {
-      changeRoute(v, item){
-          this.$router.push(v);
-
+      setSession(){
+        this.$socket.emit('setsession', localStorage.getItem('token'),function (res) {
+          //如果连接失败，重新连接
+          if(res.status != 200){
+            this.setSession();
+          }
+          // else{
+          // this.$socket.emit('get_message');
+          // }
+        });
       },
-      // 获取message信息
-      getMessage(){
-        axios.get(api.cart_list,{
+      changeRoute(v, item){
+        this.$socket.emit('get_message');
+          // this.$router.push(v);
+      },
+      // 获取站内信信息
+      getAppMessage(){
+        axios.get(api.message_get,{
           params:{
             token:localStorage.getItem('token'),
             page_size:this.page_info.page_size,
@@ -124,6 +151,8 @@
           }
         }).then(res => {
           if(res.data.status == 200){
+            this.nav_list[1].count = 0;
+            this.nav_list = [].concat(this.nav_list);
             if(res.data.data.length >0){
               if(this.page_info.page_num >1){
                 this.message_list = this.message_list.concat(res.data.data);
@@ -135,21 +164,18 @@
               this.message_list = [];
               this.page_info.page_num = 1;
               this.total_count = 0;
-              this.total_number =  0;
               return false;
             }
-            let arr = [].concat(this.message_list);
-            for(let i = 0;i<arr.length;i++){
-              arr[i].active = false;
-              for(let j =0;j<arr[i].cart.length;j++){
-                arr[i].cart[j].active = false;
-              }
-            }
-            this.message_list = [].concat(arr);
+            // let arr = [].concat(this.message_list);
+            // for(let i = 0;i<arr.length;i++){
+            //   arr[i].active = false;
+            //   for(let j =0;j<arr[i].cart.length;j++){
+            //     arr[i].cart[j].active = false;
+            //   }
+            // }
+            // this.message_list = [].concat(arr);
             this.isScroll = true;
             this.total_count = res.data.total_count;
-            this.total_number = res.data.product_num || 0;
-
           }
         })
       },
@@ -164,17 +190,11 @@
             if(this.message_list.length == this.total_count){
               this.bottom_show = true;
             }else{
-              this.getMessage();
+              this.getAppMessage();
             }
           }
 
         }
-      },
-
-      //购物车确定
-      sureClick(item,num){
-        this.show_sku = false;
-        this.updateCart(item,num)
       },
 
       /*删除*/
@@ -194,7 +214,7 @@
               if(res.data.status == 200){
                 this.page_info.page_num = 1;
                 this.total_count = 1;
-                this.getMessage();
+                this.getAppMessage();
                 this.allRadio = false;
               }
             });
@@ -259,7 +279,7 @@
         this.total_count = 0;
         this.bottom_show = false;
         let arr = [].concat(this.nav_list);
-        if(arr[index].active) {
+        if(arr[index].active && arr[index].count == 0) {
           return false;
         }
         for(let i = 0; i < arr.length; i ++) {
@@ -268,7 +288,9 @@
         arr[index].active = true;
         this.nav_list = [].concat(arr);
         this.page_info.page_num = 1;
-
+        if(index == 1){
+          this.getAppMessage();
+        }
       },
     }
   }
@@ -280,6 +302,7 @@
     width: 100%;
     min-height: 100vh;
     background-color: #ffffff;
+    overflow-x: hidden;
     position: relative;
     .m-shop-content{
       padding: 0 0 200px 0;

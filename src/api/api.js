@@ -2,7 +2,7 @@
 // const title = 'https://www.bigxingxing.com/api/v1/'; //正式
 let title = '';
 if(location.origin.indexOf('localhost') != -1){
-   title = 'https://play.bigxingxing.com/api/v2/'; //测试
+   title = 'https://pre2.bigxingxing.com/api/v2/'; //测试
 }else{
    title = `${location.origin}/api/v2/`
 }
@@ -149,6 +149,7 @@ const api={
   integral_order: title + 'integral/order',     //星币下单
   list_hypermarket_banner: title +'index/list_hypermarket_banner', //获取商城顶部轮播图
   integral_pay_preview: title +'order/integral_pay_preview',  ///可抵用星币数
+  message_get: title +'message/get',           //获取站内信
 
   get_entry: title +'index/get_entry',  //h获取首页活动图
   get_self_news: title +'news/get_self_news',//获取其它用户主页
