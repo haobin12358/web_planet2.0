@@ -2,7 +2,7 @@
 // const title = 'https://www.bigxingxing.com/api/v1/'; //正式
 let title = '';
 if(location.origin.indexOf('localhost') != -1){
-   title = 'https://pre2.bigxingxing.com/api/v2/'; //测试
+   title = 'https://play.bigxingxing.com/api/v2/'; //测试
 }else{
    title = `${location.origin}/api/v2/`
 }
@@ -137,6 +137,8 @@ const api={
   timelimited_get:title +'timelimited/get',                      //获取限时活动详情
   timelimited_list_activity:title +'timelimited/list_activity',//获取所有限时活动
   list_activity_product: title +'timelimited/list_activity_product',//获取所有可见限时活动和商品
+
+  guessgroup_list: title +'guessgroup/list',//获取拼团竞猜列表
 
 
   collection_collect: title +'collection/collect',         ///收藏

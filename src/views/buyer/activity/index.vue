@@ -184,21 +184,21 @@
             <span>正在拼团</span>
             <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
           </h3>
-          <div class="m-one-group">
-            <img src="" class="m-one-group-img" alt="">
+          <div class="m-one-group" v-for="(items,index) in now_group">
+            <img :src="items.prmainpic" class="m-one-group-img" alt="">
             <div class="m-product-info">
-              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>
-              <p>押金 ¥ 100.0</p>
+              <p class="m-product-title">{{items.prtitle}}</p>
+              <p>押金 ¥{{items.gpdeposit}}</p>
               <div class="m-flex-start">
-                <span class="m-one-num active">8</span>
-                <span class="m-one-num">?</span>
-                <span class="m-one-num">?</span>
+                <span class="m-one-num " :class="item ? 'active':''" v-for="(item,j) in items.numbers">
+                 {{ item ? item:'?'}}
+                </span>
               </div>
             </div>
             <div class="m-user-box">
               <div class="m-avator-box">
-                <span  class="m-avator active">
-                   <img src="" alt="">
+                <span  class="m-avator " :class="item != null ? 'active':''" v-for="(item,j) in items.headers">
+                   <img :src="item" alt="">
                 </span>
                 <span  class="m-avator ">
                    <img src="" alt="">
@@ -207,108 +207,138 @@
                    <img src="" alt="">
                 </span>
               </div>
-              <p class="m-main-color">我发起的</p>
+              <p class="m-main-color">{{items.type}}</p>
             </div>
           </div>
-          <div class="m-one-group m-cancel">
-            <img src="" class="m-one-group-img" alt="">
-            <div class="m-product-info">
-              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>
-              <p>押金 ¥ 100.0</p>
-              <div class="m-flex-start">
-                <span class="m-one-num active">8</span>
-                <span class="m-one-num">?</span>
-                <span class="m-one-num">?</span>
-              </div>
-            </div>
-            <div class="m-user-box">
-              <div class="m-avator-box">
-                <span  class="m-avator active">
-                   <img src="" alt="">
-                </span>
-                <span  class="m-avator ">
-                   <img src="" alt="">
-                </span>
-                <span  class="m-avator ">
-                   <img src="" alt="">
-                </span>
-              </div>
-              <p class="m-group-btn">我发起的</p>
-            </div>
-          </div>
-        </div>
-        <div class="m-one-item">
-          <h3 class="m-item-title m-flex-between">
-            <span>正在拼团</span>
-            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
-          </h3>
-          <div class="m-one-group">
-            <img src="" class="m-one-group-img" alt="">
-            <div class="m-product-info">
-              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>
-              <p>押金 ¥ 100.0</p>
-              <div class="m-flex-start">
-                <span class="m-one-num active">8</span>
-                <span class="m-one-num">?</span>
-                <span class="m-one-num">?</span>
-              </div>
-            </div>
-            <div class="m-user-box">
-              <div class="m-avator-box">
-                <span  class="m-avator m-four active">
-                   <img src="" alt="">
-                </span>
-                <span  class="m-avator m-four">
-                   <img src="" alt="">
-                </span>
-                <span  class="m-avator m-four">
-                   <img src="" alt="">
-                </span>
-                <span  class="m-avator m-four">
-                   <img src="" alt="">
-                </span>
-              </div>
-              <p class="m-group-btn">我发起的</p>
-            </div>
-          </div>
-          <div class="m-one-group">
-            <img src="" class="m-one-group-img" alt="">
-            <div class="m-product-info">
-              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>
-              <p>押金 ¥ 100.0</p>
-              <div class="m-flex-start">
-                <span class="m-one-num active">8</span>
-                <span class="m-one-num">?</span>
-                <span class="m-one-num">?</span>
-              </div>
-            </div>
-            <div class="m-user-box">
-              <div class="m-avator-box">
-                <span  class="m-avator m-two active">
-                   <img src="" alt="">
-                </span>
-                <span  class="m-avator m-two">
-                   <img src="" alt="">
-                </span>
+<!--          <div class="m-one-group m-cancel">-->
+<!--            <img src="" class="m-one-group-img" alt="">-->
+<!--            <div class="m-product-info">-->
+<!--              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>-->
+<!--              <p>押金 ¥ 100.0</p>-->
+<!--              <div class="m-flex-start">-->
+<!--                <span class="m-one-num active">8</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="m-user-box">-->
+<!--              <div class="m-avator-box">-->
+<!--                <span  class="m-avator active">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
 <!--                <span  class="m-avator ">-->
 <!--                   <img src="" alt="">-->
 <!--                </span>-->
+<!--                <span  class="m-avator ">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--              </div>-->
+<!--              <p class="m-group-btn">我发起的</p>-->
+<!--            </div>-->
+<!--          </div>-->
+        </div>
+        <div class="m-one-item">
+          <h3 class="m-item-title m-flex-between">
+            <span>参与拼团</span>
+            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
+          </h3>
+<!--          <div class="m-one-group">-->
+<!--            <img src="" class="m-one-group-img" alt="">-->
+<!--            <div class="m-product-info">-->
+<!--              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>-->
+<!--              <p>押金 ¥ 100.0</p>-->
+<!--              <div class="m-flex-start">-->
+<!--                <span class="m-one-num active">8</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="m-user-box">-->
+<!--              <div class="m-avator-box">-->
+<!--                <span  class="m-avator m-four active">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator m-four">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator m-four">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator m-four">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--              </div>-->
+<!--              <p class="m-group-btn">我发起的</p>-->
+<!--            </div>-->
+<!--          </div>-->
+          <div class="m-one-group" v-for="(items,index) in apply_group">
+            <img :src="items.prmainpic" class="m-one-group-img" alt="">
+            <div class="m-product-info">
+              <p class="m-product-title">{{items.prtitle}}</p>
+              <p>押金 ¥{{items.gpdeposit}}</p>
+              <div class="m-flex-start">
+                <span class="m-one-num " :class="item ? 'active':''" v-for="(item,j) in items.numbers">
+                 {{ item ? item:'?'}}
+                </span>
               </div>
-              <p class="m-main-color">我发起的</p>
+            </div>
+            <div class="m-user-box">
+              <div class="m-avator-box">
+                <span  class="m-avator " :class="item != null ? 'active':''" v-for="(item,j) in items.headers">
+                   <img :src="item" alt="">
+                </span>
+                <span  class="m-avator ">
+                   <img src="" alt="">
+                </span>
+                <span  class="m-avator ">
+                   <img src="" alt="">
+                </span>
+              </div>
+              <p class="m-group-btn">立即加入</p>
             </div>
           </div>
+<!--          <div class="m-one-group">-->
+<!--            <img src="" class="m-one-group-img" alt="">-->
+<!--            <div class="m-product-info">-->
+<!--              <p class="m-product-title">TAWA防水帐篷户外野营必备…</p>-->
+<!--              <p>押金 ¥ 100.0</p>-->
+<!--              <div class="m-flex-start">-->
+<!--                <span class="m-one-num active">8</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--                <span class="m-one-num">?</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="m-user-box">-->
+<!--              <div class="m-avator-box">-->
+<!--                <span  class="m-avator m-two active">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--                <span  class="m-avator m-two">-->
+<!--                   <img src="" alt="">-->
+<!--                </span>-->
+<!--&lt;!&ndash;                <span  class="m-avator ">&ndash;&gt;-->
+<!--&lt;!&ndash;                   <img src="" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;                </span>&ndash;&gt;-->
+<!--              </div>-->
+<!--              <p class="m-main-color">我发起的</p>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
         <div class="m-one-limit">
+          <h3 class="m-limit-title">
+            <span>发起拼团</span>
+<!--            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>-->
+          </h3>
           <div class="m-limit-center-content">
-            <ul class="m-center-product-ul">
-              <li @click="changeRoute('/activityProductDetail',item,'try')">
-                <div class="m-product-img" >
+            <ul class="m-center-product-ul" v-for="(items,index) in group_product">
+              <li @click="changeRoute('/activityProductDetail',items)">
+                <div class="m-product-img" :style="{backgroundImage:'url(' + items.prmainpic +')'}">
 
                 </div>
                 <!--                :style="{backgroundImage:'url(' + item.prmainpic +')'}"-->
-                <p class="m-product-name">223</p>
+                <p class="m-product-name">{{items.prtitle}}</p>
                 <p class="m-flex-between">
-                  <span class="m-num">22</span>
+                  <span class="m-num">{{items.gpdeposit}}</span>
                   <img src="/static/images/newActivity/icon-pin.png"  class="m-label-img-try" alt="">
                 </p>
               </li>
@@ -363,7 +393,12 @@
         correct_time:'',
         rulePopup:false,
         secret_usid:'',
-        nonePopup:false
+        nonePopup:false,
+
+      //  拼团
+        now_group:[],
+        apply_group:[],
+        group_product:[]
       }
     },
     components: {navList,bottomLine},
@@ -510,6 +545,9 @@
               this.getRule();
             }
             this.getGuessAll();
+            break;
+          case 5:
+            this.getGroup();
             break;
         }
       },
@@ -857,6 +895,36 @@
           i = "0" + i;
         }
         return i;
+      },
+    //  获取拼团页面数据
+      getGroup(){
+        this.$http.get(this.$api.guessgroup_list,{
+          params:{
+            token:localStorage.getItem('token'),
+            page_size:this.page_info.page_size,
+            page_num: this.page_info.page_num
+          }
+        }).then(res => {
+          if(res.data.status == 200){
+            this.isScroll = true;
+            if(res.data.data.group_goods.length > 0) {
+              if(this.page_info.page_num > 1) {
+                this.group_product = this.group_product.concat(res.data.data.group_goods);
+              }else{
+                this.group_product = res.data.data.group_goods;
+              }
+              this.page_info.page_num = this.page_info.page_num + 1;
+              this.total_count = res.data.total_count;
+            }else{
+              this.group_product = [];
+              this.page_info.page_num = 1;
+              this.total_count = 0;
+              return false;
+            }
+            this.now_group = res.data.data.my_group;
+            this.apply_group = res.data.data.all_group;
+          }
+        })
       }
     },
     mounted() {

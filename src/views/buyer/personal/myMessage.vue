@@ -1,5 +1,5 @@
 <template>
-  <div class="m-shop" >
+  <div class="m-my-message" >
     <div class="m-shop-content" @touchmove="touchMove">
 <!--      <p class="m-no-data" v-if="message_list.length == 0">暂无消息</p>-->
       <nav-list :navlist="nav_list" @navClick="navClick"></nav-list>
@@ -295,10 +295,10 @@
     }
   }
 </script>
-<style lang="less" rel="stylesheet/less" scoped>
+<style lang="less" rel="stylesheet/less" >
   @import "../../../common/css/index";
 
-  .m-shop{
+  .m-my-message{
     width: 100%;
     min-height: 100vh;
     background-color: #ffffff;
@@ -406,6 +406,11 @@
           .m-one-message-content{
             padding: 30px 0;
             color: #666666;
+            img{
+              display: block;
+              width: 680px;
+              height: 400px;
+            }
           }
         }
       }
