@@ -18,7 +18,7 @@
         </li>
         <li class="m-num-line"></li>
         <li @click="changeRoute('/personal/messageDetail')">
-          <img src="" class="m-message-icon" alt="">
+          <img src="/static/images/newpersonal/icon-message.jpg" class="m-message-icon" alt="">
           <p>私信</p>
         </li>
       </ul>
