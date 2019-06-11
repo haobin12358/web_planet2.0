@@ -625,29 +625,61 @@
          if(this.act){
            localStorage.setItem('activityOrderNo', 4);
          }
-          axios.post(api.order_create + "?token=" + localStorage.getItem('token'), params).then(res => {
-            if(res.data.status == 200) {
-              if(this.payType.opaytype ==20) {
-                // Toast(res.data.message);
-                // this.giftPopup = true;
+         if(this.$route.query.from == 'gpid' || this.$route.query.from == 'ggid'){
+           let _params = {
+             gpid: this.$route.query.gpid,
+             pbid: this.product_info[0].pb.pbid,
+             gsid: this.product_info[0].cart[0].sku.gsid,
+             omclient: 0,
+             uaid: this.uaid,
+             ommessage: this.product_info[0].ommessage || "",
+             nums: 1
+           }
+           axios.post(api.guessgroup_order + "?token=" + localStorage.getItem('token'), _params).then(res => {
+             if(res.data.status == 200) {
+               if(this.payType.opaytype ==20) {
+                 // Toast(res.data.message);
+                 // this.giftPopup = true;
 
-                // if(this.act){
-                //   this.$router.push("/personal/myWallet");
-                // }else{
-                  this.$router.push("/orderList?which=2");
-                // }
+                 // if(this.act){
+                 //   this.$router.push("/personal/myWallet");
+                 // }else{
+                 this.$router.push("/orderList?which=2");
+                 // }
 
-                // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
-                sessionStorage.setItem('use', 'used');
-              }else {
-                this.wxPay(res.data.data.args);
-                localStorage.removeItem('product');
-              }
-            }
-          });
+                 // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
+                 sessionStorage.setItem('use', 'used');
+               }else {
+                 this.wxPay(res.data.data.args,res.data.data.omid);
+                 localStorage.removeItem('product');
+               }
+             }
+           });
+         }else{
+           axios.post(api.order_create + "?token=" + localStorage.getItem('token'), params).then(res => {
+             if(res.data.status == 200) {
+               if(this.payType.opaytype ==20) {
+                 // Toast(res.data.message);
+                 // this.giftPopup = true;
+
+                 // if(this.act){
+                 //   this.$router.push("/personal/myWallet");
+                 // }else{
+                 this.$router.push("/orderList?which=2");
+                 // }
+
+                 // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
+                 sessionStorage.setItem('use', 'used');
+               }else {
+                 this.wxPay(res.data.data.args);
+                 localStorage.removeItem('product');
+               }
+             }
+           });
+         }
         },
         // 调起微信支付
-        wxPay(data) {
+        wxPay(data,omid) {
           let that = this;
           function onBridgeReady() {      // 微信支付接口
             WeixinJSBridge.invoke(
@@ -663,17 +695,36 @@
                 // console.log(res);
                 // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
                 sessionStorage.setItem('use', 'used');
+
                 if(res.err_msg == "get_brand_wcpay_request:ok" ){             // 支付成功
                   // 是从商家大礼包来结算的则弹出popup
                   if(that.fromGift) {
                     this.$router.push("/orderList?which=2");
-                  }else if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
+                  }else if(that.from == 'gpid') {
                     // that.$router.push('/personal/myWallet');
-                    that.$router.push("/orderList?which=2");
+                    let id = '';
+                    for(let j = 0; j < that.product_info[0].cart.length; j ++) {
+                      if(that.product_info[0].cart[j].contentid && that.product_info[0].cart[j].contentid != ''){
+                        id = that.product_info[0].cart[j].contentid;
+                      }
+                    }
+                    that.$router.push({path:'/groupProductDetail',query:{gpid:id,omid:omid}});
+                  }else if(that.from == 'ggid') {
+                    // that.$router.push('/personal/myWallet');
+                    let id = '';
+                    for(let j = 0; j < that.product_info[0].cart.length; j ++) {
+                      if(that.product_info[0].cart[j].contentid && that.product_info[0].cart[j].contentid != ''){
+                        id = that.product_info[0].cart[j].contentid;
+                      }
+                    }
+                    that.$router.push({path:'/groupProductDetail',query:{ggid:id,omid:omid}});
                   }else {     // 去待发货页
                     that.$router.push("/orderList?which=2");
                   }
-                }else if(res.err_msg == "get_brand_wcpay_request:cancel" ){   // 支付过程中用户取消
+                }else if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
+                    // that.$router.push('/personal/myWallet');
+                    that.$router.push("/orderList?which=2");
+                  }else if(res.err_msg == "get_brand_wcpay_request:cancel" ){   // 支付过程中用户取消
                   Toast('支付已取消');
                   if(that.from == 'new' || that.from == 'try' || that.isGuess ||that.act) {
                     // that.$router.push('/personal/myWallet');

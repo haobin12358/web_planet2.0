@@ -167,6 +167,8 @@ export const constantRouterMap = [
   { path: '/limitedProductDetail', component: () => import('../views/buyer/activity/limitedProductDetail'), hidden: true },        // 免费试用 - 商品详情
   { path: '/magicBox', component: () => import('../views/buyer/activity/magicBox.vue'), hidden: true}, //魔术礼盒
   { path: '/openMagicBox', component: () => import('../views/buyer/activity/openMagicBox.vue'), hidden:true},
+  { path: '/groupProductDetail', component: () => import('../views/buyer/activity/groupProductDetail'), hidden:true},
+  { path: '/groupList', component: () => import('../views/buyer/activity/groupList'), hidden:true},
 
 
   { path: '/systemfix', component: () => import('../views/systemfix'), hidden: true },

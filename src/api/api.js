@@ -139,7 +139,9 @@ const api={
   list_activity_product: title +'timelimited/list_activity_product',//获取所有可见限时活动和商品
 
   guessgroup_list: title +'guessgroup/list',//获取拼团竞猜列表
-
+  guessgroup_get: title +'guessgroup/get',//获取拼团竞猜详情
+  guessgroup_order: title +'guessgroup/order',//拼团下单
+  guessgroup_join: title + 'guessgroup/join', //竞猜
 
   collection_collect: title +'collection/collect',         ///收藏
   get_home_top: title + 'user/get_home_top',             ///用户主页数据

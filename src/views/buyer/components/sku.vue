@@ -73,7 +73,7 @@
           </div>
         </div>
         <div class="m-sku-btn">
-          <span  class="active" v-if="select_value && (select_value.ipsstock &&  select_value.ipsstock > 0 || select_value.skustock &&  select_value.skustock > 0)" @click.stop="sureClick">确 定</span>
+          <span  class="active" v-if="select_value && (select_value.ipsstock &&  select_value.ipsstock > 0 || select_value.gsstock &&  select_value.gsstock > 0 || select_value.skustock &&  select_value.skustock > 0)" @click.stop="sureClick">确 定</span>
           <span v-else>确 定</span>
         </div>
       </div>
@@ -193,11 +193,11 @@
             // if(this.product.skus[j].skuattritedetail[i] == this.select[i] && this.product.skus[j].skustock >0){
             //
             // }
-            if(item == '' && ((this.product.skus[j].ipsstock && this.product.skus[j].ipsstock >0) || (this.product.skus[j].skustock && this.product.skus[j].skustock >0))){
+            if(item == '' && ((this.product.skus[j].ipsstock && this.product.skus[j].ipsstock >0) || (this.product.skus[j].gsstock &&  this.product.skus[j].gsstock > 0 ) || (this.product.skus[j].skustock && this.product.skus[j].skustock >0))){
               newArr.push(this.product.skus[j].skuattritedetail);
               change_arr.push(this.product.skus[j]);
             }
-            else if(this.contrastArr(this.product.skus[j].skuattritedetail,ad) &&  ((this.product.skus[j].ipsstock && this.product.skus[j].ipsstock >0) || (this.product.skus[j].skustock && this.product.skus[j].skustock >0))){
+            else if(this.contrastArr(this.product.skus[j].skuattritedetail,ad) &&  ((this.product.skus[j].ipsstock && this.product.skus[j].ipsstock >0) || (this.product.skus[j].gsstock &&  this.product.skus[j].gsstock > 0 ) || (this.product.skus[j].skustock && this.product.skus[j].skustock >0))){
               newArr.push(this.product.skus[j].skuattritedetail);
               change_arr.push(this.product.skus[j]);
             }

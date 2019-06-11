@@ -179,12 +179,12 @@
       </div>
 
       <div v-if="selecte_nav.actype == 5">
-        <div class="m-one-item">
+        <div class="m-one-item" v-if="now_group.length > 0">
           <h3 class="m-item-title m-flex-between">
             <span>正在拼团</span>
-            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
+            <span class="m-grey" @click="changeRoute('/groupList','my')">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
           </h3>
-          <div class="m-one-group" v-for="(items,index) in now_group">
+          <div class="m-one-group" @click="changeRoute('/groupProductDetail',items)" v-for="(items,index) in now_group">
             <img :src="items.prmainpic" class="m-one-group-img" alt="">
             <div class="m-product-info">
               <p class="m-product-title">{{items.prtitle}}</p>
@@ -237,10 +237,10 @@
 <!--            </div>-->
 <!--          </div>-->
         </div>
-        <div class="m-one-item">
+        <div class="m-one-item" v-if="apply_group.length >0">
           <h3 class="m-item-title m-flex-between">
             <span>参与拼团</span>
-            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
+            <span class="m-grey" @click="changeRoute('/groupList','all')">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
           </h3>
 <!--          <div class="m-one-group">-->
 <!--            <img src="" class="m-one-group-img" alt="">-->
@@ -271,7 +271,7 @@
 <!--              <p class="m-group-btn">我发起的</p>-->
 <!--            </div>-->
 <!--          </div>-->
-          <div class="m-one-group" v-for="(items,index) in apply_group">
+          <div class="m-one-group" @click="changeRoute('/groupProductDetail',items)" v-for="(items,index) in apply_group">
             <img :src="items.prmainpic" class="m-one-group-img" alt="">
             <div class="m-product-info">
               <p class="m-product-title">{{items.prtitle}}</p>
@@ -286,12 +286,6 @@
               <div class="m-avator-box">
                 <span  class="m-avator " :class="item != null ? 'active':''" v-for="(item,j) in items.headers">
                    <img :src="item" alt="">
-                </span>
-                <span  class="m-avator ">
-                   <img src="" alt="">
-                </span>
-                <span  class="m-avator ">
-                   <img src="" alt="">
                 </span>
               </div>
               <p class="m-group-btn">立即加入</p>
@@ -330,8 +324,8 @@
 <!--            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>-->
           </h3>
           <div class="m-limit-center-content">
-            <ul class="m-center-product-ul" v-for="(items,index) in group_product">
-              <li @click="changeRoute('/activityProductDetail',items)">
+            <ul class="m-center-product-ul" >
+              <li @click="changeRoute('/groupProductDetail',items)" v-for="(items,index) in group_product">
                 <div class="m-product-img" :style="{backgroundImage:'url(' + items.prmainpic +')'}">
 
                 </div>
@@ -419,7 +413,7 @@
     },
     //离开时记录位置
     beforeRouteLeave (to, from, next) {
-      if(to.path != '/selected' && to.path != '/guessProduct' ){
+      if(to.path != '/selected' && to.path != '/guessProduct'  ){
         this.$store.state.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         this.$store.state.all_data = this._data;
         this.$store.state.isChange = true;
@@ -505,6 +499,16 @@
               break;
             case '/limitedProductDetail':
               this.$router.push({ path: v, query: { tlpid: item.tlpid }});
+              break;
+            case '/groupProductDetail':
+              if(item.ggid){
+                this.$router.push({ path: v, query: { ggid: item.ggid }});
+              }else{
+                this.$router.push({ path: v, query: { gpid: item.gpid }});
+              }
+              break;
+            case '/groupList':
+              this.$router.push({ path: v, query: { option: item }});
               break;
           }
         }
@@ -746,7 +750,21 @@
       getNew(){
         this.$http.get(this.$api.fresh_man_list).then(res => {
           if(res.data.status == 200){
-            this.new_list = res.data.data.fresh_man;
+            this.isScroll = true;
+            if(res.data.data.fresh_man.length > 0) {
+              if(this.page_info.page_num > 1) {
+                this.new_list = this.new_list.concat(res.data.data.fresh_man);
+              }else{
+                this.new_list = res.data.data.fresh_man;
+              }
+              this.page_info.page_num = this.page_info.page_num + 1;
+              this.total_count = res.data.total_count;
+            }else{
+              this.new_list = [];
+              this.page_info.page_num = 1;
+              this.total_count = 0;
+              return false;
+            }
           }
         })
       },
@@ -789,22 +807,41 @@
       },
       //滚动加载更多
       touchMove(e) {
+        console.log(this.selecte_nav)
         let scrollTop = common.getScrollTop();
         let scrollHeight = common.getScrollHeight();
         let ClientHeight = common.getClientHeight();
         if (scrollTop + ClientHeight  >= scrollHeight -10) {
           if(this.isScroll){
             this.isScroll = false;
-            if(this.hot_list.length == this.total_count){
+             let length;
+             switch (this.selecte_nav.actype) {
+               case 5:
+                 length = this.group_product.length;
+                 break;
+               case 0:
+                 length = this.new_list.length;
+                 break;
+               case 3:
+                 length = this.try_list.length;
+                 break;
+             }
+            if(length == this.total_count){
               this.bottom_show = true;
             }else{
-              let name = this.selecte_nav.acname;
+              let actype = this.selecte_nav.actype;
               for(let i in this.limit_list){
                 clearInterval(this.limit_list[i].timer);
               }
-              switch (name) {
-                case '试用商品':
+              switch (actype) {
+                case 3:
                   this.getTry();
+                  break;
+                case 0:
+                  this.getNew();
+                  break;
+                case 5:
+                  this.getGroup();
                   break;
               }
 
@@ -833,6 +870,9 @@
             break;
           case 1:
             this.getGuessAll();
+            break;
+          case 5:
+            this.getGroup();
             break;
         }
         this.$refs.loadmore.onTopLoaded();
@@ -919,7 +959,6 @@
               this.group_product = [];
               this.page_info.page_num = 1;
               this.total_count = 0;
-              return false;
             }
             this.now_group = res.data.data.my_group;
             this.apply_group = res.data.data.all_group;

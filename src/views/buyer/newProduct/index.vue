@@ -179,6 +179,15 @@
         }else if(localStorage.getItem('share') == 'actype' || url.indexOf('actype') > 0) {
           let params = url.split('?actype=')[1].split('&secret_usid')[0];
           this.$router.push({ path: '/activity', query: { actype: params }})
+        }else if(localStorage.getItem('share') == 'ggid' || url.indexOf('ggid') > 0) {
+          let params;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?ggid=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?ggid=')[1];
+          }
+          //首页
+          this.$router.push({ path: '/groupProductDetail',query:{ggid:params}})
         }else{
           location.href = url;
         }

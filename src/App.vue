@@ -158,6 +158,10 @@ export default {
       localStorage.setItem('share', 'actype');
       location.href = location.origin;
       this.shareRecord(params);
+    }else if(location.href.indexOf('ggid') > 0) {     // 拼团竞猜
+      localStorage.setItem('share', 'ggid');
+      location.href = location.origin;
+      this.shareRecord(params);
     }
     // 新人不绑手机号就清除localStorage
     if(localStorage.getItem('is_new')) {

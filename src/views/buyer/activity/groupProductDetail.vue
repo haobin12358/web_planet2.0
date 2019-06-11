@@ -6,11 +6,8 @@
           <img class="product-img" :src="item.pipic" @click="previewImage(index, product.images)">
         </mt-swipe-item>
       </mt-swipe>
-<!--      <span class="m-icon-back" @click="changeBack"></span>-->
-<!--      <span class="m-icon-gray-share" @click="shareProduct"></span>-->
-    </div>
-    <div class="m-activity-time">
-      活动时间：{{product.tlastarttime}} - {{product.tlaendtime}}
+      <!--      <span class="m-icon-back" @click="changeBack"></span>-->
+      <!--      <span class="m-icon-gray-share" @click="shareProduct"></span>-->
     </div>
     <!--商品详情的文字信息-->
     <div class="m-detail-text">
@@ -19,8 +16,8 @@
         <div>
           <div class="m-flex-between">
             <p class="m-flex-start">
-              <span class="m-activity-price" v-if="product.tlpprice">￥{{product.tlpprice | money}}</span>
-              <img src="/static/images/newActivity/limit-label.png" class="m-activity-label" alt="">
+              <span class="m-activity-price" v-if="product.gpdeposit">￥{{product.gpdeposit | money}}</span>
+              <img src="/static/images/newActivity/icon-pin.png" class="m-activity-label" alt="">
             </p>
             <h3 v-if="product.profict">
               <span class="m-profict-title">预计赚：</span>
@@ -29,18 +26,18 @@
           </div>
 
           <p class="m-marking-price m-flex-between">
-            <span>价格：<s>{{product.prprice| money}}</s></span>
-            <span>市场价：<s>￥{{product.prlineprice | money }}</s></span>
+            <span>价格：<s>{{product.prprice}}</s></span>
+            <span>市场价：<s>￥{{product.prlineprice  }}</s></span>
           </p>
         </div>
       </div>
       <div class="m-flex-between m-product-title-box">
         <span class="m-product-title">{{product.prtitle}}</span>
-<!--        <img src="/static/images/product/icon-collect-active.png" v-if="product.collected" @click="clickCollect" class="m-icon-collect" alt="">-->
-<!--        <img src="/static/images/product/icon-product-collect.png" v-else @click="clickCollect" class="m-icon-collect" alt="">-->
+        <!--        <img src="/static/images/product/icon-collect-active.png" v-if="product.collected" @click="clickCollect" class="m-icon-collect" alt="">-->
+        <!--        <img src="/static/images/product/icon-product-collect.png" v-else @click="clickCollect" class="m-icon-collect" alt="">-->
       </div>
       <div class="m-info-list">
-        <span>快递：{{product.prfreight | money}} 元</span>
+        <span>快递：{{product.gpfreight }} 元</span>
         <span>月销：{{product.prsalesvalue}}</span>
         <span >{{product.brand.pbname}}</span>
         <!--          <div @click="changeRoute('/brandDetail')">-->
@@ -56,7 +53,7 @@
       <div class="m-text-courier">规格</div>
       <div class="m-text-description">
         <template v-if="select_value">
-          <span v-for="(item, index) in select_value.skuattritedetail">{{product.tcattribute[index]}} <span v-if="item">:</span> {{item}} </span>
+          <span v-for="(item, index) in select_value.skuattritedetail">{{product.prattribute[index]}} <span v-if="item">:</span> {{item}} </span>
         </template>
         <template v-else>
           <span v-for="item in product.tcattribute">{{item}} </span>
@@ -64,60 +61,56 @@
       </div>
       <img class="m-right-img" src="/static/images/icon-right.png" alt="">
     </div>
-<!--    <div class="m-product-detail-more">-->
-<!--      <div class="m-flex-start">-->
-<!--        <span class="m-label">优惠券</span>-->
-<!--        <template v-for="(a, b) in product.coupons.slice(0,2)">-->
-<!--          <span class="m-coupon-label" v-if="a.codiscount == '10'" ><span v-if="a.codownline != 0"> 满{{a.codownline}}</span><span v-else>无限制</span>减{{a.cosubtration}}</span>-->
-<!--          <span class="m-coupon-label" v-else >{{a.codiscount}}折</span>-->
-<!--        </template>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <span class="m-ft-20" v-if="product.coupons.length > 0"  @click="show_coupon = true">领劵</span>-->
-<!--        <span class="m-ft-20" v-else>暂无</span>-->
-<!--        <span class="m-more"  @click="show_coupon = true"></span>-->
-<!--      </div>-->
-<!--    </div>-->
-    <div class="m-detail-img-box">
-      <img class="m-detail-img" v-for="item in product.tcdesc" :src="item" alt="">
+
+    <div class="m-text-row m-sku-row" @click="changeModal('show_rule', true)">
+      <div class="m-text-courier ">规则</div>
+      <div class="m-group-rule m-text-description">{{product.guess_group.rules}}</div>
+      <span class="m-right-img"></span>
     </div>
-<!--    <div class="m-product-detail-foot">-->
-<!--      <span class="m-icon-car" @click.stop="changeRoute('/shop')"></span>-->
-<!--      <span class="m-icon-service" @click.stop="changeRoute('/personal/serviceCenter')"></span>-->
-<!--      <div class="m-product-detail-btn">-->
-<!--        <span class="active" @click="addCart" v-if="can_buy == true">加入购物车</span>-->
-<!--        <span class="cancel" v-else>加入购物车</span>-->
-<!--        <span @click="buy" v-if="can_buy == true">立即购买</span>-->
-<!--        <span class="cancel" v-else>立即购买</span>-->
+    <div class="m-group-box m-sku-row">
+      <div class="m-avator-box">
+        <span  class="m-avator " :class="item != null ? 'active':''" v-for="(item,j) in product.guess_group.headers">
+           <img :src="item" alt="">
+        </span>
+      </div>
+      <div class="m-flex-start">
+          <span class="m-one-num " :class="item ? 'active':''" v-for="(item,j) in product.guess_group.numbers">
+           {{ item ? item:'?'}}
+            <input type="number" class="m-group-input" :disabled="num_disable" @input="inputNum($event,j)"/>
+          </span>
+      </div>
+      <template v-if="!product.joined">
+        <div class="m-group-btn cancel" v-if="num_disable">竞猜</div>
+        <div class="m-group-btn m-full cancel" v-else-if="!num_disable && !number">提交</div>
+        <div class="m-group-btn m-full " v-else-if="!num_disable && number" @click="guessNumber">提交</div>
+      </template>
+      <template v-else>
+        <div class="m-group-btn"  v-if="product.guess_group.ggstatus == 0" @click="shareProduct">{{product.guess_group.ggstatus_zh}}</div>
+        <div class="m-group-result-btn" :class="product.guess_group.ggstatus == '20' ?'active':''" v-else-if="product.guess_group.ggstatus_zh">{{product.guess_group.ggstatus_zh}}</div>
+      </template>
 
-<!--      </div>-->
-
-<!--    </div>-->
-    <div class="m-product-detail-foot">
-      <div class="m-icon-box">
-        <img src="/static/images/product/icon-service.png" class="m-icon" @click.stop="changeRoute('/personal/serviceCenter')" />
-        <p>客服</p>
-      </div>
-      <div class="m-icon-box">
-        <img src="/static/images/product/icon-bottom-car.png" class="m-icon" @click.stop="changeRoute('/shop')" />
-        <p>购物车</p>
-      </div>
-      <div class="m-icon-box">
-        <img src="/static/images/product/icon-share.png" class="m-icon" @click="sendShare" />
-        <p>推广</p>
-      </div>
+    </div>
+            <img class="m-invite-course" src="/static/images/invite.png" v-if="show_invite" @click="show_invite = false">
+    <div class="m-detail-img-box">
+      <img class="m-detail-img" v-for="item in product.prdesc" :src="item" alt="">
+    </div>
+    <div class="m-product-detail-foot" v-if="product.topaydeposit">
       <div class="m-product-detail-btn">
-        <span class="active" @click="addCart" v-if="can_buy == true">加入购物车</span>
-        <span class="cancel" v-else>加入购物车</span>
-        <span @click="buy" v-if="can_buy == true">立即购买</span>
-        <span class="cancel" v-else>立即购买</span>
+        <span @click="buy" >支付押金</span>
       </div>
-
     </div>
     <div class="m-modal-img" v-if="show_img">
       <div class="m-modal-state">
-        <span class="m-close" @click="show_img = false"> X</span>
+        <span class="m-close" @click="changeModal('show_img',false)"> X</span>
         <img :src="share_img" class="m-share-img" alt="">
+      </div>
+    </div>
+    <div class="m-modal-img" v-if="show_rule">
+      <div class="m-modal-state">
+        <span class="m-close" @click="changeModal('show_rule',false)"> X</span>
+        <div class="m-group-rule">
+          {{product.guess_group.rules}}
+        </div>
       </div>
     </div>
   </div>
@@ -164,6 +157,10 @@
         show_img:false,
         share_img:'',
         share_url:'',
+        show_rule:false,
+        num_disable:true,
+        number:null,
+        digits:null
       }
     },
     mixins: [wxapi],
@@ -179,23 +176,23 @@
       localStorage.removeItem('url');
       localStorage.removeItem('login_to');
       // if(common.isWeixin()) {
-        if(localStorage.getItem('token')) {
-          // 倒计时
-          const TIME_COUNT = 1;
-          let count = TIME_COUNT;
-          let time = setInterval(() => {
-            if(count > 0 && count <= TIME_COUNT) {
-              count --;
-            }else {
-              this.shareProduct(1);
-              clearInterval(time);
-            }
-          }, 300);
-        // }
+      // if(localStorage.getItem('token')) {
+      //   // 倒计时
+      //   const TIME_COUNT = 1;
+      //   let count = TIME_COUNT;
+      //   let time = setInterval(() => {
+      //     if(count > 0 && count <= TIME_COUNT) {
+      //       count --;
+      //     }else {
+      //       this.shareProduct(1);
+      //       clearInterval(time);
+      //     }
+      //   }, 300);
+      //   // }
+      // }
+      if(this.$route.query.omid){
+        this.num_disable = false;
       }
-      let time = setInterval(() => {
-        this.can_buy = this.nowInDateBetwen(this.product.tlastarttime,this.product.tlaendtime);
-      }, 1000);
     },
     methods: {
       //改变路由
@@ -205,55 +202,56 @@
       // 分享商品
       shareProduct(val) {
 
-          if(localStorage.getItem('token')) {
-            let options = {};
-              options = {
-                title: this.product.prtitle,
-                desc: this.product.prdescription,
-                imgUrl: this.product.prmainpic,
-                link: location.href.split('#')[0] + '?tlpid=' + this.$route.query.tlpid
-              };
-            axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
-              if(res.data.status == 200) {
-                options.link += '&secret_usid=' + res.data.data.secret_usid;
-                this.share_url = options.link;
-                console.log(this.share_url)
-              }
-            });
-            // 倒计时
-            const TIME_COUNT = 3;
-            let count = TIME_COUNT;
-            let time = setInterval(() => {
-              if (count > 0 && count <= TIME_COUNT) {
-                count --;
-              } else {
-                this.show_invite = false;
-                clearInterval(time);
-              }
-            }, 1000);
-            // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
-            if(wx.updateAppMessageShareData) {
-              wx.updateAppMessageShareData(options);
+        if(localStorage.getItem('token')) {
+          let options = {};
+          options = {
+            title: this.product.prtitle,
+            desc: this.product.prdescription,
+            imgUrl: this.product.prmainpic,
+            link: location.href.split('#')[0] + '?ggid=' + this.product.ggid
+          };
+          axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
+            if(res.data.status == 200) {
+              options.link += '&secret_usid=' + res.data.data.secret_usid;
+              this.share_url = options.link;
+              console.log(this.share_url)
             }
-            // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
-            if(wx.updateTimelineShareData) {
-              wx.updateTimelineShareData(options);
+          });
+          this.show_invite = true;
+          // 倒计时
+          const TIME_COUNT = 3;
+          let count = TIME_COUNT;
+          let time = setInterval(() => {
+            if (count > 0 && count <= TIME_COUNT) {
+              count --;
+            } else {
+              this.show_invite = false;
+              clearInterval(time);
             }
-            // 获取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）
-            if(wx.onMenuShareAppMessage) {
-              wx.onMenuShareAppMessage(options);
-            }
-            // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）
-            if(wx.onMenuShareTimeline) {
-              wx.onMenuShareTimeline(options);
-            }
-          }else {
-            Toast('请登录后再试');
-            localStorage.setItem('login_to',window.location.href.split('#')[0] + '?tlpid=' + this.$route.query.tlpid);
-            // this.$router.push('/login');
-            // this.$router.push('/login');
-            this.$store.state.show_login = true;
+          }, 1000);
+          // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+          if(wx.updateAppMessageShareData) {
+            wx.updateAppMessageShareData(options);
           }
+          // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+          if(wx.updateTimelineShareData) {
+            wx.updateTimelineShareData(options);
+          }
+          // 获取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）
+          if(wx.onMenuShareAppMessage) {
+            wx.onMenuShareAppMessage(options);
+          }
+          // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）
+          if(wx.onMenuShareTimeline) {
+            wx.onMenuShareTimeline(options);
+          }
+        }else {
+          Toast('请登录后再试');
+          localStorage.setItem('login_to',window.location.href.split('#')[0] + '?ggid=' + this.$route.query.ggid);
+          // this.$router.push('/login');
+          // this.$router.push('/login');
+          this.$store.state.show_login = true;
+        }
 
       },
       //推广
@@ -309,21 +307,27 @@
       },
       // 获取商品详情
       getProductDetail() {
-          let params = {
-            // token: localStorage.getItem('token'),
-            tlpid: this.$route.query.tlpid
+        let params ;
+        if(this.$route.query.gpid){
+          params = {
+            token: localStorage.getItem('token'),
+            gpid: this.$route.query.gpid
           };
-          axios.get(api.timelimited_get, { params: params }).then(res => {
-            if(res.data.status == 200){
-              this.product = res.data.data;
-              this.product.tctitle = res.data.data.prtitle;
-              this.product.tcfreight = res.data.data.prfreight;
-              this.product.tcdesc = res.data.data.prdesc;
-              this.product.tcid = res.data.data.prid;
-              this.product.tcattribute = res.data.data.prattribute;
-              this.can_buy = this.nowInDateBetwen(this.product.tlastarttime,this.product.tlaendtime);
-            }
-          });
+        }else if(this.$route.query.ggid){
+          params = {
+            token: localStorage.getItem('token'),
+            ggid: this.$route.query.ggid
+          };
+        }
+        axios.get(api.guessgroup_get, { params: params }).then(res => {
+          if(res.data.status == 200){
+            this.product = res.data.data;
+           if(!this.product.topaydeposit){
+             this.num_disable = false;
+           }
+            // this.can_buy = this.nowInDateBetwen(this.product.tlastarttime,this.product.tlaendtime);
+          }
+        });
 
       },
       // sku确定
@@ -339,53 +343,28 @@
         }
         this.changeModal('show_sku', false);
       },
-      // 加入购物车
-      addCart(){
-        /*if(this.select_value){
-            this.postCart();
-        }else{
-          this.show_sku = true;
-        }*/
-        this.show_sku = true;
-        this.cart_buy = 'cart';
-      },
-      // 加入购物请求
-      postCart(){
-        if(localStorage.getItem('token')) {
-          axios.post(api.cart_create + '?token=' + localStorage.getItem('token'), {
-            skuid: this.select_value.skuid,
-            canums: this.canums,
-            cafrom: 4,
-            contentid: this.$route.query.tlpid
-          }).then(res => {
-            if (res.data.status == 200) {
-              Toast({message: res.data.message, duration: 1000, className: 'm-toast-success'});
-            }
-          }, error => {
-            Toast({message: error.data.message, duration: 1000, className: 'm-toast-fail'});
-          })
-        }else{
-          let url
-          url = window.location.href.split('#')[0] + '?tlpid=' + this.$route.query.tlpid
-          localStorage.setItem('login_to',url)
-          // this.$router.push('/login');
-          this.$store.state.show_login = true;
-        }
-      },
+
+
       // 立即下单
       buy() {
         if(this.select_value) {
           let product = {};
           product.pb = this.product.brand;
           product.cart = [];
-          product.cart.push({ product: { prtitle: this.product.tctitle }, sku: this.select_value, canums: "1", prid: this.product.tcid,cafrom:4,contentid:this.$route.query.tlpid});
+          let _from = '';
+          if(this.$route.query.gpid){
+            _from = 'gpid';
+          }else if(this.$route.query.ggid){
+            _from = 'ggid';
+          }
+          product.cart.push({ product: { prtitle: this.product.tctitle }, sku: this.select_value, canums: "1", prid: this.product.prid,cafrom:4,contentid:this.$route.query.gpid || this.$route.query.ggid });
           let arr = [];
           arr.push(product);
           if(localStorage.getItem('token')) {
-            this.$router.push({ path: '/submitOrder', query: { product: JSON.stringify(arr), from: this.which }});
+            this.$router.push({ path: '/submitOrder', query: { product: JSON.stringify(arr),gpid:this.product.gpid, from: _from}});
           }else {
             let url
-            url = window.location.href.split('#')[0] + '?tlpid=' + this.$route.query.tlpid
+            url = window.location.href.split('#')[0] + '?gpid=' + this.$route.query.gpid
             localStorage.setItem('login_to',url)
             // this.$router.push('/login');
             this.$store.state.show_login = true;
@@ -395,29 +374,48 @@
           this.cart_buy = 'buy';
         }
       },
-    //  比较时间
-      nowInDateBetwen (d1,d2) {
-        //如果时间格式是正确的，那下面这一步转化时间格式就可以不用了
-        let dateBegin = new Date(d1.replace(/-/g, "/"));//将-转化为/，使用new Date
-        let dateEnd = new Date(d2.replace(/-/g, "/"));//将-转化为/，使用new Date
-        // var dateBegin = new Date(d1);//将-转化为/，使用new Date
-        // var dateEnd = new Date(d2);//将-转化为/，使用new Date
-        let dateNow = new Date();//获取当前时间
-
-        let beginDiff = dateNow.getTime() - dateBegin.getTime();//时间差的毫秒数
-        let beginDayDiff = Math.floor(beginDiff / (24 * 3600 * 1000));//计算出相差天数
-
-        let endDiff = dateEnd.getTime() - dateNow.getTime();//时间差的毫秒数
-        let endDayDiff = Math.floor(endDiff / (24 * 3600 * 1000));//计算出相差天数
-        if (endDayDiff < 0) {//已过期
-          return 'done'
+      //竞猜数字填写
+      inputNum(e,i){
+        if(e.target.value.length > 1){
+          this.product.guess_group.numbers[i] = e.target.value[0];
+        }else{
+          this.product.guess_group.numbers[i] = e.target.value;
         }
-        if (beginDayDiff < 0) {//没到开始时间
-          return 'wait';
+        this.product.guess_group.numbers = [].concat(this.product.guess_group.numbers);
+        if(e.target.value.length > 1){
+          this.number = e.target.value[0];
+        }else{
+          this.number = e.target.value;
         }
-        return true;
+        switch (i) {
+          case 0:
+            this.digits = i;
+            break;
+          case 1:
+            this.digits = i+'0';
+            break;
+          case 2:
+            this.digits = i +'0';
+            break;
+        }
+
       },
-
+    //  竞猜
+      guessNumber(){
+        let params = {
+          ggid: this.$route.query.ggid || '',
+          gpid: this.product.gpid,
+          number: Number(this.number),
+          digits: Number(this.digits),
+          omid: this.$route.query.omid
+        }
+        axios.post(api.guessgroup_join + '?token='+localStorage.getItem('token'),params).then(res => {
+          Toast(res.data.message);
+          if(res.data.status == 200){
+           this.$router.push({path:'/activity',query:{actype:5}});
+          }
+        })
+      }
     }
   }
 </script>
@@ -516,7 +514,7 @@
     }
     .m-activity-label{
       display: inline-block;
-      width: 90px;
+      width: 40px;
       height: 40px;
       margin-left: 20px;
     }
@@ -550,6 +548,10 @@
           color: #EF9B2D;
           font-size: 30px;
         }
+      }
+      .m-group-rule{
+        .line-camp(1);
+        text-align: left;
       }
       .m-text-name {
         font-size: 30px;
@@ -586,6 +588,101 @@
         padding-top: 5px;
       }
     }
+    .m-group-box{
+      .flex-row(space-between);
+      .m-avator-box{
+        position: relative;
+        height: 60px;
+        width: 140px;
+        .m-avator{
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 60px;
+          height: 60px;
+          background-color: #F4F4F4;
+          border: 1px solid #c1c1c1;
+          border-radius: 50%;
+          &:nth-child(3){
+            left: 80px;
+            /*z-index: 1;*/
+          }
+          &:nth-child(2){
+            left: 40px;
+            /*z-index: -1;*/
+          }
+          &.active{
+            border: 1px solid @mainColor;
+          }
+          img{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: inline-block;
+          }
+        }
+      }
+     .m-group-result-btn{
+       color: #E67E22;
+       &.active{
+         color: @mainColor;
+       }
+     }
+      .m-one-num{
+        background: #F4F4F4;
+        border: 1px solid #c1c1c1;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        color: #C1C1C1;
+        font-weight: 600;
+        font-size: 28px;
+        margin-right: 10px;
+        position: relative;
+        .m-group-input{
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 40px;
+          height: 40px;
+          background-color: transparent;
+          border: 1px solid transparent;
+          color: transparent;
+        }
+        &.active{
+          background: linear-gradient(180deg,@mainColor 0%,@subColor 100%);
+          color: #fff;
+          border: 1px solid transparent;
+        }
+      }
+      .m-group-btn{
+        color: @mainColor;
+        display: inline-block;
+        width: 150px;
+        height: 40px;
+        border: 1px solid @mainColor;
+        text-align: center;
+        &.cancel{
+          color: #999;
+          display: inline-block;
+          width: 150px;
+          height: 40px;
+          border: 1px solid #999;
+          text-align: center;
+        }
+        &.m-full{
+          background:linear-gradient(270deg,rgba(39,174,96,1) 0%,rgba(106,206,148,1) 100%);
+          color: #fff;
+          &.cancel{
+            background: #C1C1C1;
+            border: 1px solid #C1C1C1;
+          }
+        }
+      }
+    }
     .m-sku-row {
       padding: 30px 30px 10px 30px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.16);
@@ -602,20 +699,11 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      padding: 0 0 0 26px;
+      padding: 0 0 0 0;
       /*padding: 26px 0 98px;*/
       background-color: #fff;
       .flex-row(space-between);
-      .m-icon-box{
-        .flex-col(center);
-        width: 80px;
-        font-size: 18px;
-        .m-icon{
-          display: block;
-          width: 40px;
-          height: 40px;
-        }
-      }
+      z-index: 10;
       .m-product-detail-btn{
         display: inline-block;
         height: 98px;
@@ -623,7 +711,7 @@
         span{
           color: #ffffff;
           display: inline-block;
-          width: 210px;
+          width: 750px;
           text-align: center;
           font-size: 30px;
           background:linear-gradient(313deg,@mainColor 0%,@subColor 100%);
@@ -672,7 +760,21 @@
           width: 500px;
           height: 700px;
         }
+        .m-group-rule{
+          margin: 80px 20px 20px 20px;
+          height: 600px;
+          overflow-y: scroll;
+          text-align: left;
+        }
       }
+    }
+    .m-invite-course {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
     }
   }
 </style>
