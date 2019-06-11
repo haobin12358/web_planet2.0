@@ -549,10 +549,6 @@
           font-size: 30px;
         }
       }
-      .m-group-rule{
-        .line-camp(1);
-        text-align: left;
-      }
       .m-text-name {
         font-size: 30px;
         font-weight: bold;
@@ -570,6 +566,12 @@
         text-align: left;
         width: 500px;
         padding: 0 0 15px 0;
+        &.m-group-rule{
+          padding: 0 0 0 0;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
       }
       .m-text-time {
         color: #C70000;
