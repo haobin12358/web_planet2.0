@@ -387,15 +387,16 @@
         }else{
           this.number = e.target.value;
         }
+        console.log(i)
         switch (i) {
           case 0:
-            this.digits = i;
+            this.digits = 20;
             break;
           case 1:
-            this.digits = i+'0';
+            this.digits = 10;
             break;
           case 2:
-            this.digits = i +'0';
+            this.digits = 0;
             break;
         }
 

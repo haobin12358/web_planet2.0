@@ -16,12 +16,6 @@
                 <span  class="m-avator " :class="item != null ? 'active':''" v-for="(item,j) in items.headers">
                    <img :src="item" alt="">
                 </span>
-          <span  class="m-avator ">
-                   <img src="" alt="">
-                </span>
-          <span  class="m-avator ">
-                   <img src="" alt="">
-                </span>
         </div>
         <p class="m-group-btn">{{items.type || '立即加入'}} </p>
       </div>

@@ -200,12 +200,6 @@
                 <span  class="m-avator " :class="item != null ? 'active':''" v-for="(item,j) in items.headers">
                    <img :src="item" alt="">
                 </span>
-                <span  class="m-avator ">
-                   <img src="" alt="">
-                </span>
-                <span  class="m-avator ">
-                   <img src="" alt="">
-                </span>
               </div>
               <p class="m-main-color">{{items.type}}</p>
             </div>
