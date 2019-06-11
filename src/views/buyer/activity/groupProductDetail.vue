@@ -208,7 +208,7 @@
             title: this.product.prtitle,
             desc: this.product.prdescription,
             imgUrl: this.product.prmainpic,
-            link: location.href.split('#')[0] + '?ggid=' + this.product.ggid
+            link: location.href.split('#')[0] + '?ggid=' + this.product.guess_group.ggid
           };
           axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
             if(res.data.status == 200) {
@@ -247,7 +247,7 @@
           }
         }else {
           Toast('请登录后再试');
-          localStorage.setItem('login_to',window.location.href.split('#')[0] + '?ggid=' + this.$route.query.ggid);
+          localStorage.setItem('login_to',window.location.href.split('#')[0] + '?ggid=' +  this.product.guess_group.ggid);
           // this.$router.push('/login');
           // this.$router.push('/login');
           this.$store.state.show_login = true;
