@@ -90,7 +90,7 @@
     methods:{
       //改变路由
       changeRoute(v){
-        this.$router.push({path:v,query:{}});
+        this.$router.push({path:v,query:{usid:this.$route.query.usid, neid:this.$route.query.neid}});
       },
       //获取个人信息
       getInfo(){

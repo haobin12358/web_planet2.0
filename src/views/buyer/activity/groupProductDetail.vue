@@ -99,6 +99,11 @@
         <span @click="buy" >支付押金</span>
       </div>
     </div>
+    <div class="m-product-detail-foot" v-else-if="!product.topaydeposit && !product.joined">
+      <div class="m-product-detail-btn">
+        <span >请在上方圆圈内填写数字</span>
+      </div>
+    </div>
     <div class="m-modal-img" v-if="show_img">
       <div class="m-modal-state">
         <span class="m-close" @click="changeModal('show_img',false)"> X</span>
@@ -165,8 +170,12 @@
     },
     mixins: [wxapi],
     components: { sku },
-    beforeDestroy() {
-
+    beforeRouteLeave (to, from, next) {
+      if(to.path == '/activity'  ){
+        this.$store.state.scrollTop = 0;
+        this.$store.state.isChange = false;
+      }
+      next();
     },
     mounted() {
       common.changeTitle('活动商品详情');
@@ -413,7 +422,7 @@
         axios.post(api.guessgroup_join + '?token='+localStorage.getItem('token'),params).then(res => {
           Toast(res.data.message);
           if(res.data.status == 200){
-           this.$router.push({path:'/activity',query:{actype:5}});
+            this.$router.push({ path: '/activity', query: { actype: '5' }});
           }
         })
       }
@@ -635,10 +644,10 @@
         background: #F4F4F4;
         border: 1px solid #c1c1c1;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         text-align: center;
-        line-height: 40px;
+        line-height: 60px;
         color: #C1C1C1;
         font-weight: 600;
         font-size: 28px;
@@ -649,8 +658,8 @@
           position: absolute;
           top: 0;
           left: 0;
-          width: 40px;
-          height: 40px;
+          width: 60px;
+          height: 60px;
           background-color: transparent;
           border: 1px solid transparent;
           color: transparent;
