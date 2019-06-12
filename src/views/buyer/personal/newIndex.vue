@@ -38,7 +38,7 @@
               <img src="/static/images/newpersonal/icon-message.png" class="m-icon" alt="">
               <span>消息</span>
             </div>
-            <span class="m-info">99</span>
+            <span class="m-info">{{user.usunread}}</span>
           </li>
           <li class="m-flex-between" @click="changeRoute('/orderList')">
             <div class="m-flex-start">

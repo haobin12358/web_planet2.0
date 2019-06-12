@@ -19,10 +19,10 @@
                   <span class="m-grey">{{item.updatetime}}</span>
                 </h3>
                 <p class="m-grey m-flex-between">
-                  <span class="m-msg-text">
-                    {{item.umsgtext}}
+                  <span class="m-msg-text" >
+                    {{item.umsgtype == 0?item.umsgtext:'图片'}}
                   </span>
-                  <span class="m-count" v-if="item.count">{{item.count}}</span>
+                  <span class="m-count" v-if="item.usunread">{{item.usunread}}</span>
                 </p>
               </div>
 
@@ -136,7 +136,7 @@
             break;
           }
         }
-        data.count = data.count ? Number(data.count) + 1 : 1;
+        data.usunread =  Number(data.usunread) + 1 ;
         if(index == -1){
           _arr.unshift(data);
         }else{
@@ -260,31 +260,17 @@
 
       /*删除*/
       DestroyCart(item) {
-        let caid = [];
-        // for(let i = 0; i < this.cart_list.length; i ++) {
-        //   for(let j = 0; j < this.cart_list[i].cart.length; j ++) {
-        //     if(this.cart_list[i].cart[j].active) {
-        //       caid.push(this.cart_list[i].cart[j].caid);
-        //     }
-        //   }
-        // }
-        caid.push(item.caid);
-        if(caid.length > 0) {
           MessageBox.confirm('确认删除吗?').then(() => {
-            this.$http.post(this.$api.cart_destroy + '?token=' + localStorage.getItem('token'), { caids: caid }).then(res => {
+            this.$http.post(this.$api.del_room + '?token=' + localStorage.getItem('token'), { roid: item.roid }).then(res => {
               if(res.data.status == 200){
                 this.page_info.page_num = 1;
                 this.total_count = 1;
-                this.getAppMessage();
-                this.allRadio = false;
+                this.getMessage();
               }
             });
           }).catch(() => {
 
           });
-        }else {
-          Toast("请先选择商品");
-        }
       },
       //点击以后重置滑动事件相关
       skip(){

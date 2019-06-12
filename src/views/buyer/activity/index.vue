@@ -181,7 +181,7 @@
       <div v-if="selecte_nav.actype == 5">
         <div class="m-one-item" v-if="now_group.length > 0">
           <h3 class="m-item-title m-flex-between">
-            <span>正在拼团</span>
+            <span>我的竞猜</span>
             <span class="m-grey" @click="changeRoute('/groupList','my')">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
           </h3>
           <div class="m-one-group" @click="changeRoute('/groupProductDetail',items)" v-for="(items,index) in now_group">
@@ -233,7 +233,7 @@
         </div>
         <div class="m-one-item" v-if="apply_group.length >0">
           <h3 class="m-item-title m-flex-between">
-            <span>参与拼团</span>
+            <span>其他竞猜</span>
             <span class="m-grey" @click="changeRoute('/groupList','all')">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
           </h3>
 <!--          <div class="m-one-group">-->
@@ -314,7 +314,7 @@
         </div>
         <div class="m-one-limit">
           <h3 class="m-limit-title">
-            <span>发起拼团</span>
+            <span>限时竞猜</span>
 <!--            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>-->
           </h3>
           <div class="m-limit-center-content">

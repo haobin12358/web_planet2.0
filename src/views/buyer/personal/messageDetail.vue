@@ -7,13 +7,19 @@
               <img :src="item.head" class="m-avator" alt="" />
               <div class="m-message">
                 <span class="m-triangle"></span>
-                <div class="m-message-content">{{item.umsgtext}}</div>
+                <div class="m-message-content">
+                  <span v-if="item.umsgtype == 0">{{item.umsgtext}}</span>
+                  <img v-else-if="item.umsgtype == 1" :src="item.umsgtext" alt="" @click="previewImage(item.umsgtext)">
+                </div>
               </div>
             </template>
             <template v-else>
               <div class="m-message">
                 <span class="m-triangle"></span>
-                <div class="m-message-content">{{item.umsgtext}}</div>
+                <div class="m-message-content">
+                  <span v-if="item.umsgtype == 0">{{item.umsgtext}}</span>
+                  <img v-else-if="item.umsgtype == 1" :src="item.umsgtext" @click="previewImage(item.umsgtext)" alt="">
+                </div>
               </div>
               <img :src="item.head" class="m-avator" alt="" />
             </template>
@@ -30,7 +36,11 @@
         </div>
       </mt-loadmore>
       <div class="m-messageDetail-footer">
-        <img src="/static/images/circle/icon-pic.png" class="m-icon-img" alt="">
+        <span class="m-icon-img">
+            <img src="/static/images/circle/icon-pic.png"  alt="">
+          <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="" ref="uploadImg" @change="uploadImg($event)">
+        </span>
+
         <input type="text" v-model="input_value" class="m-input" placeholder="发消息...">
         <span class="m-send" @click="sendMsg">发送</span>
       </div>
@@ -39,7 +49,9 @@
 
 <script>
   import common from '../../../common/js/common';
-  import { Toast} from 'mint-ui'
+  import { Toast} from 'mint-ui';
+  import wxapi from '../../../common/js/mixins'
+  import wx from 'weixin-js-sdk';
     export default {
         name: "messageDetail",
       data(){
@@ -57,6 +69,7 @@
             input_value:''
           }
       },
+      mixins: [wxapi],
       mounted(){
         common.changeTitle('消息');
       },
@@ -108,7 +121,7 @@
         },
         sendMsg(){
           let that = this;
-          this.$socket.emit('send_msg', {roid:that.roid,umsgtext:that.input_value},function (resdata) {
+          this.$socket.emit('send_msg', {roid:that.roid,umsgtext:that.input_value,umsgtype:0},function (resdata) {
             if(resdata.status == 200){
               that.input_value = '';
             }
@@ -165,6 +178,56 @@
 
 
         },
+        //上传图片
+        uploadImg(e) {
+          // if(this.img_box && this.img_box.length == 4) {
+          //   Toast('最多只可上传4张图片');
+          //   return false;
+          // }
+          let files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+            return;
+          if (files[0].size/1024/1024 > 15) {
+            Toast('图片不应大于15M');
+            return false
+          }
+          let reader = new FileReader();
+          let that = this;
+          let form = new FormData();
+          form.append("file", files[0]);
+          this.$http.post(this.$api.upload_file+'?type=news&token='+localStorage.getItem('token'),form).then(res => {
+            if(res.data.status == 200){
+              // let img = { niimg: res.data.data, nisort: this.img_box.length + 1 };
+              // this.upload_img.push(res.data.data);
+              let that = this;
+              this.$socket.emit('send_msg', {roid:that.roid,umsgtext:res.data.data,umsgtype:1},function (resdata) {
+                if(resdata.status == 200){
+                }
+              });
+              reader.readAsDataURL(files[0]);
+
+              reader.onload = function(e) {
+                // that.edit_data[index].content.push(window.location.origin + res.data.data);
+                event.srcElement.value = ""
+              };
+              this.$refs.uploadImg.value = "";
+            }
+          })
+        },
+        // 预览图片
+        previewImage(image) {
+          let images = [];
+          for(let i = 0; i < this.message_list.length; i ++) {
+            if(this.message_list[i].umsgtype == 1){
+              images.push(location.origin + this.message_list[i].umsgtext);
+            }
+          }
+          let options = {
+            current: location.origin + image, // 当前显示图片的http链接
+            urls: images,                  // 当前预览图片的list
+          };
+          wxapi.previewImage(options);
+        },
       },
 
     }
@@ -213,6 +276,13 @@
           font-size:28px;
           font-weight:300;
           line-height:40px;
+          max-width: 500px;
+          word-wrap:break-word;
+          img{
+            display: inline-block;
+            width: 300px;
+            height: 400px;
+          }
         }
       }
       &.m-my{
@@ -251,10 +321,25 @@
     width: 750px;
     box-sizing: border-box;
     .m-icon-img{
-      display: inline-block;
+
       width: 46px;
       height: 46px;
       margin: 0 20px;
+      position: relative;
+      img{
+        display: inline-block;
+        width: 46px;
+        height: 46px;
+      }
+      .m-upload-input{
+        display: inline-block;
+        width: 46px;
+        height: 46px;
+        position: absolute;
+        top:0;
+        left:0;
+        border: none;
+      }
     }
     .m-input{
       padding: 0 20px;

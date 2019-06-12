@@ -101,7 +101,7 @@
     </div>
     <div class="m-product-detail-foot" v-else-if="!product.topaydeposit && !product.joined">
       <div class="m-product-detail-btn">
-        <span >请在上方圆圈内填写数字</span>
+        <span >请在上方选择一个圆圈进行数字竞猜</span>
       </div>
     </div>
     <div class="m-modal-img" v-if="show_img">

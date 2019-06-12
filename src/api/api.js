@@ -156,6 +156,7 @@ const api={
   message_get: title +'message/get',           //获取站内信
   get_room_list: title +'message/get_room_list', ///获取对话列表
   get_message_list: title +'message/get_message_list',  //获取消息列表
+  del_room: title + 'message/del_room',   //删除房间
 
   get_entry: title +'index/get_entry',  //h获取首页活动图
   get_self_news: title +'news/get_self_news',//获取其它用户主页
