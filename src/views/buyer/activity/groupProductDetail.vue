@@ -74,8 +74,8 @@
         </span>
       </div>
       <div class="m-flex-start">
-          <span class="m-one-num " :class="item ? 'active':''" v-for="(item,j) in product.guess_group.numbers">
-           {{ item ? item:'?'}}
+          <span class="m-one-num " :class="item != null ? 'active':''" v-for="(item,j) in product.guess_group.numbers">
+          {{ item != null ? item:'?'}}
             <input type="number" class="m-group-input" :disabled="num_disable" @input="inputNum($event,j)"/>
           </span>
       </div>

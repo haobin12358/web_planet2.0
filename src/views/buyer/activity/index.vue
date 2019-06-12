@@ -190,8 +190,8 @@
               <p class="m-product-title">{{items.prtitle}}</p>
               <p>押金 ¥{{items.gpdeposit}}</p>
               <div class="m-flex-start">
-                <span class="m-one-num " :class="item ? 'active':''" v-for="(item,j) in items.numbers">
-                 {{ item ? item:'?'}}
+                <span class="m-one-num " :class="item != null ? 'active':''" v-for="(item,j) in items.numbers">
+                 {{ item != null ? item:'?'}}
                 </span>
               </div>
             </div>
@@ -271,8 +271,8 @@
               <p class="m-product-title">{{items.prtitle}}</p>
               <p>押金 ¥{{items.gpdeposit}}</p>
               <div class="m-flex-start">
-                <span class="m-one-num " :class="item ? 'active':''" v-for="(item,j) in items.numbers">
-                 {{ item ? item:'?'}}
+                <span class="m-one-num " :class="item != null ? 'active':''" v-for="(item,j) in items.numbers">
+                {{ item != null ? item:'?'}}
                 </span>
               </div>
             </div>
