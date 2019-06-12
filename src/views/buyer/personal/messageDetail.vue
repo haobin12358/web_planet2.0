@@ -42,7 +42,7 @@
         </span>
 
         <input type="text" v-model="input_value" class="m-input" placeholder="发消息...">
-        <span class="m-send" @click="sendMsg">发送</span>
+        <span class="m-send" @click="sendMsg(input_value,0)">发送</span>
       </div>
     </div>
 </template>
@@ -87,8 +87,10 @@
           }else{
             data.isself = false;
           }
-          console.log(data);
-          this.message_list.unshift(data);
+
+          let arr = [...this.message_list,data];
+          this.message_list = [...arr];
+          console.log(this.message_list,'接受到信息')
           this.scrollBottom();
           // this.id = this.$socket.id;
           // this.$socket.emit('login', id);      //监听connect事件
@@ -119,13 +121,24 @@
             }
           });
         },
-        sendMsg(){
+
+        sendMsg(value,type){
           let that = this;
-          this.$socket.emit('send_msg', {roid:that.roid,umsgtext:that.input_value,umsgtype:0},function (resdata) {
-            if(resdata.status == 200){
-              that.input_value = '';
+          this.$socket.emit('setsession', localStorage.getItem('token'),function (res) {
+            //如果连接失败，重新连接
+            if(res.status != 200){
+              that.sendMsg(value,type);
+            }else{
+              console.log('链接成功，开始发送信息')
+              that.$socket.emit('send_msg', {roid:that.roid,umsgtext:value,umsgtype:type},function (resdata) {
+                console.log(resdata,'发送信息成功');
+                if(resdata.status == 200){
+                  that.input_value = '';
+                }
+              });
             }
           });
+
         },
         getMessageList(){
           this.$http.get(this.$api.get_message_list,{
@@ -139,7 +152,8 @@
             if(res.data.status == 200){
               if(res.data.data.length >0){
                 if(this.page_info.page_num >1){
-                  this.message_list = this.message_list.concat(res.data.data.reverse());
+                  let _data = res.data.data.reverse()
+                  this.message_list = _data.concat(this.message_list);
                 }else{
                   this.message_list = res.data.data.reverse();
                 }
@@ -176,7 +190,7 @@
             }
           }
 
-
+          this.$refs.loadmore.onTopLoaded();
         },
         //上传图片
         uploadImg(e) {
@@ -200,10 +214,8 @@
               // let img = { niimg: res.data.data, nisort: this.img_box.length + 1 };
               // this.upload_img.push(res.data.data);
               let that = this;
-              this.$socket.emit('send_msg', {roid:that.roid,umsgtext:res.data.data,umsgtype:1},function (resdata) {
-                if(resdata.status == 200){
-                }
-              });
+              that.sendMsg(res.data.data,1);
+
               reader.readAsDataURL(files[0]);
 
               reader.onload = function(e) {
@@ -321,7 +333,6 @@
     width: 750px;
     box-sizing: border-box;
     .m-icon-img{
-
       width: 46px;
       height: 46px;
       margin: 0 20px;
@@ -332,7 +343,6 @@
         height: 46px;
       }
       .m-upload-input{
-        display: inline-block;
         width: 46px;
         height: 46px;
         position: absolute;
@@ -343,7 +353,7 @@
     }
     .m-input{
       padding: 0 20px;
-      height: 34px;
+      height: 44px;
       line-height: 34px;
       border-left: 1px solid #EFEFEF;
       border-right: 1px solid #EFEFEF;
