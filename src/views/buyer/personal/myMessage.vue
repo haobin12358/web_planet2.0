@@ -22,7 +22,7 @@
                   <span class="m-msg-text" >
                     {{item.umsgtype == 0?item.umsgtext:'图片'}}
                   </span>
-                  <span class="m-count" v-if="item.usunread">{{item.usunread}}</span>
+                  <span class="m-count" v-if="item.urunread">{{item.urunread}}</span>
                 </p>
               </div>
 
@@ -130,19 +130,24 @@
         }
         let _arr = [...this.room_list];
         let index = -1;
+        let _data = null ;
         for(let i in _arr){
           if(_arr[i].roid == data.roid){
             index = i;
+            _data = _arr[i];
             break;
           }
         }
-        data.usunread =  Number(data.usunread) + 1 ;
+        _data.urunread =  data.urunread;
+        _data.umsgtext = data.umsgtext;
+        _data.updatetime  = data.createtime;
         if(index == -1){
-          _arr.unshift(data);
+          _arr.unshift(_data);
         }else{
           _arr.splice(index,1);
-          _arr.unshift(data);
+          _arr.unshift(_data);
         }
+        console.log(data,_data,_arr,'asdads')
         this.room_list = [..._arr];
       }
     },
@@ -454,6 +459,7 @@
               border-radius: 50%;
               background-color: #D83A3A;
               color: #fff;
+              text-align: center;
             }
           }
         }

@@ -77,20 +77,17 @@
         //页面刚进入时开启长连接
         this.setSession();
       },
-      destroyed: function() {
-
-      },
       sockets: {
         new_message(data) {
+          console.log(data,'接受到信息')
           if(data.usid == this.usid){
             data.isself = true;
           }else{
             data.isself = false;
           }
-
           let arr = [...this.message_list,data];
           this.message_list = [...arr];
-          console.log(this.message_list,'接受到信息')
+
           this.scrollBottom();
           // this.id = this.$socket.id;
           // this.$socket.emit('login', id);      //监听connect事件
@@ -100,28 +97,31 @@
       methods: {
         setSession(){
           let that = this;
-          this.$socket.emit('setsession', localStorage.getItem('token'),function (res) {
-            //如果连接失败，重新连接
-            if(res.status != 200){
-              that.setSession();
-            }else{
-              that.usid = res.data.data;
-              if(that.$route.query.roid){
-                that.roid = that.$route.query.roid;
-                that.getMessageList();
-              }else{
-                that.$socket.emit('join_room', {usid:that.$route.query.usid,neid: that.$route.query.neid},function (resdata) {
-                  console.log(resdata,'csdsdfs')
-                  if(resdata.status == 200){
+          if(that.$route.query.roid){
+            that.roid = that.$route.query.roid;
+            that.getMessageList();
+          }else {
+            this.$socket.emit('setsession', localStorage.getItem('token'), function (res) {
+              //如果连接失败，重新连接
+              if (res.status != 200) {
+                that.setSession();
+              } else {
+                that.usid = res.data;
+                that.$socket.emit('join_room', {
+                  usid: that.$route.query.usid,
+                  neid: that.$route.query.neid
+                }, function (resdata) {
+                  console.log(resdata, 'csdsdfs')
+                  if (resdata.status == 200) {
                     that.roid = resdata.data;
                     that.getMessageList();
                   }
                 });
-              }
-            }
-          });
-        },
 
+              }
+            });
+          }
+        },
         sendMsg(value,type){
           let that = this;
           this.$socket.emit('setsession', localStorage.getItem('token'),function (res) {
@@ -130,8 +130,13 @@
               that.sendMsg(value,type);
             }else{
               console.log('链接成功，开始发送信息')
+              this.usid = res.data;
               that.$socket.emit('send_msg', {roid:that.roid,umsgtext:value,umsgtype:type},function (resdata) {
                 console.log(resdata,'发送信息成功');
+                that.$socket.on('new_message',function (data) {
+                  console.log(data,'信息成功');
+
+                });
                 if(resdata.status == 200){
                   that.input_value = '';
                 }

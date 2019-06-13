@@ -19,7 +19,7 @@
         <p v-if="order_list.length == 0" class="m-no-data">暂无订单哦,<span class="m-red">去下单</span>吧~</p>
         <div class="m-orderList-content" v-else>
           <template v-for="(items,index) in order_list">
-            <div class="m-one-part"  @click.stop="changeRoute('/orderDetail',items)">
+            <div class="m-one-part"  @click.stop="judgeOrder(items)">
               <div class="m-order-store-tile" >
 <!--                @click.stop="changeRoute('/brandDetail',items)"-->
                 <div >
@@ -54,13 +54,14 @@
                   </div>
                   <p class="m-end-time" v-if="items.deposit_expires">押金返还时间：{{items.deposit_expires}}</p>
                 </template>
-                <ul class="m-order-btn-ul">
+                <ul class="m-order-btn-ul" v-if="!items.ominrefund">
                   <div class="duration-box">
                     <div v-if="items.duration">支付倒计时<span class="duration-text">{{items.min}}:{{items.sec}}</span></div>
                   </div>
                   <div>
                     <!--<li v-if="items.omstatus==10" @click.stop="changeRoute('/selectBack',items)">退款</li>-->
-                    <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund && items.omfrom !=80" @click.stop="changeRoute('/selectBack',items)">退款</li>
+                    <li v-if="(items.omstatus==10 || items.omstatus==25 || items.omstatus==26) && !items.part_refund && items.omfrom !=80"
+                        @click.stop="changeRoute('/selectBack',items)">退款</li>
                     <li @click.stop="changeRoute('/logisticsInformation',items)" v-if="items.omstatus==20
                 || items.omstatus == 30 || items.omstatus == 25">查看物流</li>
                     <!--<li v-if=" items.omstatus == -40">删除订单</li>-->
@@ -250,6 +251,14 @@
       },
     },
     methods:{
+      // 判断订单状态进行跳转
+      judgeOrder(items){
+        if(!items.ominrefund){
+          this.changeRoute('/orderDetail',items);
+        }else{
+          this.changeRoute('/backDetail',items);
+        }
+      },
       // 跳转页面
       changeRouteHis(v,item){
           if(item){
@@ -264,6 +273,9 @@
             this.$router.push({ path: v, query: { pbid: item.pbid, pbname: item.pbname }});
             break;
           case '/orderDetail':
+            this.$router.push({ path: v, query: { omid: item.omid , from: "activityProduct" }});
+            break;
+          case '/backDetail':
             this.$router.push({ path: v, query: { omid: item.omid , from: "activityProduct" }});
             break;
           case '/logisticsInformation':

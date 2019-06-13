@@ -52,11 +52,11 @@
 
             <ul class="m-user-list" v-if="select_nav.itid == ''">
               <li v-for="(item,index) in result_list">
-                <div class="m-flex-start" @click="changeRouteUser('/personal/otherMain',item)">
+                <div class="m-flex-start" @click.stop="changeRouteUser('/personal/otherMain',item)">
                   <img :src="item.usheader" class="m-avator" alt="">
                   <div>
                     <h3 class="m-user-name">
-                      <span >{{item.usname}}</span>
+                      <span class="m-user-name-text">{{item.usname}}</span>
                       <span class="m-user-level">{{item.usgrade}}</span>
                     </h3>
                     <p class="m-grey">{{item.fens_count}}粉丝</p>
@@ -223,6 +223,7 @@
         },
         /*搜索结果*/
         searchInfo(){
+          this.page_info.page_num = 1;
           if(this.searchContent) {
             if(this.isCircle){
               this.$http.get(this.$api.news_search,{params:{
@@ -767,6 +768,13 @@
         .m-user-name{
           font-size: 28px;
           font-weight: 600;
+          .m-user-name-text{
+            display: inline-block;
+            width: 260px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
           .m-user-level{
             font-size: 16px;
             color: @mainColor;

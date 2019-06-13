@@ -675,6 +675,7 @@
         display: inline-block;
         width: 150px;
         height: 40px;
+        line-height: 40px;
         border: 1px solid @mainColor;
         text-align: center;
         &.cancel{
