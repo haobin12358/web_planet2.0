@@ -87,7 +87,9 @@
           }
           let arr = [...this.message_list,data];
           this.message_list = [...arr];
-
+          this.$socket.emit('read_message', {
+            umsgid:data.umsgid
+          });
           this.scrollBottom();
           // this.id = this.$socket.id;
           // this.$socket.emit('login', id);      //监听connect事件
