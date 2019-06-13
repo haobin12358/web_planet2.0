@@ -147,7 +147,6 @@
           _arr.splice(index,1);
           _arr.unshift(_data);
         }
-        console.log(data,_data,_arr,'asdads')
         this.room_list = [..._arr];
       }
     },
@@ -165,7 +164,7 @@
       },
       changeRoute(v, item){
         // this.$socket.emit('get_message');
-          this.$router.push({path:v,query:{roid:item.roid}});
+          this.$router.push({path:v,query:{roid:item.roid,urid:item.urid}});
       },
       // 获取站内信信息
       getAppMessage(){

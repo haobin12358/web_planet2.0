@@ -79,7 +79,7 @@
       },
       sockets: {
         new_message(data) {
-          console.log(data,'接受到信息')
+          console.log(data.usid,this.usid,'接受到信息')
           if(data.usid == this.usid){
             data.isself = true;
           }else{
@@ -129,18 +129,27 @@
             if(res.status != 200){
               that.sendMsg(value,type);
             }else{
-              console.log('链接成功，开始发送信息')
-              this.usid = res.data;
-              that.$socket.emit('send_msg', {roid:that.roid,umsgtext:value,umsgtype:type},function (resdata) {
-                console.log(resdata,'发送信息成功');
-                that.$socket.on('new_message',function (data) {
-                  console.log(data,'信息成功');
-
-                });
-                if(resdata.status == 200){
-                  that.input_value = '';
+              console.log(res.data,'链接成功，开始发送信息');
+              that.usid = res.data;
+              that.$socket.emit('join_room', {
+                roid:that.roid,
+              }, function (resdata) {
+                if (resdata.status == 200) {
+                  console.log(that.roid,resdata.data);
+                  that.roid = resdata.data;
+                  that.$socket.emit('send_msg', {roid:that.roid,umsgtext:value,umsgtype:type},function (data) {
+                    console.log(data,'发送信息成功');
+                    // that.$socket.on('new_message',function (data) {
+                    //   console.log(data,'信息成功');
+                    //
+                    // });
+                    if(data.status == 200){
+                      that.input_value = '';
+                    }
+                  });
                 }
               });
+
             }
           });
 
