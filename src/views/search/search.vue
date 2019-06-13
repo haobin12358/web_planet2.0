@@ -55,7 +55,7 @@
                 <div class="m-flex-start" @click.stop="changeRouteUser('/personal/otherMain',item)">
                   <img :src="item.usheader" class="m-avator" alt="">
                   <div>
-                    <h3 class="m-user-name">
+                    <h3 class="m-user-name" @click.stop="changeRouteUser('/personal/otherMain',item)">
                       <span class="m-user-name-text">{{item.usname}}</span>
                       <span class="m-user-level">{{item.usgrade}}</span>
                     </h3>

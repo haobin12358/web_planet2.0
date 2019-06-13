@@ -87,9 +87,7 @@
           }
           let arr = [...this.message_list,data];
           this.message_list = [...arr];
-          this.$socket.emit('read_message', {
-            umsgid:data.umsgid
-          });
+          this.$http.post(this.$api.read_message + '?token=' +localStorage.getItem('token'),{ umsgid:data.umsgid});
           this.scrollBottom();
           // this.id = this.$socket.id;
           // this.$socket.emit('login', id);      //监听connect事件
@@ -102,27 +100,37 @@
           if(that.$route.query.roid){
             that.roid = that.$route.query.roid;
             that.getMessageList();
-          }else {
-            this.$socket.emit('setsession', localStorage.getItem('token'), function (res) {
+          }
+          this.$socket.emit('setsession', localStorage.getItem('token'), function (res) {
               //如果连接失败，重新连接
               if (res.status != 200) {
                 that.setSession();
               } else {
                 that.usid = res.data;
-                that.$socket.emit('join_room', {
-                  usid: that.$route.query.usid,
-                  neid: that.$route.query.neid
-                }, function (resdata) {
+                let params ;
+                if(that.roid){
+                  params ={
+                    roid:that.roid,
+                  }
+                }else{
+                  params ={
+                    usid: that.$route.query.usid,
+                    neid: that.$route.query.neid
+                  }
+                }
+                that.$socket.emit('join_room', params, function (resdata) {
                   console.log(resdata, 'csdsdfs')
                   if (resdata.status == 200) {
-                    that.roid = resdata.data;
-                    that.getMessageList();
+                    if(!that.$route.query.roid){
+                      that.roid = resdata.data;
+                      that.getMessageList();
+                    }
                   }
                 });
 
               }
             });
-          }
+
         },
         sendMsg(value,type){
           let that = this;
