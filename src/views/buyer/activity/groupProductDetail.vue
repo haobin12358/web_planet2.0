@@ -88,7 +88,7 @@
         <div class="m-group-btn"  v-if="product.guess_group.ggstatus == 0" @click="shareProduct">{{product.guess_group.ggstatus_zh}}</div>
         <div class="m-group-result-btn" :class="product.guess_group.ggstatus == '20' ?'active':''" v-else-if="product.guess_group.ggstatus_zh">
           <p>{{product.guess_group.ggstatus_zh}}</p>
-          <p v-if="product.guess_group.ggstatus == '20'" class="m-red-group">成交价:{{product.guess_group.tradeprice || 0}}元</p>
+          <p v-if="product.guess_group.ggstatus == '20' && product.guess_group.tradeprice" class="m-red-group">成交价:{{product.guess_group.tradeprice}}元</p>
         </div>
       </template>
 
