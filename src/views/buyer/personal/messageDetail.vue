@@ -38,10 +38,10 @@
       <div class="m-messageDetail-footer">
         <span class="m-icon-img">
             <img src="/static/images/circle/icon-pic.png"  alt="">
-          <input type="file" name="file" class="m-upload-input" value="" accept="image/*" multiple="" ref="uploadImg" @change="uploadImg($event)">
+            <input type="file" name="file"   accept="image/*" multiple="" ref="uploadImg" @change.self="uploadImg($event)" />
         </span>
 
-        <input type="text" v-model="input_value" class="m-input" placeholder="发消息...">
+        <input type="text" v-model="input_value" class="m-input" placeholder="发消息..." />
         <span class="m-send" @click="sendMsg(input_value,0)">发送</span>
       </div>
     </div>
@@ -80,6 +80,9 @@
       sockets: {
         new_message(data) {
           console.log(data.usid,this.usid,'接受到信息')
+          if(data.roid != this.roid){
+            return;
+          }
           if(data.usid == this.usid){
             data.isself = true;
           }else{
@@ -304,7 +307,7 @@
           border-top:16px solid transparent;
           position: absolute;
           top:26px;
-          left: -16px;
+          left: -10px;
         }
         .m-message-content{
           padding: 5px 20px;
@@ -337,7 +340,7 @@
             border-top:16px solid transparent;
             position: absolute;
             top:26px;
-            right: -16px;
+            right: -10px;
             left: auto;
           }
           .m-message-content{
@@ -361,18 +364,24 @@
       height: 46px;
       margin: 0 20px;
       position: relative;
+      overflow: hidden;
       img{
         display: inline-block;
         width: 46px;
         height: 46px;
       }
-      .m-upload-input{
-        width: 46px;
-        height: 46px;
+      input{
+        width: 30px;
+        /*height: 46px;*/
         position: absolute;
         top:0;
         left:0;
+        right: 0;
+        bottom: 0;
         border: none;
+        z-index: 0;
+        opacity: 0;
+        -ms-filter: 'alpha(opacity=0)';
       }
     }
     .m-input{
@@ -383,6 +392,7 @@
       border-right: 1px solid #EFEFEF;
       width: 510px;
       box-sizing: border-box;
+      z-index: 1;
     }
     .m-send{
       color: @mainColor;
