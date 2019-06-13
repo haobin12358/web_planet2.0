@@ -86,7 +86,10 @@
       </template>
       <template v-else>
         <div class="m-group-btn"  v-if="product.guess_group.ggstatus == 0" @click="shareProduct">{{product.guess_group.ggstatus_zh}}</div>
-        <div class="m-group-result-btn" :class="product.guess_group.ggstatus == '20' ?'active':''" v-else-if="product.guess_group.ggstatus_zh">{{product.guess_group.ggstatus_zh}}</div>
+        <div class="m-group-result-btn" :class="product.guess_group.ggstatus == '20' ?'active':''" v-else-if="product.guess_group.ggstatus_zh">
+          <p>{{product.guess_group.ggstatus_zh}}</p>
+          <p v-if="product.guess_group.ggstatus == '20'" class="m-red-group">成交价:{{product.guess_group.tradeprice}}元</p>
+        </div>
       </template>
 
     </div>
@@ -638,6 +641,10 @@
        color: #E67E22;
        &.active{
          color: @mainColor;
+       }
+       .m-red-group{
+         color: #E22300;
+         font-size: 20px;
        }
      }
       .m-one-num{
