@@ -39,7 +39,7 @@
     </div>
     <div class="w-openmb-popup" v-if="popupVisible" @click.self="changeModal('popupVisible',false)">
       <div class="w-openmb-popup-box">
-        <span class="w-openmb-popup-text">您为您的好友<span v-if="action == 0">减少</span><span v-else-if="action == 1">增加</span>了<span class="w-openmb-popup-num">{{final_reduce}}元</span>购买金额！</span>
+        <span class="w-openmb-popup-text">您为您的好友<span v-if="action == 0">减少</span><span v-else-if="action == 10">增加</span>了<span class="w-openmb-popup-num">{{final_reduce}}元</span>购买金额！</span>
         <span class="w-openmb-popup-btn" @click.self="changeModal('popupVisible',false)">知道了</span>
       </div>
     </div>

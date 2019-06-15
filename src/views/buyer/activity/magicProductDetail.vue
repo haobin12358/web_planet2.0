@@ -100,7 +100,7 @@
         <div class="m-product-detail-btn m-two">
           <span @click="shareProduct" v-if="!product.lowest">分享帮拆</span>
           <span class="cancel" v-else>分享帮拆</span>
-          <span class="cancel" v-if="!product.trade">支付差价</span>
+          <span class="cancel" v-if="!product.trade || product.mbjstatus == 10">支付差价</span>
           <span @click="payChange" v-else>支付差价</span>
         </div>
       </template>
@@ -449,7 +449,7 @@
           let arr = [];
           arr.push(product);
           if(localStorage.getItem('token')) {
-            this.$router.push({ path: '/submitOrder', query: { product: JSON.stringify(arr),mbjid:this.$route.query.mbjid, from: _from}});
+            this.$router.push({ path: '/submitOrder', query: { product: JSON.stringify(arr),mbjid:this.$route.query.mbjid, from: _from,spreadprice:this.product.spreadprice}});
           }else {
             let url
             // url = window.location.href.split('#')[0] + '?mbjid=' + this.$route.query.mbjid

@@ -106,8 +106,11 @@
           </li>
           <li class="m-sku-num">
             <span>总计金额</span>
-            <div class=" m-price">
-              ￥{{total_money | money}}
+            <div class=" m-price" v-if="$route.query.spreadprice">
+              ￥{{$route.query.spreadprice  | money}}
+            </div>
+            <div class=" m-price" v-else>
+              ￥{{ total_money| money}}
             </div>
           </li>
           <li class="m-flex-between" v-if="!fromGift">
