@@ -134,7 +134,7 @@
       dealUrl(url){
         if(localStorage.getItem('share') == 'mbjid' || url.indexOf('mbjid') > 0) {
           let params = url.split('?mbjid=')[1].split('&secret_usid')[0];
-          this.$router.push({ path: '/pandora', query: { mbjid: params }})
+          this.$router.push({ path: '/openMagicBox', query: { mbjid: params }})
         }else if(localStorage.getItem('share') == 'fmfpid' || url.indexOf('fmfpid') > 0) {
           let params = url.split('?fmfpid=')[1].split('&secret_usid')[0].split('&which=');
           this.$router.push({ path: '/activityProductDetail', query: { fmfpid: params[0], which: params[1] }})

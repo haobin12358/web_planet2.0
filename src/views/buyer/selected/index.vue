@@ -199,7 +199,7 @@
             }else{
               params = url.split('?mbjid=')[1];
             }
-            this.$router.push({ path: '/pandora', query: { mbjid: params }});
+            this.$router.push({ path: '/openMagicBox', query: { mbjid: params }});
           }else if(localStorage.getItem('share') == 'fmfpid' || url.indexOf('fmfpid') > 0) {
             //活动商品详情
             let params = url.split('?fmfpid=')[1].split('&secret_usid')[0].split('&which=');

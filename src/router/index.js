@@ -169,6 +169,8 @@ export const constantRouterMap = [
   { path: '/openMagicBox', component: () => import('../views/buyer/activity/openMagicBox.vue'), hidden:true},
   { path: '/groupProductDetail', component: () => import('../views/buyer/activity/groupProductDetail'), hidden:true},
   { path: '/groupList', component: () => import('../views/buyer/activity/groupList'), hidden:true},
+  { path: '/magicProductDetail', component: () => import('../views/buyer/activity/magicProductDetail'), hidden:true},
+  { path: '/magicList', component: () => import('../views/buyer/activity/magicList'), hidden:true},
 
 
   { path: '/systemfix', component: () => import('../views/systemfix'), hidden: true },

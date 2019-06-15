@@ -2,7 +2,7 @@
 // const title = 'https://www.bigxingxing.com/api/v1/'; //正式
 let title = '';
 if(location.origin.indexOf('localhost') != -1){
-   title = 'https://pre2.bigxingxing.com/api/v2/'; //测试
+   title = 'https://play.bigxingxing.com/api/v2/'; //测试
 }else{
    title = `${location.origin}/api/v2/`
 }
@@ -110,13 +110,16 @@ const api={
   get_commodity_detail: title + 'commodity/get_commodity',       // 获取试用商品详情
   activity_list: title + 'activity/list',                        // 获取正在进行中的活动
   get_activity: title + 'activity/get',                          // 魔盒礼盒与竞猜活动详情 - 规则
-  join_magicbox: title + 'magicbox/join',                        // 参与魔盒活动(获取分享所需的url参数)
   open_magicbox: title + 'magicbox/open',                        // 好友帮拆魔盒
-  magicbox_recv_award: title + 'magicbox/recv_award',            // 领取魔术礼盒奖品
   create_order: title + 'commodity/create_order',                // 试用商品下单
   fresh_man_list: title + 'fresh_man/list',                      // 获取新人首单商品列表
   fresh_man_get: title + 'fresh_man/get',                        // 新人首单商品详情
   add_order: title + 'fresh_man/add_order',                      // 购买新人商品(返回支付参数)
+
+  magicbox_list: title +'magicbox/list',                       //获取魔术礼盒列表
+  magicbox_get: title +'magicbox/get',                        //获取魔术礼盒商品详情
+  magicbox_join: title +'magicbox/join',                   //参加魔盒
+  magicbox_recv_award: title +'magicbox/recv_award',      //补差价
 
   upload_file: title + 'file/upload',                            // 上传图片
   get_share_params: title + 'shareparams/get',                   // 获取微信分享参数

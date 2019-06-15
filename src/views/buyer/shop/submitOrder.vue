@@ -655,7 +655,35 @@
                }
              }
            });
-         }else{
+         }else  if(this.$route.query.from == 'mbjid'){
+           let _params = {
+             mbjid: this.$route.query.mbjid,
+             omclient: 0,
+             uaid: this.uaid,
+             ommessage: this.product_info[0].ommessage || "",
+           }
+           axios.post(api.magicbox_recv_award + "?token=" + localStorage.getItem('token'), _params).then(res => {
+             if(res.data.status == 200) {
+               if(this.payType.opaytype ==20) {
+                 // Toast(res.data.message);
+                 // this.giftPopup = true;
+
+                 // if(this.act){
+                 //   this.$router.push("/personal/myWallet");
+                 // }else{
+                 this.$router.push("/orderList?which=2");
+                 // }
+
+                 // 成功调起支付，该页面已使用过，从订单列表页返回时不打开
+                 sessionStorage.setItem('use', 'used');
+               }else {
+                 this.wxPay(res.data.data.args,res.data.data.omid);
+                 localStorage.removeItem('product');
+               }
+             }
+           });
+         }
+           else{
            axios.post(api.order_create + "?token=" + localStorage.getItem('token'), params).then(res => {
              if(res.data.status == 200) {
                if(this.payType.opaytype ==20) {
@@ -718,6 +746,9 @@
                       }
                     }
                     that.$router.push({path:'/groupProductDetail',query:{ggid:id,omid:omid}});
+                  }else if(that.from == 'mbjid') {
+                    // that.$router.push('/personal/myWallet');
+                    that.$router.push({path:'/magicList',query:{}});
                   }else {     // 去待发货页
                     that.$router.push("/orderList?which=2");
                   }
@@ -729,6 +760,9 @@
                   if(that.from == 'new' || that.from == 'try' || that.isGuess ||that.act) {
                     // that.$router.push('/personal/myWallet');
                     that.$router.push("/orderList?which=1");
+                  }else if(that.from == 'mbjid') {
+                    // that.$router.push('/personal/myWallet');
+                    that.$router.push({path:'/magicList',query:{}});
                   }else {     // 去待付款页
                     that.$router.push("/orderList?which=1");
                   }
@@ -737,6 +771,9 @@
                   if(that.from == 'new' || that.from == 'try' || that.isGuess || that.act) {
                     // that.$router.push('/personal/myWallet');
                     that.$router.push("/orderList?which=1");
+                  }else if(that.from == 'mbjid') {
+                    // that.$router.push('/personal/myWallet');
+                    that.$router.push({path:'/magicList',query:{}});
                   }else{     // 去待付款页
                     that.$router.push("/orderList?which=1");
                   }

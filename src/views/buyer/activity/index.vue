@@ -335,6 +335,56 @@
           </div>
         </div>
       </div>
+
+      <div v-if="selecte_nav.actype == 2">
+        <div class="m-one-item" v-if="now_magic.length > 0">
+          <h3 class="m-item-title m-flex-between">
+            <span>我的礼盒</span>
+            <span class="m-grey" @click="changeRoute('/magicList','my')">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>
+          </h3>
+          <div class="m-one-group" @click="changeRoute('/magicProductDetail',items)" v-for="(items,index) in now_magic">
+            <img :src="items.prmainpic" class="m-one-group-img" alt="">
+            <div class="m-product-info">
+              <p class="m-product-title">{{items.prtitle}}</p>
+              <p>押金 ¥{{items.gpdeposit}}</p>
+              <p class="m-main-color">当前：¥{{items.mbjcurrentprice}}</p>
+            </div>
+            <div class="m-user-box">
+              <div class="m-avator-box">
+
+                <span  class="m-avator " :class="[{'active':(item != null && j< 3)},{'m-two':items.headers.length == 2},{'m-four':items.headers.length >= 4},{'m-one':items.headers.length == 1}]"  v-for="(item,j) in items.headers">
+                   <img :src="item" alt="" v-if="j<3">
+                   <img src="/static/images/newActivity/icon-magic-more.png" v-else alt="">
+<!--                  <span :src="item" alt="" v-else-if="j==3">...</span>-->
+                </span>
+              </div>
+              <p class="m-main-color">{{items.record}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="m-one-limit">
+          <h3 class="m-limit-title">
+            <span>礼盒商品</span>
+            <!--            <span class="m-grey">全部<img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" /></span>-->
+          </h3>
+          <div class="m-limit-center-content">
+            <ul class="m-center-product-ul" >
+              <li @click="changeRoute('/magicProductDetail',items)" v-for="(items,index) in magic_product">
+                <div class="m-product-img" :style="{backgroundImage:'url(' + items.prmainpic +')'}">
+
+                </div>
+                <!--                :style="{backgroundImage:'url(' + item.prmainpic +')'}"-->
+                <p class="m-product-name">{{items.prtitle}}</p>
+                <p class="m-flex-between">
+                  <span class="m-num">{{items.mbadeposit}}</span>
+                  <img src="/static/images/newActivity/icon-li.png"  class="m-label-img-try" alt="">
+                </p>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
       <bottom-line v-if="bottom_show"></bottom-line>
     </mt-loadmore>
   </div>
@@ -386,7 +436,11 @@
       //  拼团
         now_group:[],
         apply_group:[],
-        group_product:[]
+        group_product:[],
+
+      //  魔术、
+        now_magic:[],
+        magic_product:[],
       }
     },
     components: {navList,bottomLine},
@@ -501,8 +555,18 @@
                 this.$router.push({ path: v, query: { gpid: item.gpid }});
               }
               break;
+            case '/magicProductDetail':
+              if(item.mbjid){
+                this.$router.push({ path: v, query: { mbjid: item.mbjid }});
+              }else{
+                this.$router.push({ path: v, query: { mbaid: item.mbaid }});
+              }
+              break;
             case '/groupList':
               this.$router.push({ path: v, query: { option: item }});
+              break;
+            case '/magicList':
+              this.$router.push({ path: v, query: {}});
               break;
           }
         }
@@ -546,6 +610,9 @@
             break;
           case 5:
             this.getGroup();
+            break;
+          case 2:
+            this.getMagic();
             break;
         }
       },
@@ -819,6 +886,9 @@
                case 3:
                  length = this.try_list.length;
                  break;
+               case 2:
+                 length = this.magic_product.length;
+                 break;
              }
             if(length == this.total_count){
               this.bottom_show = true;
@@ -836,6 +906,9 @@
                   break;
                 case 5:
                   this.getGroup();
+                  break;
+                case 2:
+                  this.getMagic();
                   break;
               }
 
@@ -867,6 +940,9 @@
             break;
           case 5:
             this.getGroup();
+            break;
+          case 2:
+            this.getMagic();
             break;
         }
         this.$refs.loadmore.onTopLoaded();
@@ -956,6 +1032,34 @@
             }
             this.now_group = res.data.data.my_group;
             this.apply_group = res.data.data.all_group;
+          }
+        })
+      },
+      getMagic(){
+        this.$http.get(this.$api.magicbox_list,{
+          params:{
+            token:localStorage.getItem('token'),
+            page_size:this.page_info.page_size,
+            page_num: this.page_info.page_num
+          }
+        }).then(res => {
+          if(res.data.status == 200){
+            this.isScroll = true;
+            if(res.data.data.box_product.length > 0) {
+              if(this.page_info.page_num > 1) {
+                this.magic_product = this.magic_product.concat(res.data.data.box_product);
+              }else{
+                this.magic_product = res.data.data.box_product;
+              }
+              this.page_info.page_num = this.page_info.page_num + 1;
+              this.total_count = res.data.total_count;
+            }else{
+              this.magic_product = [];
+              this.page_info.page_num = 1;
+              this.total_count = 0;
+            }
+            this.now_magic = res.data.data.mybox;
+
           }
         })
       }
@@ -1472,6 +1576,12 @@
               }
               &.active{
                 border: 1px solid @mainColor;
+              }
+              &.m-one{
+                &:first-child{
+                  right: 0;
+                  z-index: 2;
+                }
               }
               &.m-two{
                 &:first-child{
