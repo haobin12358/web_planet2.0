@@ -89,21 +89,20 @@
         <span @click="nowBuy" >支付押金</span>
       </div>
     </div>
-    <div class="m-product-detail-foot" v-else-if="!product.topaydeposit && !product.trade" @click="shareProduct">
-      <div class="m-product-detail-btn m-share">
+    <div class="m-product-detail-foot" v-else-if="!product.topaydeposit && product.trade" @click="shareProduct">
+
+    </div>
+    <div class="m-product-detail-foot" v-if="!product.topaydeposit">
+      <div class="m-product-detail-btn m-share" v-if="!product.topaydeposit && !product.trade">
         <span class="m-flex-center"><img src="/static/images/newActivity/icon-activity-share.png" class="m-icon-share" alt=""><b>邀请好友帮拆礼盒</b></span>
       </div>
-    </div>
-    <div class="m-product-detail-foot" v-if="!product.topaydeposit && !product.trade">
-      <div class="m-share-text" v-if="!product.lowest">再努力一下获取更多优惠</div>
-      <div class="m-share-text" v-else>恭喜已获得最高优惠</div>
-      <div class="m-product-detail-btn m-two" v-if="!product.lowest">
-        <span @click="shareProduct" >分享帮拆</span>
-        <span @click="payChange" >支付差价</span>
-      </div>
-      <div class="m-product-detail-btn m-two" v-else>
-        <span class="cancel" >分享帮拆</span>
-        <span class="cancel">支付差价</span>
+      <div class="m-share-text" v-else-if="!product.topaydeposit && !product.lowest && product.trade">再努力一下获取更多优惠</div>
+      <div class="m-share-text" v-else-if="!product.topaydeposit && product.lowest && product.trade">恭喜已获得最高优惠</div>
+      <div class="m-product-detail-btn m-two" v-if="product.trade">
+        <span @click="shareProduct" v-if="!product.lowest">分享帮拆</span>
+        <span class="cancel" v-else>分享帮拆</span>
+        <span class="cancel" v-if="!product.trade">支付差价</span>
+        <span @click="payChange" v-else>支付差价</span>
       </div>
     </div>
     <div class="m-modal-img" v-if="show_img">
@@ -173,10 +172,10 @@
     mixins: [wxapi],
     components: { sku },
     beforeRouteLeave (to, from, next) {
-      if(to.path == '/activity'  ){
-        this.$store.state.scrollTop = 0;
-        this.$store.state.isChange = false;
-      }
+      // if(to.path == '/activity'  ){
+      //   this.$store.state.scrollTop = 0;
+      //   this.$store.state.isChange = false;
+      // }
       next();
     },
     mounted() {

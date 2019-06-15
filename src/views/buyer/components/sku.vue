@@ -9,6 +9,7 @@
           <img :src="product.prmainpic"  v-else alt="">
           <div v-if="select_value">
             <p v-if="isAct &&  select_value.tlsprice" class="m-price">¥{{select_value.tlsprice | money}}</p>
+            <p class="m-price" v-else-if="select_value.lowestprice">¥{{select_value.lowestprice}}</p>
             <p class="m-price m-flex-start" v-else-if="product.ipprice"><img src="/static/images/newpersonal/icon-star-can.png" class="m-icon-star" alt="">{{select_value.skuprice}}</p>
             <p class="m-price" v-else>￥{{select_value.skuprice | money}}</p>
             <p class="m-underline">价格：<s>¥{{product.prlineprice && (product.prlineprice | money)}}</s></p>
