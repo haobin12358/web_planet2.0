@@ -70,16 +70,16 @@
       <div class="m-group-rule m-text-description">{{product.rules}}</div>
       <span class="m-right-img"></span>
     </div>
-    <div class="m-text-row m-sku-row" v-if="!product.topaydeposit" >
+    <div class="m-text-row m-sku-row" v-if="product.records.length > 0">
       <div class="m-text-courier ">拆盒记录</div>
       <div class="m-record m-text-description">
-        <ul v-if="product.records.length > 0">
+        <ul>
           <li v-for="(item,index) in product.records">
             <img :src="item.usheader" class="m-record-head" alt="">
             <span>{{item.record_str}}</span>
           </li>
         </ul>
-        <span v-else>暂无分享记录</span>
+<!--        <span v-else>暂无分享记录</span>-->
       </div>
       <span></span>
     </div>
