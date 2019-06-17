@@ -41,7 +41,7 @@
             <input type="file" name="file"   accept="image/*" multiple="" ref="uploadImg" @change.self="uploadImg($event)" />
         </span>
 
-        <input type="text" v-model="input_value" class="m-input" placeholder="发消息..." />
+        <input type="text" v-model="input_value" ref="input" class="m-input" placeholder="发消息..." />
         <span class="m-send" @click="sendMsg(input_value,0)">发送</span>
       </div>
     </div>
@@ -157,6 +157,7 @@
                     //
                     // });
                     if(data.status == 200){
+                      that.$refs.input.focus();
                       that.input_value = '';
                     }
                   });

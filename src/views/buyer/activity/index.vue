@@ -326,7 +326,7 @@
                 <!--                :style="{backgroundImage:'url(' + item.prmainpic +')'}"-->
                 <p class="m-product-name">{{items.prtitle}}</p>
                 <p class="m-flex-between">
-                  <span class="m-num">{{items.gpdeposit}}</span>
+                  <span class="m-num">押金： ¥{{items.gpdeposit}}</span>
                   <img src="/static/images/newActivity/icon-pin.png"  class="m-label-img-try" alt="">
                 </p>
               </li>
@@ -346,7 +346,7 @@
             <img :src="items.prmainpic" class="m-one-group-img" alt="">
             <div class="m-product-info">
               <p class="m-product-title">{{items.prtitle}}</p>
-              <p>押金 ¥{{items.gpdeposit}}</p>
+              <p>押金 ¥{{items.mbadeposit}}</p>
               <p class="m-main-color">当前：¥{{items.mbjcurrentprice}}</p>
             </div>
             <div class="m-user-box">
@@ -376,7 +376,7 @@
                 <!--                :style="{backgroundImage:'url(' + item.prmainpic +')'}"-->
                 <p class="m-product-name">{{items.prtitle}}</p>
                 <p class="m-flex-between">
-                  <span class="m-num">{{items.mbadeposit}}</span>
+                  <span class="m-num">押金：¥{{items.mbadeposit}}</span>
                   <img src="/static/images/newActivity/icon-li.png"  class="m-label-img-try" alt="">
                 </p>
               </li>

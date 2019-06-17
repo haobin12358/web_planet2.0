@@ -25,8 +25,11 @@
               <span class="m-activity-price m-red" >￥{{product.currentprice | money}}</span>
             </p>
           </div>
+          <p class=" m-flex-between">
+            <span>可购价：￥{{product.purchaseprice}}</span>
+          </p>
           <p class="m-marking-price m-flex-between">
-            <span>价格：<s>{{product.prprice}}</s></span>
+            <span>价格：<s>￥{{product.prprice}}</s></span>
             <span>市场价：<s>￥{{product.prlineprice  }}</s></span>
           </p>
         </div>
@@ -217,7 +220,7 @@
         if(localStorage.getItem('token')) {
           let options = {};
           options = {
-            title: this.product.prtitle,
+            title: '您的好友邀请您帮忙拆盒子',
             desc: this.product.prdescription,
             imgUrl: this.product.prmainpic,
             link: location.href.split('#')[0] + '?mbjid=' + this.$route.query.mbjid
