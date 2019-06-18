@@ -667,7 +667,7 @@
            }
            axios.post(api.magicbox_recv_award + "?token=" + localStorage.getItem('token'), _params).then(res => {
              if(res.data.status == 200) {
-               if(this.payType.opaytype ==20) {
+               if(res.data.data.redirect) {
                  // Toast(res.data.message);
                  // this.giftPopup = true;
 

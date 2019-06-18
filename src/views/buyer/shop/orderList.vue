@@ -140,9 +140,9 @@
         common.changeTitle('订单列表');
         this.getOrderNum();               // 获取各状态的订单数量
       },
-      activated() {
-        this.getOrderNum();               // 获取各状态的订单数量
-      },
+      // activated() {
+      //   this.getOrderNum();               // 获取各状态的订单数量
+      // },
       // 引入keepAlive后代替beforeDestroy
       deactivated() {
         if(this.$route.path == '/orderDetail' || this.$route.path == '/logisticsInformation' || this.$route.path == '/addComment') {
@@ -226,6 +226,7 @@
             }
 
           }
+          console.log(index)
           this.getOrderList(arr[index].status);
         },
         // 获取各状态的订单数量
@@ -245,12 +246,14 @@
               if(localStorage.getItem('orderListDetail') != 0) {
                 if(localStorage.getItem('orderList')) {
                   which = localStorage.getItem('orderList');
+                  localStorage.removeItem('orderList');
                 }else {
                   which = this.$route.query.which;
                 }
               }else {
                 which = this.$route.query.which;
               }
+
               if(which) {
                 this.navClick(which);
               }else {

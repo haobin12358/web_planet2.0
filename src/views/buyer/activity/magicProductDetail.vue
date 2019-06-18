@@ -104,7 +104,7 @@
           <span @click="shareProduct" v-if="!product.lowest">分享帮拆</span>
           <span class="cancel" v-else>分享帮拆</span>
           <span class="cancel" v-if="!product.trade || product.mbjstatus == 10">支付差价</span>
-          <span @click="payChange" v-else>支付差价</span>
+          <span @click="payChange" v-else>立即下单</span>
         </div>
       </template>
 

@@ -1553,7 +1553,7 @@
           .flex-col(space-between,flex-end);
           height: 120px;
           text-align: right;
-          width: 150px;
+          width: 180px;
           .m-avator-box{
             position: relative;
             height: 60px;
