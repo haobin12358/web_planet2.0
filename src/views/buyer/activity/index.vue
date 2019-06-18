@@ -809,7 +809,13 @@
       },
       //获取新人首单列表
       getNew(){
-        this.$http.get(this.$api.fresh_man_list).then(res => {
+        this.$http.get(this.$api.fresh_man_list,{
+          params:{
+            token:localStorage.getItem('token'),
+            page_num:this.page_info.page_num,
+            page_size:this.page_info.page_size
+          }
+        }).then(res => {
           if(res.data.status == 200){
             this.isScroll = true;
             if(res.data.data.fresh_man.length > 0) {
