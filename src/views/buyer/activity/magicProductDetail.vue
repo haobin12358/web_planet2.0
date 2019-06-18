@@ -70,7 +70,7 @@
       <div class="m-group-rule m-text-description">{{product.rules}}</div>
       <span class="m-right-img"></span>
     </div>
-    <div class="m-text-row m-sku-row" v-if="product.records.length > 0">
+    <div class="m-text-row m-sku-row" v-if="product.records && product.records.length > 0">
       <div class="m-text-courier ">拆盒记录</div>
       <div class="m-record m-text-description">
         <ul>
@@ -336,6 +336,7 @@
         }
         axios.get(api.magicbox_get, { params: params }).then(res => {
           if(res.data.status == 200){
+            console.log(res.data.data);
             this.product = res.data.data;
             //
             // this.can_buy = this.nowInDateBetwen(this.product.tlastarttime,this.product.tlaendtime);

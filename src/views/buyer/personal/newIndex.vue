@@ -253,6 +253,7 @@
 <style scoped lang="less">
   @import "../../../common/css/index";
   .m-new-personal{
+    padding-bottom: 110px;
     .m-personal-item{
       background-color: #fff;
       /*padding: 0 50px 0 65px;*/

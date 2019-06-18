@@ -26,6 +26,12 @@
         <span>点击任意一个帮好友拆盒</span>
       </div>
     </div>
+    <div class="m-rule">
+      <p v-if="product_info.gearone_str">{{product_info.gearone_str}}</p>
+      <p v-if="product_info.geartwo_str">{{product_info.geartwo_str}}</p>
+      <p v-if="product_info.gearthree_str">{{product_info.gearthree_str}}</p>
+    </div>
+
     <div class="m-record-box">
       <img src="/static/images/newActivity/icon-magic-label.png" class="m-magic-label" alt="">
       <h3 class="m-cai-title">拆盒记录</h3>
@@ -196,7 +202,7 @@
     .w-openmb-product {
       width: 550px;
       height: 844px;
-      margin: 130px 100px 100px;
+      margin: 130px 100px 60px;
       background-color: #fff;
       position: relative;
 
@@ -400,9 +406,18 @@
         }
       }
     }
+    .m-rule{
+      padding: 0 80px  60px;
+      text-align: left;
+      color: #fff;
+      p{
+        font-size: 20px;
+        line-height: 28px;
+      }
+    }
     .m-record-box{
       width: 644px;
-      margin: 0 54px;
+      margin: 0 44px;
       padding: 10px 0;
       background-color: #6ACE94;
       border: 20px solid #fff;
