@@ -106,7 +106,7 @@
           </li>
           <li class="m-sku-num">
             <span>总计金额</span>
-            <div class=" m-price" v-if="$route.query.spreadprice">
+            <div class=" m-price" v-if="$route.query.spreadprice >=0 ">
               ￥{{$route.query.spreadprice  | money}}
             </div>
             <div class=" m-price" v-else>
