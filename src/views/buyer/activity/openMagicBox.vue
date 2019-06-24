@@ -3,19 +3,19 @@
     <!-- <div class="w-openmb-bg"></div> -->
     <img src="/static/images/newActivity/icon-magic-text.png" class="m-magic-title-img" alt="">
     <div class="w-openmb-headbtn">
-      <span class="w-openmb-headbtn-left" @click="changeRoute('/activity')">更多</span>
+      <span class="w-openmb-headbtn-left" @click="changeRoute('/activity')">参加</span>
       <span class="w-openmb-headbtn-right" @click="changeModal('show_rule',true)">规则</span>
     </div>
 
     <div class="w-openmb-product">
       <div class="w-openmb-product-img">
         <img :src="product_info.prmainpic" />
-        <span class="w-openmb-product-orprice">原价¥{{product_info.prprice}}</span>
+        <span class="w-openmb-product-orprice">原价¥{{product_info.prprice || 0}}</span>
       </div>
       <div class="w-openmb-price">
-        <span class="w-openmb-price-lowest">最低价¥{{product_info.mbadeposit}}</span>
-        <span class="w-openmb-price-current">当前价¥{{product_info.currentprice}}</span>
-        <span class="w-openmb-price-bought">可购价¥{{product_info.purchaseprice}}</span>
+        <span class="w-openmb-price-lowest">最低价¥{{product_info.mbadeposit || 0}}</span>
+        <span class="w-openmb-price-current">当前价¥ <b class="m-ft-36">{{product_info.currentprice || 0}}</b></span>
+        <span class="w-openmb-price-bought">可购价¥{{product_info.purchaseprice || 0}}</span>
       </div>
       <div class="w-openmb-choice">
         <span class="w-openmb-choice-a" :class="select == '1'?'off':''" @click="selectOne('1')"></span>
@@ -25,11 +25,11 @@
       <div class="w-openmb-tips">
         <span>点击任意一个帮好友拆盒</span>
       </div>
-    </div>
-    <div class="m-rule">
-      <p v-if="product_info.gearone_str">{{product_info.gearone_str}}</p>
-      <p v-if="product_info.geartwo_str">{{product_info.geartwo_str}}</p>
-      <p v-if="product_info.gearthree_str">{{product_info.gearthree_str}}</p>
+      <div class="m-rule">
+        <p v-if="product_info.gearone_str">{{product_info.gearone_str}}</p>
+        <p v-if="product_info.geartwo_str">{{product_info.geartwo_str}}</p>
+        <p v-if="product_info.gearthree_str">{{product_info.gearthree_str}}</p>
+      </div>
     </div>
 
     <div class="m-record-box">
@@ -156,8 +156,8 @@
     //   left: 0;
     //   top: 0;
     padding-bottom: 30px;
-    background: url('/static/images/activity/mb-bg.png') no-repeat;
-    background-size: 100% 100%;
+    background: url('/static/images/newActivity/icon-magic-bc.png') no-repeat;
+    /*background-size: 100% 100%;*/
     //   z-index: -1;
     .m-magic-title-img{
       position: absolute;
@@ -200,20 +200,23 @@
     }
 
     .w-openmb-product {
-      width: 550px;
-      height: 844px;
-      margin: 130px 100px 60px;
+      width: 644px;
+      /*height: 844px;*/
+      padding: 20px;
+      box-sizing: border-box;
+      margin: 130px 54px 60px;
       background-color: #fff;
       position: relative;
+      border-radius: 20px;
 
       .w-openmb-product-img {
         position: relative;
-        width: 550px;
-        height: 550px;
+        width: 600px;
+        height: 600px;
         img{
           display: inline-block;
-          width: 550px;
-          height: 550px;
+          width: 600px;
+          height: 600px;
         }
         .w-openmb-product-orprice {
           display: inline-block;
@@ -222,8 +225,11 @@
           right: 0;
           width: 181px;
           height: 40px;
+          color: @mainColor;
           background: #fff;
+          font-size: 28px;
           border-radius: 40px 0 0 0;
+          box-shadow:-6px -6px 6px rgba(0,0,0,0.16);
         }
       }
 
@@ -236,7 +242,7 @@
           display: inline-block;
           width: 162px;
           height: 40px;
-          font-size: 24px;
+          font-size: 28px;
           line-height: 40px
         }
 
@@ -329,9 +335,9 @@
       }
 
       .w-openmb-tips {
-        width: 550px;
-        position: absolute;
-        bottom: 0;
+        /*width: 550px;*/
+        /*position: absolute;*/
+        /*bottom: 0;*/
         font-size: 24px;
         font-weight: 300;
         color: @mainColor;
@@ -407,9 +413,8 @@
       }
     }
     .m-rule{
-      padding: 0 80px  60px;
+      padding: 20px;
       text-align: left;
-      color: #fff;
       p{
         font-size: 20px;
         line-height: 28px;
