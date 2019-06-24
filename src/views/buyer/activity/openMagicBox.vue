@@ -39,7 +39,7 @@
         <li v-for="(item,index) in product_info.records">
           <span class="m-sort">{{index +1}}</span>
           <img :src="item.usheader" class="m-head" alt="">
-          <span>{{item.record_str}}</span>
+          <span >{{item.record_str}}</span>
         </li>
       </ul>
     </div>
@@ -234,7 +234,6 @@
           box-shadow:-6px -6px 6px rgba(0,0,0,0.08);
         }
       }
-
       .w-openmb-price {
         height: 100px;
         .flex-row(space-between);
@@ -459,6 +458,7 @@
             border-radius: 50%;
             text-align: center;
             background-color: #27AE60;
+            flex-shrink: 0;
           }
           .m-head{
             display: inline-block;
@@ -466,6 +466,7 @@
             height: 60px;
             border-radius: 50%;
             margin: 0 10px;
+            flex-shrink: 0;
           }
         }
       }
