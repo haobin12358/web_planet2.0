@@ -224,7 +224,9 @@
           bottom: 0;
           right: 0;
           width: 181px;
-          height: 40px;
+          height: 50px;
+          line-height: 50px;
+          box-sizing: border-box;
           color: @mainColor;
           background: #fff;
           font-size: 28px;
@@ -240,7 +242,7 @@
 
         span {
           display: inline-block;
-          width: 162px;
+          /*width: 162px;*/
           height: 40px;
           font-size: 28px;
           line-height: 40px
@@ -252,6 +254,7 @@
           background: linear-gradient(90deg, @subColor 0%, @mainColor 100%);
           border-radius: 20px;
           color: #fff;
+          padding: 0 20px;
         }
 
         .w-openmb-price-bought {}
