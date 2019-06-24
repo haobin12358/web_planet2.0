@@ -231,7 +231,7 @@
           background: #fff;
           font-size: 28px;
           border-radius: 40px 0 0 0;
-          box-shadow:-6px -6px 6px rgba(0,0,0,0.16);
+          box-shadow:-6px -6px 6px rgba(0,0,0,0.08);
         }
       }
 
