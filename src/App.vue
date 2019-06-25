@@ -86,6 +86,9 @@ export default {
     }
     let url =location.href.indexOf('&from') > 0? location.href.split('&from')[0]:location.href;
     // let url = location.href.split('&from')[0];
+    if(location.href.indexOf('&from=gift') >0 ){
+     url = location.href;
+    }
     if(!localStorage.getItem('url')) {
       if(url.indexOf('&secret_usid') > 0) {
         localStorage.setItem('url', url);
@@ -119,7 +122,8 @@ export default {
       localStorage.setItem('share', 'neid');
       location.href = location.origin;
       this.shareRecord(params);
-    }else if(location.href.indexOf('prid') > 0) {               // 商品详情
+    }else if(location.href.indexOf('prid') > 0) {
+   // 商品详情
       if(location.href.indexOf('from=gift') > 0) {     // 跳转到活动
           localStorage.setItem('share', 'gift');
       }else{

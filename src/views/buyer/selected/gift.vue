@@ -113,7 +113,7 @@
       localStorage.removeItem('url');
       localStorage.removeItem('login_to');
       wxapi.wxRegister(location.href.split('#')[0]);
-      if(common.isWeixin()) {
+      // if(common.isWeixin()) {
         if(localStorage.getItem('token')) {
           // 倒计时
           const TIME_COUNT = 1;
@@ -127,12 +127,12 @@
             }
           }, 300);
         }
-      }
+      // }
     },
     methods: {
       // 分享商品
       shareProduct(val) {
-        if(common.isWeixin()) {
+
           if(localStorage.getItem('token')) {
             let options = {};
             options = {
@@ -144,6 +144,7 @@
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
+                console.log(options.link)
                 if(val !== 1) {
                   // 点击分享
                   this.show_invite = true;
@@ -182,9 +183,7 @@
           }else {
             Toast('请登录后再试');
           }
-        }else {
-          Toast('请在微信公众号分享');
-        }
+
       },
       // 返回上一页
       changeBack(){

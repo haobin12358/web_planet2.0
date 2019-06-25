@@ -219,6 +219,7 @@
               if(res.data.status == 200) {
                 options.link += '&secret_usid=' + res.data.data.secret_usid;
                 this.share_url = options.link;
+                console.log(this.share_url)
                 if(val !== 1) {
                   // 点击分享
                   this.show_invite = true;

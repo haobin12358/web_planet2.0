@@ -131,38 +131,76 @@
 
       },
       //处理顶部轮播图重定向地址
-      dealUrl(url){
+      dealUrl(url,name){
         if(localStorage.getItem('share') == 'mbjid' || url.indexOf('mbjid') > 0) {
-          let params = url.split('?mbjid=')[1].split('&secret_usid')[0];
-          this.$router.push({ path: '/openMagicBox', query: { mbjid: params }})
+          //魔术礼盒
+          let params ;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?mbjid=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?mbjid=')[1];
+          }
+          this.$router.push({ path: '/openMagicBox', query: { mbjid: params }});
         }else if(localStorage.getItem('share') == 'fmfpid' || url.indexOf('fmfpid') > 0) {
+          //活动商品详情
           let params = url.split('?fmfpid=')[1].split('&secret_usid')[0].split('&which=');
           this.$router.push({ path: '/activityProductDetail', query: { fmfpid: params[0], which: params[1] }})
         }else if(localStorage.getItem('share') == 'tlpid' || url.indexOf('tlpid') > 0) {
-          let params = url.split('?tlpid=')[1].split('&secret_usid')[0];
+          //限时活动商品详情
+          let params ;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?tlpid=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?tlpid=')[1];
+          }
           this.$router.push({ path: '/limitedProductDetail', query: { tlpid: params}})
         }else if(localStorage.getItem('share') == 'tcid' || url.indexOf('tcid') > 0) {
+          //新人，试用活动商品详情
           let params = url.split('?tcid=')[1].split('&secret_usid')[0].split('&which=');
           this.$router.push({ path: '/activityProductDetail', query: { tcid: params[0], which: params[1] }})
         }else if(localStorage.getItem('share') == 'neid' || url.indexOf('neid') > 0) {
-          let params = url.split('?neid=')[1].split('&secret_usid')[0];
+          //圈子详情
+          let params ;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?neid=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?neid=')[1];
+          }
           this.$router.push({ path: '/circle/detail', query: { neid: params }})
         }else if(localStorage.getItem('share') == 'tlaid' || url.indexOf('tlaid') > 0) {
-          let params = url.split('?tlaid=')[1].split('&secret_usid')[0];
+          //单一限时活动页面
+          let params ;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?tlaid=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?tlaid=')[1];
+          }
           this.$router.push({ path: '/limitedTime', query: { tlaid: params }})
-        }else if(localStorage.getItem('share') == 'prid' || url.indexOf('prid') > 0) {
+        }else if(localStorage.getItem('share') == 'gift' || url.indexOf('&from=gift') >0){
           let params;
           if(url.indexOf('&secret_usid') > 0){
             params = url.split('?prid=')[1].split('&secret_usid')[0];
           }else{
             params = url.split('?prid=')[1];
           }
-          if(localStorage.getItem('share') == 'gift' || url.indexOf('&from=gift')){
+          console.log(params,'sdasdas')
+          this.$router.push({ path: '/gift', query: { prid: params.split('&from')[0] }})
+        }else if(localStorage.getItem('share') == 'prid' || url.indexOf('prid') > 0) {
+          //商品详情，开店大礼包
+          let params;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?prid=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?prid=')[1];
+          }
+          if(url.indexOf('&from=gift') >0){
             this.$router.push({ path: '/gift', query: { prid: params.split('&from')[0] }})
           }else{
             this.$router.push({ path: '/productDetail', query: { prid: params }})
           }
+
         }else if(localStorage.getItem('share') == 'ipid' || url.indexOf('ipid') > 0) {
+          //星币商城商品详情
           let params;
           if(url.indexOf('&secret_usid') > 0){
             params = url.split('?ipid=')[1].split('&secret_usid')[0];
@@ -170,14 +208,29 @@
             params = url.split('?ipid=')[1];
           }
           this.$router.push({ path: '/personal/starProductDetail', query: { ipid: params }})
+        }else if(localStorage.getItem('share') == 'activityId=new' || url.indexOf('activityId=new') > 0) {
+          //新人首单
+          this.$router.push({ path: '/activityProduct', query: { which: 'new' }})
+        }else if(localStorage.getItem('share') == 'activityId=try' || url.indexOf('activityId=try') > 0) {
+          //试用商品
+          this.$router.push({ path: '/activityProduct', query: { which: 'try' }})
         }else if(localStorage.getItem('share') == 'activityId=guess' || url.indexOf('activityId=guess') > 0) {
+          //竞猜商品
           this.$router.push({ path: '/guessProduct', query: { which: 'guess' }})
         }else if(localStorage.getItem('share') == 'uaid' || url.indexOf('uaid') > 0) {
+          //竞猜商品详情
           this.$router.push({ path: '/guessProductDetail'})
         }else if(localStorage.getItem('share') == 'index' || url.indexOf('index') > 0) {
+          //首页
           this.$router.push({ path: '/selected'})
         }else if(localStorage.getItem('share') == 'actype' || url.indexOf('actype') > 0) {
-          let params = url.split('?actype=')[1].split('&secret_usid')[0];
+          //活动首页
+          let params;
+          if(url.indexOf('&secret_usid') > 0){
+            params = url.split('?actype=')[1].split('&secret_usid')[0];
+          }else{
+            params = url.split('?actype=')[1];
+          }
           this.$router.push({ path: '/activity', query: { actype: params }})
         }else if(localStorage.getItem('share') == 'ggid' || url.indexOf('ggid') > 0) {
           let params;
@@ -188,8 +241,8 @@
           }
           //首页
           this.$router.push({ path: '/groupProductDetail',query:{ggid:params}})
-        }else{
-          location.href = url;
+        }else if(name){
+          location.href = url
         }
       },
       //导航切换
