@@ -125,9 +125,16 @@ export default {
     }else if(location.href.indexOf('prid') > 0) {
    // 商品详情
    //    if(location.href.indexOf('from=gift') > 0) {     // 跳转到活动
-          localStorage.setItem('url', location.href);
    //    }else{
         localStorage.setItem('share', 'prid');
+      // }
+      location.href = location.origin;
+      this.shareRecord(params);
+    }else if(location.href.indexOf('gfid') > 0) {
+      // 商品详情
+      //    if(location.href.indexOf('from=gift') > 0) {     // 跳转到活动
+      //    }else{
+      localStorage.setItem('share', 'gift');
       // }
       location.href = location.origin;
       this.shareRecord(params);

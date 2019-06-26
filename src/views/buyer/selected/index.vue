@@ -235,13 +235,13 @@
               params = url.split('?tlaid=')[1];
             }
             this.$router.push({ path: '/limitedTime', query: { tlaid: params }})
-          }else if(localStorage.getItem('share') == 'gift' || url.indexOf('&from=gift') >0){
+          }else if(localStorage.getItem('share') == 'gift' || url.indexOf('gfid') >0){
             let params;
-            // if(url.indexOf('&secret_usid') > 0){
-            //   params = url.split('?prid=')[1].split('&secret_usid')[0];
-            // }else{
-              params = url.split('?prid=')[1];
-            // }
+            if(url.indexOf('&secret_usid') > 0){
+              params = url.split('?gfid=')[1].split('&secret_usid')[0];
+            }else{
+              params = url.split('?gfid=')[1];
+            }
 
             this.$router.push({ path: '/gift', query: { prid: params.split('&from')[0] }})
           }else if(localStorage.getItem('share') == 'prid' || url.indexOf('prid') > 0) {
@@ -252,8 +252,7 @@
             }else{
               params = url.split('?prid=')[1];
             }
-            console.log(url,'sdasdas')
-            if(url.indexOf('&from=singlemessage&') >0 || url.indexOf('&from=gift') >0){
+            if(url.indexOf('from=gift') >0 ){
               this.$router.push({ path: '/gift', query: { prid: params.split('&from')[0] }})
             }else{
               this.$router.push({ path: '/productDetail', query: { prid: params }})

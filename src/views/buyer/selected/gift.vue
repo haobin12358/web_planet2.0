@@ -139,7 +139,7 @@
               title: this.product.prtitle,
               desc: this.product.prdescription,
               imgUrl: this.product.prmainpic,
-              link: window.location.href.split('#')[0] + '?prid=' + this.product.tcid+'&from=gift'
+              link: window.location.href.split('#')[0] + '?gfid=' + this.product.tcid
             };
             axios.get(api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
