@@ -124,11 +124,11 @@ export default {
       this.shareRecord(params);
     }else if(location.href.indexOf('prid') > 0) {
    // 商品详情
-      if(location.href.indexOf('from=gift') > 0) {     // 跳转到活动
-          localStorage.setItem('share', 'gift');
-      }else{
+   //    if(location.href.indexOf('from=gift') > 0) {     // 跳转到活动
+          localStorage.setItem('url', location.href);
+   //    }else{
         localStorage.setItem('share', 'prid');
-      }
+      // }
       location.href = location.origin;
       this.shareRecord(params);
     }else if(location.href.indexOf('ipid') > 0) {               // 星币商品详情
