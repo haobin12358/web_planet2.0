@@ -33,13 +33,13 @@
               <span>收藏</span>
             </div>
           </li>
-<!--          <li class="m-flex-between" @click="changeRoute('/personal/myMessage')">-->
-<!--            <div class="m-flex-start">-->
-<!--              <img src="/static/images/newpersonal/icon-message.png" class="m-icon" alt="">-->
-<!--              <span>消息</span>-->
-<!--            </div>-->
-<!--            <span class="m-info">{{user.usunread}}</span>-->
-<!--          </li>-->
+          <li class="m-flex-between" @click="changeRoute('/personal/myMessage')">
+            <div class="m-flex-start">
+              <img src="/static/images/newpersonal/icon-message.png" class="m-icon" alt="">
+              <span>消息</span>
+            </div>
+            <span class="m-info">{{user.usunread}}</span>
+          </li>
           <li class="m-flex-between" @click="changeRoute('/orderList')">
             <div class="m-flex-start">
               <img src="/static/images/newpersonal/icon-order.png" class="m-icon" alt="">

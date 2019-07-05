@@ -16,14 +16,14 @@
           <p class="m-num">{{person_info.fens_count}}</p>
           <p>粉丝</p>
         </li>
-<!--        <li class="m-num-line"></li>-->
-<!--        <li @click="changeRoute('/personal/messageDetail')">-->
-<!--          <img src="/static/images/newpersonal/icon-message.jpg" class="m-message-icon" alt="">-->
-<!--          <p>私信</p>-->
-<!--        </li>-->
-        <li>
-<!--          <p>私信</p>-->
+        <li class="m-num-line"></li>
+        <li @click="changeRoute('/personal/messageDetail')">
+          <img src="/static/images/newpersonal/icon-message.jpg" class="m-message-icon" alt="">
+          <p>私信</p>
         </li>
+<!--        <li>-->
+<!--&lt;!&ndash;          <p>私信</p>&ndash;&gt;-->
+<!--        </li>-->
       </ul>
     </div>
 
