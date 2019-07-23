@@ -1,13 +1,13 @@
 <template>
     <div class="m-collect">
-      <div class="m-nav">
-        <nav-list :navlist="nav_list"  @navClick="navClick"></nav-list>
-      </div>
+<!--      <div class="m-nav">-->
+<!--        <nav-list :navlist="nav_list"  @navClick="navClick"></nav-list>-->
+<!--      </div>-->
       <div class="m-collect-content">
-        <div >
-          <m-circle :index="index" v-for="(item,index) in news_list" v-if="nav_list[0].active && news_list.length > 0" :key="index" :circle="item" @likeClick="likeClick" @clickCollect="clickCollect" @followClick="followClick"></m-circle>
+<!--        <div >-->
+<!--          <m-circle :index="index" v-for="(item,index) in news_list" v-if="nav_list[0].active && news_list.length > 0" :key="index" :circle="item" @likeClick="likeClick" @clickCollect="clickCollect" @followClick="followClick"></m-circle>-->
 
-        </div>
+<!--        </div>-->
         <p v-if="nav_list[0].active && news_list.length == 0" class="m-no-data">暂无收藏的发现内容</p>
         <div class="m-product-list" >
 
@@ -27,6 +27,7 @@
   import mCircle from '../../../components/common/circle';
   import product from '../../../components/common/product';
   import bottomLine from '../../../components/common/bottomLine';
+  import common from '../../../common/js/common';
   import api from '../../../api/api';
   import {Toast} from'mint-ui';
     export default {
@@ -37,12 +38,12 @@
               {
                 name:'内容',
                 value:'',
-                active:true
+                active:false
               },
               {
                 name:'商品',
                 value:'',
-                active:false
+                active:true
               }
             ],
             product_list:[],
@@ -58,13 +59,14 @@
       },
       components:{navList,mCircle,product},
       mounted(){
+        common.changeTitle('收藏');
         if(this.$store.state.scrollTop >0 ||  this.$store.state.isChange){
           for(let a in this.$store.state.all_data){
             this._data[a] = this.$store.state.all_data[a]
           }
           document.documentElement.scrollTop =this.$store.state.scrollTop;
         }else{
-          this.getNews();
+          this.getProduct();
         }
       },
       //离开时记录位置

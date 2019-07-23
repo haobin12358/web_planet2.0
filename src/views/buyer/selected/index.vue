@@ -72,43 +72,44 @@
         <div class="m-scroll " >
           <ul class="m-discount-list">
             <li>
-             <span class="m-label">全平台</span>
-              <div class="m-discount-num">100</div>
-              <div class="m-discount-condition">满128元可用</div>
-              <div class="m-discount-info">全平台均可使用
-                全平台均可使...</div>
-              <div class="m-discount-btn">立即领取</div>
-              <div class="m-discount-line">
-                <span class="m-line"></span>
-              </div>
-            </li>
-            <li class="m-brand">
-              <span class="m-label">全平台</span>
-              <div class="m-discount-num">100</div>
-              <div class="m-discount-condition">满128元可用</div>
-              <div class="m-discount-info">全平台均可使用
-                全平台均可使...</div>
-              <div class="m-discount-btn">立即领取</div>
-              <div class="m-discount-line"></div>
-            </li>
-            <li class="m-zhe">
-              <span class="m-label">折扣券</span>
-              <div class="m-discount-num">100<span class="m-word">折</span></div>
-              <div class="m-discount-condition">满128元可用</div>
-              <div class="m-discount-info">全平台均可使用
-                全平台均可使...</div>
-              <div class="m-discount-btn">立即领取</div>
-              <div class="m-discount-line"></div>
+            <discount></discount>
+          </li>
+            <li>
+              <discount></discount>
             </li>
             <li>
-              <span class="m-label">全平台</span>
-              <div class="m-discount-num">100</div>
-              <div class="m-discount-condition">满128元可用</div>
-              <div class="m-discount-info">全平台均可使用
-                全平台均可使...</div>
-              <div class="m-discount-btn">立即领取</div>
-              <div class="m-discount-line"></div>
+              <discount></discount>
             </li>
+            <li>
+              <discount></discount>
+            </li>
+<!--            <li class="m-brand">-->
+<!--              <span class="m-label">全平台</span>-->
+<!--              <div class="m-discount-num">100</div>-->
+<!--              <div class="m-discount-condition">满128元可用</div>-->
+<!--              <div class="m-discount-info">全平台均可使用-->
+<!--                全平台均可使...</div>-->
+<!--              <div class="m-discount-btn">立即领取</div>-->
+<!--              <div class="m-discount-line"></div>-->
+<!--            </li>-->
+<!--            <li class="m-zhe">-->
+<!--              <span class="m-label">折扣券</span>-->
+<!--              <div class="m-discount-num">100<span class="m-word">折</span></div>-->
+<!--              <div class="m-discount-condition">满128元可用</div>-->
+<!--              <div class="m-discount-info">全平台均可使用-->
+<!--                全平台均可使...</div>-->
+<!--              <div class="m-discount-btn">立即领取</div>-->
+<!--              <div class="m-discount-line"></div>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="m-label">全平台</span>-->
+<!--              <div class="m-discount-num">100</div>-->
+<!--              <div class="m-discount-condition">满128元可用</div>-->
+<!--              <div class="m-discount-info">全平台均可使用-->
+<!--                全平台均可使...</div>-->
+<!--              <div class="m-discount-btn">立即领取</div>-->
+<!--              <div class="m-discount-line"></div>-->
+<!--            </li>-->
           </ul>
         </div>
       </div>
@@ -131,6 +132,7 @@
   import wx from 'weixin-js-sdk';
   import bottomLine from '../../../components/common/bottomLine';
   // import mCircle from '../../../components/common/circle';
+  import discount from '../../../components/common/discount';
   import product from '../components/product';
   import { Toast} from 'mint-ui';
     export default {
@@ -156,7 +158,7 @@
         }
       },
       mixins: [wxapi],
-      components: { bottomLine,  product,},
+      components: { bottomLine,  product,discount},
       inject:['reload'],
       mounted() {
         common.changeTitle('首页');
@@ -748,78 +750,7 @@
     background-color: #F2F2F2;
     li{
       flex-shrink: 0;
-      position: relative;
-      width: 200px;
-      height: 300px;
-      background: url("/static/images/index/discount-bg.png") no-repeat;
-      background-size: 100% 100%;
       margin: 20px 0 20px 20px;
-      text-align: center;
-      .m-label{
-        position: absolute;
-        top:0;
-        left: 0;
-        width: 80px;
-        border-bottom-right-radius: 20px;
-        font-size: 20px;
-        color: #fff;
-      }
-      .m-discount-num{
-        font-size: 52px;
-        margin: 55px 0 0;
-        color: @mainColor;
-        font-weight: 600;
-        .m-word{
-          font-size: 32px;
-        }
-      }
-      .m-discount-condition{
-        color: @mainColor;
-        font-size: 24px;
-      }
-      .m-discount-info{
-        width: 130px;
-        color: #c1c1c1;
-        font-size: 20px;
-        margin: 20px 0 0 32px;
-        text-overflow: -o-ellipsis-lastline;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient:vertical;
-      }
-      .m-discount-btn{
-        position: absolute;
-        bottom:0;
-        left:0;
-        width: 100%;
-        height: 52px;
-        line-height: 52px;
-        font-weight: 500;
-        font-size: 28px;
-        color: #fff;
-      }
-      .m-discount-line{
-        width: 100%;
-        position: absolute;
-      }
-      &.m-brand{
-        .m-discount-num{
-          color: #000;
-        }
-        .m-discount-condition{
-          color: #000;
-        }
-      }
-      &.m-zhe{
-        .m-discount-num{
-          color: #E67E22;
-        }
-        .m-discount-condition{
-          color: #E67E22;
-        }
-      }
     }
   }
   .m-selected-activity{

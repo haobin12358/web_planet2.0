@@ -3,26 +3,28 @@
       <div class="m-personal-item m-personal-head m-flex-start">
         <img :src="user.usheader" class="m-person-avator" alt="">
         <div class="m-person-head-text">
-          <div class="m-flex-end">
+          <div v-if="user.usname == '登录 / 注册'" class="m-flex-between">
+            <span class="m-login-btn" @click="showLogin">{{user.usname}}</span>
             <img src="/static/images/newpersonal/icon-code-small.png" class="m-person-code" alt="" @click="changeRoute('/personal/code')">
           </div>
-          <div v-if="user.usname == '登录 / 注册'">
-            <span class="m-login-btn" @click="showLogin">{{user.usname}}</span>
-          </div>
           <div v-else>
-            <p class="m-flex-start">
-              <span class="m-user-name">{{user.usname}}</span>
-              <img src="/static/images/newpersonal/sex-woman.png" v-if="user.usgender == 1" class="m-person-sex" alt="">
-              <img src="/static/images/newpersonal/sex-man.png" v-else class="m-person-sex" alt="">
-            </p>
+            <div class="m-flex-between">
+              <p class="m-flex-start">
+                <span class="m-user-name">{{user.usname}}</span>
+                <img src="/static/images/newpersonal/sex-woman.png" v-if="user.usgender == 1" class="m-person-sex" alt="">
+                <img src="/static/images/newpersonal/sex-man.png" v-else class="m-person-sex" alt="">
+              </p>
+              <img src="/static/images/newpersonal/icon-code-small.png" class="m-person-code" alt="" @click="changeRoute('/personal/code')">
+            </div>
+
             <p>
               <span class="m-person-level">{{user.usidname}}</span>
             </p>
           </div>
-          <div class="m-flex-end" @click="changeRoute('/personal/mainIndex')">
-            <span>个人主页</span>
-            <img src="/static/images/newpersonal/icon-more.png" class="m-more" alt="">
-          </div>
+<!--          <div class="m-flex-end" @click="changeRoute('/personal/mainIndex')">-->
+<!--            <span>个人主页</span>-->
+<!--            <img src="/static/images/newpersonal/icon-more.png" class="m-more" alt="">-->
+<!--          </div>-->
         </div>
       </div>
       <div class="m-personal-item">
@@ -33,13 +35,13 @@
               <span>收藏</span>
             </div>
           </li>
-          <li class="m-flex-between" @click="changeRoute('/personal/myMessage')">
-            <div class="m-flex-start">
-              <img src="/static/images/newpersonal/icon-message.png" class="m-icon" alt="">
-              <span>消息</span>
-            </div>
-            <span class="m-info">{{user.usunread}}</span>
-          </li>
+<!--          <li class="m-flex-between" @click="changeRoute('/personal/myMessage')">-->
+<!--            <div class="m-flex-start">-->
+<!--              <img src="/static/images/newpersonal/icon-message.png" class="m-icon" alt="">-->
+<!--              <span>消息</span>-->
+<!--            </div>-->
+<!--            <span class="m-info">{{user.usunread}}</span>-->
+<!--          </li>-->
           <li class="m-flex-between" @click="changeRoute('/orderList')">
             <div class="m-flex-start">
               <img src="/static/images/newpersonal/icon-order.png" class="m-icon" alt="">
@@ -338,6 +340,8 @@
         .m-red{
           color: #C70000;
           font-size: 21px;
+          /*border: 1px solid #C70000;*/
+          /*border-radius: 50%;*/
         }
         .m-btn{
           display: inline-block;
