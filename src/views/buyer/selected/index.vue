@@ -1,5 +1,11 @@
 <template>
     <div class="m-selected"  @touchmove="touchMove">
+      <div class="m-selected-search left">
+        <div class="m-search-input-box" @click="changeRoute('/search')">
+          <span class="m-icon-search"></span>
+          <span class="m-search-text">{{$route.query.kw || '搜索户外箱包'}}</span>
+        </div>
+      </div>
         <div class="m-swipe">
           <mt-swipe :auto="3000" v-if="swipe_list">
             <mt-swipe-item v-for="item in swipe_list" :key="item.ibid">
@@ -8,35 +14,35 @@
           </mt-swipe>
         </div>
         <!--标签-->
-        <div class="m-selected-label">
-          <div class="m-selected-label-left">
-            <div class="m-selected-label-l">
-              <span>大行星优惠码兑换</span>
-<!--              <span>假一赔十</span>-->
-            </div>
-            <ul class="m-selected-label-ul">
-              <li>
-                <img src="/static/images/index/icon-zheng.png" class="m-icon-label">
-                <span>正品保证</span>
-              </li>
-              <li>
-                <img src="/static/images/index/icon-zhuan.png" class="m-icon-label">
-                <span>专业精选</span>
-              </li>
-              <li>
-                <img src="/static/images/index/icon-tui.png" class="m-icon-label">
-                <span>十五天无忧退换</span>
-              </li>
-            </ul>
-          </div>
-          <div class="m-selected-label-right" @click="changeRoute('personal/coupon')">
-            <span>立即兑换</span>
-          </div>
-        </div>
+<!--        <div class="m-selected-label">-->
+<!--          <div class="m-selected-label-left">-->
+<!--            <div class="m-selected-label-l">-->
+<!--              <span>大行星优惠码兑换</span>-->
+<!--&lt;!&ndash;              <span>假一赔十</span>&ndash;&gt;-->
+<!--            </div>-->
+<!--            <ul class="m-selected-label-ul">-->
+<!--              <li>-->
+<!--                <img src="/static/images/index/icon-zheng.png" class="m-icon-label">-->
+<!--                <span>正品保证</span>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <img src="/static/images/index/icon-zhuan.png" class="m-icon-label">-->
+<!--                <span>专业精选</span>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <img src="/static/images/index/icon-tui.png" class="m-icon-label">-->
+<!--                <span>十五天无忧退换</span>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--          <div class="m-selected-label-right" @click="changeRoute('personal/coupon')">-->
+<!--            <span>立即兑换</span>-->
+<!--          </div>-->
+<!--        </div>-->
 
-      <div class="m-selected-one" v-if="top_img">
-        <img :src="top_img.enpic" @click="changeRouteImg('/activity',top_img)" class="m-activity-img" alt="">
-      </div>
+<!--      <div class="m-selected-one" v-if="top_img">-->
+<!--        <img :src="top_img.enpic" @click="changeRouteImg('/activity',top_img)" class="m-activity-img" alt="">-->
+<!--      </div>-->
         <div class="m-selected-one">
           <!--场景分类-->
           <div class="m-scroll " v-if="icon_list">
@@ -62,8 +68,57 @@
           </div>
         </div>
       </div>
-
-      <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>
+      <div class="m-discount-box">
+        <div class="m-scroll " >
+          <ul class="m-discount-list">
+            <li>
+             <span class="m-label">全平台</span>
+              <div class="m-discount-num">100</div>
+              <div class="m-discount-condition">满128元可用</div>
+              <div class="m-discount-info">全平台均可使用
+                全平台均可使...</div>
+              <div class="m-discount-btn">立即领取</div>
+              <div class="m-discount-line">
+                <span class="m-line"></span>
+              </div>
+            </li>
+            <li class="m-brand">
+              <span class="m-label">全平台</span>
+              <div class="m-discount-num">100</div>
+              <div class="m-discount-condition">满128元可用</div>
+              <div class="m-discount-info">全平台均可使用
+                全平台均可使...</div>
+              <div class="m-discount-btn">立即领取</div>
+              <div class="m-discount-line"></div>
+            </li>
+            <li class="m-zhe">
+              <span class="m-label">折扣券</span>
+              <div class="m-discount-num">100<span class="m-word">折</span></div>
+              <div class="m-discount-condition">满128元可用</div>
+              <div class="m-discount-info">全平台均可使用
+                全平台均可使...</div>
+              <div class="m-discount-btn">立即领取</div>
+              <div class="m-discount-line"></div>
+            </li>
+            <li>
+              <span class="m-label">全平台</span>
+              <div class="m-discount-num">100</div>
+              <div class="m-discount-condition">满128元可用</div>
+              <div class="m-discount-info">全平台均可使用
+                全平台均可使...</div>
+              <div class="m-discount-btn">立即领取</div>
+              <div class="m-discount-line"></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+<!--      <m-circle :index="index" v-for="(item,index) in news_list"  :key="index" :circle="item" @followClick="followClick" @likeClick="likeClick" @clickCollect="clickCollect"></m-circle>-->
+      <!--    商品列表-->
+      <div class="m-line-title">
+        <span class="m-cut-line"></span>
+        <span class="m-name">新品·推荐</span>
+      </div>
+      <product :list="product_list"></product>
       <bottom-line v-if="bottom_show"></bottom-line>
       <!--</mt-loadmore>-->
     </div>
@@ -75,7 +130,8 @@
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
   import bottomLine from '../../../components/common/bottomLine';
-  import mCircle from '../../../components/common/circle';
+  // import mCircle from '../../../components/common/circle';
+  import product from '../components/product';
   import { Toast} from 'mint-ui';
     export default {
       name: 'SelectedIndex',
@@ -95,11 +151,12 @@
           top_img:null,
           center_img:null,
           left_img:null,
-          right_img:null
+          right_img:null,
+          product_list:[]
         }
       },
       mixins: [wxapi],
-      components: { bottomLine,mCircle},
+      components: { bottomLine,  product,},
       inject:['reload'],
       mounted() {
         common.changeTitle('首页');
@@ -121,7 +178,7 @@
           this.getSwipe();
           this.getCategory();
           this.getImg();
-          this.getNews();
+          this.getProduct();
         }
 
         // 倒计时
@@ -375,102 +432,135 @@
             }
           })
         },
-        /*获取资讯列表*/
-        getNews() {
-          this.$http.get(this.$api.get_all_news,{
+        //获取商品列表
+        getProduct(id){
+          let start = this.page_info.page_num;
+          let _kw = this.$route.query.kw || '';
+          this.$http.get(this.$api.product_list,{
             params:{
-              token:localStorage.getItem('token'),
-              page_num:this.page_info.page_num,
-              page_size: this.page_info.page_size,
-              nestatus:'usual',
-              kw:this.$route.query.kw,
-              itid:'index'
+              pcid:id,
+              page_size:this.page_info.page_size,
+              page_num:start,
+              kw:_kw,
+              token:localStorage.getItem('token')
             }
           }).then(res => {
             if(res.data.status == 200){
-              this.isScroll =true;
               if(res.data.data.length >0){
-                //处理圈子详情中的换行和空格
-                for(let i in res.data.data){
-                  if(res.data.data[i].netext)
-                    res.data.data[i].netext = res.data.data[i].netext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
-                }
-                if(this.page_info.page_num >1){
-                  this.news_list =  this.news_list.concat(res.data.data);
-                }else{
-                  this.news_list = res.data.data;
-                }
-                this.page_info.page_num = this.page_info.page_num + 1;
-                this.total_count = res.data.total_count;
+                this.page_info.page_num =   this.page_info.page_num +1;
               }else{
-                this.news_list = null;
-                this.page_info.page_num = 1;
-                this.total_count = 0;
+                this.product_list = [];
+                return false;
               }
+              if(start >1){
+                this.product_list = this.product_list.concat(res.data.data);
+              }else{
+                this.product_list = res.data.data;
+              }
+              this.isScroll = true;
+              this.total_count = res.data.total_count;
+              this.total_page = res.data.total_page;
             }
+          },error => {
+            Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
           })
         },
+        /*获取资讯列表*/
+        // getNews() {
+        //   this.$http.get(this.$api.get_all_news,{
+        //     params:{
+        //       token:localStorage.getItem('token'),
+        //       page_num:this.page_info.page_num,
+        //       page_size: this.page_info.page_size,
+        //       nestatus:'usual',
+        //       kw:this.$route.query.kw,
+        //       itid:'index'
+        //     }
+        //   }).then(res => {
+        //     if(res.data.status == 200){
+        //       this.isScroll =true;
+        //       if(res.data.data.length >0){
+        //         //处理圈子详情中的换行和空格
+        //         for(let i in res.data.data){
+        //           if(res.data.data[i].netext)
+        //             res.data.data[i].netext = res.data.data[i].netext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
+        //         }
+        //         if(this.page_info.page_num >1){
+        //           this.news_list =  this.news_list.concat(res.data.data);
+        //         }else{
+        //           this.news_list = res.data.data;
+        //         }
+        //         this.page_info.page_num = this.page_info.page_num + 1;
+        //         this.total_count = res.data.total_count;
+        //       }else{
+        //         this.news_list = null;
+        //         this.page_info.page_num = 1;
+        //         this.total_count = 0;
+        //       }
+        //     }
+        //   })
+        // },
         /*点赞*/
-        likeClick(i){
-          this.$http.post(this.$api.favorite_news + '?token='+localStorage.getItem('token'),{
-            neid:this.news_list[i].neid,
-            tftype:1
-          }).then(res => {
-            if(res.data.status == 200){
-              let arr = [].concat(this.news_list);
-              if(arr[i].is_favorite){
-                arr[i].favoritnumber = arr[i].favoritnumber-1;
-              }else{
-                arr[i].favoritnumber = arr[i].favoritnumber+1;
-              }
-              arr[i].is_favorite = !arr[i].is_favorite;
-              this.news_list = [].concat(arr);
-            }
-          })
-        },
+        // likeClick(i){
+        //   this.$http.post(this.$api.favorite_news + '?token='+localStorage.getItem('token'),{
+        //     neid:this.news_list[i].neid,
+        //     tftype:1
+        //   }).then(res => {
+        //     if(res.data.status == 200){
+        //       let arr = [].concat(this.news_list);
+        //       if(arr[i].is_favorite){
+        //         arr[i].favoritnumber = arr[i].favoritnumber-1;
+        //       }else{
+        //         arr[i].favoritnumber = arr[i].favoritnumber+1;
+        //       }
+        //       arr[i].is_favorite = !arr[i].is_favorite;
+        //       this.news_list = [].concat(arr);
+        //     }
+        //   })
+        // },
         //  收藏
-        clickCollect(index){
-          this.$http.post(this.$api.collection_collect+'?token=' +localStorage.getItem('token'),{
-            uclcollection:this.news_list[index].neid,
-            uclcotype:1
-          }).then(res => {
-            if(res.data.status == 200){
-              Toast(
-                {
-                  message: res.data.message,
-                  duration: 500
-                });
-              let arr = [].concat(this.news_list);
-              arr[index].collected = !arr[index].collected;
-              // arr.splice(index,1);
-              this.news_list = [].concat(arr)
-            }
-          })
-        },
+        // clickCollect(index){
+        //   this.$http.post(this.$api.collection_collect+'?token=' +localStorage.getItem('token'),{
+        //     uclcollection:this.news_list[index].neid,
+        //     uclcotype:1
+        //   }).then(res => {
+        //     if(res.data.status == 200){
+        //       Toast(
+        //         {
+        //           message: res.data.message,
+        //           duration: 500
+        //         });
+        //       let arr = [].concat(this.news_list);
+        //       arr[index].collected = !arr[index].collected;
+        //       // arr.splice(index,1);
+        //       this.news_list = [].concat(arr)
+        //     }
+        //   })
+        // },
         //  关注
-        followClick(index){
-          this.$http.post(this.$api.collection_collect+'?token=' +localStorage.getItem('token'),{
-            uclcollection:this.news_list[index].neid,
-            uclcotype:2
-          }).then(res => {
-            if(res.data.status == 200){
-              Toast(
-                {
-                  message: res.data.message,
-                  duration: 500
-                });
-              let arr = [].concat(this.news_list);
-              // arr[index].follow = !arr[index].follow;
-              //
-              for(let i in arr){
-                if(arr[i].author.usname == this.news_list[index].author.usname){
-                  arr[i].follow = !arr[i].follow;
-                }
-              }
-              this.news_list = [].concat(arr);
-            }
-          })
-        },
+        // followClick(index){
+        //   this.$http.post(this.$api.collection_collect+'?token=' +localStorage.getItem('token'),{
+        //     uclcollection:this.news_list[index].neid,
+        //     uclcotype:2
+        //   }).then(res => {
+        //     if(res.data.status == 200){
+        //       Toast(
+        //         {
+        //           message: res.data.message,
+        //           duration: 500
+        //         });
+        //       let arr = [].concat(this.news_list);
+        //       // arr[index].follow = !arr[index].follow;
+        //       //
+        //       for(let i in arr){
+        //         if(arr[i].author.usname == this.news_list[index].author.usname){
+        //           arr[i].follow = !arr[i].follow;
+        //         }
+        //       }
+        //       this.news_list = [].concat(arr);
+        //     }
+        //   })
+        // },
         //滚动加载更多
         touchMove(e) {
           let scrollTop = common.getScrollTop();
@@ -482,7 +572,7 @@
               if(this.news_list.length == this.total_count){
                 this.bottom_show = true;
               }else{
-                    this.getNews();
+                    this.getProduct();
               }
             }
           }
@@ -526,6 +616,20 @@
   .m-swipe{
     /*padding: 0 33px;*/
     /*margin: auto;*/
+  }
+  .m-selected-search{
+    padding: 0 20px 10px;
+    width: 710px;
+    .m-search-input-box{
+      .flex-row(flex-start);
+      background-color: #F4F4F4;
+      /*color: #fff;*/
+      .m-icon-search{
+        background: url("/static/images/icon-search.png") no-repeat;
+        background-size: 100%;
+        margin: 0 20px 0 30px;
+      }
+    }
   }
   .m-selected-label{
     width: 750px;
@@ -601,7 +705,7 @@
     }
   }
   .m-selected-one{
-    padding: 0 33px ;
+    padding: 0 20px ;
     .m-activity-img{
       display: block;
       width: 684px;
@@ -634,6 +738,90 @@
       }
     }
   }
+  .m-discount-box{
+    .m-scroll{
+      margin: 0;
+    }
+  }
+  .m-discount-list{
+    .flex-row(flex-start);
+    background-color: #F2F2F2;
+    li{
+      flex-shrink: 0;
+      position: relative;
+      width: 200px;
+      height: 300px;
+      background: url("/static/images/index/discount-bg.png") no-repeat;
+      background-size: 100% 100%;
+      margin: 20px 0 20px 20px;
+      text-align: center;
+      .m-label{
+        position: absolute;
+        top:0;
+        left: 0;
+        width: 80px;
+        border-bottom-right-radius: 20px;
+        font-size: 20px;
+        color: #fff;
+      }
+      .m-discount-num{
+        font-size: 52px;
+        margin: 55px 0 0;
+        color: @mainColor;
+        font-weight: 600;
+        .m-word{
+          font-size: 32px;
+        }
+      }
+      .m-discount-condition{
+        color: @mainColor;
+        font-size: 24px;
+      }
+      .m-discount-info{
+        width: 130px;
+        color: #c1c1c1;
+        font-size: 20px;
+        margin: 20px 0 0 32px;
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient:vertical;
+      }
+      .m-discount-btn{
+        position: absolute;
+        bottom:0;
+        left:0;
+        width: 100%;
+        height: 52px;
+        line-height: 52px;
+        font-weight: 500;
+        font-size: 28px;
+        color: #fff;
+      }
+      .m-discount-line{
+        width: 100%;
+        position: absolute;
+      }
+      &.m-brand{
+        .m-discount-num{
+          color: #000;
+        }
+        .m-discount-condition{
+          color: #000;
+        }
+      }
+      &.m-zhe{
+        .m-discount-num{
+          color: #E67E22;
+        }
+        .m-discount-condition{
+          color: #E67E22;
+        }
+      }
+    }
+  }
   .m-selected-activity{
     .m-row{
       .flex-row(center);
@@ -662,6 +850,33 @@
     overflow: hidden; // 超出的文本隐藏
     text-overflow: ellipsis;    // 溢出用省略号显示
     white-space:nowrap;
+  }
+  .m-line-title{
+    position: relative;
+    margin-top: 20px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    /*line-height: 50px;*/
+    .m-cut-line{
+      width: 100%;
+      height: 1px;
+      background-color: #000000;
+      display: inline-block;
+    }
+    .m-name{
+      position: absolute;
+      top:0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 174px;
+      margin: 0 auto;
+      font-weight: 600;
+      font-size: 36px;
+      background-color: #fff;
+    }
   }
 }
 
