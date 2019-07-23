@@ -14,13 +14,14 @@
 <!--    </mt-tabbar>-->
     <div class="m-footer-box">
       <ul>
-        <li v-for="(item,index) in tabbar" @click.stop="footerClick(item)">
-          <img :src="item.icon" v-if="index != 2 && item.name != selected" class="m-footer-icon" alt="">
-          <img :src="item.active_icon" v-else-if="index != 2 && item.name == selected" class="m-footer-icon" alt="">
-          <span class="m-footer-icon-bc" v-else>
-            <img :src="item.icon" v-if="index == 2 && item.name != selected" class="m-footer-icon" alt="">
-             <img :src="item.active_icon" v-else-if="index == 2 && item.name == selected" class="m-footer-icon" alt="">
-          </span>
+        <li v-for="(item,index) in tabbar" @click.stop="footerClick(item)" >
+<!--         index != 2 &&  -->
+          <img :src="item.icon" v-if="item.name != selected" class="m-footer-icon" alt="">
+          <img :src="item.active_icon" v-else class="m-footer-icon" alt="">
+<!--          <span class="m-footer-icon-bc" v-else>-->
+<!--            <img :src="item.icon" v-if="index == 2 && item.name != selected" class="m-footer-icon" alt="">-->
+<!--             <img :src="item.active_icon" v-else-if="index == 2 && item.name == selected" class="m-footer-icon" alt="">-->
+<!--          </span>-->
           <span :class="selected == item.name?'active':''">{{item.name}}</span>
         </li>
       </ul>
@@ -143,8 +144,11 @@
           case '发布':
             this.$router.push('/circle/newEdit');
             break;
-          case '商城':
-            this.$router.push('/newProduct');
+          case '品牌':
+            this.$router.push('/brandList');
+            break;
+          case '购物车':
+            this.$router.push('/shop');
             break;
           case '我的':
             this.$router.push('/newPersonal');
@@ -167,24 +171,32 @@
               this.selected = '首页';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;
-            case '/circle':
-              if(localStorage.getItem('fresh')  && localStorage.getItem('token')) {
-                this.$router.go(0);
-                localStorage.removeItem('fresh');
-              }
-              this.selected = '发现';
-              this.tabbar = this.$store.state.tabbar_buyer;
-              break;
-            case '/circle/newEdit':
-              this.selected = '发布';
-              this.tabbar = this.$store.state.tabbar_buyer;
-              break;
-            case '/newProduct':
+            // case '/circle':
+            //   if(localStorage.getItem('fresh')  && localStorage.getItem('token')) {
+            //     this.$router.go(0);
+            //     localStorage.removeItem('fresh');
+            //   }
+            //   this.selected = '发现';
+            //   this.tabbar = this.$store.state.tabbar_buyer;
+            //   break;
+            // case '/circle/newEdit':
+            //   this.selected = '发布';
+            //   this.tabbar = this.$store.state.tabbar_buyer;
+            //   break;
+            case '/brandList':
               // if(sessionStorage.getItem('shop')){
               //   this.$router.go(0)
               //   sessionStorage.removeItem('shop')
               // }
-              this.selected = '商城';
+              this.selected = '品牌';
+              this.tabbar = this.$store.state.tabbar_buyer;
+              break;
+            case '/shop':
+              // if(sessionStorage.getItem('shop')){
+              //   this.$router.go(0)
+              //   sessionStorage.removeItem('shop')
+              // }
+              this.selected = '购物车';
               this.tabbar = this.$store.state.tabbar_buyer;
               break;
             case '/newPersonal':
@@ -245,6 +257,7 @@
       color: #C1C1C1;
       li{
         font-size: 20px;
+        .flex-col(center);
         .m-footer-icon{
           display: block;
           width: 60px;

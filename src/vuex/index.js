@@ -37,25 +37,28 @@ let store= new Vuex.Store({
         active_icon:'/static/images/newFooter/icon-index-active.png',
         url:'selected'
       },{
-        name:'发现',
-        icon:'/static/images/newFooter/icon-circle.png',
-        active_icon:'/static/images/newFooter/icon-circle-active.png',
-        url:'circle'
-      },{
-        name:'发布',
-        icon:'/static/images/newFooter/icon-edit.png',
-        active_icon:'/static/images/newFooter/icon-edit-active.png',
-        url:'activity'
-      },/*{
-        name:'装备',
-        icon:'/static/images/footer/icon-equipment.png',
-        active_icon:'/static/images/footer/icon-equipment-active.png',
-        url:'equipment'
-      },*/{
-        name:'商城',
+        name:'品牌',
+        icon:'/static/images/newFooter/icon-brand.png',
+        active_icon:'/static/images/newFooter/icon-brand-active.png',
+        url:'brandList'
+      },
+      //   {
+      //   name:'发布',
+      //   icon:'/static/images/newFooter/icon-edit.png',
+      //   active_icon:'/static/images/newFooter/icon-edit-active.png',
+      //   url:'activity'
+      // },/
+      //   {
+      //   name:'装备',
+      //   icon:'/static/images/footer/icon-equipment.png',
+      //   active_icon:'/static/images/footer/icon-equipment-active.png',
+      //   url:'equipment'
+      // },
+        {
+        name:'购物车',
         icon:'/static/images/newFooter/icon-shop.png',
         active_icon:'/static/images/newFooter/icon-shop-active.png',
-        url:'newProduct'
+        url:'shop'
       },{
         name:'我的',
         icon:'/static/images/newFooter/icon-personal.png',

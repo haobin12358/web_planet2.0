@@ -70,8 +70,8 @@ export const constantRouterMap = [
   { path: '/gift', component: () => import('../views/buyer/selected/gift'), hidden: true },
   { path: '/giftBox', component: () => import('../views/buyer/selected/giftBox'), hidden: true },
   { path: '/scene', component: () => import('../views/buyer/selected/scene'), hidden: true },
-  { path: '/brandList', component: () => import('../views/buyer/selected/brandList'), hidden: true },
-  { path: '/brandDetail', component: () => import('../views/buyer/selected/brandDetail'), hidden: true },
+  // { path: '/brandList', component: () => import('../views/buyer/selected/brandList'), hidden: true },
+  // { path: '/brandDetail', component: () => import('../views/buyer/selected/brandDetail'), hidden: true },
   { path: '/activityDetail', component: () => import('../views/buyer/selected/activityDetail'), hidden: true },
   {
     path: '/circle',
@@ -88,16 +88,31 @@ export const constantRouterMap = [
   // { path: '/product', component: () => import('../views/buyer/product/product'), meta: { keepAlive: true }, hidden: true },
   { path: '/productDetail', name: 'productDetail', component: () => import('../views/buyer/newProduct/productDetail'), meta: { keepAlive: false }, hidden: true },
   { path: '/evaluate', component: () => import('../views/buyer/newProduct/evaluate'), hidden: true },
+  // {
+  //   path: '/newProduct',
+  //   component: Layout,
+  //   redirect: 'newProduct',
+  //   children: [
+  //     { path: '/newProduct', component: () => import('../views/buyer/newProduct/index'),meta: { keepAlive: true},name:'newProduct' , hidden: true}
+  //   ],
+  // },
+  { path: '/searchProduct', component: () => import('../views/buyer/newProduct/search'), hidden: true },
   {
-    path: '/newProduct',
+    path: '/brandList',
     component: Layout,
-    redirect: 'newProduct',
+    redirect: 'brandList',
     children: [
-      { path: '/newProduct', component: () => import('../views/buyer/newProduct/index'),meta: { keepAlive: true},name:'newProduct' , hidden: true}
+      { path: '/brandList', component: () => import('../views/buyer/brand/brandList'),meta: { keepAlive: true},name:'brandList' , hidden: true}
     ],
   },
-  { path: '/searchProduct', component: () => import('../views/buyer/newProduct/search'), hidden: true },
-  { path: '/shop', component: () => import('../views/buyer/shop/index'), meta: { keepAlive: true }, hidden: true },
+  {
+    path: '/shop',
+    component: Layout,
+    redirect: 'shop',
+    children: [
+      { path: '/shop', component: () => import('../views/buyer/shop/index'),meta: { keepAlive: true},name:'shop' , hidden: true}
+    ],
+  },
   { path: '/submitOrder', component: () => import('../views/buyer/shop/submitOrder'), hidden: true },
   { path: '/orderList', component: () => import('../views/buyer/shop/orderList'), meta: { keepAlive: false }, hidden: true },
   { path: '/addComment', component: () => import('../views/buyer/product/addComment'), hidden: true },
