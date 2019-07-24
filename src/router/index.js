@@ -105,6 +105,7 @@ export const constantRouterMap = [
       { path: '/brandList', component: () => import('../views/buyer/brand/brandList'),meta: { keepAlive: true},name:'brandList' , hidden: true}
     ],
   },
+  { path: '/brandDetail', component: () => import('../views/buyer/brand/brandDetail'), hidden: true },
   {
     path: '/shop',
     component: Layout,

@@ -1,6 +1,6 @@
 <template>
     <div class="m-brandList">
-      <div class="m-one-brand">
+      <div class="m-one-brand" @click="changeRoute('/brandDetail')">
         <img src="" class="m-bg" alt="">
         <div class="m-brand-info">
           <img src="" class="m-brand-logo" alt="">
@@ -68,7 +68,12 @@
 
           }
       },
-      components:{discount}
+      components:{discount},
+      methods:{
+          changeRoute(v){
+            this.$router.push({ path: v, query: { }})
+          }
+      }
     }
 </script>
 

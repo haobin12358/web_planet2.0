@@ -571,7 +571,7 @@
           if (scrollTop + ClientHeight  >= scrollHeight -10) {
             if(this.isScroll){
               this.isScroll = false;
-              if(this.news_list.length == this.total_count){
+              if(this.product_list.length == this.total_count){
                 this.bottom_show = true;
               }else{
                     this.getProduct();

@@ -76,6 +76,8 @@
     position: absolute;
   }
   &.m-brand{
+    background: url("/static/images/index/discount-bg-brand.png") no-repeat;
+    background-size: 100% 100%;
     .m-discount-num{
       color: #000;
     }
@@ -84,6 +86,8 @@
     }
   }
   &.m-zhe{
+    background: url("/static/images/index/discount-bg-zhe.png") no-repeat;
+    background-size: 100% 100%;
     .m-discount-num{
       color: #E67E22;
     }
