@@ -5,7 +5,7 @@
         <div class="m-info">
           <div class="m-flex-between">
             <span class="m-name">addada</span>
-            <span class="m-btn">查看更多</span>
+            <span class="m-btn" @click="changeRoute('/brandInfo')">查看更多</span>
           </div>
           <div>Adidas is all in  全倾全力</div>
         </div>
@@ -59,8 +59,8 @@
           </div>
         </div>
        <div class="m-flex-end">
-         <span class="m-grey">历史动态</span>
-         <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more" alt="" />
+         <span class="m-grey" @click="changeRoute('/dynamic')">历史动态</span>
+         <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more"  @click="changeRoute('/dynamic')" alt="" />
        </div>
         <div>
           <div class="m-line-title">

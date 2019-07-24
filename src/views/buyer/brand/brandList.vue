@@ -61,6 +61,7 @@
 
 <script>
    import discount from '../../../components/common/discount';
+   import common from '../../../common/js/common';
     export default {
         name: "brandList",
       data(){
@@ -69,6 +70,9 @@
           }
       },
       components:{discount},
+      mounted(){
+          common.changeTitle('品牌');
+      },
       methods:{
           changeRoute(v){
             this.$router.push({ path: v, query: { }})
