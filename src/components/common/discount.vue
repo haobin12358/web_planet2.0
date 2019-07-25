@@ -1,18 +1,34 @@
 <template>
-    <div class="m-discount-components">
-      <span class="m-label">全平台</span>
-      <div class="m-discount-num">100</div>
-      <div class="m-discount-condition">满128元可用</div>
-      <div class="m-discount-info">全平台均可使用
-        全平台均可使...</div>
-      <div class="m-discount-btn">立即领取</div>
-      <div class="m-discount-line"></div>
+    <div class="m-discount-components" :class="item.title_subtitle.coupon_type == 1? 'm-brand':(item.title_subtitle.coupon_type == 2?'m-zhe':'')">
+      <span class="m-label" v-if="item.title_subtitle.coupon_type == 0"> 全平台</span>
+      <span class="m-label" v-else-if="item.title_subtitle.coupon_type == 1"> 品牌</span>
+      <span class="m-label" v-if="item.title_subtitle.coupon_type == 2"> 折扣券</span>
+      <div class="m-discount-num">{{item.cosubtration || item.codiscount}}</div>
+      <div class="m-discount-condition">{{item.title_subtitle.subtitle}}</div>
+      <div class="m-discount-info">{{item.title_subtitle.title}}</div>
+      <div class="m-discount-btn" @click="haveDiscount">立即领取</div>
+<!--      <div class="m-discount-line"></div>-->
     </div>
 </template>
 
 <script>
     export default {
-        name: "discount"
+        name: "discount",
+      props:{
+          item:{
+            type:Object,
+            default:{}
+          },
+        index:{
+          type:Number,
+          default:null
+        }
+      },
+      methods:{
+        haveDiscount(){
+          this.$emit('haveDiscount',this.item.coid,this.index);
+        }
+      }
     }
 </script>
 
@@ -53,6 +69,7 @@
     color: #c1c1c1;
     font-size: 20px;
     margin: 20px 0 0 32px;
+    text-align: left;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;

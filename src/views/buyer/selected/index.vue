@@ -71,17 +71,8 @@
       <div class="m-discount-box">
         <div class="m-scroll " >
           <ul class="m-discount-list">
-            <li>
-            <discount></discount>
-          </li>
-            <li>
-              <discount></discount>
-            </li>
-            <li>
-              <discount></discount>
-            </li>
-            <li>
-              <discount></discount>
+            <li v-for="(item,index) in discount_list">
+              <discount :item="item" :index="index" @haveDiscount="haveDiscount"></discount>
             </li>
 <!--            <li class="m-brand">-->
 <!--              <span class="m-label">全平台</span>-->
@@ -142,10 +133,11 @@
           swipe_list:null,
           hot_list:null,
           news_list: [],
+          discount_list:[],
           icon_list:null,
           page_info:{
             page_num :1,
-            page_size:6
+            page_size:10
           },
           isScroll: true,
           total_count: 0,
@@ -181,6 +173,7 @@
           this.getCategory();
           this.getImg();
           this.getProduct();
+          this.getDiscount();
         }
 
         // 倒计时
@@ -444,7 +437,8 @@
               page_size:this.page_info.page_size,
               page_num:start,
               kw:_kw,
-              token:localStorage.getItem('token')
+              token:localStorage.getItem('token'),
+              itid:'home_recommend'
             }
           }).then(res => {
             if(res.data.status == 200){
@@ -466,6 +460,34 @@
           },error => {
             Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
           })
+        },
+        //获取优惠列表
+        getDiscount(){
+          this.$http.get(this.$api.coupon_list,{
+            params:{
+              page_size:20,
+              page_num:1,
+              token:localStorage.getItem('token'),
+              itid:'home_recommend_category'
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              this.discount_list = res.data.data;
+            }
+          },error => {
+            Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
+          })
+        },
+        //领取优惠券
+        haveDiscount(item,index){
+          console.log(item,index)
+          this.$http.post(this.$api.coupon_fetch + '?token=' + localStorage.getItem('token'), { coid: item }).then(res => {
+            Toast(res.data.message);
+            if(res.data.status == 200){
+              this.discount_list.splice(index,1);
+
+            }
+          });
         },
         /*获取资讯列表*/
         // getNews() {
