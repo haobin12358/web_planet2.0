@@ -321,8 +321,8 @@
         white-space: nowrap;
       }
       .m-btn{
-        font-size: 20px;
-        padding: 0 10px;
+        font-size: 24px;
+        padding: 5px 10px;
         display: inline-block;
         border: 1px solid #fff;
       }
