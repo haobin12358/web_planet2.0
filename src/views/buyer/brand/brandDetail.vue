@@ -313,7 +313,7 @@
       text-align: left;
       align-items: flex-start;
       .m-name{
-        width: 400px;
+        width: 360px;
         font-size: 40px;
         font-weight: 600;
         overflow: hidden;

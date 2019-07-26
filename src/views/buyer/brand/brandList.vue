@@ -2,8 +2,9 @@
     <div class="m-brandList">
       <div class="m-one-brand" @click="changeRoute('/brandDetail',item)" v-for="(item,index) in brand_list">
         <img :src="item.pbbackgroud" class="m-bg" alt="">
+        <img :src="item.pblogo" class="m-brand-logo" alt="">
         <div class="m-brand-info">
-          <img :src="item.pblogo" class="m-brand-logo" alt="">
+
           <div class="m-brand-name">{{item.pbname}}</div>
           <ul class="m-brand-product">
             <li class="m-box-shadow" v-if="item.coupon">
@@ -103,6 +104,16 @@
       display: block;
       background-color: #9fd0bf;
     }
+    .m-brand-logo{
+      position: absolute;
+      top: 150px;
+      left: 55px;
+      width: 150px;
+      height: 150px;
+      background-color: #fff;
+      z-index: 100;
+      box-shadow:0px 3px 30px rgba(0,0,0,0.1);
+    }
     .m-brand-info{
       position: absolute;
       top:200px;
@@ -113,14 +124,6 @@
       box-sizing: border-box;
       background-color: #fff;
       box-shadow:0px 3px 30px rgba(0,0,0,0.1);
-      .m-brand-logo{
-        position: absolute;
-        top:-50px;
-        left: 30px;
-        width: 150px;
-        height: 150px;
-        box-shadow:0px 3px 30px rgba(0,0,0,0.1);
-      }
       .m-brand-name{
         text-align: left;
         padding-left: 195px;
