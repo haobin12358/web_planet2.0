@@ -31,11 +31,11 @@
         <div class="m-info-list">
           <span>快递：{{product_info.prfreight | money}} 元</span>
           <span>月销：{{product_info.month_sale_value}}</span>
-          <span >{{product_info.brand.pbname}}</span>
-<!--          <div @click="changeRoute('/brandDetail')">-->
-<!--            <span class="m-brand-name">{{product_info.brand.pbname}}</span>-->
-<!--            <span class="m-more"></span>-->
-<!--          </div>-->
+<!--          <span >{{product_info.brand.pbname}}</span>-->
+          <div @click="changeRoute('/brandDetail')">
+            <span class="m-brand-name">{{product_info.brand.pbname}}</span>
+            <span class="m-more"></span>
+          </div>
         </div>
       </div>
       <div class="m-product-detail-more" @click="changeModal('show_sku',true)">

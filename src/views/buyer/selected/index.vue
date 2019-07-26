@@ -296,6 +296,15 @@
             }
 
             this.$router.push({ path: '/gift', query: { prid: params.split('&from')[0] }})
+          }else if(localStorage.getItem('share') == 'pbid' || url.indexOf('pbid') >0){
+            let params;
+            if(url.indexOf('&secret_usid') > 0){
+              params = url.split('?pbid=')[1].split('&secret_usid')[0];
+            }else{
+              params = url.split('?pbid=')[1];
+            }
+
+            this.$router.push({ path: '/brandDetail', query: { pbid: params.split('&from')[0] }})
           }else if(localStorage.getItem('share') == 'prid' || url.indexOf('prid') > 0) {
             //商品详情，开店大礼包
             let params;

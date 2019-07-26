@@ -10,7 +10,7 @@
       <div class="m-one-product-text">
         <!--<h3>【{{item.brand.pbname}}】{{item.prtitle}} </h3>-->
         <h3>
-          <span class="m-brand-name">【{{item.brand.pbname}}】</span>
+          <span class="m-brand-name" v-if="item.brand">【{{item.brand.pbname}}】</span>
           <span>{{item.prtitle}}</span>
         </h3>
         <p class="m-flex-between">

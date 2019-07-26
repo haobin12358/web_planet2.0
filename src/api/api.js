@@ -21,7 +21,7 @@ const api={
   category_list: title + 'category/list',                        // 获取分类-装备首页商品列表页
   product_get: title + 'product/get',                            // 获取单条商品-商品详情
   product_list: title + 'product/list',                          // 获取商品列表
-  brand_list: title + 'brand/list',                              // 获取商品列表
+  brand_list: title + 'brand/list',                              // 获取品牌列表
   search_history: title + 'product/search_history',              // 用户搜索记录
   guess_search: title + 'product/guess_search',                  // 推荐
   del_search_history: title + 'product/del_search_history',      // 删除搜索记录

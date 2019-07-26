@@ -114,6 +114,10 @@ export default {
       localStorage.setItem('share', 'tlpid');
       location.href = location.origin;
       this.shareRecord(params);
+    }else if(location.href.indexOf('pbid') > 0) {             // 品牌
+      localStorage.setItem('share', 'pbid');
+      location.href = location.origin;
+      this.shareRecord(params);
     }else if(location.href.indexOf('tcid') > 0) {               // 试用商品
       localStorage.setItem('share', 'tcid');
       location.href = location.origin;

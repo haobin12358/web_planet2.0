@@ -6,7 +6,8 @@
       <div class="m-discount-num">{{item.cosubtration || item.codiscount}}</div>
       <div class="m-discount-condition">{{item.title_subtitle.subtitle}}</div>
       <div class="m-discount-info">{{item.title_subtitle.title}}</div>
-      <div class="m-discount-btn" @click="haveDiscount">立即领取</div>
+      <div class="m-discount-btn" @click.stop="haveDiscount" v-if="!item.ready_collected">立即领取</div>
+      <div class="m-discount-btn"  v-else>已领取</div>
 <!--      <div class="m-discount-line"></div>-->
     </div>
 </template>

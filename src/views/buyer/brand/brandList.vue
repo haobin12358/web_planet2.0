@@ -1,81 +1,90 @@
 <template>
     <div class="m-brandList">
-      <div class="m-one-brand" @click="changeRoute('/brandDetail')">
-        <img src="" class="m-bg" alt="">
+      <div class="m-one-brand" @click="changeRoute('/brandDetail',item)" v-for="(item,index) in brand_list">
+        <img :src="item.pbbackgroud" class="m-bg" alt="">
         <div class="m-brand-info">
-          <img src="" class="m-brand-logo" alt="">
-          <div class="m-brand-name">Adidas</div>
+          <img :src="item.pblogo" class="m-brand-logo" alt="">
+          <div class="m-brand-name">{{item.pbname}}</div>
           <ul class="m-brand-product">
-            <li class="m-box-shadow">
-              <discount></discount>
+            <li class="m-box-shadow" v-if="item.coupon">
+              <discount :item="item.coupon" :index="index" @haveDiscount="haveDiscount"></discount>
             </li>
-            <li>
-              <img src="" class="m-product-img" alt="">
-              <div class="m-product-name">Adidas商品商品商…</div>
+            <li v-for="(i,j) in item.recommend" @click.stop="changeProduct(i)">
+              <img :src="i.prmainpic" class="m-product-img" alt="">
+              <div class="m-product-name">{{i.prtitle}}</div>
               <div class="m-product-price">
                 <span>¥</span>
-                <span  class="m-price">270</span>
-              </div>
-            </li>
-            <li>
-              <img src="" class="m-product-img" alt="">
-              <div class="m-product-name">Adidas商品商品商…</div>
-              <div class="m-product-price">
-                <span>¥</span>
-                <span  class="m-price">270</span>
+                <span  class="m-price">{{i.prprice}}</span>
               </div>
             </li>
           </ul>
         </div>
       </div>
-      <div class="m-one-brand">
-        <img src="" class="m-bg" alt="">
-        <div class="m-brand-info">
-          <img src="" class="m-brand-logo" alt="">
-          <div class="m-brand-name">Adidas</div>
-          <ul class="m-brand-product">
-            <li class="m-box-shadow">
-              <discount></discount>
-            </li>
-            <li>
-              <img src="" class="m-product-img" alt="">
-              <div class="m-product-name">Adidas商品商品商…</div>
-              <div class="m-product-price">
-                <span>¥</span>
-                <span  class="m-price">270</span>
-              </div>
-            </li>
-            <li>
-              <img src="" class="m-product-img" alt="">
-              <div class="m-product-name">Adidas商品商品商…</div>
-              <div class="m-product-price">
-                <span>¥</span>
-                <span  class="m-price">270</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+
     </div>
 </template>
 
 <script>
    import discount from '../../../components/common/discount';
    import common from '../../../common/js/common';
+   import { Toast} from 'mint-ui';
     export default {
         name: "brandList",
       data(){
           return{
+            page_info:{
+              page_size: 10,
+              page_num:1
+            },
+            total_count:0,
+            brand_list:[]
 
           }
       },
       components:{discount},
       mounted(){
           common.changeTitle('品牌');
+          this.getData();
       },
       methods:{
-          changeRoute(v){
-            this.$router.push({ path: v, query: { }})
+          changeRoute(v,item){
+            this.$router.push({ path: v, query: { pbid:item.pbid }})
+          },
+        //获取列表
+          getData(){
+            this.$http.get(this.$api.brand_list,{
+              params:{
+                page_size:this.page_info.page_size,
+                page_num: this.page_info.page_num,
+                token:localStorage.getItem('token')
+              }
+            }).then(res => {
+              console.log(res);
+              if(res.data.status == 200){
+                this.brand_list = res.data.data;
+              }
+            })
+          },
+          //领取优惠券
+          haveDiscount(item,index){
+            console.log(item,index)
+            this.$http.post(this.$api.coupon_fetch + '?token=' + localStorage.getItem('token'), { coid: item }).then(res => {
+              Toast(res.data.message);
+              if(res.data.status == 200){
+                this.brand_list[index].coupon.ready_collected = true;
+
+              }
+            });
+          },
+          changeProduct(item){
+            if(this.gift) {
+              this.$router.push({ path: '/gift', query: { prid: item.prid, from: this.gift }});
+            }else if(this.limited || item.tlpid) {
+              this.$router.push({ path: '/limitedProductDetail', query: { tlpid: item.tlpid }});
+            }else{
+              this.$router.push({ path: '/productDetail', query: { prid: item.prid }});
+
+            }
           }
       }
     }
@@ -107,7 +116,7 @@
       .m-brand-logo{
         position: absolute;
         top:-50px;
-        left: 20px;
+        left: 30px;
         width: 150px;
         height: 150px;
         box-shadow:0px 3px 30px rgba(0,0,0,0.1);
@@ -150,6 +159,7 @@
             .m-price{
               font-size: 28px;
               font-weight: 600;
+              color: #000;
             }
           }
         }

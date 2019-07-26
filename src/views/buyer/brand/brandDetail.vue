@@ -1,75 +1,62 @@
 <template>
-    <div class="m-brandDetail">
-      <div class="m-brand-info" style="background: #0084D6;">
-        <img src="" class="m-logo"  alt="">
+    <div class="m-brandDetail"  @touchmove="touchMove">
+      <div class="m-brand-info" :style="{'background':brand_info.pbthemecolor?brand_info.pbthemecolor: (brand_info.pbbackgroud? 'url('+ brand_info.pbbackgroud +') no-repeat': 'url(/static/images/index/brand-top-bg.png) no-repeat'),'backgroundSize':'100% 100%'}" >
+        <img :src="brand_info.pblogo" class="m-logo"  alt="">
         <div class="m-info">
           <div class="m-flex-between">
-            <span class="m-name">addada</span>
+            <span class="m-name">{{brand_info.pbname}}</span>
             <span class="m-btn" @click="changeRoute('/brandInfo')">查看更多</span>
           </div>
-          <div>Adidas is all in  全倾全力</div>
+          <div class="m-desc">{{brand_info.pbslogan}}</div>
         </div>
       </div>
-      <div class="m-swipe-box">
-        <div class="m-title">Adidas夏日滑板</div>
-        <mt-swipe :auto="3000" v-if="swipe_list">
-          <mt-swipe-item v-for="item in swipe_list" :key="item.ibid">
-            <img :src="item.ibpic" class="img" @click="changeRouteImg('/productDetail', item)">
+      <div class="m-swipe-box" v-if="brand_info.brandbanner.length">
+<!--        <div class="m-title">Adidas夏日滑板</div>-->
+        <mt-swipe :auto="3000" >
+          <mt-swipe-item v-for="item in brand_info.brandbanner" :key="item.bbid">
+            <img :src="item.bbcontent.content" v-if="item.bbcontent.type == 'image'" class="img" @click="changeRouteImg('/productDetail', item)">
+            <video :src="item.bbcontent.content.video" v-if="item.bbcontent.type == 'video'"></video>
           </mt-swipe-item>
         </mt-swipe>
       </div>
-      <div class="m-brand-recommend">
+      <div class="m-brand-recommend" v-if="brand_info.new">
         <ul>
           <li class="m-logo-box">
-            <img src="" class="m-logo" alt="">
-            <div class="m-name">Adidas新品</div>
+            <img :src="brand_info.pblogo" class="m-logo" alt="">
+            <div class="m-name">{{brand_info.pbname}}新品</div>
             <div>为你推荐</div>
           </li>
-          <li>
-            <img src="" class="m-product" alt="">
-            <span class="m-price">¥ 360</span>
-          </li>
-          <li>
-            <img src="" class="m-product" alt="">
-            <span class="m-price">¥ 360</span>
-          </li>
-          <li>
-            <img src="" class="m-product" alt="">
-            <span class="m-price">¥ 360</span>
-          </li>
-          <li>
-            <img src="" class="m-product" alt="">
-            <span class="m-price">¥ 360</span>
-          </li>
-          <li>
-            <img src="" class="m-product" alt="">
-            <span class="m-price">¥ 360</span>
+          <li v-for="(item,index) in brand_info.new" @click.stop="changeProduct(item)">
+            <img :src="item.prmainpic" class="m-product" alt="">
+            <span class="m-price">¥ {{item.prprice}}</span>
           </li>
         </ul>
       </div>
       <div class="m-dynamic">
-        <div class="m-flex-between">
-          <div class="m-one-dynamic">
-            <p class="m-title">动态动态</p>
-            <img src="" class="m-product" alt="">
+        <div v-if="brand_info.brandtweets">
+          <div class="m-flex-between">
+            <div class="m-one-dynamic">
+              <p class="m-title">动态动态</p>
+              <img src="" class="m-product" alt="">
+            </div>
+            <div class="m-one-dynamic">
+              <p class="m-title">动态动态</p>
+              <img src="" class="m-product" alt="">
+            </div>
           </div>
-          <div class="m-one-dynamic">
-            <p class="m-title">动态动态</p>
-            <img src="" class="m-product" alt="">
-          </div>
-        </div>
-       <div class="m-flex-end">
-         <span class="m-grey" @click="changeRoute('/dynamic')">历史动态</span>
-         <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more"  @click="changeRoute('/dynamic')" alt="" />
-       </div>
-        <div>
-          <div class="m-line-title">
-            <span class="m-cut-line"></span>
-            <span class="m-name">更多·推荐</span>
+          <div class="m-flex-end">
+            <span class="m-grey" @click="changeRoute('/dynamic')">历史动态</span>
+            <img src="/static/images/newpersonal/icon-more.png" class="m-icon-more"  @click="changeRoute('/dynamic')" alt="" />
           </div>
         </div>
-        <product :list="product_list"></product>
       </div>
+      <div>
+        <div class="m-line-title">
+          <span class="m-cut-line"></span>
+          <span class="m-name">更多·推荐</span>
+        </div>
+      </div>
+      <product :list="product_list"></product>
     </div>
 </template>
 
@@ -78,6 +65,7 @@
   import common from '../../../common/js/common';
   import wxapi from '../../../common/js/mixins';
   import wx from 'weixin-js-sdk';
+  import { Toast} from 'mint-ui';
     export default {
         name: "brandDetail",
       data(){
@@ -92,13 +80,15 @@
                 ibid:'2'
               }
             ],
-            product_list:[],
+            brand_info:{},
             page_info:{
               page_num :1,
-              page_size:6
+              page_size:10
             },
             isScroll: true,
             total_count: 0,
+            bottom_show: false,
+            product_list:[]
           }
       },
       components: { product},
@@ -119,10 +109,8 @@
             this._data[a] = this.$store.state.all_data[a]
           }
         }else{
-          // this.getSwipe();
-          // this.getCategory();
-          // this.getImg();
-          // this.getProduct();
+          this.getData(this.$route.query.pbid);
+          this.getProduct(this.$route.query.pbid);
         }
 
         // 倒计时
@@ -189,10 +177,10 @@
           if(localStorage.getItem('token')) {
             // alert(1);
             let options = {
-              title: '大行星',
-              desc: '挑你所爱  走你所想  一个有野心的户外平台',
-              imgUrl: this.swipe_list[0].ibpic,
-              link:  location.href.split('#')[0]+'?page=index'
+              title: this.brand_info.pbname,
+              desc: this.brand_info.pbslogan,
+              // imgUrl: this.brand_info.brandbanner[0].ibpic,
+              link:  location.href.split('#')[0]+'?pbid=' + this.brand_info.pbid
             };
             this.$http.get(this.$api.secret_usid + '?token=' + localStorage.getItem('token')).then(res => {
               if(res.data.status == 200) {
@@ -218,28 +206,40 @@
           }
 
         },
-        /*获取轮播图*/
-        getSwipe(){
-          this.$http.get(this.$api.list_banner_index).then(res => {
-            if(res.data.status == 200){
-              this.swipe_list = res.data.data;
-            }
-          })
-        },
-        //获取商品列表
-        getProduct(id){
-          let start = this.page_info.page_num;
-          let _kw = this.$route.query.kw || '';
-          this.$http.get(this.$api.product_list,{
+        //获取品牌详情
+        getData(id){
+          this.$http.get(this.$api.get_one_brand,{
             params:{
-              pcid:id,
-              page_size:this.page_info.page_size,
-              page_num:start,
-              kw:_kw,
+              pbid:id,
               token:localStorage.getItem('token')
             }
           }).then(res => {
             if(res.data.status == 200){
+
+              this.brand_info = res.data.data;
+            }
+          },error => {
+            Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
+          })
+        },
+        /*查看更多*/
+        changeRoute(v, item) {
+            this.$router.push({path:v,query:{pbid:this.$route.query.pbid}});
+        },
+        //获取商品列表
+        getProduct(id){
+          let start = this.page_info.page_num;
+          this.$http.get(this.$api.product_list,{
+            params:{
+              pbid:id,
+              page_size:this.page_info.page_size,
+              page_num:start,
+              token:localStorage.getItem('token'),
+              itid:'home_recommend'
+            }
+          }).then(res => {
+            if(res.data.status == 200){
+              console.log(res.data.data);
               if(res.data.data.length >0){
                 this.page_info.page_num =   this.page_info.page_num +1;
               }else{
@@ -268,18 +268,23 @@
             if(this.isScroll){
               this.isScroll = false;
               if(this.product_list.length == this.total_count){
-                this.bottom_show = true;
+                // this.bottom_show = true;
               }else{
                 this.getProduct();
               }
             }
           }
         },
-        /*查看更多*/
-        changeRoute(v, item) {
-            this.$router.push({path:v,});
-        }
+        changeProduct(item){
+          if(this.gift) {
+            this.$router.push({ path: '/gift', query: { prid: item.prid, from: this.gift }});
+          }else if(this.limited || item.tlpid) {
+            this.$router.push({ path: '/limitedProductDetail', query: { tlpid: item.tlpid }});
+          }else{
+            this.$router.push({ path: '/productDetail', query: { prid: item.prid }});
 
+          }
+        }
       }
     }
 </script>
@@ -291,14 +296,14 @@
     padding: 40px 30px;
     .flex-row(flex-start);
     /*background-color: #0084D6;*/
-    background: url("/static/images/index/brand-top-bg.png") no-repeat;
-    background-size: 100% 100%;
+
     .m-logo{
       display: block;
       width: 120px;
       height: 120px;
       box-shadow:0px 3px 30px rgba(0,0,0,0.1);
       margin:0 30px;
+      background-color: #ffffff;
     }
     .m-info{
       width: 500px;
@@ -320,6 +325,12 @@
         padding: 0 10px;
         display: inline-block;
         border: 1px solid #fff;
+      }
+      .m-desc{
+        width: 500px;
+        /*overflow: hidden;*/
+        /*text-overflow: ellipsis;*/
+        /*white-space: nowrap;*/
       }
     }
   }
@@ -354,7 +365,7 @@
           display: block;
           width: 90px;
           height: 90px;
-          background-color: #9fd0bf;
+          /*background-color: #9fd0bf;*/
         }
         .m-name{
           font-weight: 600;

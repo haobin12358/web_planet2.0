@@ -39,11 +39,11 @@
       <div class="m-info-list">
         <span>快递：{{product.gpfreight }} 元</span>
         <span>月销：{{product.prsalesvalue}}</span>
-        <span >{{product.brand.pbname}}</span>
-        <!--          <div @click="changeRoute('/brandDetail')">-->
-        <!--            <span class="m-brand-name">{{product_info.brand.pbname}}</span>-->
-        <!--            <span class="m-more"></span>-->
-        <!--          </div>-->
+<!--        <span >{{product.brand.pbname}}</span>-->
+<!--        <div @click="changeRoute('/brandDetail')">-->
+<!--          <span class="m-brand-name">{{product_info.brand.pbname}}</span>-->
+<!--          <span class="m-more"></span>-->
+<!--        </div>-->
       </div>
     </div>
     <!--选择sku-->
@@ -209,7 +209,12 @@
     methods: {
       //改变路由
       changeRoute(v){
-        this.$router.push({path:v});
+        // this.$router.push({path:v});
+       // if(v == '/brandDetail'){
+       //    this.$router.push({path:v,query:{pbid:this.product_info.pbid,pbname:this.product_info.pbname}});
+       //  }else {
+          this.$router.push({path:v});
+        // }
       },
       // 分享商品
       shareProduct(val) {

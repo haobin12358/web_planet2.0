@@ -24,6 +24,10 @@
         <div class="m-text-info m-flex-between">
           <span>快递：{{product.tcfreight}} 元</span>
           <span>月销：{{product.month_sale_value}}</span>
+<!--          <div @click="changeRoute('/brandDetail')">-->
+<!--            <span class="m-brand-name">{{product_info.brand.pbname}}</span>-->
+<!--            <span class="m-more"></span>-->
+<!--          </div>-->
         </div>
       </div>
     </div>
