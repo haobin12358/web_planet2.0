@@ -12,10 +12,23 @@
       </div>
       <div class="m-swipe-box" v-if="brand_info.brandbanner.length">
 <!--        <div class="m-title">Adidas夏日滑板</div>-->
-        <mt-swipe :auto="3000" >
-          <mt-swipe-item v-for="item in brand_info.brandbanner" :key="item.bbid">
+        <mt-swipe :auto="autoplay">
+          <mt-swipe-item v-for="(item,index) in brand_info.brandbanner" :key="item.bbid">
             <img :src="item.bbcontent.content" v-if="item.bbcontent.type == 'image'" class="img" @click="changeRouteImg('/productDetail', item)">
-            <video :src="item.bbcontent.content.video" v-if="item.bbcontent.type == 'video'"></video>
+            <div class="m-video-box">
+              <img src="/static/images/index/brand-video.png" v-if="autoplay" class="m-icon" alt="">
+              <video :src="item.bbcontent.content.video"
+                     :poster="item.bbcontent.content.thumbnail"
+                     webkit-playsinline="true"
+                     playsinline="true"
+                     x-webkit-airplay="allow"
+                     style="object-fit:fill"
+                     loop
+                     x5-video-player-type="h5"
+                     :id="index"
+                     @click="videoClick(index)"
+                     v-if="item.bbcontent.type == 'video'"></video>
+            </div>
           </mt-swipe-item>
         </mt-swipe>
       </div>
@@ -70,6 +83,7 @@
         name: "brandDetail",
       data(){
           return{
+            autoplay:10000,
             swipe_list:[
               {
                 ibpic:'',
@@ -284,6 +298,17 @@
             this.$router.push({ path: '/productDetail', query: { prid: item.prid }});
 
           }
+        },
+        videoClick(v){
+          let vdo = document.getElementById(v);
+          if(vdo.paused){
+            this.autoplay = 0;
+            vdo.play();
+          }else{
+            this.autoplay = 10000;
+            vdo.pause();
+          }
+
         }
       }
     }
