@@ -823,7 +823,7 @@
     /*line-height: 50px;*/
     .m-cut-line{
       width: 100%;
-      height: 1px;
+      height: 2px;
       background-color: #000000;
       display: inline-block;
     }

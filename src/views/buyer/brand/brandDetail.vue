@@ -10,7 +10,7 @@
           <div class="m-desc">{{brand_info.pbslogan}}</div>
         </div>
       </div>
-      <div class="m-swipe-box" v-if="brand_info.brandbanner.length">
+      <div class="m-swipe-box" v-if="brand_info.brandbanner">
 <!--        <div class="m-title">Adidas夏日滑板</div>-->
         <mt-swipe :auto="autoplay">
           <mt-swipe-item v-for="(item,index) in brand_info.brandbanner" :key="item.bbid">
@@ -450,7 +450,7 @@
     /*line-height: 50px;*/
     .m-cut-line{
       width: 100%;
-      height: 1px;
+      height: 2px;
       background-color: #000000;
       display: inline-block;
     }
