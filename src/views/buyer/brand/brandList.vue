@@ -1,5 +1,5 @@
 <template>
-    <div class="m-brandList">
+    <div class="m-brandList" @touchmove="touchMove">
       <div class="m-one-brand" @click="changeRoute('/brandDetail',item)" v-for="(item,index) in brand_list">
         <img :src="item.pbbackgroud" class="m-bg" alt="">
         <img :src="item.pblogo" class="m-brand-logo" alt="">
@@ -53,16 +53,30 @@
           },
         //获取列表
           getData(){
+            let start = this.page_info.page_num;
             this.$http.get(this.$api.brand_list,{
               params:{
                 page_size:this.page_info.page_size,
-                page_num: this.page_info.page_num,
+                page_num: start,
                 token:localStorage.getItem('token')
               }
             }).then(res => {
               console.log(res);
               if(res.data.status == 200){
-                this.brand_list = res.data.data;
+                if(res.data.data.length >0){
+                  this.page_info.page_num =   this.page_info.page_num +1;
+                }else{
+                  this.brand_list = [];
+                  return false;
+                }
+                if(start >1){
+                  this.brand_list = this.brand_list.concat(res.data.data);
+                }else{
+                  this.brand_list = res.data.data;
+                }
+                this.isScroll = true;
+                this.total_count = res.data.total_count;
+                // this.total_page = res.data.total_page;
               }
             })
           },
@@ -86,7 +100,23 @@
               this.$router.push({ path: '/productDetail', query: { prid: item.prid }});
 
             }
+          },
+        //滚动加载更多
+        touchMove(e) {
+          let scrollTop = common.getScrollTop();
+          let scrollHeight = common.getScrollHeight();
+          let ClientHeight = common.getClientHeight();
+          if (scrollTop + ClientHeight  >= scrollHeight -10) {
+            if(this.isScroll){
+              this.isScroll = false;
+              if(this.brand_list.length == this.total_count){
+                // this.bottom_show = true;
+              }else{
+                this.getData();
+              }
+            }
           }
+        },
       }
     }
 </script>
@@ -135,10 +165,14 @@
         display: flex;
         flex-flow: row;
         align-items: center;
-        justify-content: space-around;
+        justify-content: flex-start;
         li{
           width: 200px;
           height: 300px;
+          margin-right: 30px;
+          &:last-child{
+            margin-right: 0;
+          }
           &.m-box-shadow{
             box-shadow:0px 3px 30px rgba(0,0,0,0.1);
           }

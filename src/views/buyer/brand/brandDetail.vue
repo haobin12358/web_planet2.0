@@ -267,7 +267,7 @@
               }
               this.isScroll = true;
               this.total_count = res.data.total_count;
-              this.total_page = res.data.total_page;
+              // this.total_page = res.data.total_page;
             }
           },error => {
             Toast({ message: error.data.message,duration:1000, className: 'm-toast-fail' });
