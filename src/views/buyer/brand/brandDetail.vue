@@ -5,7 +5,7 @@
         <div class="m-info">
           <div class="m-flex-between">
             <span class="m-name">{{brand_info.pbname}}</span>
-            <span class="m-btn" @click="changeRoute('/brandInfo')">查看更多</span>
+<!--            <span class="m-btn" @click="changeRoute('/brandInfo')">查看更多</span>-->
           </div>
           <div class="m-desc">{{brand_info.pbslogan}}</div>
         </div>
