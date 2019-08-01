@@ -1,6 +1,6 @@
 <template>
     <div class="m-brandInfo">
-      <div class="m-brand-info" :style="{'background':brand_info.pbthemecolor?brand_info.pbthemecolor: (brand_info.pbbackgroud? 'url('+ brand_info.pbbackgroud +') no-repeat': 'url(/static/images/index/brand-top-bg.png) no-repeat'),'backgroundSize':'100% 100%'}" >
+      <div class="m-brand-info"  :style="{'backgroundColor':brand_info.pbthemecolor && brand_info.pbthemecolor,'backgroundImage':brand_info.pbbackgroud? 'url('+ brand_info.pbbackgroud +') no-repeat': 'url(/static/images/index/brand-top-bg.png) no-repeat ','backgroundSize':'100% 100%'}" >
         <img :src="brand_info.pblogo" class="m-logo"  alt="">
         <div class="m-info">
           <div class="m-flex-between">
@@ -55,8 +55,8 @@
       padding: 40px 30px;
       .flex-row(flex-start);
       /*background-color: #0084D6;*/
-      background: url("/static/images/index/brand-top-bg.png") no-repeat;
-      background-size: 100% 100%;
+      /*background: url("/static/images/index/brand-top-bg.png") no-repeat;*/
+      /*background-size: 100% 100%;*/
       .m-logo{
         display: block;
         width: 120px;

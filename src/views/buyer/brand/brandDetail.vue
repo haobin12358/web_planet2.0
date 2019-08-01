@@ -1,6 +1,6 @@
 <template>
     <div class="m-brandDetail"  @touchmove="touchMove">
-      <div class="m-brand-info" :style="{'background':brand_info.pbthemecolor?brand_info.pbthemecolor: (brand_info.pbbackgroud? 'url('+ brand_info.pbbackgroud +') no-repeat': 'url(/static/images/index/brand-top-bg.png) no-repeat'),'backgroundSize':'100% 100%'}" >
+      <div class="m-brand-info"  :style="{'backgroundColor':brand_info.pbthemecolor && brand_info.pbthemecolor,'backgroundImage':brand_info.pbbackgroud? 'url('+ brand_info.pbbackgroud +') ': 'url(/static/images/index/brand-top-bg.png) ','backgroundSize':'100% 100%'}" >
         <img :src="brand_info.pblogo" class="m-logo"  alt="">
         <div class="m-info">
           <div class="m-flex-between">
@@ -36,8 +36,10 @@
         <ul>
           <li class="m-logo-box">
             <img :src="brand_info.pblogo" class="m-logo" alt="">
-            <div class="m-name">{{brand_info.pbname}}新品</div>
-            <div>为你推荐</div>
+            <div>
+              <div class="m-name">{{brand_info.pbname}}新品</div>
+              <div>为你推荐</div>
+            </div>
           </li>
           <li v-for="(item,index) in brand_info.new" @click.stop="changeProduct(item)">
             <img :src="item.prmainpic" class="m-product" alt="">
@@ -385,6 +387,10 @@
           padding: 10px;
           box-sizing: border-box;
           font-size: 28px;
+          display: flex;
+          flex-flow: column;
+          align-items: flex-start;
+          justify-content: space-between;
         }
         .m-logo{
           display: block;
@@ -393,9 +399,9 @@
           /*background-color: #9fd0bf;*/
         }
         .m-name{
-          font-weight: 600;
-          font-size: 32px;
-          margin-top: 39px;
+          font-weight: 500;
+          /*font-size: 32px;*/
+          /*margin-top: 15px;*/
         }
         .m-product{
           display: block;
